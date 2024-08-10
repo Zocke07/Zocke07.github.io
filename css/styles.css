@@ -177,7 +177,7 @@ html {
 @media (max-width: 768px) {
     .container {
         flex-direction: column; /* Stack sidebar and main content vertically */
-        margin: 20px; /* Adjust margin for smaller screens */
+        margin: 0; /* Set margin to 0 for the container */
         padding: 0; /* Remove padding for smaller screens */
     }
 
@@ -191,6 +191,8 @@ html {
 
     .main-content {
         width: 100%; /* Full width for main content */
-        margin-left: 0; /* Adjust margin for smaller screens */
+        margin-left: 0; /* Remove left margin */
+        padding: 20px; /* Add padding around the content */
+        box-shadow: none; /* Remove shadow on small screens */
     }
 }
