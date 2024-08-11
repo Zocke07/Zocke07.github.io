@@ -137,6 +137,7 @@ h2 {
 /* Education Section */
 .education-item {
     margin-bottom: 20px;
+    line-height: 1.0;
 }
 
 .education-item h3 {
@@ -146,11 +147,6 @@ h2 {
 .education-item p em {
     font-size: 0.9em;
     color: #777; /* Lighter grey for subtle text */
-}
-
-.education-item ul {
-    list-style-type: disc;
-    padding-left: 20px;
 }
 
 /* Projects Section */
