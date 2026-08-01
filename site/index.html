@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rivan Wong — CS Graduate Student · QA &amp; Test Automation</title>
+  <meta name="description" content="Portfolio of Rivan Wong — Computer Science graduate student at National Taipei University of Technology, focused on QA, test automation, and federated learning security." />
+  <meta property="og:title" content="Rivan Wong — Portfolio" />
+  <meta property="og:description" content="Computer Science graduate student · QA &amp; Test Automation · Taipei, Taiwan" />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    document.documentElement.dataset.theme =
+      localStorage.getItem("theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  </script>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="Primary">
+      <a class="nav-brand" href="#top">Rivan Wong</a>
+      <div class="nav-right">
+        <ul id="nav-menu" class="nav-menu">
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#education">Education</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <button class="theme-toggle" aria-label="Switch color theme">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ===================== Hero ===================== -->
+    <section id="top" class="hero">
+      <div class="container">
+        <p class="hero-kicker">Taipei, Taiwan</p>
+        <h1>Rivan Wong <span class="hero-cjk" lang="zh-Hant">黃家輝</span></h1>
+        <p class="hero-tagline">Computer Science graduate student · <span id="rotator">QA &amp; Test Automation</span></p>
+        <p class="hero-blurb">
+          M.S. student at National Taipei University of Technology researching federated
+          learning security, with hands-on industry experience in test automation, API
+          testing, and technical program management at Taiwan Mobile and Sunbird Software.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="mailto:rivanwong@gmail.com">Email me</a>
+          <a class="btn" href="https://github.com/Zocke07" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Experience ===================== -->
+    <section id="experience" class="section">
+      <div class="container">
+        <h2 class="section-title">Experience</h2>
+
+        <article class="entry">
+          <div class="entry-head">
+            <div>
+              <h3>Intern</h3>
+              <p class="entry-org">Taiwan Mobile Co., Ltd. · Taipei, Taiwan</p>
+            </div>
+            <p class="entry-date">Jul 2025 – Present</p>
+          </div>
+          <ul class="entry-points">
+            <li>Co-managed development as TPM and led User Acceptance Testing (UAT) for <em>the AI reviewer</em>, an internal VS Code AI agent extension integrating an AI-driven SDLC rule system.</li>
+            <li>Acted as the primary technical liaison between on-site engineers and a 6-member remote intern team from Binus University — directing project workflows, managing sprint tasks in Jira, and ensuring technical alignment.</li>
+            <li>Executed automated API testing with PyTest to validate critical system endpoints, ensuring data integrity and preventing regressions prior to deployment.</li>
+            <li>Integrated generative AI tools into daily engineering and administrative workflows, accelerating task completion and modernizing workspace practices.</li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="entry-head">
+            <div>
+              <h3>Test Automation Summer Intern</h3>
+              <p class="entry-org">Sunbird Software Inc., Taiwan Branch · New Taipei, Taiwan</p>
+            </div>
+            <p class="entry-date">Jul 2024 – Aug 2024</p>
+          </div>
+          <ul class="entry-points">
+            <li>Developed and maintained scalable automated testing scripts for enterprise web applications using Selenium and Robot Framework, ensuring stability across major production releases.</li>
+            <li>Integrated automated test suites into the CI/CD pipeline, reducing manual regression effort and accelerating the team's feedback loop.</li>
+            <li>Collaborated with cross-functional teams to refine test architectures and strategies, improving script reusability while meeting business and regulatory requirements.</li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="entry-head">
+            <div>
+              <h3>Industry–Academia Co-op Participant (Sunbird Program)</h3>
+              <p class="entry-org">Software Security Lab, National Taipei University of Technology · Taipei, Taiwan</p>
+            </div>
+            <p class="entry-date">2023 – 2024</p>
+          </div>
+          <ul class="entry-points">
+            <li>Implemented a comprehensive suite of automated test cases for web applications, following Agile/Scrum methodologies to simulate industry development cycles.</li>
+            <li>Collaborated within a student development team to plan, debug, and optimize testing workflows, laying the groundwork for a professional QA role.</li>
+            <li>Analyzed functional requirements to build robust test scenarios, gaining hands-on proficiency in Selenium, Robot Framework, and advanced web element locators.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== Projects ===================== -->
+    <section id="projects" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">Projects</h2>
+        <div class="card-grid">
+          <article class="card">
+            <h3>Sky Scraper Escape</h3>
+            <p class="card-meta">C++ · Object-Oriented Programming</p>
+            <ul class="entry-points">
+              <li>Co-developed a C++ game using Git for version control; implemented core gameplay mechanics including real-time collision detection and object rendering.</li>
+              <li>Designed the game architecture with a clear OOP class hierarchy, improving code reusability, modularity, and maintainability.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Test Automation Best Practices</h3>
+            <p class="card-meta">Capstone Project · Case Study Analysis</p>
+            <ul class="entry-points">
+              <li>Conducted a capstone case study on test automation across the Software Development Life Cycle, emphasizing repeatable and scalable team workflows.</li>
+              <li>Researched and synthesized web testing methodologies into practical recommendations for test design, execution, and maintenance.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Education ===================== -->
+    <section id="education" class="section">
+      <div class="container">
+        <h2 class="section-title">Education</h2>
+
+        <article class="entry">
+          <div class="entry-head">
+            <div>
+              <h3>M.S. in Computer Science and Information Engineering</h3>
+              <p class="entry-org">National Taipei University of Technology <span lang="zh-Hant">(國立臺北科技大學)</span> · Taipei, Taiwan</p>
+            </div>
+            <p class="entry-date">2025 – Present · Expected mid-2026</p>
+          </div>
+          <ul class="entry-points">
+            <li>GPA: 4.0 / 4.0</li>
+            <li>Member of the Software Security Lab; researching Federated Learning Security under adversarial settings.</li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="entry-head">
+            <div>
+              <h3>B.S. in Computer Science and Information Engineering</h3>
+              <p class="entry-org">National Taipei University of Technology · Taipei, Taiwan</p>
+            </div>
+            <p class="entry-date">2021 – 2025</p>
+          </div>
+          <ul class="entry-points">
+            <li>GPA: 3.5 / 4.0</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- ===================== Skills ===================== -->
+    <section id="skills" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">Skills</h2>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h3>Programming Languages</h3>
+            <ul class="tags">
+              <li>Python</li><li>C++</li><li>Java</li><li>JavaScript</li><li>HTML</li><li>CSS</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Tools &amp; Frameworks</h3>
+            <ul class="tags">
+              <li>Git</li><li>GitHub</li><li>Jira</li><li>Notion</li><li>VS Code</li><li>Selenium</li><li>Robot Framework</li><li>PyTest</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Systems &amp; Platforms</h3>
+            <ul class="tags">
+              <li>Linux (Ubuntu)</li><li>Windows</li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Methodologies &amp; Concepts</h3>
+            <ul class="tags">
+              <li>Agile (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>Test Automation</li><li>Machine Learning</li>
+            </ul>
+          </div>
+        </div>
+
+        <h2 class="section-title languages-title">Languages</h2>
+        <ul class="languages">
+          <li><strong>Indonesian</strong> — Native</li>
+          <li><strong>English</strong> — Fluent (TOEIC 965)</li>
+          <li><strong>Chinese (Mandarin)</strong> — Intermediate (TOCFL B2)</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== Contact ===================== -->
+    <section id="contact" class="section">
+      <div class="container contact">
+        <h2 class="section-title">Contact</h2>
+        <p>
+          I'm open to opportunities in QA, test automation, and software engineering.
+          The fastest way to reach me is by email.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="mailto:rivanwong@gmail.com">rivanwong@gmail.com</a>
+          <a class="btn" href="https://github.com/Zocke07" target="_blank" rel="noopener">github.com/Zocke07</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong · Built with plain HTML &amp; CSS, hosted on GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <button class="to-top" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
