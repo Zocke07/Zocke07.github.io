@@ -56,7 +56,8 @@
           testing, and technical program management at Taiwan Mobile and Sunbird Software.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="mailto:rivanwong@gmail.com">Email me</a>
+          <a class="btn btn-primary" href="case-study-test-automation.html">Featured case study</a>
+          <a class="btn" href="mailto:rivanwong@gmail.com">Email me</a>
           <a class="btn" href="https://github.com/Zocke07" target="_blank" rel="noopener">GitHub</a>
         </div>
       </div>
@@ -75,11 +76,19 @@
             </div>
             <p class="entry-date">Jul 2025 – Present</p>
           </div>
+          <p class="entry-intro">
+            I help build <em>the AI reviewer</em>, an internal VS Code AI agent extension that encodes the
+            team's development rules into the coding workflow. My job sits between the code and the
+            people: part technical program manager for a six-person remote team, part the person who
+            tests the thing before anyone else has to trust it.
+          </p>
           <ul class="entry-points">
-            <li>Co-managed development as TPM and led User Acceptance Testing (UAT) for <em>the AI reviewer</em>, an internal VS Code AI agent extension integrating an AI-driven SDLC rule system.</li>
-            <li>Acted as the primary technical liaison between on-site engineers and a 6-member remote intern team from Binus University — directing project workflows, managing sprint tasks in Jira, and ensuring technical alignment.</li>
-            <li>Executed automated API testing with PyTest to validate critical system endpoints, ensuring data integrity and preventing regressions prior to deployment.</li>
-            <li>Integrated generative AI tools into daily engineering and administrative workflows, accelerating task completion and modernizing workspace practices.</li>
+            <li>Co-manage delivery and lead User Acceptance Testing for the extension, from sprint planning in Jira through sign-off.</li>
+            <li>Serve as the main technical link between on-site engineers and remote interns at Binus University, keeping one shared direction across two locations.</li>
+            <li>Automate API testing with PyTest to catch regressions on critical endpoints before deployment.</li>
+          </ul>
+          <ul class="tags entry-tags">
+            <li>PyTest</li><li>Jira</li><li>VS Code Extensions</li><li>UAT</li><li>Agile</li>
           </ul>
         </article>
 
@@ -91,11 +100,23 @@
             </div>
             <p class="entry-date">Jul 2024 – Aug 2024</p>
           </div>
+          <p class="entry-intro">
+            I wrote automated tests for an enterprise data-center infrastructure management
+            platform — the kind where hundreds of end-to-end suites run in parallel against one
+            live server overnight, and a single flaky test can cost the whole team a morning.
+            Most of my work was turning requirement specs into suites that held up under that
+            pressure.
+          </p>
           <ul class="entry-points">
-            <li>Developed and maintained scalable automated testing scripts for enterprise web applications using Selenium and Robot Framework, ensuring stability across major production releases.</li>
-            <li>Integrated automated test suites into the CI/CD pipeline, reducing manual regression effort and accelerating the team's feedback loop.</li>
-            <li>Collaborated with cross-functional teams to refine test architectures and strategies, improving script reusability while meeting business and regulatory requirements.</li>
+            <li>Built end-to-end suites from a shared library of several thousand reusable keywords, setting up test state through a REST API instead of slow UI flows.</li>
+            <li>Cleared the same merge gate every time: zero warnings from a custom lint rule set, ten clean runs back to back, then more with the network deliberately throttled.</li>
+            <li>Ran API load sweeps with JMeter and fed the results into the team's Python-to-Excel reporting pipeline.</li>
           </ul>
+          <ul class="tags entry-tags">
+            <li>Robot Framework</li><li>Selenium</li><li>Python</li><li>Pabot</li><li>Jenkins</li><li>JMeter</li>
+          </ul>
+          <p class="entry-more"><a href="case-study-test-automation.html">How 730+ tests run at once — a case study →</a></p>
+          <p class="entry-note">Product and client details are generalized under NDA; the scale figures describe the team-owned platform I worked inside.</p>
         </article>
 
         <article class="entry">
@@ -106,10 +127,17 @@
             </div>
             <p class="entry-date">2023 – 2024</p>
           </div>
+          <p class="entry-intro">
+            Where the test automation started. A university–industry program that ran like a real
+            engineering team — Scrum ceremonies, code review, actual deadlines — and the first place
+            I learned that a test suite is something you maintain, not something you finish.
+          </p>
           <ul class="entry-points">
-            <li>Implemented a comprehensive suite of automated test cases for web applications, following Agile/Scrum methodologies to simulate industry development cycles.</li>
-            <li>Collaborated within a student development team to plan, debug, and optimize testing workflows, laying the groundwork for a professional QA role.</li>
-            <li>Analyzed functional requirements to build robust test scenarios, gaining hands-on proficiency in Selenium, Robot Framework, and advanced web element locators.</li>
+            <li>Turned functional requirements into automated web test scenarios with Selenium and Robot Framework.</li>
+            <li>Planned and debugged testing workflows with a student development team following Agile/Scrum.</li>
+          </ul>
+          <ul class="tags entry-tags">
+            <li>Selenium</li><li>Robot Framework</li><li>Scrum</li>
           </ul>
         </article>
       </div>
@@ -120,20 +148,41 @@
       <div class="container">
         <h2 class="section-title">Projects</h2>
         <div class="card-grid">
+          <article class="card card-featured">
+            <h3>How 730+ Tests Run at Once Without Stepping on Each Other</h3>
+            <p class="card-meta">Featured Case Study · Test Infrastructure</p>
+            <p class="card-body">
+              A look inside the quality platform behind my Sunbird internship: how hundreds of
+              browser tests share one live server safely, why flakiness is an engineering
+              problem rather than bad luck, and what it takes for a team to trust a red build.
+            </p>
+            <ul class="tags entry-tags">
+              <li>Robot Framework</li><li>Pabot</li><li>Jenkins</li><li>JMeter</li>
+            </ul>
+            <p class="entry-more"><a href="case-study-test-automation.html">Read the case study →</a></p>
+          </article>
           <article class="card">
             <h3>Sky Scraper Escape</h3>
             <p class="card-meta">C++ · Object-Oriented Programming</p>
-            <ul class="entry-points">
-              <li>Co-developed a C++ game using Git for version control; implemented core gameplay mechanics including real-time collision detection and object rendering.</li>
-              <li>Designed the game architecture with a clear OOP class hierarchy, improving code reusability, modularity, and maintainability.</li>
+            <p class="card-body">
+              A co-developed C++ game where I built the real-time collision detection and object
+              rendering. The interesting part was the architecture: designing a class hierarchy
+              clean enough that two people could add features without colliding themselves.
+            </p>
+            <ul class="tags entry-tags">
+              <li>C++</li><li>OOP</li><li>Git</li>
             </ul>
           </article>
           <article class="card">
             <h3>Test Automation Best Practices</h3>
-            <p class="card-meta">Capstone Project · Case Study Analysis</p>
-            <ul class="entry-points">
-              <li>Conducted a capstone case study on test automation across the Software Development Life Cycle, emphasizing repeatable and scalable team workflows.</li>
-              <li>Researched and synthesized web testing methodologies into practical recommendations for test design, execution, and maintenance.</li>
+            <p class="card-meta">Capstone Project · Research</p>
+            <p class="card-body">
+              My capstone: a study of how test automation actually behaves across the software
+              development life cycle, turning scattered web testing methodologies into practical
+              recommendations for designing, running, and maintaining suites over time.
+            </p>
+            <ul class="tags entry-tags">
+              <li>SDLC</li><li>Test Strategy</li><li>Research</li>
             </ul>
           </article>
         </div>
@@ -188,7 +237,7 @@
           <div class="skill-group">
             <h3>Tools &amp; Frameworks</h3>
             <ul class="tags">
-              <li>Git</li><li>GitHub</li><li>Jira</li><li>Notion</li><li>VS Code</li><li>Selenium</li><li>Robot Framework</li><li>PyTest</li>
+              <li>Git</li><li>GitHub</li><li>Jira</li><li>Notion</li><li>VS Code</li><li>Selenium</li><li>Robot Framework</li><li>PyTest</li><li>Apache JMeter</li><li>Jenkins</li><li>Pabot</li>
             </ul>
           </div>
           <div class="skill-group">

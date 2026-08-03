@@ -225,6 +225,8 @@ a:hover { text-decoration: underline; }
 .hero .container > *:nth-child(3) { animation-delay: 0.25s; }
 .hero .container > *:nth-child(4) { animation-delay: 0.35s; }
 .hero .container > *:nth-child(5) { animation-delay: 0.45s; }
+/* Any further children land last rather than inheriting a 0s delay. */
+.hero .container > *:nth-child(n+6) { animation-delay: 0.55s; }
 
 .hero-kicker {
   text-transform: uppercase;
@@ -366,10 +368,48 @@ a:hover { text-decoration: underline; }
   background: var(--accent);
 }
 
+.entry-intro {
+  max-width: 46rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.97rem;
+}
+
+.entry-tags { margin-top: 0.85rem; }
+.entry-tags li {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.7rem;
+  /* Tinted so the chips stay visible on plain --bg sections, not just --bg-alt. */
+  background: color-mix(in srgb, var(--accent) 7%, var(--bg));
+  border-color: color-mix(in srgb, var(--accent) 25%, var(--border));
+}
+
+.card-body { font-size: 0.95rem; }
+
+.card-featured {
+  grid-column: 1 / -1;
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+}
+.card-featured .card-body { max-width: 46rem; }
+
+.entry-note {
+  margin-top: 0.9rem;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.entry-more {
+  margin-top: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 /* ---------- 7. Cards (projects) ---------- */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  /* min() lets the track shrink below 22rem on narrow phones instead of
+     forcing horizontal scroll. */
+  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
   gap: 1.5rem;
 }
 

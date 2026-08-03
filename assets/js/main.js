@@ -50,7 +50,7 @@ toTop.addEventListener("click", () => {
 // --- Scroll spy: highlight the nav link for the section in view ---
 const sections = [...document.querySelectorAll("main section[id]")];
 const navLinks = new Map(
-  [...menu.querySelectorAll("a")].map((a) => [a.getAttribute("href").slice(1), a])
+  [...menu.querySelectorAll("a")].map((a) => [a.getAttribute("href").split("#")[1], a])
 );
 
 const spy = new IntersectionObserver(
