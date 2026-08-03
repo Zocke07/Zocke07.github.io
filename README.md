@@ -35,9 +35,15 @@ The case study page reuses the same stylesheet and adds its own page-local
 ## Preview locally
 
 ```sh
-python3 -m http.server 8000
+python3 -m http.server 8000 --bind 127.0.0.1
 # open http://localhost:8000
 ```
+
+Run it from the repo root — there is no subfolder to point at. `--bind 127.0.0.1`
+keeps the server off the local network and makes it print a usable URL; without it
+Python prints `http://[::]:8000/`, the IPv6 wildcard address, which browsers
+handle inconsistently. If the port is busy, either stop whatever holds it
+(`lsof -nP -iTCP:8000 -sTCP:LISTEN`) or pick another one.
 
 ## Deploy
 
@@ -45,7 +51,11 @@ Pushes to `main` publish automatically once GitHub Pages is enabled:
 
 1. In the repo: **Settings → Pages → Build and deployment**.
 2. Source: **Deploy from a branch**, Branch: **main**, Folder: **/ (root)**.
-3. Push — the site appears at `https://<username>.github.io/<repo>/`.
+3. Push — the site appears at <https://zocke07.github.io/>.
+
+The repository is named `<username>.github.io`, which makes this a GitHub Pages
+*user site* served from the domain root. All paths in the HTML are relative, so
+the site would also work unchanged under a project-site subpath.
 
 ## Ideas for later
 
