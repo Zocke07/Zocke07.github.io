@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>How 730+ Tests Run at Once Without Stepping on Each Other — Rivan Wong</title>
+  <title>How 730+ Tests Run at Once Without Stepping on Each Other · Rivan Wong</title>
   <meta name="description" content="How an enterprise DCIM platform is tested at scale: hundreds of parallel end-to-end suites, distributed resource locking, CI quality gates, and performance testing. An NDA-safe case study." />
   <meta property="og:title" content="How 730+ Tests Run at Once Without Stepping on Each Other" />
-  <meta property="og:description" content="Distributed resource locking, listener-based flake control, CI quality gates, and performance testing methodology — an NDA-safe engineering deep dive." />
+  <meta property="og:description" content="Distributed resource locking, listener-based flake control, CI quality gates, and performance testing methodology. An NDA-safe engineering deep dive." />
   <meta property="og:type" content="article" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
   <script>
@@ -133,16 +133,16 @@
         <p class="hero-kicker">Case Study · Test Automation Internship · Sunbird Software</p>
         <h1>How 730+ Tests Run at Once Without Stepping on Each Other</h1>
         <p class="hero-blurb">
-          Writing one browser test is easy. Writing the two-thousandth one — so that it runs at
-          the same time as hundreds of others, against a single live server, and still tells you
-          the truth in the morning — is a different problem entirely. This is what I learned
-          working inside that problem during my internship at Sunbird Software, on the quality
-          platform for an enterprise data-center infrastructure management (DCIM) application.
+          Writing one browser test is easy. Writing the two-thousandth one is a different problem
+          entirely: it has to run at the same time as hundreds of others, against a single live
+          server, and still tell you the truth in the morning. This is what I learned working
+          inside that problem during my internship at Sunbird Software, on the quality platform
+          for an enterprise data-center infrastructure management (DCIM) application.
         </p>
         <p class="hero-blurb role-line">
           <strong>My role:</strong> turning ticket-level requirement specifications into automated
           end-to-end suites that cleared the platform's merge gate, plus contributions to the API
-          performance-testing effort. The platform itself is the team's work — this case study is
+          performance-testing effort. The platform itself is the team's work. This case study is
           about what building inside it taught me.
         </p>
         <ul class="facts" role="list">
@@ -157,7 +157,7 @@
           <strong>A note on confidentiality:</strong> this write-up respects my NDA. Product and
           client names, internal identifiers, and business logic are omitted or generalized;
           everything here describes industry-standard engineering practice. Scale figures
-          describe the team-owned platform I worked in daily — my personal contributions are
+          describe the team-owned platform I worked in daily, and my personal contributions are
           called out explicitly.
         </p>
       </div>
@@ -168,8 +168,8 @@
       <div class="container prose">
         <h2 class="section-title">The Problem</h2>
         <p>
-          A mature enterprise web platform ships releases continuously, and every feature —
-          asset management, capacity planning, connectivity, data import/export — interacts
+          A mature enterprise web platform ships releases continuously, and every feature
+          (asset management, capacity planning, connectivity, data import/export) interacts
           with the others through one live, stateful server. Manual regression at that scale is
           impossible, and naive UI automation fails in two predictable ways: tests that are
           <em>flaky</em> (timing races, stale DOM elements, browser quirks) and tests that are
@@ -198,11 +198,11 @@
           further passes under simulated slow-network throttling.
         </p>
         <ol class="layer-stack" role="list">
-          <li class="layer"><b>Test suites — one per requirement ticket</b><span>Readable, spec-driven scenarios composed entirely from shared keywords</span></li>
-          <li class="layer"><b>Domain keyword library — thousands of reusable keywords</b><span>Reusable steps per feature area · custom Selenium extension · REST API facade for fast setup/teardown</span></li>
-          <li class="layer"><b>Listener pipeline — cross-cutting concerns</b><span>Secret masking in logs · human-reaction-time pacing · stale-element tolerance · targeted retries · failure-only network/console capture</span></li>
-          <li class="layer"><b>Parallel scheduler — Pabot + distributed resource locks</b><span>Tests declare shared subsystems via tags; conflicting suites are serialized, everything else runs concurrently</span></li>
-          <li class="layer"><b>CI orchestration — Jenkins</b><span>Automated DB restore &amp; environment provisioning · fast PR smoke subset vs full overnight runs · backend coverage measurement via JaCoCo</span></li>
+          <li class="layer"><b>Test suites: one per requirement ticket</b><span>Readable, spec-driven scenarios composed entirely from shared keywords</span></li>
+          <li class="layer"><b>Domain keyword library: thousands of reusable keywords</b><span>Reusable steps per feature area · custom Selenium extension · REST API facade for fast setup/teardown</span></li>
+          <li class="layer"><b>Listener pipeline: cross-cutting concerns</b><span>Secret masking in logs · human-reaction-time pacing · stale-element tolerance · targeted retries · failure-only network/console capture</span></li>
+          <li class="layer"><b>Parallel scheduler: Pabot + distributed resource locks</b><span>Tests declare shared subsystems via tags; conflicting suites are serialized, everything else runs concurrently</span></li>
+          <li class="layer"><b>CI orchestration: Jenkins</b><span>Automated DB restore &amp; environment provisioning · fast PR smoke subset vs full overnight runs · backend coverage measurement via JaCoCo</span></li>
         </ol>
       </div>
     </section>
@@ -220,7 +220,7 @@
           serializes only the suites that genuinely conflict. Locks are acquired at suite level
           as a whole to prevent deadlock, and every lock transition is exported in a standard
           trace format so parallelism can be inspected visually. Writing new tests meant
-          understanding this contract — declaring the right resources so my suites were
+          understanding this contract and declaring the right resources, so my suites were
           parallel-safe by construction.
         </p>
 
@@ -231,8 +231,8 @@
           the browser is never rushed past what a real user would do, patched waits that tolerate
           stale DOM elements, a retry for a known browser interaction race, guaranteed browser
           teardown, and password redaction before anything reaches the logs. When a
-          test fails, browser console and network logs are attached to the report — for failing
-          tests only — so a red result arrives with its own forensics.
+          test fails, browser console and network logs are attached to the report, for failing
+          tests only, so a red result arrives with its own forensics.
         </p>
 
         <h3>Quality gates for the tests themselves</h3>
@@ -250,7 +250,7 @@
           JMeter: CSV-parameterized load profiles over pooled entity IDs, and concurrency sweeps
           across a range of virtual-user levels with the load profile tuned so results stay
           comparable between levels. A Python pipeline collapses raw results into formatted
-          Excel summaries automatically — the kind of unglamorous automation that quietly
+          Excel summaries automatically. It is the kind of unglamorous automation that quietly
           removes an afternoon of manual work from every release.
         </p>
       </div>
@@ -261,11 +261,11 @@
       <div class="container prose">
         <h2 class="section-title">Key Engineering Learnings</h2>
         <ol class="learnings" role="list">
-          <li><b>Test code is production code.</b> Linting with custom rules, review checklists, and even unit tests for the test infrastructure itself — rigor applied to tests is what makes their verdicts meaningful.</li>
-          <li><b>Flakiness is a solvable problem, not weather.</b> Every "random" failure has a mechanism — timing, staleness, a browser race — and centralizing the countermeasures in shared infrastructure fixes it once for thousands of tests.</li>
-          <li><b>Parallelism needs explicit contracts.</b> Concurrent tests against shared state only work when dependencies are declared, not assumed — a few tags per suite, and everything that doesn't conflict runs at the same time.</li>
+          <li><b>Test code is production code.</b> Linting with custom rules, review checklists, and even unit tests for the test infrastructure itself. Rigor applied to tests is what makes their verdicts meaningful.</li>
+          <li><b>Flakiness is a solvable problem, not weather.</b> Every "random" failure has a mechanism, whether timing, staleness, or a browser race, and centralizing the countermeasures in shared infrastructure fixes it once for thousands of tests.</li>
+          <li><b>Parallelism needs explicit contracts.</b> Concurrent tests against shared state only work when dependencies are declared, not assumed. A few tags per suite, and everything that doesn't conflict runs at the same time.</li>
           <li><b>Fast feedback is designed, not hoped for.</b> API-based setup instead of UI flows, front-loading slow suites in the scheduler, and a small PR smoke subset are deliberate design choices that keep iteration fast.</li>
-          <li><b>Observability turns debugging into data.</b> Trace-event exports, failure-only diagnostics, and per-suite timing logs replace guesswork with evidence — for the test platform just as much as for the product.</li>
+          <li><b>Observability turns debugging into data.</b> Trace-event exports, failure-only diagnostics, and per-suite timing logs replace guesswork with evidence, for the test platform just as much as for the product.</li>
         </ol>
         <p class="entry-more"><a href="index.html#experience">← Back to portfolio</a></p>
       </div>

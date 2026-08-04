@@ -1,4 +1,4 @@
-# Portfolio — Rivan Wong
+# Portfolio: Rivan Wong
 
 Personal portfolio site, built with plain HTML/CSS/JS (no framework, no build step)
 and served directly from the repository root on GitHub Pages.
@@ -25,7 +25,7 @@ copy an existing `<article class="entry">` (experience/education) or
 
 Colors, fonts, and spacing are CSS custom properties at the top of
 `assets/css/style.css` (`:root` for light mode, `:root[data-theme="dark"]`
-for dark mode — a header toggle switches themes and remembers the choice).
+for dark mode). A header toggle switches themes and remembers the choice.
 All animations are disabled automatically for visitors who set
 `prefers-reduced-motion`.
 
@@ -39,7 +39,7 @@ python3 -m http.server 8000 --bind 127.0.0.1
 # open http://localhost:8000
 ```
 
-Run it from the repo root — there is no subfolder to point at. `--bind 127.0.0.1`
+Run it from the repo root. There is no subfolder to point at. `--bind 127.0.0.1`
 keeps the server off the local network and makes it print a usable URL; without it
 Python prints `http://[::]:8000/`, the IPv6 wildcard address, which browsers
 handle inconsistently. If the port is busy, either stop whatever holds it
@@ -51,7 +51,7 @@ Pushes to `main` publish automatically once GitHub Pages is enabled:
 
 1. In the repo: **Settings → Pages → Build and deployment**.
 2. Source: **Deploy from a branch**, Branch: **main**, Folder: **/ (root)**.
-3. Push — the site appears at <https://zocke07.github.io/>.
+3. Push. The site appears at <https://zocke07.github.io/>.
 
 The repository is named `<username>.github.io`, which makes this a GitHub Pages
 *user site* served from the domain root. All paths in the HTML are relative, so
