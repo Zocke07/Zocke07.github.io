@@ -413,34 +413,6 @@ a:hover { text-decoration: underline; }
 
 .card-body { font-size: 0.95rem; }
 
-/* Inline SVG figures in the case studies. Strokes use currentColor so they
-   track the theme; the accent is reserved for the element carrying meaning. */
-.diagram {
-  margin: 1.75rem 0 2rem;
-  max-width: 46rem;
-}
-.diagram svg {
-  width: 100%;
-  height: auto;
-  display: block;
-  overflow: visible;
-}
-.diagram figcaption {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-top: 0.75rem;
-  line-height: 1.5;
-}
-.diagram .d-label { font-size: 12px; fill: currentColor; }
-.diagram .d-muted { font-size: 11px; fill: currentColor; opacity: 0.6; }
-.diagram .d-accent { font-size: 11px; fill: var(--accent); font-weight: 600; }
-.diagram .d-bar { fill: currentColor; opacity: 0.22; }
-.diagram .d-bar-accent { fill: var(--accent); }
-.diagram .d-box { fill: var(--card-bg); stroke: currentColor; stroke-opacity: 0.25; }
-.diagram .d-box-accent { fill: var(--card-bg); stroke: var(--accent); stroke-width: 2; }
-.diagram .d-line { stroke: currentColor; stroke-opacity: 0.35; fill: none; }
-.diagram .d-flow { stroke: var(--accent); fill: none; }
-
 .entry-note {
   margin-top: 0.9rem;
   font-size: 0.85rem;

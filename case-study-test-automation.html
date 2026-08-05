@@ -21,7 +21,8 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2" />
   <style>
     /* Case-study–specific styles, built on the site's design tokens. */
     .case-hero { padding: 5rem 0 3rem; }
@@ -229,50 +230,6 @@
           understanding this contract and declaring the right resources, so my suites were
           parallel-safe by construction.
         </p>
-
-        <figure class="diagram">
-          <svg viewBox="0 0 720 310" role="img"
-               aria-label="Six test suites on a shared timeline. Four start together and run concurrently. Two that declare the same shared resource are serialized: the second waits for the first to release its lock before starting.">
-            <defs>
-              <marker id="lock-arrow" viewBox="0 0 10 10" refX="9" refY="5"
-                      markerWidth="5" markerHeight="5" orient="auto">
-                <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
-              </marker>
-            </defs>
-
-            <text class="d-label" x="104" y="38" text-anchor="end">Suite 1</text>
-            <rect class="d-bar" x="118" y="24" width="274" height="20" rx="4" />
-
-            <text class="d-label" x="104" y="76" text-anchor="end">Suite 2</text>
-            <rect class="d-bar" x="118" y="62" width="192" height="20" rx="4" />
-
-            <text class="d-label" x="104" y="114" text-anchor="end">Suite 3</text>
-            <rect class="d-bar" x="118" y="100" width="328" height="20" rx="4" />
-
-            <text class="d-label" x="104" y="152" text-anchor="end">Suite 4</text>
-            <rect class="d-bar-accent" x="118" y="138" width="220" height="20" rx="4" />
-
-            <text class="d-label" x="104" y="190" text-anchor="end">Suite 5</text>
-            <rect class="d-bar-accent" x="356" y="176" width="214" height="20" rx="4" />
-
-            <text class="d-label" x="104" y="228" text-anchor="end">Suite 6</text>
-            <rect class="d-bar" x="118" y="214" width="252" height="20" rx="4" />
-
-            <path class="d-flow" d="M338 148 L352 148 L352 180" marker-end="url(#lock-arrow)" />
-            <text class="d-accent" x="362" y="168">waits for the lock</text>
-
-            <line class="d-line" x1="118" y1="258" x2="700" y2="258" />
-            <text class="d-muted" x="118" y="276">start</text>
-            <text class="d-muted" x="700" y="276" text-anchor="end">time</text>
-
-            <rect class="d-bar-accent" x="118" y="292" width="16" height="10" rx="2" />
-            <text class="d-muted" x="142" y="301">both declare the same shared subsystem</text>
-          </svg>
-          <figcaption>
-            Only the suites that contend for the same subsystem are serialized. Everything
-            else starts together, which is what keeps the full run inside its overnight window.
-          </figcaption>
-        </figure>
 
         <h3>Flakiness treated as an engineering problem</h3>
         <p>

@@ -21,7 +21,8 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -61,11 +62,6 @@
           learning security, with hands-on industry experience in test automation, API
           testing, and technical program management at Taiwan Mobile and Sunbird Software.
         </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="case-study-test-automation.html">Read a case study</a>
-          <a class="btn" href="mailto:rivanwong@gmail.com">Email me</a>
-          <a class="btn" href="https://github.com/Zocke07" target="_blank" rel="noopener">GitHub</a>
-        </div>
         <img class="hero-portrait" src="assets/img/portrait.jpg" width="560" height="560"
              alt="Portrait of Rivan Wong" />
       </div>

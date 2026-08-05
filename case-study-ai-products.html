@@ -21,7 +21,8 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2" />
   <style>
     /* Case-study-specific styles, built on the site's design tokens. */
     .case-hero { padding: 5rem 0 3rem; }
@@ -283,57 +284,6 @@
           <li><b>End-to-end verification, by hand</b><span>The step I owned. A real browser against a real running instance, naming the exact target, the expected signal, and the pass criterion.</span></li>
           <li><b>Explicit sign-off, or a recorded decision not to</b><span>When we accepted a gap or skipped a pass, that call was written down with its reason rather than left implied.</span></li>
         </ol>
-        <figure class="diagram">
-          <svg viewBox="0 0 720 215" role="img"
-               aria-label="A change moves left to right through five gate steps: proposal and design, acceptance criteria, implementation checklist, hands-on verification, and sign-off. A defect that compiles cleanly passes the first three steps and is stopped at hands-on verification.">
-            <defs>
-              <marker id="gate-arrow" viewBox="0 0 10 10" refX="9" refY="5"
-                      markerWidth="5" markerHeight="5" orient="auto">
-                <path d="M0 0 L10 5 L0 10 z" fill="currentColor" opacity="0.45" />
-              </marker>
-            </defs>
-
-            <rect class="d-box" x="20" y="34" width="118" height="52" rx="6" />
-            <text class="d-muted" x="79" y="57" text-anchor="middle">Proposal</text>
-            <text class="d-muted" x="79" y="72" text-anchor="middle">&amp; design</text>
-
-            <rect class="d-box" x="160" y="34" width="118" height="52" rx="6" />
-            <text class="d-muted" x="219" y="57" text-anchor="middle">Acceptance</text>
-            <text class="d-muted" x="219" y="72" text-anchor="middle">criteria</text>
-
-            <rect class="d-box" x="300" y="34" width="118" height="52" rx="6" />
-            <text class="d-muted" x="359" y="57" text-anchor="middle">Implementation</text>
-            <text class="d-muted" x="359" y="72" text-anchor="middle">checklist</text>
-
-            <rect class="d-box-accent" x="440" y="34" width="118" height="52" rx="6" />
-            <text class="d-accent" x="499" y="57" text-anchor="middle">Hands-on</text>
-            <text class="d-accent" x="499" y="72" text-anchor="middle">verification</text>
-
-            <rect class="d-box" x="580" y="34" width="118" height="52" rx="6" />
-            <text class="d-muted" x="639" y="57" text-anchor="middle">Sign-off</text>
-            <text class="d-muted" x="639" y="72" text-anchor="middle">or recorded gap</text>
-
-            <line class="d-line" x1="138" y1="60" x2="156" y2="60" marker-end="url(#gate-arrow)" />
-            <line class="d-line" x1="278" y1="60" x2="296" y2="60" marker-end="url(#gate-arrow)" />
-            <line class="d-line" x1="418" y1="60" x2="436" y2="60" marker-end="url(#gate-arrow)" />
-            <line class="d-line" x1="558" y1="60" x2="576" y2="60" marker-end="url(#gate-arrow)" />
-
-            <text class="d-accent" x="499" y="24" text-anchor="middle">the step I owned</text>
-
-            <path class="d-line" d="M499 86 L499 132" stroke-dasharray="3 3" />
-            <line class="d-line" x1="20" y1="146" x2="480" y2="146" stroke-dasharray="5 4" />
-            <text class="d-muted" x="20" y="136">a defect that compiles cleanly and reads correctly</text>
-
-            <circle cx="499" cy="146" r="11" fill="none" stroke="var(--accent)" stroke-width="2" />
-            <path d="M494 141 L504 151 M504 141 L494 151" stroke="var(--accent)" stroke-width="2" fill="none" />
-            <text class="d-accent" x="499" y="180" text-anchor="middle">stopped here</text>
-            <text class="d-muted" x="499" y="196" text-anchor="middle">dropped formatting, truncated model output</text>
-          </svg>
-          <figcaption>
-            The first three steps are satisfied by code that looks right. Only running the
-            thing against a real instance separates that from code that works.
-          </figcaption>
-        </figure>
 
         <p>
           The fourth step is where the process earned its cost. Fixes that were believed complete
