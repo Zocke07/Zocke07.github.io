@@ -7,7 +7,8 @@ and served directly from the repository root on GitHub Pages.
 
 ```
 index.html                       # landing page, one <section> per CV area
-case-study-test-automation.html  # long-form case study linked from Experience/Projects
+case-study-test-automation.html  # long-form case studies, linked from Experience/Projects
+case-study-ai-products.html
 assets/
   css/style.css                  # design tokens (colors/spacing) + per-component sections
   js/main.js                     # theme toggle, reveal-on-scroll, tagline rotator, nav
