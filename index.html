@@ -46,7 +46,7 @@
   <main id="main">
     <!-- ===================== Hero ===================== -->
     <section id="top" class="hero">
-      <div class="container">
+      <div class="container hero-inner">
         <p class="hero-kicker">Taipei, Taiwan</p>
         <h1>Rivan Wong <span class="hero-cjk" lang="zh-Hant">黃家輝</span></h1>
         <p class="hero-tagline">Computer Science graduate student · <span id="rotator">QA &amp; Test Automation</span></p>
@@ -56,10 +56,12 @@
           testing, and technical program management at Taiwan Mobile and Sunbird Software.
         </p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="case-study-test-automation.html">Featured case study</a>
+          <a class="btn btn-primary" href="case-study-test-automation.html">Read a case study</a>
           <a class="btn" href="mailto:rivanwong@gmail.com">Email me</a>
           <a class="btn" href="https://github.com/Zocke07" target="_blank" rel="noopener">GitHub</a>
         </div>
+        <img class="hero-portrait" src="assets/img/portrait.jpg" width="560" height="560"
+             alt="Portrait of Rivan Wong" />
       </div>
     </section>
 
@@ -79,8 +81,8 @@
           <p class="entry-intro">
             My job sits between the code and the people: part technical program manager for a
             six-person remote team, part the person who tests the thing before anyone else has to
-            trust it. We build AI developer tools, including <em>the AI reviewer</em>, an internal VS Code
-            extension that turns the company's development standards into an in-editor AI reviewer.
+            trust it. We build internal AI developer tools, including a VS Code extension that
+            turns the company's development standards into an in-editor AI reviewer.
           </p>
           <ul class="entry-points">
             <li>Own pre-release verification for two internal AI products, running end-to-end testing that caught defects which compiled cleanly and looked correct in the diff, including silently dropped formatting and truncated model output.</li>
@@ -132,9 +134,9 @@
       <div class="container">
         <h2 class="section-title">Projects</h2>
         <div class="card-grid">
-          <article class="card card-featured">
+          <article class="card">
             <h3>How 730+ Tests Run at Once Without Stepping on Each Other</h3>
-            <p class="card-meta">Featured Case Study · Test Infrastructure</p>
+            <p class="card-meta">Case Study · Test Infrastructure</p>
             <p class="card-body">
               A look inside the quality platform behind my work at Sunbird: how hundreds of
               browser tests share one live server safely, why flakiness is an engineering

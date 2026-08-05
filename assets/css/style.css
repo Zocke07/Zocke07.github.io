@@ -270,6 +270,34 @@ a:hover { text-decoration: underline; }
 
 .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
 
+/* Text column plus a portrait that spans it. Children stay direct children of
+   .container so the staggered entrance animation above still applies. */
+.hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 3rem;
+  align-items: start;
+}
+.hero-inner > *:not(.hero-portrait) { grid-column: 1; }
+
+.hero-portrait {
+  grid-column: 2;
+  /* Spans well past the text rows so it centres against the whole column.
+     "1 / -1" would not work here: with no explicit rows it collapses to row 1.
+     Surplus rows are empty and row-gap is 0, so they add no height. */
+  grid-row: 1 / span 20;
+  align-self: center;
+  width: 12.5rem;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--card-bg);
+  box-shadow: var(--shadow-lift);
+  outline: 1px solid var(--border);
+  outline-offset: -1px;
+}
+
 .btn {
   display: inline-block;
   padding: 0.6rem 1.25rem;
@@ -384,12 +412,6 @@ a:hover { text-decoration: underline; }
 }
 
 .card-body { font-size: 0.95rem; }
-
-.card-featured {
-  grid-column: 1 / -1;
-  border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
-}
-.card-featured .card-body { max-width: 46rem; }
 
 .entry-note {
   margin-top: 0.9rem;
@@ -556,6 +578,17 @@ a:hover { text-decoration: underline; }
   .entry-head { flex-direction: column; gap: 0.15rem; }
   .section { padding: 3rem 0; }
   .hero { padding: 4rem 0 3rem; }
+
+  /* Portrait moves above the text and shrinks on narrow screens. */
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-inner > *:not(.hero-portrait) { grid-column: 1; }
+  .hero-portrait {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    width: 7rem;
+    margin-bottom: 1.25rem;
+  }
   .to-top { bottom: 1rem; right: 1rem; }
 }
 
