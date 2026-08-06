@@ -108,14 +108,14 @@
               <h3>自動化測試實習生（產學合作）</h3>
               <p class="entry-org">Sunbird Software Inc. 臺灣分公司 · 經由國立臺北科技大學軟體安全實驗室</p>
             </div>
-            <p class="entry-date">2023 – 2024 年 8 月</p>
+            <p class="entry-date">2023 年 7 月 – 2024 年 12 月</p>
           </div>
           <p class="entry-intro">
-            我為一套企業級資料中心基礎設施管理平台撰寫自動化測試。在那裡，數百組端對端測試會在夜間平行跑在同一台線上伺服器上，只要有一個測試不穩定，就可能讓整個團隊損失一個上午。這份工作最初是透過學校軟體安全實驗室的產學合作開始，後來延續為全職駐點實習；也是在這裡，我學到測試套件是需要長期維護的東西，而不是做完就結束的東西。
+            我為一套企業級資料中心基礎設施管理平台撰寫自動化測試。在那裡，數百組端對端測試會在夜間平行跑在同一台線上伺服器上，只要有一個測試不穩定，就可能讓整個團隊損失一個上午。這份產學合作我以學校軟體安全實驗室為據點參與了一年半，其中 2024 年 7 到 8 月以全職實習生身分進駐公司辦公室；也是在這裡，我學到測試套件是需要長期維護的東西，而不是做完就結束的東西。
           </p>
           <ul class="entry-points">
             <li>把 ticket 層級的需求規格轉成端對端測試套件，以共用函式庫中數千個可重用的關鍵字組合而成，並改用 REST API 建立測試狀態，取代緩慢的 UI 操作流程。</li>
-            <li>每一次合併都通過同一道關卡：自訂 lint 規則零警告、連續十次執行全數通過，接著再刻意限制網路頻寬多跑幾輪。</li>
+            <li>每一次合併都通過同一道關卡：自訂 lint 規則零警告、連續十次執行全數通過，接著再刻意限制網路頻寬多跑五次。</li>
             <li>撰寫能安全平行執行的測試：明確宣告每個套件會動到的共用子系統，讓數百組套件同時跑在同一台線上伺服器上而不互相干擾。</li>
             <li>全程參與團隊真實的開發節奏，包含 Scrum 會議、程式碼審查與發布期限。</li>
           </ul>
@@ -180,14 +180,15 @@
             <p class="entry-more"><a href="https://github.com/Zocke07/Sky-Scraper-Escape" target="_blank" rel="noopener">在 GitHub 上查看 →</a></p>
           </article>
           <article class="card">
-            <h3>自動化測試最佳實務</h3>
-            <p class="card-meta">畢業專題 · 研究</p>
+            <h3>Test Automation Best Practices: A Case Study Analysis</h3>
+            <p class="card-meta">畢業專題 · 產學合作研究</p>
             <p class="card-body">
-              我的畢業專題：研究自動化測試在軟體開發生命週期中實際的運作情形，把零散的網頁測試方法整理成可以直接採用的建議，涵蓋測試套件的設計、執行與長期維護。
+              我的畢業專題，和兩位隊友在 Sunbird 產學合作的第一線寫成。它記錄了一個商業自動化測試團隊實際的運作方式：動手寫程式之前，先以手動方式設計測試步驟並經產品經理確認；以 mob programming 進行實作；CI 關卡要跑十次正常網速加五次慢速節流；pull request 只有在公司工程師核准後才算完成。報告同時分析了團隊四年份的測試案例統計，解釋產出下滑的原因。由於實際程式碼受保密協議保護，展示品是我從零打造的：一個小型網頁應用程式加上 Robot Framework 測試套件，在一個可以公開的標的上重現同一條從需求到審查的流程。
             </p>
             <ul class="tags entry-tags">
-              <li>SDLC</li><li>測試策略</li><li>研究</li>
+              <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>研究</li>
             </ul>
+            <p class="entry-more"><a href="https://github.com/Zocke07/Automation-Demonstration" target="_blank" rel="noopener">在 GitHub 上查看展示 →</a></p>
           </article>
         </div>
       </div>

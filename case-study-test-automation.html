@@ -204,8 +204,16 @@
           acceptance-test-driven: each ticket-level requirement specification became an
           automated suite composed from a shared domain keyword library, provisioned its test
           state through a REST API facade instead of slow UI flows, and had to survive a merge
-          gate of static analysis with custom lint rules, ten consecutive green runs, and
+          gate of static analysis with custom lint rules, ten consecutive green runs, and five
           further passes under simulated slow-network throttling.
+        </p>
+        <p>
+          The steps came before the code. Each case was first written out as plain-text test
+          steps, walked through by hand against the product, and confirmed with the product
+          manager, so the automation encoded a procedure that was already known to be right.
+          Implementation often ran as mob programming, the whole team at one screen taking
+          turns at the keyboard, which is how coding conventions actually spread through a
+          team faster than a style guide can.
         </p>
         <ol class="layer-stack" role="list">
           <li class="layer"><b>Test suites: one per requirement ticket</b><span>Readable, spec-driven scenarios composed entirely from shared keywords</span></li>
@@ -248,8 +256,8 @@
         <h3>Quality gates for the tests themselves</h3>
         <p>
           Test code is held to production standards. Every new suite passes a custom static
-          analysis ruleset with zero warnings, runs green ten times consecutively, then again
-          repeatedly under network throttling before merge. In CI, results below 100% pass mark
+          analysis ruleset with zero warnings, runs green ten times consecutively, then five
+          more times under network throttling before merge. In CI, results below 100% pass mark
           the build. The gate is what makes a suite this size trustworthy: nobody debates
           whether a red build is "probably just flaky."
         </p>
