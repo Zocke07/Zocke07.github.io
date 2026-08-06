@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>在程式碼與人之間 · Rivan Wong</title>
+  <meta name="description" content="協調一支六人遠端團隊交付兩項 AI 產品，並掌管決定它們何時可以發布的驗證關卡。這是一份符合保密義務的案例研究。" />
+  <meta property="og:title" content="在程式碼與人之間" />
+  <meta property="og:description" content="為一支分散兩地的實習生團隊所開發的兩項 AI 產品，負責技術專案管理與發布前驗證。" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/case-study-ai-products.zh.html" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og-ai.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="案例研究：協調六位實習生開發兩項 AI 產品，並掌管驗證關卡。" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    document.documentElement.dataset.theme =
+      localStorage.getItem("theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  </script>
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-ai-products.html" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-ai-products.zh.html" />
+  <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  <style>
+    /* Case-study-specific styles, built on the site's design tokens. */
+    .case-hero { padding: 5rem 0 3rem; }
+    .case-hero .hero-blurb { max-width: 46rem; }
+    .case-hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; margin-bottom: 0.75rem; }
+
+    .role-line { color: var(--text); }
+    .role-line strong { color: var(--accent); }
+
+    .nda-note {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--bg-alt);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      margin-top: 1.5rem;
+      max-width: 46rem;
+    }
+
+    .facts {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+      gap: 0.4rem 2rem;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      max-width: 46rem;
+    }
+    .facts li { font-size: 0.95rem; color: var(--text-muted); padding-left: 1.15rem; position: relative; }
+    .facts li::before {
+      content: "";
+      position: absolute; left: 0; top: 0.6em;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .facts strong { color: var(--text); }
+
+    /* Constrain the children, not the container, so body text stays aligned
+       with the hero's left edge instead of centering at a narrower width. */
+    .prose > *:not(.section-title) { max-width: 46rem; }
+    .prose p { margin-bottom: 1rem; }
+    .prose h3 { margin: 2rem 0 0.6rem; font-size: 1.05rem; }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(20rem, 100%), 1fr));
+      gap: 1.25rem;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      list-style: none;
+      max-width: 46rem;
+    }
+    .product {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      padding: 1.25rem;
+      box-shadow: var(--shadow);
+    }
+    .product h3 { font-size: 1rem; margin: 0 0 0.15rem; }
+    .product .product-kind {
+      font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em;
+      color: var(--accent); font-weight: 600; margin-bottom: 0.6rem;
+    }
+    .product p { font-size: 0.92rem; color: var(--text-muted); margin-bottom: 0.6rem; }
+
+    .gate-flow {
+      display: grid;
+      gap: 0.5rem;
+      margin: 1.5rem 0 2rem;
+      max-width: 46rem;
+      list-style: none;
+      padding: 0;
+      counter-reset: step;
+    }
+    .gate-flow li {
+      counter-increment: step;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      padding: 0.7rem 1rem 0.7rem 3rem;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+    .gate-flow li::before {
+      content: counter(step);
+      position: absolute; left: 1rem; top: 0.7rem;
+      font-weight: 700; color: var(--accent);
+    }
+    .gate-flow b { display: block; font-size: 0.95rem; }
+    .gate-flow span { font-size: 0.85rem; color: var(--text-muted); }
+
+    .learnings { counter-reset: learning; list-style: none; padding: 0; max-width: 46rem; }
+    .learnings li {
+      counter-increment: learning;
+      position: relative;
+      padding-left: 2.6rem;
+      margin-bottom: 1.25rem;
+    }
+    .learnings li::before {
+      content: counter(learning, decimal-leading-zero);
+      position: absolute; left: 0; top: 0.1rem;
+      font-weight: 700; color: var(--accent);
+      font-size: 1.05rem;
+    }
+    .learnings b { display: block; margin-bottom: 0.15rem; }
+
+    @media (max-width: 640px) {
+      .case-hero { padding: 4rem 0 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="主要導覽">
+      <a class="nav-brand" href="index.zh.html">Rivan Wong</a>
+      <div class="nav-right">
+        <ul id="nav-menu" class="nav-menu">
+          <li><a href="index.zh.html#experience">工作經歷</a></li>
+          <li><a href="index.zh.html#projects">專案作品</a></li>
+          <li><a href="index.zh.html#education">學歷</a></li>
+          <li><a href="index.zh.html#skills">技能</a></li>
+          <li><a href="index.zh.html#contact">聯絡方式</a></li>
+        </ul>
+        <a class="lang-toggle" href="case-study-ai-products.html" hreflang="en" lang="en"
+           aria-label="Switch to English">EN</a>
+        <button class="theme-toggle" aria-label="切換配色主題">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="切換導覽選單">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ===================== Hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">案例研究 · 專案管理與品質保證 · Taiwan Mobile</p>
+        <h1>在程式碼與人之間</h1>
+        <p class="hero-blurb">
+          六位實習生，分處兩個國家，為一家大型電信公司開發兩項內部 AI 產品。這是一支新團隊，
+          沒有配置 QA 工程師，最需要自動化測試的那項產品也沒有測試套件；程式碼中更有相當比例
+          是在 AI 協助下寫成的，因此不管實際能不能運作，看起來都很合理。總得有人判斷每一項變更
+          到底什麼時候才真的算準備好，這就是我的工作。
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>我的角色：</strong>一半是遠端團隊的技術專案管理者，一半是在其他人必須信任這個
+          東西之前，先親自把它測過一遍的人。我負責協調工作，並掌管驗證關卡。產品本身則是整個
+          團隊的成果。
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>6 人</strong>的分散式團隊</li>
+          <li>完成 <strong>2</strong> 項內部 AI 產品</li>
+          <li>約兩個月內 <strong>~40</strong> 項規格化變更</li>
+          <li>這些變更共 <strong>300+</strong> 條書面驗收條件</li>
+          <li><strong>規格驅動</strong>的交付，先提案再寫程式</li>
+          <li>發布前<strong>親手驗證</strong>並簽核</li>
+        </ul>
+        <p class="nda-note">
+          <strong>關於保密：</strong>本文遵守我對雇主的保密義務。內部服務名稱、主機名稱、端點、
+          規範文件與商業邏輯皆已省略或改以概括方式描述，留下來的是在任何公司都不陌生的工程實務。
+          規模數字描述的是團隊整體產出，我個人的貢獻則會明確標示出來。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Problem ===================== -->
+    <section id="problem" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">問題</h2>
+        <p>
+          實習生團隊是一種很特別的工程單位。每個人能力都不差，但沒有人有脈絡，而能回答問題的人
+          又都忙著自己的工作。我們的團隊還分處兩地，這代表化解誤解最便宜的方式，也就是轉過頭去
+          直接問一句，根本用不上。
+        </p>
+        <p>
+          兩項產品都高度依賴大型語言模型，而且有很大一部分程式碼是在 AI 協助下寫出來的。這樣的
+          組合會帶來一種特定的失效模式：AI 寫出來的程式碼可以編譯、讀起來乾淨、也通過審查，卻會
+          以一種很有自信的姿態出錯，而且只有對上真實系統時才會現形。型別檢查抓不出一段悄悄弄丟
+          超連結的翻譯；程式碼審查也抓不出預覽窗格顯示的是一個結果、實際寫回正式紀錄的卻是
+          另一個。
+        </p>
+        <p>
+          所以真正的問題不在於把功能寫出來，而在於建立足夠的流程，讓六個人能朝同一個方向前進；
+          以及建立足夠的驗證，讓我們分得出「看起來寫完的程式碼」和「真的寫完的程式碼」。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The products ===================== -->
+    <section id="products" class="section">
+      <div class="container prose">
+        <h2 class="section-title">我們做了什麼</h2>
+        <p>
+          兩項產品，都是把語言模型包進一套工作流程裡，讓大家能在早就開著的工具中真的用起來。
+        </p>
+        <ul class="product-grid" role="list">
+          <li class="product">
+            <h3>AI 程式碼審查助理</h3>
+            <p class="product-kind">內部 IDE 擴充套件</p>
+            <p>
+              一套內建於編輯器的 AI 程式碼審查助理。它會讀取你正在處理的程式碼，收斂到值得檢查
+              的區段，依組織自訂的開發規範進行檢查，並直接在有問題的那幾行上回報結果。
+            </p>
+            <p>
+              底層架構：TypeScript 擴充套件主體與 React 側邊欄之間，以完整型別化的訊息橋接串接；
+              一層 provider 抽象讓模型供應商可以替換；以語法樹解析精簡送出的內容；掃描結果採用
+              經 schema 驗證的 JSON；並在工具送出的所有內容上加了一層淨化處理。
+            </p>
+          </li>
+          <li class="product">
+            <h3>在地化助理</h3>
+            <p class="product-kind">瀏覽器擴充套件</p>
+            <p>
+              一套嵌在內部內容編輯入口旁的翻譯流程。它會從頁面中讀出原始內容，以串流方式把譯文
+              送進預覽區，再透過頁面本身的編輯器，把核可後的版本寫回去。
+            </p>
+            <p>
+              困難的地方在邊界。一個完全不動到宿主應用程式的 Manifest V3 擴充套件，必須讓圖片與
+              行內標記在整趟翻譯來回之後仍然完好，並確保審核者核可的內容和實際寫回去的內容
+              一模一樣。
+            </p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== The gate ===================== -->
+    <section id="gate" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">驗證關卡</h2>
+        <p>
+          在地化工具沒有自動化測試套件，因此「完成」需要一個不取決於作者自我感覺的定義。我們
+          採用規格驅動的工作流程，而我把它落實成發布關卡。每一項變更都走同一套流程，最後一步
+          沒過就不發布。
+        </p>
+        <ol class="gate-flow" role="list">
+          <li><b>書面提案與設計</b><span>要解決什麼問題、採取什麼做法、有什麼取捨。在寫程式之前先取得共識，遠端審查者才不必從 diff 反推當初的意圖。</span></li>
+          <li><b>以明確 WHEN/THEN 形式撰寫的驗收條件</b><span>包含各種異常路徑：逾時、極端輸入、供應商失效，以及明訂的迴歸測試底線。</span></li>
+          <li><b>依編號任務清單進行實作</b><span>每一項都能單獨檢核，因此不必開進度會議，跨時區也看得到部分進度。</span></li>
+          <li><b>手動端對端驗證</b><span>這一步由我親自負責。用真實瀏覽器對上真正在運行的執行個體，明確寫出測試目標、預期訊號與通過標準。</span></li>
+          <li><b>明確簽核，或把不簽核的決定記錄下來</b><span>當我們選擇接受某個缺口或跳過某一輪驗證時，這個決定連同理由都會寫下來，而不是留給大家自行意會。</span></li>
+        </ol>
+
+        <p>
+          第四步就是這套流程值回票價的地方。一再有人以為某個修正已經完成，結果並沒有：某條在
+          隔離環境下運作正常的寫回路徑，一碰到真實編輯器就把超連結壓成純文字；一段較長的譯文
+          則在送到頁面之前，就被模型悄悄截斷了。這兩件事在 diff 裡都看不出來，但實際動手用，
+          一分鐘之內就一目了然。
+        </p>
+        <p>
+          在 IDE 擴充套件這邊，驗證的樣貌不太一樣，因為那裡做得出測試套件。團隊的解法要應付
+          三個真的很棘手的相依：即時的編輯器 API、真實的版本控制系統，以及不具確定性的模型。
+          做法是把測試放進真正的編輯器執行個體裡跑，在磁碟上建立用完即丟的儲存庫來實際執行
+          指令，並把模型換成 stub，讓結果具備確定性、執行起來也不花錢。審閱那套測試套件的過程，
+          是我今天對於如何測試「看似不可測之物」的認識的主要來源。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Coordination ===================== -->
+    <section id="coordination" class="section">
+      <div class="container prose">
+        <h2 class="section-title">讓六個人朝同一個方向</h2>
+        <p>
+          這份工作中屬於專案管理的那一半，主要是在模糊變成重工之前先把它消掉。用 Jira 追蹤
+          sprint 任務，讓現場工程師與遠端團隊共用同一份進度狀態。書面提案與設計這一步，則讓
+          意見分歧在還很便宜的時候就浮上檯面，也就是停留在文件裡，而不是等到有人已經朝錯的
+          方向做了一個星期之後。
+        </p>
+        <p>
+          我低估的一點，是這個角色有多大比例其實是在做翻譯，是人與人之間的那種翻譯。現場工程師
+          握有遠端團隊看不到的脈絡，而遠端團隊踩到的問題，又從來傳不到能替他們解套的人耳裡。
+          我所創造的價值有很大一部分，就是察覺到兩個人正各自很有把握地在講不同的事情。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">主要工程收穫</h2>
+        <ol class="learnings" role="list">
+          <li><b>AI 協助產出的程式碼，需要另一種審查方式。</b>它出錯時是很有自信的，而不是很明顯的。審查者的任務因此從「這段寫得好不好」轉為「它對上真實系統時，是不是真的做到它宣稱的事」，而這個問題只有實際跑過才答得出來。</li>
+          <li><b>先寫驗收條件，是成本最低的品質工具。</b>以明確的 WHEN/THEN 形式寫下條件，會逼著異常路徑在設計階段就攤開來，那時候處理它們只要一個句子，而不是一次發布。</li>
+          <li><b>關卡要能說不，才算數。</b>把我們接受缺口的那些時刻記錄下來，簽核才有意義，因為一個從來不會被保留的核可，本身不帶任何資訊。</li>
+          <li><b>分散式團隊為模糊付出的代價，是以天計，不是以分鐘計。</b>當那個原本能回答你問題的人正在睡覺時，事先把意圖寫下來就不叫官僚。</li>
+          <li><b>當發布前的最後一道關卡，會改變你讀程式碼的方式。</b>你不再問它是不是正確的，而是開始問自己要怎麼知道它是正確的，而後者才是更有用的問題。</li>
+        </ol>
+        <p class="entry-more"><a href="index.zh.html#experience">← 回到作品集</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong · 以純 HTML 與 CSS 打造，部署於 GitHub Pages。</p>
+    </div>
+  </footer>
+
+  <button class="to-top" aria-label="回到頁首">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

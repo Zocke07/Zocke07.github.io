@@ -178,6 +178,28 @@ a:hover { text-decoration: underline; }
 :root[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 :root[data-theme="dark"] .theme-toggle .icon-moon { display: none; }
 
+/* Language switch, sized to sit beside the theme toggle. Pill rather than
+   circle so a two-letter label ("EN") fits as comfortably as a single glyph. */
+.lang-toggle {
+  display: grid;
+  place-items: center;
+  min-width: 2.2rem;
+  height: 2.2rem;
+  padding: 0 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.lang-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
 .nav-toggle {
   display: none;
   flex-direction: column;

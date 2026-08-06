@@ -100,14 +100,18 @@ if (reducedMotion) {
 }
 
 // --- Hero tagline rotator ---
+// Phrases come from the element's data-phrases attribute so each language
+// version of the page supplies its own without touching this file.
 const rotator = document.getElementById("rotator");
-const phrases = [
-  "QA & Test Automation",
-  "Federated Learning Security",
-  "Technical Program Management",
-];
 
-if (rotator && !reducedMotion) {
+let phrases = [];
+try {
+  phrases = JSON.parse(rotator?.dataset.phrases ?? "[]");
+} catch {
+  phrases = [];
+}
+
+if (rotator && !reducedMotion && phrases.length > 1) {
   let i = 0;
   setInterval(() => {
     rotator.classList.add("swap");
