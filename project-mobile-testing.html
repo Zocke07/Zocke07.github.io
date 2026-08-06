@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>No Reset Button · Rivan Wong</title>
+  <meta name="description" content="Automating a stateful Android health app with no API and no test hooks: keyword-driven Appium tests, equivalence partitions, and cleanup that has to happen through the UI. Project notes." />
+  <meta property="og:title" content="No Reset Button" />
+  <meta property="og:description" content="Automating a stateful Android app with no API, no test hooks, and no way to put it back the way you found it except by hand." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/project-mobile-testing.html" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og-mobile.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Project notes: automating a stateful Android app that has no reset button." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    document.documentElement.dataset.theme =
+      localStorage.getItem("theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  </script>
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing.html" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/project-mobile-testing.zh.html" />
+  <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  <style>
+    /* Project notes: a lighter page than the case studies, same design tokens. */
+    .case-hero { padding: 5rem 0 3rem; }
+    .case-hero .hero-blurb { max-width: 46rem; }
+    .case-hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; margin-bottom: 0.75rem; }
+
+    .role-line { color: var(--text); }
+    .role-line strong { color: var(--accent); }
+
+    .source-note {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--bg-alt);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      margin-top: 1.5rem;
+      max-width: 46rem;
+    }
+
+    .facts {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+      gap: 0.4rem 2rem;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      max-width: 46rem;
+    }
+    .facts li { font-size: 0.95rem; color: var(--text-muted); padding-left: 1.15rem; position: relative; }
+    .facts li::before {
+      content: "";
+      position: absolute; left: 0; top: 0.6em;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .facts strong { color: var(--text); }
+
+    .prose > *:not(.section-title) { max-width: 46rem; }
+    .prose p { margin-bottom: 1rem; }
+    .prose h3 { margin: 2rem 0 0.6rem; font-size: 1.05rem; }
+
+    .prose code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.88em;
+      background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+      border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
+      border-radius: 5px;
+      padding: 0.08em 0.35em;
+      overflow-wrap: anywhere;
+    }
+
+    .snippet {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      margin: 1.5rem 0 0.6rem;
+      max-width: 46rem;
+      /* Long lines scroll inside the block instead of widening the page. */
+      overflow-x: auto;
+      padding: 1rem 1.1rem;
+    }
+    .snippet code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      white-space: pre;
+      display: block;
+      background: none; border: 0; padding: 0;
+    }
+    .snippet .cm { color: var(--text-muted); }
+    .snippet-caption { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; max-width: 46rem; }
+
+    .layer-stack {
+      display: grid;
+      gap: 0.5rem;
+      margin: 1.5rem 0 2rem;
+      max-width: 46rem;
+      list-style: none;
+      padding: 0;
+    }
+    .layer {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      padding: 0.7rem 1rem;
+      box-shadow: var(--shadow);
+    }
+    .layer b { display: block; font-size: 0.95rem; }
+    .layer span { font-size: 0.85rem; color: var(--text-muted); }
+
+    .learnings { counter-reset: learning; list-style: none; padding: 0; max-width: 46rem; }
+    .learnings li {
+      counter-increment: learning;
+      position: relative;
+      padding-left: 2.6rem;
+      margin-bottom: 1.25rem;
+    }
+    .learnings li::before {
+      content: counter(learning, decimal-leading-zero);
+      position: absolute; left: 0; top: 0.1rem;
+      font-weight: 700; color: var(--accent);
+      font-size: 1.05rem;
+    }
+    .learnings b { display: block; margin-bottom: 0.15rem; }
+
+    @media (max-width: 640px) {
+      .case-hero { padding: 4rem 0 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="Primary">
+      <a class="nav-brand" href="index.html">Rivan Wong</a>
+      <div class="nav-right">
+        <ul id="nav-menu" class="nav-menu">
+          <li><a href="index.html#experience">Experience</a></li>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="index.html#education">Education</a></li>
+          <li><a href="index.html#skills">Skills</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <a class="lang-toggle" href="project-mobile-testing.zh.html" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+           aria-label="切換至繁體中文">中文</a>
+        <button class="theme-toggle" aria-label="Switch color theme">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ===================== Hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">Project Notes · Mobile Test Automation · Course Project</p>
+        <h1>No Reset Button</h1>
+        <p class="hero-blurb">
+          Shorter notes than my case studies, on the project for a software testing and
+          verification course. Five of us automated a commercial Android health app with
+          Appium and Robot Framework. No source code, no API, no database, no test hooks,
+          and no way to put the app back the way we found it except by driving the UI back
+          through every change we made.
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>My part:</strong> the settings area, all seven of its files. Fifteen test
+          cases across report export, units, personal goals, daily routines, and custom
+          foods, plus the page keyword library underneath them.
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>15</strong> test cases in my area</li>
+          <li><strong>78</strong> page keywords, 71 written from scratch</li>
+          <li><strong>103</strong> test cases in the full team suite</li>
+          <li><strong>5</strong> people, four weeks</li>
+          <li><strong>Zero</strong> test hooks or APIs available</li>
+          <li><strong>1080 × 2400</strong>, the screen the gestures assume</li>
+        </ul>
+        <p class="source-note">
+          <strong>Scope and credit:</strong> the suite is a five-person team effort and my share
+          of it is about a sixth. What I claim here is the settings area, where I committed every
+          line of all seven files. Seven of the 78 keywords in my library are reused from a
+          teammate's, marked as such in the source. The shared retry primitives my keywords are
+          built on were written by others.
+          <a href="https://github.com/qwe8496516/Health2SyncProject" target="_blank" rel="noopener">The repository is public</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Problem ===================== -->
+    <section id="problem" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">The Problem</h2>
+        <p>
+          At work I had gotten used to setting up test state through a REST API and skipping the
+          interface entirely. Here there was no interface to skip to. The app under test was a
+          finished product on a phone. Every precondition had to be reached by tapping, and every
+          assertion had to be read off the screen.
+        </p>
+        <p>
+          That makes state the whole problem. A test that changes the blood glucose unit to
+          mmol/L leaves the app in mmol/L. The next test to read a glucose value sees the wrong
+          one, fails, and looks like a product bug. With no reset, test independence stops being
+          a property of the framework and becomes something each test has to pay for itself.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Structure ===================== -->
+    <section id="structure" class="section">
+      <div class="container prose">
+        <h2 class="section-title">How the Tests Are Built</h2>
+        <p>
+          Same shape as the keyword-driven suites I worked on professionally, scaled down to one
+          person and one feature area. A test case reads as a sentence and holds no locators.
+        </p>
+        <ol class="layer-stack" role="list">
+          <li class="layer"><b>Test suites: one per settings feature</b><span>Five files, fifteen cases. Suite setup launches the app and lands on the right screen; every case ends with a teardown that undoes it.</span></li>
+          <li class="layer"><b>Page keyword library: 78 keywords for the settings area</b><span>Every locator lives here and nowhere else, so a screen that gets redesigned is one file to fix.</span></li>
+          <li class="layer"><b>Variables file: the test data, named</b><span>Goal ranges and routine times as named constants, so a partition is a name rather than a number buried in a step.</span></li>
+          <li class="layer"><b>Shared primitives, written by the team</b><span>Retry-wrapped click and input keywords that poll until the element appears. My keywords call these rather than raw Appium.</span></li>
+        </ol>
+        <p>
+          The cleanup runs in <code>[Teardown]</code>, which Robot Framework runs whether the test
+          passed or failed. Some are one line, putting a unit back. The goals test needed a
+          keyword of its own to restore two fields to the values they started at.
+        </p>
+        <div class="snippet">
+          <code><span class="cm"># Change the units, prove they changed, then change them back.</span>
+Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
+    Click "Units" Option
+    Modify Blood Glucose Unit    mmol/L
+    Modify Weight Unit           lb
+    Verify Blood Glucose Unit Is Changed    mmol/L
+    Verify Weight Unit Is Changed           lb
+    [Teardown]    Run Keywords    Modify Blood Glucose Unit    mg/dL
+    ...                    AND    Modify Weight Unit           kg</code>
+        </div>
+        <p class="snippet-caption">
+          The teardown is half the test. That is what no reset button costs you.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Test design ===================== -->
+    <section id="design" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">Choosing What to Test</h2>
+        <p>
+          The course was about test design rather than tooling, and this is the part of the
+          project I would defend in an interview.
+        </p>
+
+        <h3>Partitions, with the values chosen at the boundary</h3>
+        <p>
+          The blood glucose goal takes a low and a high. That input has three classes worth
+          separating: a valid range, the two ends equal, and the low above the high. There is one
+          test for each, and the values sit right on the edge rather than safely inside it: 99 and
+          100 for valid, 100 and 100 for equal, 101 and 100 for inverted. A rule that is off by
+          one gets caught by numbers that are one apart.
+        </p>
+
+        <h3>The invalid cases assert on the refusal</h3>
+        <p>
+          Rejecting bad input is a feature, so the invalid cases are not written as "and nothing
+          happens". They assert the exact warning text the app shows, that the high end should be
+          higher than the low end, and then dismiss it. A silent failure to save would pass a
+          weaker test and fails these.
+        </p>
+
+        <h3>Constraints that span more than one field</h3>
+        <p>
+          Daily routines are five times of day that have to stay in order, so lunch must fall
+          between breakfast and dinner. That is not a rule any single field can validate, and it
+          is the kind of thing a suite organized strictly per input misses. Three of those four
+          cases push all five times to the same boundary, midnight, midday, and 23:59, and check
+          each one displays back correctly. The fourth sets a combination that breaks the ordering
+          and checks for the specific complaint it should produce.
+        </p>
+
+        <h3>Preconditions written down instead of assumed</h3>
+        <p>
+          The report export tests only pass under conditions the test cannot create: a free
+          account has three exports, and there has to be data in the period selected. Rather than
+          let that look like flakiness later, the suite documents it at the top. An honest
+          precondition is worth more than a test that fails mysteriously once a quarter.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Limits ===================== -->
+    <section id="limits" class="section">
+      <div class="container prose">
+        <h2 class="section-title">What It Cannot Do</h2>
+        <p>
+          These notes would be dishonest without this section, and the repository is public
+          anyway.
+        </p>
+
+        <h3>Two gestures are pinned to one screen size</h3>
+        <p>
+          Scrolling to the bottom of a page, and nudging a time slider by an hour, are done by
+          swiping between hard-coded pixel coordinates measured on a 1080 by 2400 screen. On any
+          other device they land somewhere else. I wrote the resolution into a comment above them,
+          which documents the problem without solving it.
+        </p>
+
+        <h3>Cleanup through the UI is only as reliable as the UI</h3>
+        <p>
+          A teardown that taps its way back works when the app is where the teardown expects.
+          If a test fails halfway through a dialog, the teardown starts from the wrong screen, and
+          the mess is inherited by whatever runs next. A real reset hook fixes this and nothing
+          else does.
+        </p>
+
+        <h3>Nothing runs on its own</h3>
+        <p>
+          There is no CI, no scheduled run, and no reporting beyond what Robot Framework writes
+          locally. A suite nobody runs is documentation, and this one is closer to documentation
+          than to a safety net.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Takeaways ===================== -->
+    <section id="takeaways" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">What I Took From It</h2>
+        <ol class="learnings" role="list">
+          <li><b>Test independence is bought, not given.</b> With an API to provision state I never had to think about who cleaned up. Without one, cleanup is a design decision in every single test, and it is the first thing to break.</li>
+          <li><b>Naming the partition is most of the work.</b> A constant called <code>BLOOD_GLUCOSE_GOAL_LOW_HIGHER_THAN_HIGH</code> tells the next reader what the case is for, which a pair of numbers in a step never does.</li>
+          <li><b>Write down what the test needs from the world.</b> The export quota was going to bite somebody eventually. One sentence at the top of the suite turns a future mystery failure into a known constraint.</li>
+        </ol>
+        <p class="entry-more">
+          <a href="https://github.com/qwe8496516/Health2SyncProject" target="_blank" rel="noopener">View the source on GitHub →</a>
+        </p>
+        <p class="entry-more"><a href="index.html#projects">← Back to portfolio</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong · Built with plain HTML &amp; CSS, hosted on GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <button class="to-top" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

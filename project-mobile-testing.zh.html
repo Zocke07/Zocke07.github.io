@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>沒有重置鍵 · Rivan Wong</title>
+  <meta name="description" content="替一款有狀態、沒有 API 也沒有測試掛鉤的 Android 健康管理 App 做自動化測試：以關鍵字驅動的 Appium 測試、等價分割，以及只能靠 UI 完成的環境還原。專案筆記。" />
+  <meta property="og:title" content="沒有重置鍵" />
+  <meta property="og:description" content="替一款有狀態的 Android App 做自動化測試：沒有 API、沒有測試掛鉤，也沒有任何方法能把它還原成原本的樣子，只能一步一步點回去。" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/project-mobile-testing.zh.html" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og-mobile.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="專案筆記：替一款沒有重置鍵的有狀態 Android App 做自動化測試。" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    document.documentElement.dataset.theme =
+      localStorage.getItem("theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  </script>
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing.html" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/project-mobile-testing.zh.html" />
+  <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  <style>
+    /* Project notes: a lighter page than the case studies, same design tokens. */
+    .case-hero { padding: 5rem 0 3rem; }
+    .case-hero .hero-blurb { max-width: 46rem; }
+    .case-hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; margin-bottom: 0.75rem; }
+
+    .role-line { color: var(--text); }
+    .role-line strong { color: var(--accent); }
+
+    .source-note {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--bg-alt);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      margin-top: 1.5rem;
+      max-width: 46rem;
+    }
+
+    .facts {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+      gap: 0.4rem 2rem;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      max-width: 46rem;
+    }
+    .facts li { font-size: 0.95rem; color: var(--text-muted); padding-left: 1.15rem; position: relative; }
+    .facts li::before {
+      content: "";
+      position: absolute; left: 0; top: 0.6em;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .facts strong { color: var(--text); }
+
+    .prose > *:not(.section-title) { max-width: 46rem; }
+    .prose p { margin-bottom: 1rem; }
+    .prose h3 { margin: 2rem 0 0.6rem; font-size: 1.05rem; }
+
+    .prose code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.88em;
+      background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+      border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
+      border-radius: 5px;
+      padding: 0.08em 0.35em;
+      overflow-wrap: anywhere;
+    }
+
+    .snippet {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      margin: 1.5rem 0 0.6rem;
+      max-width: 46rem;
+      /* Long lines scroll inside the block instead of widening the page. */
+      overflow-x: auto;
+      padding: 1rem 1.1rem;
+    }
+    .snippet code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      white-space: pre;
+      display: block;
+      background: none; border: 0; padding: 0;
+    }
+    .snippet .cm { color: var(--text-muted); }
+    .snippet-caption { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; max-width: 46rem; }
+
+    .layer-stack {
+      display: grid;
+      gap: 0.5rem;
+      margin: 1.5rem 0 2rem;
+      max-width: 46rem;
+      list-style: none;
+      padding: 0;
+    }
+    .layer {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      padding: 0.7rem 1rem;
+      box-shadow: var(--shadow);
+    }
+    .layer b { display: block; font-size: 0.95rem; }
+    .layer span { font-size: 0.85rem; color: var(--text-muted); }
+
+    .learnings { counter-reset: learning; list-style: none; padding: 0; max-width: 46rem; }
+    .learnings li {
+      counter-increment: learning;
+      position: relative;
+      padding-left: 2.6rem;
+      margin-bottom: 1.25rem;
+    }
+    .learnings li::before {
+      content: counter(learning, decimal-leading-zero);
+      position: absolute; left: 0; top: 0.1rem;
+      font-weight: 700; color: var(--accent);
+      font-size: 1.05rem;
+    }
+    .learnings b { display: block; margin-bottom: 0.15rem; }
+
+    @media (max-width: 640px) {
+      .case-hero { padding: 4rem 0 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="主要導覽">
+      <a class="nav-brand" href="index.zh.html">Rivan Wong</a>
+      <div class="nav-right">
+        <ul id="nav-menu" class="nav-menu">
+          <li><a href="index.zh.html#experience">工作經歷</a></li>
+          <li><a href="index.zh.html#projects">專案</a></li>
+          <li><a href="index.zh.html#education">學歷</a></li>
+          <li><a href="index.zh.html#skills">技能</a></li>
+          <li><a href="index.zh.html#contact">聯絡方式</a></li>
+        </ul>
+        <a class="lang-toggle" href="project-mobile-testing.html" hreflang="en" lang="en"
+           aria-label="Switch to English">EN</a>
+        <button class="theme-toggle" aria-label="切換配色主題">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="切換導覽選單">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ===================== Hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">專案筆記 · 行動端自動化測試 · 課程專題</p>
+        <h1>沒有重置鍵</h1>
+        <p class="hero-blurb">
+          比我的案例研究短一些的筆記，寫的是軟體測試與驗證課程的專題。我們五個人用 Appium 與 Robot Framework，替一款商用的 Android 健康管理 App 做自動化測試。沒有原始碼、沒有 API、沒有資料庫，也沒有任何測試掛鉤；想把 App 還原成原本的樣子，只能沿著 UI 把改過的每一步再點回去。
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>我負責的部分：</strong>設定頁這一塊，全部七個檔案。涵蓋報表匯出、單位、個人目標、日常作息與自訂食物，共十五個測試案例，以及支撐它們的頁面關鍵字庫。
+        </p>
+        <ul class="facts" role="list">
+          <li>我負責的區塊共 <strong>15</strong> 個測試案例</li>
+          <li><strong>78</strong> 個頁面關鍵字，其中 71 個從零寫起</li>
+          <li>團隊完整套件共 <strong>103</strong> 個測試案例</li>
+          <li><strong>5</strong> 個人，四個星期</li>
+          <li>可用的測試掛鉤與 API 為 <strong>零</strong></li>
+          <li><strong>1080 × 2400</strong>，手勢座標假設的螢幕尺寸</li>
+        </ul>
+        <p class="source-note">
+          <strong>範圍與歸屬：</strong>這套測試是五個人共同完成的，我的份額大約占六分之一。這篇談的是設定頁這一塊，那七個檔案的每一行都由我提交。我那個關鍵字庫裡的 78 個關鍵字中，有 7 個沿用自隊友的版本，原始碼中也有註明。我的關鍵字所依賴的共用重試機制，則是其他人寫的。
+          <a href="https://github.com/qwe8496516/Health2SyncProject" target="_blank" rel="noopener">原始碼是公開的</a>。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Problem ===================== -->
+    <section id="problem" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">問題</h2>
+        <p>
+          在公司我已經很習慣透過 REST API 建立測試狀態，直接跳過介面。這裡沒有可以跳過去的介面：受測物就是手機上一個已經完成的產品。每一個前置條件都得靠點擊一步步到達，每一個斷言也都得從畫面上讀回來。
+        </p>
+        <p>
+          於是「狀態」就成了全部的問題。一個把血糖單位改成 mmol/L 的測試，會讓 App 就停在 mmol/L。下一個要讀血糖值的測試看到的是錯的單位，於是失敗，而且看起來像產品的缺陷。沒有重置機制，測試獨立性就不再是框架附贈的性質，而是每個測試都得自己付錢買的東西。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Structure ===================== -->
+    <section id="structure" class="section">
+      <div class="container prose">
+        <h2 class="section-title">測試怎麼組起來</h2>
+        <p>
+          結構和我在職場上做過的關鍵字驅動測試套件一樣，只是縮小到一個人、一個功能區塊。一個測試案例讀起來就像一句話，裡面不會出現任何元素定位字串。
+        </p>
+        <ol class="layer-stack" role="list">
+          <li class="layer"><b>測試套件：每個設定功能一組</b><span>五個檔案、十五個案例。Suite setup 負責啟動 App 並停在正確的畫面；每個案例最後都有一段 teardown 把動作復原。</span></li>
+          <li class="layer"><b>頁面關鍵字庫：設定頁專用的 78 個關鍵字</b><span>所有元素定位都只寫在這裡，所以某個畫面改版時，只需要修一個檔案。</span></li>
+          <li class="layer"><b>變數檔：把測試資料命名</b><span>目標範圍與作息時間都寫成具名常數，讓一個分割區間變成一個名字，而不是埋在步驟裡的一個數字。</span></li>
+          <li class="layer"><b>共用底層關鍵字，由團隊撰寫</b><span>包了重試機制的點擊與輸入關鍵字，會反覆輪詢直到元素出現。我的關鍵字呼叫的是這一層，而不是直接呼叫 Appium。</span></li>
+        </ol>
+        <p>
+          收尾的動作寫在 <code>[Teardown]</code> 裡，不論測試通過或失敗，Robot Framework 都會執行。有些只有一行，把單位改回去而已；個人目標那組則需要一個專屬的關鍵字，把兩個欄位還原成一開始的數值。
+        </p>
+        <div class="snippet">
+          <code><span class="cm"># 改掉單位、證明它真的改了，然後再改回來。</span>
+Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
+    Click "Units" Option
+    Modify Blood Glucose Unit    mmol/L
+    Modify Weight Unit           lb
+    Verify Blood Glucose Unit Is Changed    mmol/L
+    Verify Weight Unit Is Changed           lb
+    [Teardown]    Run Keywords    Modify Blood Glucose Unit    mg/dL
+    ...                    AND    Modify Weight Unit           kg</code>
+        </div>
+        <p class="snippet-caption">
+          teardown 幾乎占了整個測試的一半。這就是「沒有重置鍵」要付出的代價。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Test design ===================== -->
+    <section id="design" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">決定要測什麼</h2>
+        <p>
+          這門課談的是測試設計而不是工具，而這也是整個專題裡，我最願意在面試中拿出來討論的部分。
+        </p>
+
+        <h3>等價分割，而且取值落在邊界上</h3>
+        <p>
+          血糖目標要填一個下限和一個上限。這個輸入有三個值得分開處理的類別：有效區間、兩端相等，以及下限大於上限。每一類各有一個測試，而且取值刻意壓在邊界上，而不是安穩地落在中間：有效是 99 與 100、相等是 100 與 100、顛倒是 101 與 100。只要規則差了一，就會被只差一的數字抓出來。
+        </p>
+
+        <h3>無效案例要驗證的是「被拒絕」這件事</h3>
+        <p>
+          「拒絕錯誤輸入」本身就是一項功能，所以那些無效案例不會只寫成「然後什麼事都沒發生」。它們會斷言 App 實際跳出的警告文字，也就是上限必須高於下限，接著再把對話框關掉。如果 App 只是默默沒存檔，比較寬鬆的測試會放它過關，但這些案例會失敗。
+        </p>
+
+        <h3>跨越多個欄位的限制條件</h3>
+        <p>
+          日常作息是一天當中的五個時間點，彼此必須維持先後順序，所以午餐一定要落在早餐和晚餐之間。這不是任何單一欄位自己能驗證的規則，也正是嚴格「一個輸入一組測試」的套件最容易漏掉的東西。那四個案例裡有三個把五個時間全部推到同一個邊界值，也就是午夜、正午與 23:59，再逐一確認畫面顯示正確。第四個則刻意設定一組會打破順序的組合，確認它確實跳出該跳的那句警告。
+        </p>
+
+        <h3>前置條件用寫的，不用猜的</h3>
+        <p>
+          報表匯出那組測試，只有在測試本身無法製造的條件下才會通過：免費帳號只能匯出三次，而且所選的期間內必須要有資料。與其讓這件事日後被誤認成測試不穩定，套件直接把它寫在檔案開頭。一個誠實的前置條件，價值遠高於一個每季莫名其妙失敗一次的測試。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Limits ===================== -->
+    <section id="limits" class="section">
+      <div class="container prose">
+        <h2 class="section-title">它做不到的事</h2>
+        <p>
+          少了這一節，這篇筆記就不誠實了；何況原始碼本來就是公開的。
+        </p>
+
+        <h3>有兩個手勢被綁死在單一螢幕尺寸上</h3>
+        <p>
+          「捲到頁面底部」和「把時間滑桿往前推一小時」這兩件事，都是在寫死的像素座標之間滑動完成的，而那些座標是在 1080 乘 2400 的螢幕上量出來的。換到任何其他裝置，它們就會滑到別的地方。我把解析度寫成註解放在上面，這只是把問題記錄下來，並沒有解決它。
+        </p>
+
+        <h3>靠 UI 收尾，可靠度就只等於 UI 的可靠度</h3>
+        <p>
+          靠一路點回去的 teardown，前提是 App 停在 teardown 預期的位置。如果測試是在某個對話框中途失敗的，teardown 就會從錯誤的畫面開始，留下的爛攤子則由下一個執行的測試承接。真正能解決這件事的只有一個真正的重置介面，沒有別的辦法。
+        </p>
+
+        <h3>沒有任何東西會自己跑</h3>
+        <p>
+          沒有 CI、沒有排程執行，除了 Robot Framework 在本機產出的報表之外也沒有任何回報機制。沒有人在跑的測試套件其實是文件，而這一套目前比較接近文件，而不是一張安全網。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Takeaways ===================== -->
+    <section id="takeaways" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">我從中學到的事</h2>
+        <ol class="learnings" role="list">
+          <li><b>測試獨立性是買來的，不是天生就有的。</b>有 API 可以建立狀態時，我從來不需要想「誰負責收尾」。沒有 API 的時候，收尾就變成每一個測試都要做的設計決策，而且它會是最先壞掉的東西。</li>
+          <li><b>替分割區間命名，就完成了大半的工作。</b>一個叫做 <code>BLOOD_GLUCOSE_GOAL_LOW_HIGHER_THAN_HIGH</code> 的常數，會直接告訴下一個讀到它的人這個案例在測什麼；直接寫在步驟裡的兩個數字永遠做不到這件事。</li>
+          <li><b>把測試對外界的要求寫下來。</b>匯出次數的限制遲早會咬到某個人。在套件開頭寫上一句話，就能把一次未來的神祕失敗，變成一項已知的限制。</li>
+        </ol>
+        <p class="entry-more">
+          <a href="https://github.com/qwe8496516/Health2SyncProject" target="_blank" rel="noopener">在 GitHub 上查看原始碼 →</a>
+        </p>
+        <p class="entry-more"><a href="index.zh.html#projects">← 返回作品集</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong · 以純 HTML 與 CSS 打造，部署於 GitHub Pages。</p>
+    </div>
+  </footer>
+
+  <button class="to-top" aria-label="回到頁首">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
