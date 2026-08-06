@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Menu Is Just Another Level · Rivan Wong</title>
+  <meta name="description" content="A C++ game built on a teaching framework that allows exactly three states, and the level base class that let seven levels and the menu share one interface. A case study in object-oriented design." />
+  <meta property="og:title" content="The Menu Is Just Another Level" />
+  <meta property="og:description" content="Seven levels, one interface, and what a student game taught me about designing for the change you cannot see yet." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/case-study-sky-scraper-escape.html" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og-sky.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Case study: the menu is just another level, on object-oriented design in a C++ game." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    document.documentElement.dataset.theme =
+      localStorage.getItem("theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  </script>
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-sky-scraper-escape.html" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-sky-scraper-escape.zh.html" />
+  <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  <style>
+    /* Case-study-specific styles, built on the site's design tokens. */
+    .case-hero { padding: 5rem 0 3rem; }
+    /* One shared measure across hero and body prose. */
+    .case-hero .hero-blurb { max-width: 46rem; }
+    .case-hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; margin-bottom: 0.75rem; }
+
+    .role-line { color: var(--text); }
+    .role-line strong { color: var(--accent); }
+
+    .source-note {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--bg-alt);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      margin-top: 1.5rem;
+      max-width: 46rem;
+    }
+
+    .facts {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+      gap: 0.4rem 2rem;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      max-width: 46rem;
+    }
+    .facts li { font-size: 0.95rem; color: var(--text-muted); padding-left: 1.15rem; position: relative; }
+    .facts li::before {
+      content: "";
+      position: absolute; left: 0; top: 0.6em;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .facts strong { color: var(--text); }
+
+    /* Cap line length for readability without narrowing the container,
+       so body text lines up with the hero and the home page. */
+    .prose > *:not(.section-title) { max-width: 46rem; }
+    .prose p { margin-bottom: 1rem; }
+    .prose h3 { margin: 2rem 0 0.6rem; font-size: 1.05rem; }
+
+    /* First page on the site to show identifiers, so code styling lives here. */
+    .prose code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.88em;
+      background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+      border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
+      border-radius: 5px;
+      padding: 0.08em 0.35em;
+      overflow-wrap: anywhere;
+    }
+
+    .snippet {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      margin: 1.5rem 0 0.6rem;
+      max-width: 46rem;
+      /* Long lines scroll inside the block instead of widening the page. */
+      overflow-x: auto;
+      padding: 1rem 1.1rem;
+    }
+    .snippet code {
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.65;
+      white-space: pre;
+      display: block;
+      background: none; border: 0; padding: 0;
+    }
+    .snippet .cm { color: var(--text-muted); }
+    .snippet-caption { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; max-width: 46rem; }
+
+    .levels {
+      display: grid;
+      gap: 0.5rem;
+      margin: 1.5rem 0 2rem;
+      max-width: 46rem;
+      list-style: none;
+      padding: 0;
+      counter-reset: lvl;
+    }
+    .levels li {
+      counter-increment: lvl;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      padding: 0.7rem 1rem 0.7rem 3rem;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+    .levels li::before {
+      content: counter(lvl);
+      position: absolute; left: 1rem; top: 0.7rem;
+      font-weight: 700; color: var(--accent);
+    }
+    .levels b { display: block; font-size: 0.95rem; }
+    .levels span { font-size: 0.85rem; color: var(--text-muted); }
+
+    .learnings { counter-reset: learning; list-style: none; padding: 0; max-width: 46rem; }
+    .learnings li {
+      counter-increment: learning;
+      position: relative;
+      padding-left: 2.6rem;
+      margin-bottom: 1.25rem;
+    }
+    .learnings li::before {
+      content: counter(learning, decimal-leading-zero);
+      position: absolute; left: 0; top: 0.1rem;
+      font-weight: 700; color: var(--accent);
+      font-size: 1.05rem;
+    }
+    .learnings b { display: block; margin-bottom: 0.15rem; }
+
+    @media (max-width: 640px) {
+      .case-hero { padding: 4rem 0 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="Primary">
+      <a class="nav-brand" href="index.html">Rivan Wong</a>
+      <div class="nav-right">
+        <ul id="nav-menu" class="nav-menu">
+          <li><a href="index.html#experience">Experience</a></li>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="index.html#education">Education</a></li>
+          <li><a href="index.html#skills">Skills</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <a class="lang-toggle" href="case-study-sky-scraper-escape.zh.html" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+           aria-label="切換至繁體中文">中文</a>
+        <button class="theme-toggle" aria-label="Switch color theme">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ===================== Case study hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">Case Study · C++ &amp; Object-Oriented Design · University Project</p>
+        <h1>The Menu Is Just Another Level</h1>
+        <p class="hero-blurb">
+          The assignment was a game with seven levels, each one different. The teaching framework
+          underneath it allowed exactly three states, forever, by design. Reconciling those two
+          numbers turned out to be the entire project, and the answer we arrived at was a base
+          class that made every level and the menu screens into the same kind of object.
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>My role:</strong> I wrote most of the team's game code, including the level base
+          class, the player, the menu system, and levels one, five, and six. My teammate wrote
+          levels two, three, four, and seven and the obstacle-spacing algorithm. This is a
+          university project, so unlike my other case studies I can show you the code.
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>7</strong> levels behind one interface</li>
+          <li><strong>2,237</strong> lines of C++ we wrote ourselves</li>
+          <li><strong>76%</strong> of them written by me</li>
+          <li><strong>17</strong> merged pull requests</li>
+          <li><strong>3</strong> months, March to June 2024</li>
+          <li><strong>1</strong> pointer in the main loop</li>
+        </ul>
+        <p class="source-note">
+          <strong>Where the numbers come from:</strong> this was a two-person project, so I checked
+          my own claims against <code>git blame</code> rather than memory. The counts cover
+          <code>Source/Game</code>, the directory holding the code we wrote, with the framework's
+          imported template files excluded from my share. Everything under <code>Source/Library</code>
+          and <code>Source/Core</code> is the teaching framework and is not ours.
+          <a href="https://github.com/Zocke07/Sky-Scraper-Escape" target="_blank" rel="noopener">The repository is public</a>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Problem ===================== -->
+    <section id="problem" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">The Problem</h2>
+        <p>
+          The course supplied a Windows game framework written for teaching. It gives you a
+          fixed-size table of three game states, an init screen, a run screen, and a game-over
+          screen, and an abstract <code>CGameState</code> with eleven virtual methods on it:
+          <code>OnMove</code>, <code>OnShow</code>, <code>OnKeyDown</code>, and the rest of the
+          input handlers. The framework's own loop calls those methods on whichever state is
+          current. You cannot add a fourth state. The table is declared as
+          <code>CGameState *gameStateTable[3]</code> and the framework says so in a comment.
+        </p>
+        <p>
+          Seven levels do not fit into three states. The obvious move, the one I started with, is
+          to put the levels inside the run state and branch on a level number. That works for two
+          levels. By level four you are writing the same <code>switch</code> in eleven different
+          event handlers, every new level means touching all of them, and the run state has become
+          a file that knows every rule in the game.
+        </p>
+        <p>
+          What made it worse was that we did not know what the later levels would need. Level five
+          hides its obstacles on a timer. Level six moves them vertically. Level seven inverts
+          gravity. None of that was designed up front. Whatever we built had to absorb mechanics
+          we had not thought of yet without the run state growing a branch every time.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The design ===================== -->
+    <section id="design" class="section">
+      <div class="container prose">
+        <h2 class="section-title">The Design</h2>
+        <p>
+          The framework was already doing the thing we needed, one layer up. It holds a pointer to
+          the current state and forwards events to it, and it never asks which state that is. So we
+          copied the idea down a level: a base class, <code>levelInit</code>, declaring the same
+          methods the framework's <code>CGameState</code> declares. The comment I left above them
+          is still there, and it is the whole design in three words: <em>imitates mygame_run
+          functions</em>.
+        </p>
+        <p>
+          Once every level implemented that interface, the run state stopped being a dispatcher and
+          became a holder. It owns one vector of base-class pointers and one pointer to the current
+          element.
+        </p>
+        <div class="snippet">
+          <code><span class="cm">// mygame.h: every screen in the game, held as the same type</span>
+std::vector&lt;levels::levelInit*&gt; allLevels = {
+    &amp;theMainMenu, &amp;theLevel1, &amp;theLevel2, &amp;theLevel3,
+    &amp;theLevel4,   &amp;theLevel5, &amp;theLevel6, &amp;theLevel7
+};
+levels::levelInit* current = allLevels[currentLevel];
+
+<span class="cm">// mygame_run.cpp: the framework's events go straight through</span>
+void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+    current-&gt;OnKeyDown(nChar, nRepCnt, nFlags);
+}</code>
+        </div>
+        <p class="snippet-caption">
+          Seven of the run state's eleven methods are exactly this: one line, forwarding, no
+          branching.
+        </p>
+        <p>
+          The first element of that vector is the level-select screen. It is not a level, but it
+          derives from the same base class, so it sits in the same array and is reached through the
+          same pointer. That was not cleverness for its own sake. The menu needs a background, a
+          keyboard handler, and a draw call, which is exactly what a level needs, and giving it a
+          different shape would have meant a special case in the run state for the one screen that
+          is not a level.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The base class ===================== -->
+    <section id="base-class" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">What the Base Class Owns</h2>
+        <p>
+          An interface alone would not have paid for itself. The base class also absorbed
+          everything the seven levels genuinely share, so a new level file could be short.
+        </p>
+
+        <h3>The parts every level would otherwise rewrite</h3>
+        <p>
+          It holds the plane, the background, the explosion sprite, and the in-game menus, and it
+          implements the behaviour that goes with them: applying the plane's movement each frame,
+          drawing the background and the plane and the wreckage, and building the heads-up display
+          text. A level that wants extra readouts overrides <code>getText</code> and appends to
+          what the base class returned, which is how level five shows its countdown and level seven
+          shows which way gravity is currently pointing.
+        </p>
+
+        <h3>The pause and game-over state machine</h3>
+        <p>
+          The single largest thing the base class took over is the menu logic: what the escape key
+          does, what happens when you crash, what happens when you finish, and which of the pause,
+          game-over, and congratulations pop-ups is on screen. That is sixty-five lines of nested
+          conditionals in a single method, written once, and no level implements any of it. A level
+          with a brand-new mechanic still gets a correct pause menu for free.
+        </p>
+
+        <h3>How a level tells the shell it is done</h3>
+        <p>
+          Levels never call the framework. They set flags, <code>retry</code>,
+          <code>nextLevel</code>, <code>toInit</code>, <code>chooseLevel</code>, and the run state
+          reads those flags each frame, clears the one it saw, and performs the actual state
+          transition itself. This is polling rather than events, which is the less fashionable
+          choice, and it is the reason a level file contains no reference to the framework's state
+          machine at all. A level knows about gravity and buildings. It does not know it is inside
+          a state.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The levels ===================== -->
+    <section id="levels" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Seven Twists, One Shape</h2>
+        <p>
+          Every level overrides three methods, <code>OnBeginState</code>, <code>OnMove</code>, and
+          <code>OnShow</code>, calls the base class version first, and then adds only its own idea.
+          The twists themselves are deliberately small. Most of them are one extra field and one
+          extra method.
+        </p>
+        <ol class="levels" role="list">
+          <li><b>City Skies</b><span>The baseline. Twenty buildings and twenty clouds scroll leftward; passing one scores a point; touching one ends the run.</span></li>
+          <li><b>Tight Space</b><span>The horizontal breathing room disappears. The next obstacle starts moving the moment the previous one is fully on screen, so they arrive back to back, and the opening steps up or down by a fixed forty pixels each time. The opening itself is wider than level one, which is the only reason it is survivable.</span></li>
+          <li><b>Narrowed Sight</b><span>A full-screen bitmap is drawn on top of everything with white registered as its transparent colour, so only a circle of the city shows through. It is a mask, not a lighting model, and it costs one extra draw call.</span></li>
+          <li><b>Speed Surge</b><span>Obstacle speed steps up on a frame counter, and the spacing algorithm widens the distance between later obstacles whenever acceleration is switched on. It is the only level that sets the acceleration constant to anything other than zero.</span></li>
+          <li><b>Flickering Obstacles</b><span>A countdown toggles a visibility flag, and the collision check reads the same flag, so an obstacle you cannot see cannot kill you. The HUD shows how many seconds until they return.</span></li>
+          <li><b>Vertical Movers</b><span>Obstacles gain vertical motion on top of the scroll. Collision needed no changes at all, because it tests the sprites where they currently are rather than where they were placed.</span></li>
+          <li><b>Gravity Flip</b><span>One boolean on the plane. Every physics branch is mirrored: fall becomes rise, the jump target is added instead of subtracted, and the floor check becomes a ceiling check. A timer flips it every few seconds.</span></li>
+        </ol>
+        <p>
+          The one that taught me the most is level six. Adding vertical movement to obstacles
+          required no change to collision detection, because collision asks the sprites for their
+          current position rather than trusting a position recorded earlier. That was luck as much
+          as design, but it is the kind of luck you only get when state has one owner.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Honest retrospective ===================== -->
+    <section id="retrospective" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">What I Got Wrong</h2>
+        <p>
+          The architecture held up. Plenty else did not, and the code is public, so there is no
+          point pretending otherwise.
+        </p>
+
+        <h3>The base class shares state well and behaviour badly</h3>
+        <p>
+          Every level's <code>OnShow</code> repeats the same forty lines: loop the obstacles,
+          test for a collision, award a point, check whether the level is finished, then decide
+          which pop-up to draw. Line for line, no two of the seven copies differ by more than a
+          handful. Each level even redeclares its own <code>building</code> and <code>cloud</code>
+          vectors instead of inheriting them, so the one thing all seven provably have in common
+          is the one thing the base class does not hold. It should have owned that loop, with
+          each level supplying only its obstacles. I did not restructure it because extending was
+          easy and restructuring was not, which is exactly how duplication survives a review.
+        </p>
+
+        <h3>The abstraction is named after the afternoon I made it</h3>
+        <p>
+          The base class is called <code>levelInit</code>. It does not initialise anything in
+          particular. It is the level interface, and it should be called that. By the time this was
+          obvious the name was in every level file, and renaming felt like a bigger change than it
+          was. The last commit on the project is literally titled "Rename class to avoid confusion",
+          which fixed a different name and not this one.
+        </p>
+
+        <h3>Time is measured in frames</h3>
+        <p>
+          Every timer in the game is a counter incremented once per update, and the countdowns
+          shown on screen divide by thirty to display seconds. Nothing is expressed in real time,
+          so gameplay speed is tied to how fast the loop happens to run on the machine it is
+          running on. Nobody noticed during the course, because everybody ran it on the same lab
+          machines.
+        </p>
+
+        <h3>The physics is not physics</h3>
+        <p>
+          The plane moves a fixed four pixels per frame in whichever direction it is currently
+          going, and a jump is a target height it walks toward at that same rate. There is no
+          velocity and no acceleration, so the arc is made of straight lines rather than a curve.
+          It plays acceptably, which is why it survived, but calling it gravity is generous.
+        </p>
+
+        <h3>The dispatcher still knows what level it is on</h3>
+        <p>
+          The run state forwards every input and every update without asking which level it is
+          talking to. Drawing is where that breaks down. It reads the level number three times:
+          once to decide whether to start the background music, once to suppress the heads-up
+          display entirely, and once to print that display in white on level three, because that
+          level darkens the screen and black text vanishes into it. The first two are really
+          asking "is this the menu", which the types already knew and could have answered. The
+          third is a genuine per-level special case, sitting in the one place I claimed there
+          would be none.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Key Engineering Learnings</h2>
+        <ol class="learnings" role="list">
+          <li><b>An interface is cheaper than a branch.</b> Seven levels could have meant seven cases in each of eleven event handlers. Behind one base class it meant one vector and one pointer, and the run state never learned how many levels the game has.</li>
+          <li><b>Copy the design you are already standing on.</b> The framework drove its own states by holding a pointer and forwarding calls. Recognising that pattern and reapplying it one layer down was worth more than any individual feature I wrote that semester.</li>
+          <li><b>Inheritance shares state easily and behaviour badly.</b> Moving shared fields into a base class took an afternoon. The shared per-frame logic stayed copy-pasted across seven files, because adding a method is always easier than moving one.</li>
+          <li><b>Name an abstraction after what it is, not when you created it.</b> A class called <code>levelInit</code> that is really a level interface will be misread by every person who opens the file, including the person who wrote it, six weeks later.</li>
+          <li><b>The most useful thing I built was the way to skip my own game.</b> A debug key disables collision so a level can be played to the end without dying, because otherwise testing level six meant surviving level six first. I called it cheat mode. What it actually was is a test hook, and it is the first one I ever wrote without being asked.</li>
+        </ol>
+        <p class="entry-more">
+          <a href="https://github.com/Zocke07/Sky-Scraper-Escape" target="_blank" rel="noopener">View the source on GitHub →</a>
+        </p>
+        <p class="entry-more"><a href="index.html#projects">← Back to portfolio</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong · Built with plain HTML &amp; CSS, hosted on GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <button class="to-top" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

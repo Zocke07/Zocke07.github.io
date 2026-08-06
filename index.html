@@ -175,16 +175,18 @@
             <p class="card-body">
               Fly a plane through a city skyline across seven levels, each adding a twist:
               narrowed vision, flickering obstacles, buildings that move vertically, gravity
-              that inverts. Built for an OOP lab course on top of a teaching game framework.
-              The design is the interesting part. I mirrored the framework's own state
-              interface onto a level base class, so every level and the menu became
-              interchangeable objects behind one pointer and the main loop dispatches to them
-              with no level-specific branching. I wrote most of the team's game code: the
-              player physics, that base class, and the menu and level-select screens.
+              that inverts. Built for an OOP lab course on top of a teaching game framework
+              that allows exactly three states. The design is the interesting part. I mirrored
+              the framework's own state interface onto a level base class, so every level and
+              the menu became interchangeable objects behind one pointer, and the main loop
+              forwards events without knowing which one it is talking to. I wrote most of the
+              team's game code: the player, that base class, and the menu and level-select
+              screens.
             </p>
             <ul class="tags entry-tags">
               <li>C++</li><li>OOP</li><li>MFC</li><li>DirectDraw</li><li>Git</li>
             </ul>
+            <p class="entry-more"><a href="case-study-sky-scraper-escape.html">The menu is just another level: a case study →</a></p>
             <p class="entry-more"><a href="https://github.com/Zocke07/Sky-Scraper-Escape" target="_blank" rel="noopener">View on GitHub →</a></p>
           </article>
           <article class="card">
