@@ -425,6 +425,8 @@ a:hover { text-decoration: underline; }
 }
 
 .entry-tags { margin-top: 0.85rem; }
+/* auto absorbs the stretch; the padding keeps the gap when there is none to absorb. */
+.card .entry-tags { margin-top: auto; padding-top: 0.85rem; }
 .entry-tags li {
   font-size: 0.8rem;
   padding: 0.2rem 0.7rem;
@@ -458,6 +460,11 @@ a:hover { text-decoration: underline; }
 }
 
 .card {
+  /* Column layout so the tail can be pinned to the bottom: the grid stretches
+     every card in a row to the tallest, and without this the slack lands as
+     dead space under the case-study link. */
+  display: flex;
+  flex-direction: column;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);

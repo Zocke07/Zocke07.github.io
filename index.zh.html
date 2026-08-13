@@ -25,7 +25,7 @@
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/index.zh.html" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  <link rel="stylesheet" href="assets/css/style.css?v=3" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -137,7 +137,7 @@
             <h3>說得出自己何時失效的防禦</h3>
             <p class="card-meta">碩士論文 · 聯邦式學習安全</p>
             <p class="card-body">
-              聯邦式學習把原始資料留在裝置上，但這也表示伺服器分不出一筆模型更新是遭到毒化，還是誠實的。我的論文提出 L-MAD，一套兩階段的防禦機制：先隔離持續作惡的攻擊者，再單獨拒斥被汙染的層，而不是連同那些其實還在正常學習的層一起丟掉整個用戶端。在 30% 毒化攻擊下，它的 DDoS 類別 F&#8321; 維持在 97.5%，領先六個重新實作的基準方法中最強者 25 個百分點以上，速度則是最接近的逐層方法的 2.6&#215;。但我最想指出的是最後一章：20 組隨機種子、Wilson 信賴區間，以及一組專門設計來推翻我自己最弱主張的實驗掃描。
+              聯邦式學習把原始資料留在裝置上，但這也表示伺服器分不出一筆模型更新是遭到毒化，還是誠實的。我的論文提出 L-MAD，一套兩階段的防禦機制：單獨拒斥被汙染的層，而不是丟掉整個用戶端。在 30% 毒化攻擊下，它的 DDoS 類別 F&#8321; 維持在 97.5%，領先六個重新實作的基準方法 25 個百分點以上，而最後一章是特地設計來推翻我自己最弱的主張。
             </p>
             <ul class="tags entry-tags">
               <li>PyTorch</li><li>Flower</li><li>聯邦式學習</li><li>對抗式機器學習</li><li>Python</li>
@@ -148,7 +148,7 @@
             <h3>730 組以上的測試如何同時執行而不互相干擾</h3>
             <p class="card-meta">案例研究 · 測試基礎架構</p>
             <p class="card-body">
-              帶你走進我在 Sunbird 工作背後的品質平台：數百個瀏覽器測試如何安全地共用同一台線上伺服器、測試不穩定為什麼是工程問題而不是運氣問題，以及一個團隊要具備什麼條件，才會真的相信一次亮紅燈的建置結果。
+              帶你走進我在 Sunbird 工作背後的品質平台：數百個瀏覽器測試如何安全地共用同一台線上伺服器、測試不穩定為什麼是工程問題而不是運氣問題，以及一個團隊要具備什麼條件，才會真的相信一次亮紅燈的建置結果。每一次合併都要通過同一道關卡：lint 零警告、連續十次乾淨執行，再加上五次限制網路頻寬的執行。
             </p>
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Selenium</li><li>平行測試</li><li>CI</li>
@@ -159,7 +159,7 @@
             <h3>與六位實習生一起交付兩項 AI 產品</h3>
             <p class="card-meta">案例研究 · 專案管理與 QA</p>
             <p class="card-body">
-              一個分散兩地的實習生團隊、兩項 AI 產品，而且沒有配置專職 QA 工程師。我們如何建立剛好足夠的流程讓大家朝同一個方向前進，又建立剛好足夠的驗證，來分辨真正完成的程式碼和只是看起來完成的程式碼。
+              一個分散兩地的實習生團隊、兩項 AI 產品，而且沒有配置專職 QA 工程師。我們如何建立剛好足夠的流程讓大家朝同一個方向前進，又建立剛好足夠的驗證，來分辨真正完成的程式碼和只是看起來完成的程式碼。真正值得攔下來的缺陷，都是那些能順利編譯、在 diff 中看起來也正確的問題：被默默丟掉的排版格式，以及被截斷的模型輸出。兩項產品之一是一個 VS Code 擴充套件，把公司的開發規範變成編輯器內的 AI 審查員。
             </p>
             <ul class="tags entry-tags">
               <li>TypeScript</li><li>LLM API</li><li>UAT</li><li>Jira</li>
@@ -170,7 +170,7 @@
             <h3>健康管理 App 的行動端自動化測試</h3>
             <p class="card-meta">課程專題 · Appium · Robot Framework</p>
             <p class="card-body">
-              軟體測試與驗證課程的專題：五人團隊為 Health2Sync 這款已經上架的 Android 糖尿病管理 App 建立了 103 個自動化測試案例。我完整負責設定頁這一塊，包含 15 個測試案例，以及支撐它們的那 78 個頁面關鍵字中的大部分。測試設計走在寫程式之前：先寫使用者故事，因為沒有原始碼，活動圖只能從外部操作畫出來，接著用輸入空間分割搭配基本選擇涵蓋準則推導出案例。血糖目標落在五個分割區間上，三組有效範圍加上兩組無效範圍，讓「被拒絕的輸入」和「被接受的輸入」一樣被明確驗證。真正麻煩的是這個 App 有狀態又沒有重置機制，收尾這件事得由每個測試自己買單。
+              軟體測試與驗證課程的專題：五人團隊為 Health2Sync 這款已經上架的 Android 糖尿病管理 App 建立了 103 個自動化測試案例。我完整負責設定頁這一塊，包含 15 個測試案例，以及支撐它們的那 78 個頁面關鍵字中的大部分，測試設計全部走在寫程式之前。真正麻煩的是這個 App 有狀態又沒有重置機制，收尾這件事得由每個測試自己買單。
             </p>
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Appium</li><li>Android</li><li>測試設計</li>
@@ -267,7 +267,7 @@
           <div class="skill-group">
             <h3>方法論與概念</h3>
             <ul class="tags">
-              <li>敏捷開發 (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>自動化測試</li><li>等價分割測試設計</li><li>機器學習</li>
+              <li>敏捷開發 (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>自動化測試</li><li>等價分割測試設計</li><li>邊界值分析</li><li>機器學習</li>
             </ul>
           </div>
         </div>

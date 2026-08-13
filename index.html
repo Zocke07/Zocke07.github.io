@@ -25,7 +25,7 @@
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/index.zh.html" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  <link rel="stylesheet" href="assets/css/style.css?v=3" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -151,13 +151,10 @@
             <p class="card-body">
               Federated learning keeps raw data on the device, which also means the server cannot
               tell a poisoned model update from an honest one. My thesis proposes L-MAD, a
-              two-stage defense that quarantines persistent attackers and then rejects corrupted
-              layers individually instead of throwing away the whole client along with the layers
-              that were still learning something real. It holds 97.5% DDoS-class F&#8321; under a
-              30% poisoning attack, more than 25 points clear of the best of six reimplemented
-              baselines, at 2.6&#215; the speed of the nearest layer-wise method. The part I would
-              point at first is the last chapter: twenty seeds, Wilson intervals, and a sweep
-              designed to prove my own weakest claim wrong.
+              two-stage defense that rejects corrupted layers individually instead of discarding
+              the whole client. It holds 97.5% DDoS-class F&#8321; under a 30% poisoning attack,
+              more than 25 points clear of six reimplemented baselines, and its last chapter is
+              built to prove my own weakest claim wrong.
             </p>
             <ul class="tags entry-tags">
               <li>PyTorch</li><li>Flower</li><li>Federated Learning</li><li>Adversarial ML</li><li>Python</li>
@@ -171,6 +168,8 @@
               A look inside the quality platform behind my work at Sunbird: how hundreds of
               browser tests share one live server safely, why flakiness is an engineering
               problem rather than bad luck, and what it takes for a team to trust a red build.
+              Every merge cleared the same gate: zero lint warnings, ten clean runs, then five
+              more with the network throttled.
             </p>
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Selenium</li><li>Parallel Testing</li><li>CI</li>
@@ -183,7 +182,10 @@
             <p class="card-body">
               A distributed intern team, two AI products, and no QA engineer assigned. How we
               built enough process to move in the same direction, and enough verification to tell
-              finished code from code that merely looked finished.
+              finished code from code that merely looked finished. The defects worth catching
+              were the ones that compiled cleanly and looked right in the diff: silently dropped
+              formatting, truncated model output. One of the two products was a VS Code extension
+              that turns the company's development standards into an in-editor AI reviewer.
             </p>
             <ul class="tags entry-tags">
               <li>TypeScript</li><li>LLM APIs</li><li>UAT</li><li>Jira</li>
@@ -197,13 +199,9 @@
               A five-person suite of 103 automated test cases driving Health2Sync, a shipping
               Android diabetes management app, built for a software testing and verification
               course. I owned the settings area end to end: 15 test cases and most of the
-              78-keyword page library behind them. Test design came before any code: a user
-              story, an activity diagram drawn from the outside because there was no source,
-              then input space partitioning covered by base choice. The blood-glucose goal
-              lands on five blocks, three valid ranges and two invalid ones, so a rejected
-              input gets verified as deliberately as an accepted one. The hard part was a
-              stateful app with no reset hook, where cleanup is something every test has to
-              pay for itself.
+              78-keyword page library behind them, with test design done before any code. The
+              hard part was a stateful app with no reset hook, where cleanup is something every
+              test has to pay for itself.
             </p>
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Appium</li><li>Android</li><li>Test Design</li>
@@ -316,7 +314,7 @@
           <div class="skill-group">
             <h3>Methodologies &amp; Concepts</h3>
             <ul class="tags">
-              <li>Agile (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>Test Automation</li><li>Equivalence Partitioning</li><li>Machine Learning</li>
+              <li>Agile (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>Test Automation</li><li>Equivalence Partitioning</li><li>Boundary Value Analysis</li><li>Machine Learning</li>
             </ul>
           </div>
         </div>
