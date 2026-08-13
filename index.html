@@ -145,6 +145,25 @@
         <h2 class="section-title">Projects</h2>
         <div class="card-grid">
           <article class="card">
+            <h3>The Defense That Says Where It Breaks</h3>
+            <p class="card-meta">Master's Thesis · Federated Learning Security</p>
+            <p class="card-body">
+              Federated learning keeps raw data on the device, which also means the server cannot
+              tell a poisoned model update from an honest one. My thesis proposes L-MAD, a
+              two-stage defense that quarantines persistent attackers and then rejects corrupted
+              layers individually instead of throwing away the whole client along with the layers
+              that were still learning something real. It holds 97.5% DDoS-class F&#8321; under a
+              30% poisoning attack, more than 25 points clear of the best of six reimplemented
+              baselines, at 2.6&#215; the speed of the nearest layer-wise method. The part I would
+              point at first is the last chapter: twenty seeds, Wilson intervals, and a sweep
+              designed to prove my own weakest claim wrong.
+            </p>
+            <ul class="tags entry-tags">
+              <li>PyTorch</li><li>Flower</li><li>Federated Learning</li><li>Adversarial ML</li><li>Python</li>
+            </ul>
+            <p class="entry-more"><a href="case-study-lmad.html">Read the case study →</a></p>
+          </article>
+          <article class="card">
             <h3>How 730+ Tests Run at Once Without Stepping on Each Other</h3>
             <p class="card-meta">Case Study · Test Infrastructure</p>
             <p class="card-body">

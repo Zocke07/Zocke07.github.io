@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Defense That Says Where It Breaks · Rivan Wong</title>
+  <meta name="description" content="My master's thesis on L-MAD, a Byzantine-robust aggregation rule for federated edge learning: 97.5% DDoS-class F1 under a 30% poisoning attack, 2.6x faster than the nearest layer-wise defense, and a chapter establishing exactly where it fails." />
+  <meta property="og:title" content="The Defense That Says Where It Breaks" />
+  <meta property="og:description" content="A Byzantine-robust aggregation rule for federated edge learning, and the twenty-seed study that says exactly when it fails." />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/case-study-lmad.html" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og-lmad.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Master's thesis: a Byzantine-robust defense for federated edge learning that states where it breaks." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    document.documentElement.dataset.theme =
+      localStorage.getItem("theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  </script>
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-lmad.html" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-lmad.zh.html" />
+  <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
+  <link rel="stylesheet" href="assets/css/style.css?v=2" />
+  <style>
+    /* Case-study–specific styles, built on the site's design tokens. */
+    .case-hero { padding: 5rem 0 3rem; }
+    /* One shared measure across hero and body prose. */
+    .case-hero .hero-blurb { max-width: 46rem; }
+    .case-hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; margin-bottom: 0.75rem; }
+
+    .role-line { color: var(--text); }
+    .role-line strong { color: var(--accent); }
+
+    .nda-note {
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius);
+      background: var(--bg-alt);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      margin-top: 1.5rem;
+      max-width: 46rem;
+    }
+
+    .facts {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+      gap: 0.4rem 2rem;
+      margin: 1.5rem 0 0;
+      padding: 0;
+      max-width: 46rem;
+    }
+    .facts li { font-size: 0.95rem; color: var(--text-muted); padding-left: 1.15rem; position: relative; }
+    .facts li::before {
+      content: "";
+      position: absolute; left: 0; top: 0.6em;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent);
+    }
+    .facts strong { color: var(--text); }
+
+    /* Cap line length for readability without narrowing the container,
+       so body text lines up with the hero and the home page. */
+    .prose > *:not(.section-title) { max-width: 46rem; }
+    .prose p { margin-bottom: 1rem; }
+    .prose h3 { margin: 2rem 0 0.6rem; font-size: 1.05rem; }
+
+    .layer-stack {
+      display: grid;
+      gap: 0.5rem;
+      margin: 1.5rem 0 2rem;
+      max-width: 46rem;
+      list-style: none;
+      padding: 0;
+    }
+    .layer {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      padding: 0.7rem 1rem;
+      box-shadow: var(--shadow);
+    }
+    .layer b { display: block; font-size: 0.95rem; }
+    .layer span { font-size: 0.85rem; color: var(--text-muted); }
+
+    .learnings { counter-reset: learning; list-style: none; padding: 0; max-width: 46rem; }
+    .learnings li {
+      counter-increment: learning;
+      position: relative;
+      padding-left: 2.6rem;
+      margin-bottom: 1.25rem;
+    }
+    .learnings li::before {
+      content: counter(learning, decimal-leading-zero);
+      position: absolute; left: 0; top: 0.1rem;
+      font-weight: 700; color: var(--accent);
+      font-size: 1.05rem;
+    }
+    .learnings b { display: block; margin-bottom: 0.15rem; }
+
+    /* ---- Figures: inline SVG drawn from the site's own theme tokens, so
+           they follow light/dark instead of shipping a baked-in background. ---- */
+    .figure { margin: 1.75rem 0 2rem; max-width: 46rem; }
+    .figure-scroll { overflow-x: auto; }
+    .fig-svg { display: block; width: 100%; min-width: 30rem; height: auto; }
+    .figcaption {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.6rem;
+      padding-left: 0.9rem;
+      border-left: 2px solid var(--border);
+    }
+    .fig-tick { font-size: 11px; fill: var(--text-muted); }
+    .fig-label { font-size: 12px; fill: var(--text); }
+    .fig-label-hero { font-weight: 700; fill: var(--accent); }
+    .fig-axis { font-size: 12px; fill: var(--text-muted); }
+    .fig-note { font-size: 11px; fill: var(--accent); }
+    .fig-panel-title { font-size: 13px; font-weight: 600; fill: var(--text); }
+
+    /* ---- Results table ---- */
+    /* Not in the shared stylesheet, so it is defined here for the table caption. */
+    .sr-only {
+      position: absolute; width: 1px; height: 1px;
+      padding: 0; margin: -1px; overflow: hidden;
+      clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+    .table-scroll { overflow-x: auto; max-width: 46rem; margin: 1.5rem 0 0.6rem; }
+    .result-table {
+      border-collapse: collapse;
+      width: 100%;
+      min-width: 26rem;
+      font-size: 0.92rem;
+    }
+    .result-table th, .result-table td {
+      text-align: right;
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .result-table th:first-child, .result-table td:first-child { text-align: left; }
+    .result-table thead th {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      border-bottom: 1.5px solid var(--text-muted);
+    }
+    .result-table tbody tr:last-child td { border-bottom: none; }
+    .result-table .row-hero td {
+      background: color-mix(in srgb, var(--accent) 10%, transparent);
+      font-weight: 700;
+      color: var(--text);
+    }
+    .result-table .row-hero td:first-child { color: var(--accent); }
+
+    /* ---- Limitations ---- */
+    .limits { list-style: none; padding: 0; max-width: 46rem; }
+    .limits li {
+      border-left: 2px solid var(--border);
+      padding: 0 0 0 1rem;
+      margin-bottom: 1.15rem;
+    }
+    .limits b { display: block; margin-bottom: 0.15rem; }
+
+    @media (max-width: 640px) {
+      .case-hero { padding: 4rem 0 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="Primary">
+      <a class="nav-brand" href="index.html">Rivan Wong</a>
+      <div class="nav-right">
+        <ul id="nav-menu" class="nav-menu">
+          <li><a href="index.html#experience">Experience</a></li>
+          <li><a href="index.html#projects">Projects</a></li>
+          <li><a href="index.html#education">Education</a></li>
+          <li><a href="index.html#skills">Skills</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+        <a class="lang-toggle" href="case-study-lmad.zh.html" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+           aria-label="切換至繁體中文">中文</a>
+        <button class="theme-toggle" aria-label="Switch color theme">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ===================== Case study hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">Master's Thesis · Federated Learning Security · NTUT</p>
+        <h1>The Defense That Says Where It Breaks</h1>
+        <p class="hero-blurb">
+          Federated learning trains one shared model across devices that never hand over their
+          data. That privacy guarantee is also the attack surface: the server sees model updates,
+          not the data behind them, so a client that poisons its updates can steer the global
+          model and the server has no ground truth to check it against. My thesis proposes
+          <strong>L-MAD</strong>, a defense sized for the resource budget of an edge device, and
+          then spends its final chapter establishing exactly when it fails.
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>My role:</strong> sole author, advised by Shiang-Jiun Chen, Ph.D., in the
+          Software Security Lab at National Taipei University of Technology. The method, the
+          implementation, all six reimplemented baselines, the experiment campaign, and the
+          100-page write-up. Oral defense July 2026.
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>97.5%</strong> DDoS-class F&#8321; under a 30% poisoning attack</li>
+          <li><strong>+25.7</strong> points over the strongest baseline</li>
+          <li><strong>2.6&#215;</strong> faster than the nearest layer-wise defense</li>
+          <li><strong>6</strong> competing defenses reimplemented</li>
+          <li><strong>21</strong> experiment groups, 20 seeds</li>
+          <li><strong>0</strong> rows of auxiliary data on the server</li>
+        </ul>
+        <p class="nda-note">
+          <strong>A note on scope:</strong> this page is a summary written for a general software
+          audience, not a substitute for the thesis. Every figure here is redrawn from the
+          document's own results so it follows this site's light and dark themes; nothing has been
+          rescaled or reframed. The numbers are the deposited ones.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Problem ===================== -->
+    <section id="problem" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">The Problem</h2>
+        <p>
+          Federated learning has one structural weakness, and it follows directly from its main
+          feature. The standard aggregation rule, Federated Averaging, is a weighted mean of the
+          clients' updates, and a mean has a <em>breakdown point</em> of zero: a single update,
+          made extreme enough, drags the result anywhere the attacker wants. Because the server
+          never sees the underlying data, it cannot tell a poisoned update from an unusual but
+          honest one by inspection.
+        </p>
+        <p>
+          Defenses exist. At the resource-constrained edge, each family pays a price that
+          undercuts the reason for deploying there in the first place:
+        </p>
+        <ol class="layer-stack" role="list">
+          <li class="layer"><b>Distance-based rules (Krum)</b><span>Compare every client against every other, an O(K²d) cost that grows quadratically with federation size and model dimension</span></li>
+          <li class="layer"><b>Validation-based rules (FLTrust)</b><span>Score updates against a clean dataset held on the server, which relaxes the data-absence premise that motivated federating at all</span></li>
+          <li class="layer"><b>Statistical layer-wise rules (LGP)</b><span>Add clustering and per-layer feature extraction on top, the most expensive option of the three</span></li>
+        </ol>
+        <p>
+          There is also a fourth deficiency, orthogonal to the other three and shared by all of
+          them: <strong>they reject whole clients.</strong> In a targeted label-flipping attack the
+          adversary may corrupt only the classification layers while the early feature-extraction
+          layers keep learning something real. Throwing away the client throws that away too,
+          along with the battery and bandwidth the device already spent producing it.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Solution ===================== -->
+    <section id="solution" class="section">
+      <div class="container prose">
+        <h2 class="section-title">What L-MAD Does</h2>
+        <p>
+          Two stages, neither of which needs any data on the server.
+        </p>
+
+        <h3>Stage 1: a cross-round reliability pre-pass</h3>
+        <p>
+          Each round, every client's update is scored for directional agreement with a robust
+          consensus direction. Disagreement accumulates into a per-client distrust score that
+          decays over time, so one atypical round is forgiven and a pattern is not. Once the
+          anomalies persist, the client is quarantined permanently. This is the stage that catches
+          the patient attacker, the one who is unremarkable in any single round and only looks
+          wrong across many. The entire memory cost is one scalar per client.
+        </p>
+
+        <h3>Stage 2: a per-layer MAD gate</h3>
+        <p>
+          Survivors are then compared layer by layer against the population median for that layer,
+          with the tolerance set by the median absolute deviation. MAD has a 50% breakdown point,
+          the highest any location estimator can attain, against the mean's 0%. A layer that
+          exceeds the threshold is dropped <em>on its own</em>, and the client's remaining layers
+          are aggregated normally.
+        </p>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="fig2title fig2desc">
+<title id="fig2title">Whole-client rejection compared with per-layer rejection</title>
+<desc id="fig2desc">Two grids of six clients by four layers. Under whole-client rejection both poisoned clients are discarded entirely, eight cells. Under L-MAD only the two poisoned decision layers of each are discarded, so four benign layers survive.</desc>
+<text x="190" y="46" text-anchor="middle" class="fig-panel-title">Whole-client rejection</text>
+<text x="58" y="93" text-anchor="end" class="fig-tick">L1</text>
+<rect x="70" y="74" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="111" y="74" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M123 84 l12 10 M135 84 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="152" y="74" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="193" y="74" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="234" y="74" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M246 84 l12 10 M258 84 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="275" y="74" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<text x="58" y="128" text-anchor="end" class="fig-tick">L2</text>
+<rect x="70" y="109" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="111" y="109" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M123 119 l12 10 M135 119 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="152" y="109" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="193" y="109" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="234" y="109" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M246 119 l12 10 M258 119 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="275" y="109" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<text x="58" y="163" text-anchor="end" class="fig-tick">L3</text>
+<rect x="70" y="144" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="111" y="144" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M123 154 l12 10 M135 154 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="152" y="144" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="193" y="144" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="234" y="144" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M246 154 l12 10 M258 154 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="275" y="144" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<text x="58" y="198" text-anchor="end" class="fig-tick">L4</text>
+<rect x="70" y="179" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="111" y="179" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M123 189 l12 10 M135 189 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="152" y="179" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="193" y="179" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="234" y="179" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M246 189 l12 10 M258 189 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="275" y="179" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<text x="190" y="226" text-anchor="middle" class="fig-tick">clients 1 &#8211; 6 (2 and 5 poisoned)</text>
+<text x="520" y="46" text-anchor="middle" class="fig-panel-title">L-MAD: per-layer rejection</text>
+<rect x="400" y="74" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="441" y="74" width="36" height="30" rx="4" fill="var(--accent)" fill-opacity="0.18" stroke="var(--accent)" stroke-width="1.5"/>
+<rect x="482" y="74" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="523" y="74" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="564" y="74" width="36" height="30" rx="4" fill="var(--accent)" fill-opacity="0.18" stroke="var(--accent)" stroke-width="1.5"/>
+<rect x="605" y="74" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="400" y="109" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="441" y="109" width="36" height="30" rx="4" fill="var(--accent)" fill-opacity="0.18" stroke="var(--accent)" stroke-width="1.5"/>
+<rect x="482" y="109" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="523" y="109" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="564" y="109" width="36" height="30" rx="4" fill="var(--accent)" fill-opacity="0.18" stroke="var(--accent)" stroke-width="1.5"/>
+<rect x="605" y="109" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="400" y="144" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="441" y="144" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M453 154 l12 10 M465 154 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="482" y="144" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="523" y="144" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="564" y="144" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M576 154 l12 10 M588 154 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="605" y="144" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="400" y="179" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="441" y="179" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M453 189 l12 10 M465 189 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="482" y="179" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="523" y="179" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<rect x="564" y="179" width="36" height="30" rx="4" fill="var(--bg-alt)" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3"/>
+<path d="M576 189 l12 10 M588 189 l-12 10" stroke="var(--text-muted)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+<rect x="605" y="179" width="36" height="30" rx="4" fill="var(--card-bg)" stroke="var(--border)" stroke-width="1"/>
+<text x="520" y="226" text-anchor="middle" class="fig-tick">clients 1 &#8211; 6 (2 and 5 poisoned)</text>
+<rect x="70" y="250" width="18" height="14" rx="3" fill="var(--card-bg)" stroke="var(--border)"/>
+<text x="95" y="261" class="fig-tick">aggregated</text>
+<rect x="188" y="250" width="18" height="14" rx="3" fill="var(--bg-alt)" stroke="var(--border)" stroke-dasharray="3 3"/>
+<text x="213" y="261" class="fig-tick">rejected</text>
+<rect x="300" y="250" width="18" height="14" rx="3" fill="var(--accent)" fill-opacity="0.18" stroke="var(--accent)" stroke-width="1.5"/>
+<text x="325" y="261" class="fig-tick">benign layers a whole-client rule would have discarded</text>
+</svg>
+          </div>
+          <p class="figcaption">
+            The unit of rejection. A whole-client rule discards eight cells to remove two
+            attackers; the per-layer gate discards four and keeps the rest. The highlighted cells
+            are the difference.
+          </p>
+        </div>
+
+        <h3>Three choices that keep it edge-viable</h3>
+        <p>
+          The method only matters if it runs inside the budget. Layer profiling means the gate is
+          applied only to high-risk decision layers rather than every tensor. The
+          variance-driven threshold is capped, so heterogeneous but honest data cannot widen the
+          tolerance until the gate stops rejecting anything. And the exact element-wise median has
+          a chunked, memory-bounded approximation behind it for when the model does not fit the
+          budget. Server state stays constant per client regardless of model size.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Results ===================== -->
+    <section id="results" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">Results</h2>
+        <p>
+          The reference threat model is a 30% targeted label-flipping attack, three of ten clients
+          relabeling normal traffic as attack traffic, on DNN-EdgeIIoT. Because the classes are
+          imbalanced roughly 4.8 to 1, the primary metric is F&#8321; on the DDoS class rather than
+          accuracy. Attack success rate is the fraction of normal traffic the poisoned model
+          misclassifies, so lower is better.
+        </p>
+        <div class="table-scroll">
+          <table class="result-table">
+            <caption class="sr-only">Resilience under the reference 30% label-flipping attack</caption>
+            <thead>
+              <tr><th scope="col">Strategy</th><th scope="col">DDoS-F&#8321; (%)</th><th scope="col">Macro-F&#8321; (%)</th><th scope="col">Attack success (%)</th></tr>
+            </thead>
+            <tbody>
+              <tr class="row-hero"><td>L-MAD</td><td>97.52</td><td>98.50</td><td>0.38</td></tr>
+              <tr><td>Krum</td><td>71.86</td><td>76.75</td><td>25.79</td></tr>
+              <tr><td>ATTA-FL-Lite</td><td>66.01</td><td>73.76</td><td>28.64</td></tr>
+              <tr><td>LGP</td><td>64.81</td><td>70.96</td><td>32.83</td></tr>
+              <tr><td>BRAFL</td><td>59.52</td><td>63.85</td><td>39.31</td></tr>
+              <tr><td>Trimmed Mean</td><td>51.42</td><td>60.86</td><td>43.54</td></tr>
+              <tr><td>FedAvg (undefended)</td><td>48.42</td><td>54.36</td><td>51.53</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          L-MAD holds 97.52%, statistically indistinguishable from its own clean-data performance
+          of 97.11%, meaning the attack costs it almost nothing. No baseline clears 72%. The
+          mechanism behind the gap is detection recall: L-MAD catches 93.4% of poisoned
+          contributions, against 85.6% for LGP and 20.6% for Krum, whose weakness here is
+          instructive. A label-flipping update is <em>geometrically central</em> rather than an
+          outlier, so a distance-based rule rarely picks it as the thing to discard.
+        </p>
+        <p>
+          The most telling comparison is ATTA-FL-Lite. It is the only baseline granted a clean
+          validation set on the server, and its whole-client verdicts still trail the per-layer
+          defense by more than 31 points. Extra information did not substitute for granularity.
+        </p>
+
+        <h3>Cost against robustness</h3>
+        <p>
+          Robustness that misses the resource budget is not an edge defense. Against LGP, its only
+          layer-wise peer, there is no trade-off to argue about: L-MAD is about 2.6&#215; faster
+          <em>and</em> far more robust. Against the cheap traditional rules the trade-off is real
+          but small, roughly 18 ms per round over Krum in exchange for 25.7 points of F&#8321;.
+        </p>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 640 400" role="img" aria-labelledby="fig1title fig1desc">
+<title id="fig1title">Aggregation cost versus robustness for seven strategies</title>
+<desc id="fig1desc">A scatter plot of mean server aggregation time in milliseconds per round against DDoS-class F1 score. L-MAD sits at 21 milliseconds and 97.5 percent, the highest F1 of any strategy, on the Pareto frontier together with FedAvg and Krum.</desc>
+<line x1="78" y1="330.0" x2="604" y2="330.0" stroke="var(--border)" stroke-width="1"/>
+<text x="68" y="334.0" text-anchor="end" class="fig-tick">40</text>
+<line x1="78" y1="280.7" x2="604" y2="280.7" stroke="var(--border)" stroke-width="1"/>
+<text x="68" y="284.7" text-anchor="end" class="fig-tick">50</text>
+<line x1="78" y1="231.3" x2="604" y2="231.3" stroke="var(--border)" stroke-width="1"/>
+<text x="68" y="235.3" text-anchor="end" class="fig-tick">60</text>
+<line x1="78" y1="182.0" x2="604" y2="182.0" stroke="var(--border)" stroke-width="1"/>
+<text x="68" y="186.0" text-anchor="end" class="fig-tick">70</text>
+<line x1="78" y1="132.7" x2="604" y2="132.7" stroke="var(--border)" stroke-width="1"/>
+<text x="68" y="136.7" text-anchor="end" class="fig-tick">80</text>
+<line x1="78" y1="83.3" x2="604" y2="83.3" stroke="var(--border)" stroke-width="1"/>
+<text x="68" y="87.3" text-anchor="end" class="fig-tick">90</text>
+<line x1="78" y1="34.0" x2="604" y2="34.0" stroke="var(--border)" stroke-width="1"/>
+<text x="68" y="38.0" text-anchor="end" class="fig-tick">100</text>
+<line x1="116.7" y1="34" x2="116.7" y2="330" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="116.7" y="350" text-anchor="middle" class="fig-tick">2</text>
+<line x1="239.9" y1="34" x2="239.9" y2="330" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="239.9" y="350" text-anchor="middle" class="fig-tick">5</text>
+<line x1="333.1" y1="34" x2="333.1" y2="330" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="333.1" y="350" text-anchor="middle" class="fig-tick">10</text>
+<line x1="426.3" y1="34" x2="426.3" y2="330" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="426.3" y="350" text-anchor="middle" class="fig-tick">20</text>
+<line x1="549.5" y1="34" x2="549.5" y2="330" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4"/>
+<text x="549.5" y="350" text-anchor="middle" class="fig-tick">50</text>
+<line x1="78" y1="330" x2="604" y2="330" stroke="var(--text-muted)" stroke-width="1.5"/>
+<line x1="78" y1="34" x2="78" y2="330" stroke="var(--text-muted)" stroke-width="1.5"/>
+<polyline points="116.7,288.5 171.2,172.8 432.8,46.2" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.55"/>
+<circle cx="116.7" cy="288.5" r="5" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="2"/>
+<text x="116.7" y="314.5" text-anchor="middle" class="fig-label">FedAvg</text>
+<circle cx="171.2" cy="172.8" r="5" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="2"/>
+<text x="158.2" y="177.8" text-anchor="end" class="fig-label">Krum</text>
+<circle cx="188.0" cy="273.7" r="5" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="2"/>
+<text x="200.0" y="278.7" text-anchor="start" class="fig-label">Trimmed Mean</text>
+<circle cx="239.9" cy="233.7" r="5" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="2"/>
+<text x="251.9" y="238.7" text-anchor="start" class="fig-label">BRAFL</text>
+<circle cx="432.8" cy="46.2" r="12" fill="var(--accent)" opacity="0.18"/>
+<circle cx="432.8" cy="46.2" r="6.5" fill="var(--accent)"/>
+<text x="446.8" y="52.2" text-anchor="start" class="fig-label fig-label-hero">L-MAD</text>
+<circle cx="538.3" cy="201.7" r="5" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="2"/>
+<text x="532.3" y="187.7" text-anchor="middle" class="fig-label">ATTA-FL-Lite</text>
+<circle cx="562.3" cy="207.6" r="5" fill="var(--bg)" stroke="var(--text-muted)" stroke-width="2"/>
+<text x="562.3" y="233.6" text-anchor="middle" class="fig-label">LGP</text>
+<text x="341" y="376" text-anchor="middle" class="fig-axis">Mean server aggregation time (ms / round, log scale)</text>
+<text x="20" y="182" text-anchor="middle" class="fig-axis" transform="rotate(-90 20 182)">DDoS-class F&#8321; (%)</text>
+<text x="312" y="136" class="fig-note">Pareto frontier</text>
+</svg>
+          </div>
+          <p class="figcaption">
+            A strategy sits on the Pareto frontier when nothing else is both cheaper and more
+            robust. Only FedAvg, Krum, and L-MAD qualify. Trimmed Mean, BRAFL, ATTA-FL-Lite, and
+            LGP are each beaten outright by Krum. Timings are wall-clock on pinned cores; the
+            ordering reproduces, the absolute values drift with machine load.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== Verification ===================== -->
+    <section id="verification" class="section">
+      <div class="container prose">
+        <h2 class="section-title">How I Tried to Break It</h2>
+        <p>
+          The headline number took one run. Establishing what it was worth took the rest of the
+          year, and it is the part of this project closest to the testing work I do elsewhere.
+        </p>
+
+        <h3>Reimplement the competition instead of quoting it</h3>
+        <p>
+          Citing a paper's published number compares your tuned method against their default
+          configuration on their dataset. All six baselines were rebuilt in the same harness, and
+          the closest competitor got its own parameter sweep so the comparison ran against its
+          best configuration rather than its first. Two of the baseline implementations carry
+          their own pytest suites, alongside tests for the data loader, the label-flip transform,
+          and the model, because a quiet bug in a competitor would have manufactured my result for
+          me.
+        </p>
+
+        <h3>Sweep the axes, not just the reference point</h3>
+        <p>
+          Twenty-one experiment groups cover attacker ratio, attack intensity, the detection
+          threshold, Dirichlet heterogeneity, federation size out to 100 clients, four attack
+          families, and component ablations that remove each mechanism in turn to confirm it is
+          carrying weight. A defense characterized at one operating point is a defense nobody
+          knows how to deploy.
+        </p>
+
+        <h3>Twenty seeds, because three is an anecdote</h3>
+        <p>
+          Every baseline's three-seed mean turned out to be hiding a partition where it collapsed
+          entirely. Running twenty data partitions exposed the same property in my own method: it
+          fails on 40% of them. Reporting that required Wilson confidence intervals on the failure
+          rate and paired significance tests, McNemar and Wilcoxon, rather than eyeballing bar
+          charts. The tests place L-MAD above undefended FedAvg with p = 0.003, and
+          <em>not</em> separably from LGP, BRAFL, or ATTA-FL-Lite at p &#8805; 0.06. That second
+          finding is in the thesis at the same size as the first.
+        </p>
+
+        <h3>Design the experiment that would embarrass you</h3>
+        <p>
+          Stage 1 over-convicts honest clients, and the obvious rebuttal is that the threshold is
+          simply too aggressive. So I ran a sixteen-configuration sweep to find the softer setting
+          that would prove it. There isn't one: every reduction in the honest false-positive rate
+          weakened Byzantine robustness in lock-step, and only the aggressive default held attack
+          success near zero. The cost is intrinsic to the directional criterion rather than a
+          tuning mistake. That is a negative result about my own method, and it is in the document
+          because the alternative is letting a reader discover it later.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Limitations ===================== -->
+    <section id="limits" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">Where It Breaks</h2>
+        <p>
+          Chapter 5 lists five limitations by name. A defense whose envelope you cannot state is a
+          defense nobody can responsibly deploy, so here is the envelope.
+        </p>
+        <ol class="limits" role="list">
+          <li>
+            <b>It over-convicts honest clients.</b>
+            The directional criterion cannot separate an honestly divergent update from an
+            adversarial one. At the reference point it convicts eight of ten honest clients.
+            Utility survives because rejection falls back to the robust median rather than
+            deleting the contribution, but the mechanism is blunt and the sweep above says it
+            cannot be softened for free.
+          </li>
+          <li>
+            <b>It holds to three attackers in ten, and it is partition-dependent.</b>
+            Robustness fails on 40% of twenty partitions (Wilson 95% CI, 22 to 61%). That is the
+            lowest failure rate among the five comparable methods, which makes it the most
+            reliable of them rather than a reliable one. No median-based defense survives 50%
+            attackers, by construction.
+          </li>
+          <li>
+            <b>It trails on one attack family.</b>
+            Leading on directional and random poisoning, it loses to LGP on the scaling attack,
+            where a boosted update slips through profiler-exempt layers before the reliability
+            register convicts.
+          </li>
+          <li>
+            <b>The advantage narrows as the federation grows.</b>
+            From clear dominance at ten clients to parity with undefended FedAvg at fifty, as
+            per-device data thins. An optional loss probe holds it near 97% through a hundred
+            clients, but only by reintroducing the trusted root dataset the method was designed to
+            avoid, which is a different method with a different premise.
+          </li>
+          <li>
+            <b>The per-layer claim is under-tested on this model.</b>
+            The compact tabular network has only two tensors that reach the gate, so the
+            layer-wise-versus-whole-client distinction is thin here. The salvage analysis found
+            the gate distinguishing only transiently and almost always on honest clients, 23 of 24
+            events, and over twenty partitions it did not lower the failure rate. Its demonstrated
+            scope is one adverse seed, not a general gain, and proving the idea properly needs a
+            deeper architecture.
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ===================== Next ===================== -->
+    <section id="next" class="section">
+      <div class="container prose">
+        <h2 class="section-title">What I'd Do Next</h2>
+        <p>
+          The limitations are the roadmap. Adding a profiling category for representation-extraction
+          layers would carry the method to CNNs and Transformers, which is also the only setting
+          where the per-layer contribution can actually be tested at scale. The threat model should
+          broaden to adversaries jointly optimizing against both gates, since the scaling attack
+          already shows where that gap is. The loss probe needs folding into the core method
+          without its trusted-root dependency, via cross-client agreement or a held-out split, so
+          that one discriminator handles both the heterogeneity and the scaling triggers. And with
+          all evidence from a single dataset and a binary task, replication elsewhere is what would
+          turn a characterized result into a general one.
+        </p>
+        <p>
+          The decisive test is hardware. Everything here is simulation, and a constant-memory
+          design earns its keep on a real constrained device or nowhere.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">Key Engineering Learnings</h2>
+        <ol class="learnings" role="list">
+          <li><b>A result you have not tried to break is not a result.</b> One run produced 97.5%. Twenty groups of runs produced the sentence that says what 97.5% is worth, and only the second one is usable by somebody else.</li>
+          <li><b>Rebuild the comparison, don't cite it.</b> Quoting published numbers silently compares your best effort against someone else's defaults. Reimplementing all six baselines, and tuning the nearest one, is the entire reason the 25-point gap means anything.</li>
+          <li><b>Three seeds is an anecdote.</b> Every mean in the field hid a partition where the method collapsed, including mine. The twenty-seed study is the part of the evaluation I would keep if I had to throw out the rest.</li>
+          <li><b>Run the experiment designed to embarrass you.</b> The sixteen-configuration sweep existed to test whether my method's worst property was just a bad default. It wasn't, and finding that out myself was much cheaper than having a committee find it.</li>
+          <li><b>Bound the claim.</b> "It works" is not a finding. "Holds to three of ten attackers, at federations near ten, against directional and random poisoning, and here is what happens outside that" is a finding, and it is the version that survives contact with a reviewer.</li>
+        </ol>
+        <!-- TODO: uncomment once the NTUT library deposit is public and the code repo is
+             trimmed for release, then delete this comment.
+        <p class="entry-more"><a href="THESIS_URL" target="_blank" rel="noopener">Read the full thesis (NTUT library) →</a></p>
+        <p class="entry-more"><a href="CODE_URL" target="_blank" rel="noopener">L-MAD experiment code on GitHub →</a></p>
+        -->
+        <p class="entry-more"><a href="index.html#projects">← Back to portfolio</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong · Built with plain HTML &amp; CSS, hosted on GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <button class="to-top" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
