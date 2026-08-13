@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>No Reset Button · Rivan Wong</title>
-  <meta name="description" content="Automating a stateful Android health app with no API and no test hooks: keyword-driven Appium tests, equivalence partitions, and cleanup that has to happen through the UI. Project notes." />
+  <meta name="description" content="Automating a stateful Android health app with no API and no test hooks: keyword-driven Appium tests, input space partitioning covered by base choice, and cleanup that has to happen through the UI. Project notes." />
   <meta property="og:title" content="No Reset Button" />
   <meta property="og:description" content="Automating a stateful Android app with no API, no test hooks, and no way to put it back the way you found it except by hand." />
   <meta property="og:type" content="article" />
@@ -174,10 +174,11 @@
         <h1>No Reset Button</h1>
         <p class="hero-blurb">
           Shorter notes than my case studies, on the project for a software testing and
-          verification course. Five of us automated a commercial Android health app with
-          Appium and Robot Framework. No source code, no API, no database, no test hooks,
-          and no way to put the app back the way we found it except by driving the UI back
-          through every change we made.
+          verification course. Five of us automated Health2Sync, a diabetes management app
+          that was already shipping when we picked it, with Appium and Robot Framework.
+          Nobody on the team wrote a line of it. No source code, no API, no database, no
+          test hooks, and no way to put the app back the way we found it except by driving
+          the UI back through every change we made.
         </p>
         <p class="hero-blurb role-line">
           <strong>My part:</strong> the settings area, all seven of its files. Fifteen test
@@ -186,18 +187,19 @@
         </p>
         <ul class="facts" role="list">
           <li><strong>15</strong> test cases in my area</li>
-          <li><strong>78</strong> page keywords, 71 written from scratch</li>
-          <li><strong>103</strong> test cases in the full team suite</li>
-          <li><strong>5</strong> people, four weeks</li>
+          <li><strong>78</strong> page keywords, 64 written from scratch</li>
+          <li><strong>103</strong> test cases across 26 suites, team-wide</li>
+          <li><strong>5</strong> people, one semester</li>
           <li><strong>Zero</strong> test hooks or APIs available</li>
           <li><strong>1080 × 2400</strong>, the screen the gestures assume</li>
         </ul>
         <p class="source-note">
           <strong>Scope and credit:</strong> the suite is a five-person team effort and my share
           of it is about a sixth. What I claim here is the settings area, where I committed every
-          line of all seven files. Seven of the 78 keywords in my library are reused from a
-          teammate's, marked as such in the source. The shared retry primitives my keywords are
-          built on were written by others.
+          line of all seven files. Fourteen of the 78 keywords in my library are reused from a
+          teammate's, marked as such by a comment in the source. The shared retry primitives my
+          keywords are built on were written by others, and so was the test design method below,
+          which the whole team worked to.
           <a href="https://github.com/qwe8496516/Health2SyncProject" target="_blank" rel="noopener">The repository is public</a>.
         </p>
       </div>
@@ -228,18 +230,24 @@
         <h2 class="section-title">How the Tests Are Built</h2>
         <p>
           Same shape as the keyword-driven suites I worked on professionally, scaled down to one
-          person and one feature area. A test case reads as a sentence and holds no locators.
+          person and one feature area: Robot Framework 6.1.1 driving Appium, and a test case that
+          reads as a sentence and holds no locators.
         </p>
         <ol class="layer-stack" role="list">
-          <li class="layer"><b>Test suites: one per settings feature</b><span>Five files, fifteen cases. Suite setup launches the app and lands on the right screen; every case ends with a teardown that undoes it.</span></li>
+          <li class="layer"><b>Test suites: one per settings feature</b><span>Five files, fifteen cases. Suite setup launches the app and lands on the right screen; every case ends with a teardown, though not every teardown restores what the test changed.</span></li>
           <li class="layer"><b>Page keyword library: 78 keywords for the settings area</b><span>Every locator lives here and nowhere else, so a screen that gets redesigned is one file to fix.</span></li>
           <li class="layer"><b>Variables file: the test data, named</b><span>Goal ranges and routine times as named constants, so a partition is a name rather than a number buried in a step.</span></li>
           <li class="layer"><b>Shared primitives, written by the team</b><span>Retry-wrapped click and input keywords that poll until the element appears. My keywords call these rather than raw Appium.</span></li>
         </ol>
         <p>
           The cleanup runs in <code>[Teardown]</code>, which Robot Framework runs whether the test
-          passed or failed. Some are one line, putting a unit back. The goals test needed a
-          keyword of its own to restore two fields to the values they started at.
+          passed or failed. Three of my fifteen restore the value they changed: one line to put a
+          unit back, a keyword of its own to return two goal fields to where they started, and one
+          that deletes the food it created. Four more only navigate out of the screen they opened.
+          The remaining eight press the app's own save button, and six of those leave the account
+          genuinely modified, the goals suite ending with blood glucose targets at 101 and 102 and
+          the routines suite with all five times at 23:59. That is the real gap in this design and
+          the first thing I would fix.
         </p>
         <div class="snippet">
           <code><span class="cm"># Change the units, prove they changed, then change them back.</span>
@@ -253,7 +261,8 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     ...                    AND    Modify Weight Unit           kg</code>
         </div>
         <p class="snippet-caption">
-          The teardown is half the test. That is what no reset button costs you.
+          The teardown is half the test. That is what no reset button costs you, and it is a cost
+          only the tests that actually restore something have paid.
         </p>
       </div>
     </section>
@@ -264,16 +273,31 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         <h2 class="section-title">Choosing What to Test</h2>
         <p>
           The course was about test design rather than tooling, and this is the part of the
-          project I would defend in an interview.
+          project I would defend in an interview. Every feature went through the same four steps
+          before anyone opened an editor, and those steps are what was actually graded.
+        </p>
+        <ol class="layer-stack" role="list">
+          <li class="layer"><b>Write the user story</b><span>One sentence about what somebody wants from the screen, so the tests answer a need rather than an element tree.</span></li>
+          <li class="layer"><b>Walk the app and draw the flow</b><span>An activity diagram of the screens and decisions the app really has. With no source code, the diagram gets drawn from the outside, by using the thing.</span></li>
+          <li class="layer"><b>Split the input space</b><span>List what an input is made of, then the blocks each part breaks into. A routine time is an hour and a minute; an hour has a minimum, a maximum, and everything between.</span></li>
+          <li class="layer"><b>Cover it with base choice</b><span>Fix one base value per characteristic, run that row, then vary one characteristic at a time. The case count grows with the number of blocks instead of multiplying.</span></li>
+        </ol>
+        <p>
+          Input space partitioning covered by base choice is a deliberate trade. It assumes the
+          characteristics do not interact much, so it will not find a bug that needs two of them
+          wrong at the same time. The team took that trade on purpose, because five people driving
+          one phone by hand cannot afford the full combinations. The one screen in my area where
+          fields genuinely do interact is handled further down.
         </p>
 
-        <h3>Partitions, with the values chosen at the boundary</h3>
+        <h3>Blocks, and values taken from the edge of them</h3>
         <p>
-          The blood glucose goal takes a low and a high. That input has three classes worth
-          separating: a valid range, the two ends equal, and the low above the high. There is one
-          test for each, and the values sit right on the edge rather than safely inside it: 99 and
-          100 for valid, 100 and 100 for equal, 101 and 100 for inverted. A rule that is off by
-          one gets caught by numbers that are one apart.
+          The blood glucose goal takes a low and a high. My suite covers five blocks of that pair:
+          three valid ranges, then the two ends equal, then the low above the high. The valid pairs
+          are 99 and 100, 98 and 99, and 101 and 102, and each is written into all three goals the
+          screen carries, before meal, after meal, and bedtime. Every valid pair is one apart,
+          which puts the invalid blocks, 100 and 100 and then 101 and 100, exactly one step from
+          something legal. A rule that is off by one gets caught by numbers that are one apart.
         </p>
 
         <h3>The invalid cases assert on the refusal</h3>
@@ -287,11 +311,14 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         <h3>Constraints that span more than one field</h3>
         <p>
           Daily routines are five times of day that have to stay in order, so lunch must fall
-          between breakfast and dinner. That is not a rule any single field can validate, and it
-          is the kind of thing a suite organized strictly per input misses. Three of those four
-          cases push all five times to the same boundary, midnight, midday, and 23:59, and check
-          each one displays back correctly. The fourth sets a combination that breaks the ordering
-          and checks for the specific complaint it should produce.
+          between breakfast and dinner. No single field can validate that, and it is exactly what
+          base choice is built to miss: the criterion varies one characteristic at a time, and this
+          rule only breaks when two fields are set against each other. So three of the four cases
+          sweep the time characteristic through its blocks, 00:00, 12:30 and 23:59 written into all
+          five routines, and check each one reads back correctly. The fourth is built the other way
+          round. It pushes breakfast past lunch, asserts the complaint the app makes, closes the
+          dialog, then pushes dinner past bedtime and asserts that second complaint too. One test,
+          two ways to break the ordering.
         </p>
 
         <h3>Preconditions written down instead of assumed</h3>
@@ -313,11 +340,12 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
           anyway.
         </p>
 
-        <h3>Two gestures are pinned to one screen size</h3>
+        <h3>Five keywords are pinned to one screen size</h3>
         <p>
-          Scrolling to the bottom of a page, and nudging a time slider by an hour, are done by
-          swiping between hard-coded pixel coordinates measured on a 1080 by 2400 screen. On any
-          other device they land somewhere else. I wrote the resolution into a comment above them,
+          Scrolling to the bottom of a page, and nudging a time slider an hour in either direction,
+          are done by swiping between hard-coded pixel coordinates measured on a 1080 by 2400
+          screen. The two number-picker swipes I inherited from a teammate do the same. On any
+          other device they land somewhere else. I wrote the resolution into a comment above mine,
           which documents the problem without solving it.
         </p>
 
@@ -327,6 +355,14 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
           If a test fails halfway through a dialog, the teardown starts from the wrong screen, and
           the mess is inherited by whatever runs next. A real reset hook fixes this and nothing
           else does.
+        </p>
+
+        <h3>Eighteen minutes for four test cases</h3>
+        <p>
+          The daily routines suite took 1,089 seconds in the run we handed in. Four test cases,
+          eighteen minutes, and almost all of it is the interface: five time pickers swiped into
+          position, read back, then swiped into position again on the way out. Nothing here runs in
+          parallel, and a suite this slow is one nobody sits and waits for.
         </p>
 
         <h3>Nothing runs on its own</h3>

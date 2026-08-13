@@ -193,14 +193,16 @@
             <h3>Mobile Test Automation for a Health Tracking App</h3>
             <p class="card-meta">Course Project · Appium · Robot Framework</p>
             <p class="card-body">
-              A five-person suite of 103 automated test cases driving a commercial Android
-              health app, built for a software testing and verification course. I owned the
-              settings area end to end: 15 test cases and most of the 78-keyword page library
-              behind them. The hard part was a stateful app with no reset hook, so every test
-              cleans up after itself in a teardown, restoring the setting it changed or backing
-              out of the screen it opened. The blood-glucose goal tests are split by
-              equivalence partition, one valid range and two invalid ones, which means a
-              rejected input gets verified as deliberately as an accepted one.
+              A five-person suite of 103 automated test cases driving Health2Sync, a shipping
+              Android diabetes management app, built for a software testing and verification
+              course. I owned the settings area end to end: 15 test cases and most of the
+              78-keyword page library behind them. Test design came before any code: a user
+              story, an activity diagram drawn from the outside because there was no source,
+              then input space partitioning covered by base choice. The blood-glucose goal
+              lands on five blocks, three valid ranges and two invalid ones, so a rejected
+              input gets verified as deliberately as an accepted one. The hard part was a
+              stateful app with no reset hook, where cleanup is something every test has to
+              pay for itself.
             </p>
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Appium</li><li>Android</li><li>Test Design</li>
