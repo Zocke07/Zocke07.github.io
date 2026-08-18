@@ -24,7 +24,21 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-sky-scraper-escape.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-sky-scraper-escape.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
+  <style>
+    /* The one raster on this page: a frame rebuilt from the game's own bitmaps.
+       It carries its own art, so unlike .figure-doc it needs no paper panel. */
+    .figure-shot {
+      margin: 1.5rem 0 0.6rem;
+      max-width: 46rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      line-height: 0;
+    }
+    .figure-shot img { display: block; width: 100%; height: auto; }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -129,6 +143,69 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         <p class="snippet-caption">
           遊玩狀態的十一個函式裡，有七個就長這樣：一行、轉發、沒有任何分支。
         </p>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 700 330" role="img" aria-labelledby="skyarchtitle skyarchdesc">
+              <title id="skyarchtitle">同一種間接層做了兩次，下面那層是照著上面那層抄的</title>
+              <desc id="skyarchdesc">框架持有一張固定的三個遊戲狀態表格，並把事件轉發給當前的那一個。遊玩狀態在下一層重複了同樣的模式：它持有一個指標，指向一個含八個關卡物件的向量，也就是關卡選擇選單加上七個關卡，並把同樣的十一個事件函式轉發給當前的那一個。</desc>
+
+              <defs>
+                <marker id="sky-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--text-muted)" />
+                </marker>
+              </defs>
+
+              <text x="350" y="20" text-anchor="middle" class="fig-panel-title">框架，固定就是三個狀態</text>
+
+              <rect class="fig-box" x="135" y="32" width="130" height="46" rx="6" />
+              <text x="200" y="60" text-anchor="middle" class="fig-label">init</text>
+              <rect class="fig-box-accent" x="285" y="32" width="130" height="46" rx="6" />
+              <text x="350" y="60" text-anchor="middle" class="fig-label fig-label-hero">run</text>
+              <rect class="fig-box" x="435" y="32" width="130" height="46" rx="6" />
+              <text x="500" y="60" text-anchor="middle" class="fig-label">over</text>
+
+              <text x="350" y="95" text-anchor="middle" class="fig-tick">CGameState *gameStateTable[3]　—　你加不了第四個</text>
+
+              <line class="fig-line" x1="350" y1="100" x2="350" y2="124" marker-end="url(#sky-arrow)" />
+
+              <rect class="fig-box-accent" x="135" y="130" width="430" height="52" rx="6" />
+              <text x="350" y="152" text-anchor="middle" class="fig-label">CGameStateRun</text>
+              <text x="350" y="170" text-anchor="middle" class="fig-tick">持有 levelInit* current，而且不對任何東西做分支</text>
+
+              <line class="fig-line" x1="350" y1="182" x2="350" y2="214" marker-end="url(#sky-arrow)" />
+              <text x="360" y="202" class="fig-note">同樣那十一個函式，原封不動地轉發</text>
+
+              <text x="350" y="234" text-anchor="middle" class="fig-tick">std::vector&lt;levels::levelInit*&gt; allLevels</text>
+
+              <rect class="fig-box-muted" x="41" y="244" width="72" height="46" rx="5" />
+              <text x="77" y="264" text-anchor="middle" class="fig-tick">選單</text>
+              <text x="77" y="279" text-anchor="middle" class="fig-tick">[0]</text>
+
+              <rect class="fig-box" x="119" y="244" width="72" height="46" rx="5" />
+              <text x="155" y="271" text-anchor="middle" class="fig-tick">關卡 1</text>
+              <rect class="fig-box" x="197" y="244" width="72" height="46" rx="5" />
+              <text x="233" y="271" text-anchor="middle" class="fig-tick">關卡 2</text>
+              <rect class="fig-box" x="275" y="244" width="72" height="46" rx="5" />
+              <text x="311" y="271" text-anchor="middle" class="fig-tick">關卡 3</text>
+              <rect class="fig-box" x="353" y="244" width="72" height="46" rx="5" />
+              <text x="389" y="271" text-anchor="middle" class="fig-tick">關卡 4</text>
+              <rect class="fig-box" x="431" y="244" width="72" height="46" rx="5" />
+              <text x="467" y="271" text-anchor="middle" class="fig-tick">關卡 5</text>
+              <rect class="fig-box" x="509" y="244" width="72" height="46" rx="5" />
+              <text x="545" y="271" text-anchor="middle" class="fig-tick">關卡 6</text>
+              <rect class="fig-box" x="587" y="244" width="72" height="46" rx="5" />
+              <text x="623" y="271" text-anchor="middle" class="fig-tick">關卡 7</text>
+
+              <text x="41" y="312" class="fig-tick">關卡選擇畫面不是關卡，但它是同一種型別，所以不需要任何特例</text>
+            </svg>
+          </div>
+          <p class="figcaption">
+            最下面那一排，正是框架原本永遠不會允許的東西。八個畫面躲在同一個型別的同一個指標背後，
+            所以要加第八個關卡，是多加一個元素，而不是去改一個分派器。選單擺在索引零的位置，是這個抽象
+            到底成不成立的檢驗：只要它需要自己的分支，這個形狀就漏了。
+          </p>
+        </div>
         <p>
           那個向量的第一個元素是關卡選擇畫面。它並不是一個關卡，但它繼承自同一個基底類別，所以能放進同一個陣列，也能透過同一個指標取用。這不是為了炫技。選單需要的東西是背景、鍵盤處理，以及一次繪製呼叫，和關卡需要的完全一樣；如果硬要給它另一種型別，結果就是遊玩狀態裡得為「唯一不是關卡的那個畫面」多寫一段特例。
         </p>
@@ -168,6 +245,17 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         <p>
           每個關卡都覆寫三個函式：<code>OnBeginState</code>、<code>OnMove</code>、
           <code>OnShow</code>，先呼叫基底類別的版本，然後才加上自己的點子。那些變化本身都刻意做得很小，大多只是多一個欄位加上多一個函式。
+        </p>
+        <div class="figure-shot">
+          <img src="assets/img/sky-level1-frame.jpg" width="1192" height="670" loading="lazy"
+               alt="關卡一的一個畫面。一架小型客機在畫面左側飛過夕陽下的像素風城市。三組障礙物由右側逼近：
+                    一朵從畫面上緣垂下的雲，以及一棟從下緣升起的大樓，兩者之間留著一道飛機必須穿過的縫隙。" />
+        </div>
+        <p class="figcaption">
+          關卡一，依照 <code>level1.cpp</code> 實際使用的座標，用遊戲自己的點陣圖重建出來：飛機在它的起始
+          位置 (180, 270)，障礙物成對出現、縫隙為 <code>pathHeight</code> 減十五像素，而大樓與雲則來自
+          每個關卡都重複使用的那同一組兩張圖。這是重建，不是實機截圖，因為這個遊戲是 Windows MFC 執行檔，
+          這張圖是從原始素材組出來的。
         </p>
         <ol class="levels" role="list">
           <li><b>City Skies</b><span>基準關。二十棟建築物與二十朵雲由右往左捲動，通過一個得一分，碰到一個就結束。</span></li>

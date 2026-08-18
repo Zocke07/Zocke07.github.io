@@ -24,7 +24,7 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-ai-products.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-ai-products.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
   <style>
     /* Only what is unique to this page; the shared case-study
        rules live in style.css. */
@@ -202,6 +202,64 @@
           <li><b>End-to-end verification, by hand</b><span>The step I owned. A real browser against a real running instance, naming the exact target, the expected signal, and the pass criterion.</span></li>
           <li><b>Explicit sign-off, or a recorded decision not to</b><span>When we accepted a gap or skipped a pass, that call was written down with its reason rather than left implied.</span></li>
         </ol>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 720 215" role="img" aria-labelledby="aigatetitle aigatedesc">
+              <title id="aigatetitle">Where a cleanly compiling defect is actually stopped</title>
+              <desc id="aigatedesc">A change moves left to right through five gate steps: proposal and design, acceptance criteria, implementation checklist, hands-on verification, and sign-off. A defect that compiles cleanly and reads correctly passes the first three steps unchallenged and is stopped at hands-on verification.</desc>
+
+              <defs>
+                <marker id="ai-gate-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--text-muted)" />
+                </marker>
+              </defs>
+
+              <rect class="fig-box" x="20" y="34" width="118" height="52" rx="6" />
+              <text x="79" y="57" text-anchor="middle" class="fig-label">Proposal</text>
+              <text x="79" y="73" text-anchor="middle" class="fig-tick">&amp; design</text>
+
+              <rect class="fig-box" x="160" y="34" width="118" height="52" rx="6" />
+              <text x="219" y="57" text-anchor="middle" class="fig-label">Acceptance</text>
+              <text x="219" y="73" text-anchor="middle" class="fig-tick">criteria</text>
+
+              <rect class="fig-box" x="300" y="34" width="118" height="52" rx="6" />
+              <text x="359" y="57" text-anchor="middle" class="fig-label">Implementation</text>
+              <text x="359" y="73" text-anchor="middle" class="fig-tick">checklist</text>
+
+              <rect class="fig-box-accent" x="440" y="34" width="118" height="52" rx="6" />
+              <text x="499" y="57" text-anchor="middle" class="fig-label fig-label-hero">Hands-on</text>
+              <text x="499" y="73" text-anchor="middle" class="fig-note">verification</text>
+
+              <rect class="fig-box" x="580" y="34" width="118" height="52" rx="6" />
+              <text x="639" y="57" text-anchor="middle" class="fig-label">Sign-off</text>
+              <text x="639" y="73" text-anchor="middle" class="fig-tick">or recorded gap</text>
+
+              <line class="fig-line" x1="138" y1="60" x2="156" y2="60" marker-end="url(#ai-gate-arrow)" />
+              <line class="fig-line" x1="278" y1="60" x2="296" y2="60" marker-end="url(#ai-gate-arrow)" />
+              <line class="fig-line" x1="418" y1="60" x2="436" y2="60" marker-end="url(#ai-gate-arrow)" />
+              <line class="fig-line" x1="558" y1="60" x2="576" y2="60" marker-end="url(#ai-gate-arrow)" />
+
+              <text x="499" y="24" text-anchor="middle" class="fig-note">the step I owned</text>
+
+              <path class="fig-line-accent" d="M499 86 L499 132" stroke-dasharray="3 3" />
+              <line x1="20" y1="146" x2="480" y2="146" stroke="var(--text-muted)" stroke-width="1.4"
+                    stroke-dasharray="5 4" />
+              <text x="20" y="136" class="fig-tick">a defect that compiles cleanly and reads correctly</text>
+
+              <circle cx="499" cy="146" r="11" fill="none" stroke="var(--accent)" stroke-width="2" />
+              <path d="M494 141 L504 151 M504 141 L494 151" stroke="var(--accent)" stroke-width="2" fill="none" />
+              <text x="499" y="180" text-anchor="middle" class="fig-label fig-label-hero">stopped here</text>
+              <text x="499" y="197" text-anchor="middle" class="fig-tick">dropped formatting, truncated model output</text>
+            </svg>
+          </div>
+          <p class="figcaption">
+            The first three steps read the change; only the fourth runs it. That is the whole
+            reason the gate was worth its cost, because the defects that mattered were invisible
+            to everything upstream of the browser.
+          </p>
+        </div>
+
         <p>
           The fourth step is where the process earned its cost. Fixes that were believed complete
           repeatedly turned out not to be: a write-back path that worked in isolation flattened
@@ -218,6 +276,54 @@
           Reviewing that suite is where I learned most of what I now know about testing the
           untestable.
         </p>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 700 240" role="img" aria-labelledby="aitesttitle aitestdesc">
+              <title id="aitesttitle">Three awkward dependencies and the substitution used for each</title>
+              <desc id="aitestdesc">Three rows. A live editor API is handled by running the tests inside a real editor instance. A real version control system is handled by building throwaway repositories on disk. A non-deterministic model is handled by stubbing it, so results are deterministic and cost nothing.</desc>
+
+              <defs>
+                <marker id="ai-sub-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+
+              <text x="140" y="24" text-anchor="middle" class="fig-panel-title">What made it hard to test</text>
+              <text x="530" y="24" text-anchor="middle" class="fig-panel-title">What the suite did instead</text>
+
+              <rect class="fig-box-muted" x="14" y="42" width="252" height="52" rx="6" />
+              <text x="140" y="66" text-anchor="middle" class="fig-label">A live editor API</text>
+              <text x="140" y="83" text-anchor="middle" class="fig-tick">cannot be imported and called</text>
+              <rect class="fig-box-accent" x="390" y="42" width="296" height="52" rx="6" />
+              <text x="538" y="66" text-anchor="middle" class="fig-label">Run inside a real editor instance</text>
+              <text x="538" y="83" text-anchor="middle" class="fig-tick">the dependency itself, launched per run</text>
+              <line class="fig-line-accent" x1="266" y1="68" x2="385" y2="68" marker-end="url(#ai-sub-arrow)" />
+
+              <rect class="fig-box-muted" x="14" y="108" width="252" height="52" rx="6" />
+              <text x="140" y="132" text-anchor="middle" class="fig-label">A real version control system</text>
+              <text x="140" y="149" text-anchor="middle" class="fig-tick">state lives on disk, not in memory</text>
+              <rect class="fig-box-accent" x="390" y="108" width="296" height="52" rx="6" />
+              <text x="538" y="132" text-anchor="middle" class="fig-label">Build throwaway repositories</text>
+              <text x="538" y="149" text-anchor="middle" class="fig-tick">real commands, discarded afterwards</text>
+              <line class="fig-line-accent" x1="266" y1="134" x2="385" y2="134" marker-end="url(#ai-sub-arrow)" />
+
+              <rect class="fig-box-muted" x="14" y="174" width="252" height="52" rx="6" />
+              <text x="140" y="198" text-anchor="middle" class="fig-label">A non-deterministic model</text>
+              <text x="140" y="215" text-anchor="middle" class="fig-tick">different answer every call, and billed</text>
+              <rect class="fig-box-accent" x="390" y="174" width="296" height="52" rx="6" />
+              <text x="538" y="198" text-anchor="middle" class="fig-label">Stub it</text>
+              <text x="538" y="215" text-anchor="middle" class="fig-tick">deterministic results, no cost per run</text>
+              <line class="fig-line-accent" x1="266" y1="200" x2="385" y2="200" marker-end="url(#ai-sub-arrow)" />
+            </svg>
+          </div>
+          <p class="figcaption">
+            Two of the three are kept real and one is replaced, and the split is not arbitrary.
+            The editor and the repository are where the bugs actually lived, so faking them would
+            have faked the result. The model was stubbed because its variability was noise rather
+            than the thing under test, and because a suite that bills you per run stops being run.
+          </p>
+        </div>
       </div>
     </section>
 

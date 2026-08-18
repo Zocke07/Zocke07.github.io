@@ -24,7 +24,7 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-lmad.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-lmad.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
   <style>
     /* Only what is unique to this page; the shared case-study
        rules live in style.css. */
@@ -342,6 +342,65 @@
               <tr><td>FedAvg (undefended)</td><td>48.42</td><td>54.36</td><td>51.53</td></tr>
             </tbody>
           </table>
+        </div>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 700 320" role="img" aria-labelledby="f1title f1desc">
+              <title id="f1title">DDoS-class F1 under the reference 30% label-flipping attack</title>
+              <desc id="f1desc">Horizontal bars for seven aggregation strategies. L-MAD reaches 97.5 percent, level with its own clean-data score of 97.1. The best baseline, Krum, reaches 71.9 percent, and undefended FedAvg reaches 48.4 percent.</desc>
+
+              <line x1="150" y1="24" x2="150" y2="278" stroke="var(--border)" stroke-width="1" />
+              <line x1="272.5" y1="24" x2="272.5" y2="278" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4" />
+              <line x1="395" y1="24" x2="395" y2="278" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4" />
+              <line x1="517.5" y1="24" x2="517.5" y2="278" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4" />
+              <line x1="640" y1="24" x2="640" y2="278" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4" />
+
+              <text x="140" y="45" text-anchor="end" class="fig-label fig-label-hero">L-MAD</text>
+              <rect class="fig-bar-accent" x="150" y="30" width="477.8" height="22" rx="3" />
+              <text x="634" y="46" class="fig-label fig-label-hero">97.5</text>
+
+              <text x="140" y="81" text-anchor="end" class="fig-label">Krum</text>
+              <rect class="fig-bar" x="150" y="66" width="352.1" height="22" rx="3" />
+              <text x="508" y="82" class="fig-tick">71.9</text>
+
+              <text x="140" y="117" text-anchor="end" class="fig-label">ATTA-FL-Lite</text>
+              <rect class="fig-bar" x="150" y="102" width="323.4" height="22" rx="3" />
+              <text x="479" y="118" class="fig-tick">66.0</text>
+
+              <text x="140" y="153" text-anchor="end" class="fig-label">LGP</text>
+              <rect class="fig-bar" x="150" y="138" width="317.6" height="22" rx="3" />
+              <text x="473" y="154" class="fig-tick">64.8</text>
+
+              <text x="140" y="189" text-anchor="end" class="fig-label">BRAFL</text>
+              <rect class="fig-bar" x="150" y="174" width="291.6" height="22" rx="3" />
+              <text x="447" y="190" class="fig-tick">59.5</text>
+
+              <text x="140" y="225" text-anchor="end" class="fig-label">Trimmed Mean</text>
+              <rect class="fig-bar" x="150" y="210" width="251.9" height="22" rx="3" />
+              <text x="408" y="226" class="fig-tick">51.4</text>
+
+              <text x="140" y="261" text-anchor="end" class="fig-label">FedAvg</text>
+              <rect class="fig-bar" x="150" y="246" width="237.3" height="22" rx="3" />
+              <text x="393" y="262" class="fig-tick">48.4</text>
+
+              <line x1="625.8" y1="18" x2="625.8" y2="278" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 3" />
+              <text x="620" y="14" text-anchor="end" class="fig-note">L-MAD on clean data, 97.1</text>
+
+              <line x1="150" y1="278" x2="640" y2="278" stroke="var(--text-muted)" stroke-width="1.2" />
+              <text x="150" y="294" text-anchor="middle" class="fig-tick">0</text>
+              <text x="272.5" y="294" text-anchor="middle" class="fig-tick">25</text>
+              <text x="395" y="294" text-anchor="middle" class="fig-tick">50</text>
+              <text x="517.5" y="294" text-anchor="middle" class="fig-tick">75</text>
+              <text x="640" y="294" text-anchor="middle" class="fig-tick">100</text>
+              <text x="395" y="314" text-anchor="middle" class="fig-axis">DDoS-class F&#8321; (%) under a 30% label-flipping attack</text>
+            </svg>
+          </div>
+          <p class="figcaption">
+            The dashed line is the number that matters most: L-MAD's score on clean data. The
+            attack moves it by less than half a point, so the bar is not "the best of a damaged
+            field", it is a defense the attack barely touched. The gap between it and Krum, the
+            strongest baseline, is wider than the gap between Krum and no defense at all.
+          </p>
         </div>
         <p>
           L-MAD holds 97.52%, statistically indistinguishable from its own clean-data performance

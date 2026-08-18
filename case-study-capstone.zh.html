@@ -24,7 +24,7 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-capstone.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-capstone.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
   <style>
     /* Page-local: the one chart on the site. Scales with its container rather
        than a fixed width, and takes every colour from the theme tokens so it
@@ -48,6 +48,29 @@
     .chart-key span { display: inline-flex; align-items: center; gap: 0.4rem; }
     .chart-key i { width: 14px; height: 3px; border-radius: 2px; background: var(--accent); }
     .chart-key i.dashed { background: var(--text-muted); }
+
+    /* The report's own workflow diagram, lifted from the PDF. It is a portrait
+       image with a baked-in white background, so it keeps its own paper in both
+       themes rather than being tinted by the page. */
+    .figure-doc {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin: 1.5rem 0 0.6rem;
+      max-width: 26rem;
+      padding: 0.8rem;
+    }
+    .figure-doc a { display: block; }
+    .figure-doc img { display: block; width: 100%; height: auto; }
+    :root[data-theme="dark"] .figure-doc { background: #e9edf3; }
+    :root[data-theme="dark"] .figure-doc img { filter: saturate(0.9) brightness(0.97); }
+    .figure-caption {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      max-width: 46rem;
+    }
   </style>
 </head>
 <body>
@@ -137,6 +160,19 @@
           <li><b>開出 pull request</b><span>分支只能透過 PR 往主線合併。</span></li>
           <li><b>修到工程師點頭為止</b><span>公司的工程師會審查並留下意見。案例不是通過測試就算完成，而是他們合併了才算完成。</span></li>
         </ol>
+        <div class="figure-doc">
+          <a href="assets/img/capstone-dev-workflow.png" target="_blank" rel="noopener"
+             aria-label="在新分頁中開啟完整尺寸的開發流程圖">
+            <img src="assets/img/capstone-dev-workflow.png" width="410" height="540" loading="lazy"
+                 alt="開發流程圖，依所屬工具分成四個色塊區域。產品 backlog 進入 sprint backlog，接著是
+                      Robot Editor 區域中的開發、案例細化與程式碼審查；Microsoft Teams 區域中的 sprint
+                      審查會把建議繞回上游；建立分支後進入 Jenkins 區域的 CI 執行與 RfLint 分析；最後在
+                      GitHub 區域等待 pull request 審查，被退回時則繞回修改。" />
+          </a>
+        </div>
+        <p class="figure-caption">
+          同樣的七道關卡，這是我們報告裡原本畫的樣子，並依每個階段所在的工具上色。流程圖能顯示、而上面那份列表無法顯示的，是那些迴圈：審查被退回時是回到<em>修改</em>，而不是回到最開始；sprint 審查提出的建議則從案例細化重新進入。這裡沒有任何一條通往完成的直線。
+        </p>
         <p>
           第二關特別值得停下來看。用文字把測試步驟寫出來、手動跑過一遍、還要等產品經理同意，才准開始寫程式，感覺是所有起手式裡最慢的一種。但它也是唯一一道能在誤解還只是一段文字、而不是一整個測試套件的時候，就把它攔下來的關卡。
         </p>

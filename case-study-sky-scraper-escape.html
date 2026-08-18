@@ -24,7 +24,21 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-sky-scraper-escape.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-sky-scraper-escape.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
+  <style>
+    /* The one raster on this page: a frame rebuilt from the game's own bitmaps.
+       It carries its own art, so unlike .figure-doc it needs no paper panel. */
+    .figure-shot {
+      margin: 1.5rem 0 0.6rem;
+      max-width: 46rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      line-height: 0;
+    }
+    .figure-shot img { display: block; width: 100%; height: auto; }
+  </style>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -155,6 +169,70 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
           Seven of the run state's eleven methods are exactly this: one line, forwarding, no
           branching.
         </p>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 700 330" role="img" aria-labelledby="skyarchtitle skyarchdesc">
+              <title id="skyarchtitle">Two levels of the same indirection, one copied from the other</title>
+              <desc id="skyarchdesc">The framework holds a fixed table of three game states and forwards events to whichever is current. The run state repeats that pattern one layer down: it holds a pointer into a vector of eight level objects, the level-select menu plus seven levels, and forwards the same eleven event methods to whichever is current.</desc>
+
+              <defs>
+                <marker id="sky-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--text-muted)" />
+                </marker>
+              </defs>
+
+              <text x="350" y="20" text-anchor="middle" class="fig-panel-title">The framework, fixed at three states</text>
+
+              <rect class="fig-box" x="135" y="32" width="130" height="46" rx="6" />
+              <text x="200" y="60" text-anchor="middle" class="fig-label">init</text>
+              <rect class="fig-box-accent" x="285" y="32" width="130" height="46" rx="6" />
+              <text x="350" y="60" text-anchor="middle" class="fig-label fig-label-hero">run</text>
+              <rect class="fig-box" x="435" y="32" width="130" height="46" rx="6" />
+              <text x="500" y="60" text-anchor="middle" class="fig-label">over</text>
+
+              <text x="350" y="95" text-anchor="middle" class="fig-tick">CGameState *gameStateTable[3] &#8212; you cannot add a fourth</text>
+
+              <line class="fig-line" x1="350" y1="100" x2="350" y2="124" marker-end="url(#sky-arrow)" />
+
+              <rect class="fig-box-accent" x="135" y="130" width="430" height="52" rx="6" />
+              <text x="350" y="152" text-anchor="middle" class="fig-label">CGameStateRun</text>
+              <text x="350" y="170" text-anchor="middle" class="fig-tick">holds levelInit* current, and branches on nothing</text>
+
+              <line class="fig-line" x1="350" y1="182" x2="350" y2="214" marker-end="url(#sky-arrow)" />
+              <text x="360" y="202" class="fig-note">the same eleven methods, forwarded unchanged</text>
+
+              <text x="350" y="234" text-anchor="middle" class="fig-tick">std::vector&lt;levels::levelInit*&gt; allLevels</text>
+
+              <rect class="fig-box-muted" x="41" y="244" width="72" height="46" rx="5" />
+              <text x="77" y="264" text-anchor="middle" class="fig-tick">menu</text>
+              <text x="77" y="279" text-anchor="middle" class="fig-tick">[0]</text>
+
+              <rect class="fig-box" x="119" y="244" width="72" height="46" rx="5" />
+              <text x="155" y="271" text-anchor="middle" class="fig-tick">Level 1</text>
+              <rect class="fig-box" x="197" y="244" width="72" height="46" rx="5" />
+              <text x="233" y="271" text-anchor="middle" class="fig-tick">Level 2</text>
+              <rect class="fig-box" x="275" y="244" width="72" height="46" rx="5" />
+              <text x="311" y="271" text-anchor="middle" class="fig-tick">Level 3</text>
+              <rect class="fig-box" x="353" y="244" width="72" height="46" rx="5" />
+              <text x="389" y="271" text-anchor="middle" class="fig-tick">Level 4</text>
+              <rect class="fig-box" x="431" y="244" width="72" height="46" rx="5" />
+              <text x="467" y="271" text-anchor="middle" class="fig-tick">Level 5</text>
+              <rect class="fig-box" x="509" y="244" width="72" height="46" rx="5" />
+              <text x="545" y="271" text-anchor="middle" class="fig-tick">Level 6</text>
+              <rect class="fig-box" x="587" y="244" width="72" height="46" rx="5" />
+              <text x="623" y="271" text-anchor="middle" class="fig-tick">Level 7</text>
+
+              <text x="41" y="312" class="fig-tick">the level-select screen is not a level, but it is the same type, so it needs no special case</text>
+            </svg>
+          </div>
+          <p class="figcaption">
+            The bottom row is the part the framework was never going to allow. Eight screens live
+            behind one pointer of one type, so adding an eighth level is adding an element, not
+            editing a dispatcher. The menu sitting at index zero is the test of whether the
+            abstraction was real: if it had needed its own branch, the shape would have leaked.
+          </p>
+        </div>
         <p>
           The first element of that vector is the level-select screen. It is not a level, but it
           derives from the same base class, so it sits in the same array and is reached through the
@@ -216,6 +294,21 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
           <code>OnShow</code>, calls the base class version first, and then adds only its own idea.
           The twists themselves are deliberately small. Most of them are one extra field and one
           extra method.
+        </p>
+        <div class="figure-shot">
+          <img src="assets/img/sky-level1-frame.jpg" width="1192" height="670" loading="lazy"
+               alt="A frame of level one. A small airliner flies at the left over a pixel-art city
+                    at sunset. Three obstacle pairs approach from the right: a cloud hanging from
+                    the top of the screen and a building rising from the bottom, with a gap between
+                    them the plane has to fly through." />
+        </div>
+        <p class="figcaption">
+          Level one, rebuilt from the game's own bitmaps at the coordinates
+          <code>level1.cpp</code> actually uses: the plane at its start position of (180, 270),
+          obstacle pairs whose gap is <code>pathHeight</code> minus fifteen pixels, and the
+          building and cloud drawn from the same pair of images every level reuses. It is a
+          reconstruction rather than a live capture, because the game is a Windows MFC binary and
+          this was assembled from the source assets.
         </p>
         <ol class="levels" role="list">
           <li><b>City Skies</b><span>The baseline. Twenty buildings and twenty clouds scroll leftward; passing one scores a point; touching one ends the run.</span></li>

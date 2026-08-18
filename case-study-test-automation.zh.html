@@ -24,7 +24,7 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-test-automation.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-test-automation.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -126,6 +126,59 @@
         <p>
           數百組套件共用同一台運作中的伺服器，因此平台以 Pabot 的共享記憶體函式庫為基礎，做了一套以標籤為依據的分散式鎖管理器：只要套件會動到共用子系統（例如檔案匯入），就用標籤宣告出來，再由監聽器只把真正會衝突的套件排成循序執行。鎖一律以整組套件為單位取得，避免死結；每一次鎖的狀態轉換都會以標準的 trace 格式輸出，讓平行狀況可以用視覺化的方式檢視。寫新測試代表要理解這份約定並宣告正確的資源，所以我寫的套件在結構上天生就能安全平行執行。
         </p>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="lockstitle lockdesc">
+              <title id="lockstitle">資源鎖管理器之下，六組套件在同一條時間軸上的執行情形</title>
+              <desc id="lockdesc">六組測試套件以長條標示在時間軸上。其中四組同時開始並自由重疊。第四組與第五組宣告了同一個共用子系統，因此第五組要等第四組釋放鎖之後才會開始。</desc>
+
+              <defs>
+                <marker id="ta-lock-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+
+              <line x1="115" y1="18" x2="115" y2="242" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3" />
+
+              <text x="100" y="44" text-anchor="end" class="fig-label">套件 1</text>
+              <rect class="fig-bar" x="115" y="28" width="270" height="22" rx="4" />
+
+              <text x="100" y="80" text-anchor="end" class="fig-label">套件 2</text>
+              <rect class="fig-bar" x="115" y="64" width="190" height="22" rx="4" />
+
+              <text x="100" y="116" text-anchor="end" class="fig-label">套件 3</text>
+              <rect class="fig-bar" x="115" y="100" width="325" height="22" rx="4" />
+
+              <text x="100" y="152" text-anchor="end" class="fig-label">套件 4</text>
+              <rect class="fig-bar-accent" x="115" y="136" width="215" height="22" rx="4" />
+              <text x="122" y="152" class="fig-tick-on-accent">持有鎖</text>
+
+              <text x="100" y="188" text-anchor="end" class="fig-label">套件 5</text>
+              <rect class="fig-bar-accent" x="345" y="172" width="210" height="22" rx="4" />
+              <text x="352" y="188" class="fig-tick-on-accent">鎖釋放後才執行</text>
+
+              <text x="100" y="224" text-anchor="end" class="fig-label">套件 6</text>
+              <rect class="fig-bar" x="115" y="208" width="250" height="22" rx="4" />
+
+              <path class="fig-line-accent" d="M330 147 L338 147 L338 179" marker-end="url(#ta-lock-arrow)" />
+              <text x="348" y="166" class="fig-note">等待鎖釋放</text>
+
+              <line x1="115" y1="252" x2="670" y2="252" stroke="var(--text-muted)" stroke-width="1.2" />
+              <text x="115" y="270" class="fig-tick">開始</text>
+              <text x="670" y="270" text-anchor="end" class="fig-tick">時間</text>
+
+              <rect class="fig-bar-accent" x="115" y="282" width="16" height="11" rx="2" />
+              <text x="139" y="292" class="fig-tick">兩者宣告了同一個共用子系統；其餘全部自由重疊</text>
+            </svg>
+          </div>
+          <p class="figcaption">
+            循序執行是例外，不是常態。只有真正爭用同一個子系統的那兩組套件被迫錯開，其餘四組自由重疊，
+            這正是這種規模的執行能塞進整夜時間窗的原因。忘記宣告資源的套件不會得到一個錯誤訊息，而是會在
+            別的地方得到一次時有時無的失敗，這也是為什麼宣告資源屬於「寫測試」的一部分，而不是排程的細節。
+          </p>
+        </div>
+
         <h3>把測試不穩定當成工程問題來解</h3>
         <p>
           平台不是在測試裡到處灑 sleep，而是把穩定性集中在每次執行都會套用的監聽器管線裡：每個互動之後固定延遲一小段時間，讓瀏覽器不會被推得比真實使用者還快；修補過的等待機制可以容忍失效的 DOM 元素；針對已知的瀏覽器互動競爭狀況做重試；確保瀏覽器一定會關閉；以及在任何內容寫進日誌之前先遮蔽密碼。測試失敗時，瀏覽器主控台與網路記錄會附在報告上，而且只針對失敗的測試，讓每個紅燈結果都自帶足以追查原因的證據。
@@ -135,6 +188,63 @@
         <p>
           測試程式碼比照正式產品的標準要求。每一組新套件都要在自訂的靜態分析規則下零警告通過、連續十次執行全綠，接著在網路節流的情況下再通過五次，才能合併。在 CI 中，通過率未達 100% 的結果會讓該次建置被標記為失敗。正是這道關卡讓這種規模的測試套件值得信任：沒有人需要爭論紅色的建置是不是「大概只是測試不穩定而已」。
         </p>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 700 210" role="img" aria-labelledby="gatetitle gatedesc">
+              <title id="gatetitle">新套件必須通過的合併關卡</title>
+              <desc id="gatedesc">新套件要依序通過零警告的靜態分析、連續十次全綠的執行，以及在網路節流下再執行五次，才能合併。任何一個階段出現紅燈，套件都會回到起點，執行次數重新計算。</desc>
+
+              <defs>
+                <marker id="ta-gate-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--text-muted)" />
+                </marker>
+                <marker id="ta-back-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+
+              <rect class="fig-box" x="10" y="42" width="118" height="58" rx="6" />
+              <text x="69" y="68" text-anchor="middle" class="fig-label">新套件</text>
+              <text x="69" y="85" text-anchor="middle" class="fig-tick">準備送審</text>
+
+              <rect class="fig-box" x="155" y="42" width="118" height="58" rx="6" />
+              <text x="214" y="68" text-anchor="middle" class="fig-label">靜態分析</text>
+              <text x="214" y="85" text-anchor="middle" class="fig-tick">零警告</text>
+
+              <rect class="fig-box" x="300" y="42" width="118" height="58" rx="6" />
+              <text x="359" y="68" text-anchor="middle" class="fig-label">十次全綠</text>
+              <text x="359" y="85" text-anchor="middle" class="fig-tick">而且必須連續</text>
+
+              <rect class="fig-box" x="445" y="42" width="118" height="58" rx="6" />
+              <text x="504" y="68" text-anchor="middle" class="fig-label">再執行五次</text>
+              <text x="504" y="85" text-anchor="middle" class="fig-tick">網路節流</text>
+
+              <rect class="fig-box-accent" x="590" y="42" width="100" height="58" rx="6" />
+              <text x="640" y="76" text-anchor="middle" class="fig-label fig-label-hero">合併</text>
+
+              <line class="fig-line" x1="128" y1="71" x2="150" y2="71" marker-end="url(#ta-gate-arrow)" />
+              <line class="fig-line" x1="273" y1="71" x2="295" y2="71" marker-end="url(#ta-gate-arrow)" />
+              <line class="fig-line" x1="418" y1="71" x2="440" y2="71" marker-end="url(#ta-gate-arrow)" />
+              <line class="fig-line" x1="563" y1="71" x2="585" y2="71" marker-end="url(#ta-gate-arrow)" />
+
+              <text x="350" y="26" text-anchor="middle" class="fig-tick">每一組新套件，沒有例外</text>
+
+              <path class="fig-line-accent" d="M214 100 L214 152" stroke-dasharray="4 3" />
+              <path class="fig-line-accent" d="M359 100 L359 152" stroke-dasharray="4 3" />
+              <path class="fig-line-accent" d="M504 100 L504 152" stroke-dasharray="4 3" />
+              <path class="fig-line-accent" d="M504 152 L69 152 L69 105" marker-end="url(#ta-back-arrow)" />
+              <text x="290" y="172" text-anchor="middle" class="fig-note">只要一次紅燈，次數就從零重新算起</text>
+            </svg>
+          </div>
+          <p class="figcaption">
+            真正吃重的字是<em>連續</em>。十二次裡有十次全綠，是一組平均成績不錯的不穩定套件；連續十次全綠，
+            則是一組沒有失敗過的套件。任何一次紅燈都不是從總數裡扣掉一次，而是直接歸零重算，這讓「硬把一組
+            時好時壞的測試合併進去」比「把它修好」還要慢。
+          </p>
+        </div>
+
         <h3>功能測試之外</h3>
         <p>
           功能測試只是其中一條線。同一個平台上還有 API 效能測試：以 CSV 參數化的負載設定，在一系列虛擬使用者數量之間做並行度掃描，並調整負載設定讓不同層級的結果保持可比較，另外有一條 Python 流程會自動把原始結果收斂成格式化的摘要報表。這部分不是我做的，但在旁邊一起工作，讓我實際看懂效能退化在數字上長什麼樣子，也看到一次不需要有人盯著的發版背後，累積了多少一點也不華麗的自動化。

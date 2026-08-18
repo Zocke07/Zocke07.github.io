@@ -742,6 +742,36 @@ a:hover { text-decoration: underline; }
 }
 .learnings b { display: block; margin-bottom: 0.15rem; }
 
+/* Figures. Inline SVG drawn from the theme tokens above, so a diagram follows
+   light/dark instead of shipping a baked-in background. Pages that had their
+   own copy of these rules still override them locally; this is the base every
+   case study can rely on without repeating itself. */
+.figure { margin: 1.75rem 0 0.6rem; max-width: 46rem; }
+.figure-scroll { overflow-x: auto; }
+.fig-svg { display: block; width: 100%; min-width: 30rem; height: auto; }
+.figcaption {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0.6rem 0 1.5rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--border);
+}
+.fig-tick { font-size: 11px; fill: var(--text-muted); }
+.fig-label { font-size: 12px; fill: var(--text); }
+.fig-label-hero { font-weight: 700; fill: var(--accent); }
+.fig-axis { font-size: 12px; fill: var(--text-muted); }
+.fig-note { font-size: 11px; fill: var(--accent); }
+.fig-panel-title { font-size: 13px; font-weight: 600; fill: var(--text); }
+.fig-tick-on-accent { font-size: 11px; fill: var(--accent-contrast); }
+/* Shared fills for box-and-arrow diagrams. */
+.fig-box { fill: var(--card-bg); stroke: var(--border); stroke-width: 1; }
+.fig-box-accent { fill: var(--accent); fill-opacity: 0.12; stroke: var(--accent); stroke-width: 1.5; }
+.fig-box-muted { fill: var(--bg-alt); stroke: var(--border); stroke-width: 1; stroke-dasharray: 3 3; }
+.fig-bar { fill: var(--accent); fill-opacity: 0.28; stroke: var(--accent); stroke-width: 1; }
+.fig-bar-accent { fill: var(--accent); }
+.fig-line { stroke: var(--text-muted); stroke-width: 1.4; fill: none; }
+.fig-line-accent { stroke: var(--accent); stroke-width: 1.6; fill: none; }
+
 @media (max-width: 640px) {
   .case-hero { padding: 4rem 0 2.5rem; }
 }

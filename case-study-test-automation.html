@@ -24,7 +24,7 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-test-automation.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-test-automation.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -159,6 +159,61 @@
           understanding this contract and declaring the right resources, so my suites were
           parallel-safe by construction.
         </p>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="lockstitle lockdesc">
+              <title id="lockstitle">Six suites on one shared timeline under the resource lock manager</title>
+              <desc id="lockdesc">Six test suites plotted as bars against time. Four start together and overlap freely. Suites four and five declare the same shared subsystem, so suite five does not start until suite four releases its lock.</desc>
+
+              <defs>
+                <marker id="ta-lock-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+
+              <line x1="115" y1="18" x2="115" y2="242" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 3" />
+
+              <text x="100" y="44" text-anchor="end" class="fig-label">Suite 1</text>
+              <rect class="fig-bar" x="115" y="28" width="270" height="22" rx="4" />
+
+              <text x="100" y="80" text-anchor="end" class="fig-label">Suite 2</text>
+              <rect class="fig-bar" x="115" y="64" width="190" height="22" rx="4" />
+
+              <text x="100" y="116" text-anchor="end" class="fig-label">Suite 3</text>
+              <rect class="fig-bar" x="115" y="100" width="325" height="22" rx="4" />
+
+              <text x="100" y="152" text-anchor="end" class="fig-label">Suite 4</text>
+              <rect class="fig-bar-accent" x="115" y="136" width="215" height="22" rx="4" />
+              <text x="122" y="152" class="fig-tick-on-accent">holds the lock</text>
+
+              <text x="100" y="188" text-anchor="end" class="fig-label">Suite 5</text>
+              <rect class="fig-bar-accent" x="345" y="172" width="210" height="22" rx="4" />
+              <text x="352" y="188" class="fig-tick-on-accent">runs once it is free</text>
+
+              <text x="100" y="224" text-anchor="end" class="fig-label">Suite 6</text>
+              <rect class="fig-bar" x="115" y="208" width="250" height="22" rx="4" />
+
+              <path class="fig-line-accent" d="M330 147 L338 147 L338 179" marker-end="url(#ta-lock-arrow)" />
+              <text x="348" y="166" class="fig-note">waits for the lock</text>
+
+              <line x1="115" y1="252" x2="670" y2="252" stroke="var(--text-muted)" stroke-width="1.2" />
+              <text x="115" y="270" class="fig-tick">start</text>
+              <text x="670" y="270" text-anchor="end" class="fig-tick">time</text>
+
+              <rect class="fig-bar-accent" x="115" y="282" width="16" height="11" rx="2" />
+              <text x="139" y="292" class="fig-tick">both declare the same shared subsystem; everything else overlaps freely</text>
+            </svg>
+          </div>
+          <p class="figcaption">
+            Serialization is the exception, not the rule. Only the two suites that contend for the
+            same subsystem are forced apart; the other four overlap freely, which is what keeps a
+            run of this size inside its overnight window. A suite that forgets to declare its
+            resource does not get an error, it gets an intermittent failure somewhere else, which
+            is why the declaration is part of writing the test rather than a scheduling detail.
+          </p>
+        </div>
+
         <h3>Flakiness treated as an engineering problem</h3>
         <p>
           Instead of sprinkling sleeps into tests, the platform centralizes stability in a
@@ -178,6 +233,64 @@
           the build. The gate is what makes a suite this size trustworthy: nobody debates
           whether a red build is "probably just flaky."
         </p>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 700 210" role="img" aria-labelledby="gatetitle gatedesc">
+              <title id="gatetitle">The merge gate a new suite has to clear</title>
+              <desc id="gatedesc">A new suite passes through static analysis with zero warnings, then ten consecutive green runs, then five runs under network throttling, before it may be merged. A red result at any stage returns the suite to the start and the run count begins again.</desc>
+
+              <defs>
+                <marker id="ta-gate-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--text-muted)" />
+                </marker>
+                <marker id="ta-back-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+
+              <rect class="fig-box" x="10" y="42" width="118" height="58" rx="6" />
+              <text x="69" y="68" text-anchor="middle" class="fig-label">New suite</text>
+              <text x="69" y="85" text-anchor="middle" class="fig-tick">ready for review</text>
+
+              <rect class="fig-box" x="155" y="42" width="118" height="58" rx="6" />
+              <text x="214" y="68" text-anchor="middle" class="fig-label">Static analysis</text>
+              <text x="214" y="85" text-anchor="middle" class="fig-tick">zero warnings</text>
+
+              <rect class="fig-box" x="300" y="42" width="118" height="58" rx="6" />
+              <text x="359" y="68" text-anchor="middle" class="fig-label">10 runs green</text>
+              <text x="359" y="85" text-anchor="middle" class="fig-tick">consecutively</text>
+
+              <rect class="fig-box" x="445" y="42" width="118" height="58" rx="6" />
+              <text x="504" y="68" text-anchor="middle" class="fig-label">5 runs more</text>
+              <text x="504" y="85" text-anchor="middle" class="fig-tick">network throttled</text>
+
+              <rect class="fig-box-accent" x="590" y="42" width="100" height="58" rx="6" />
+              <text x="640" y="76" text-anchor="middle" class="fig-label fig-label-hero">Merge</text>
+
+              <line class="fig-line" x1="128" y1="71" x2="150" y2="71" marker-end="url(#ta-gate-arrow)" />
+              <line class="fig-line" x1="273" y1="71" x2="295" y2="71" marker-end="url(#ta-gate-arrow)" />
+              <line class="fig-line" x1="418" y1="71" x2="440" y2="71" marker-end="url(#ta-gate-arrow)" />
+              <line class="fig-line" x1="563" y1="71" x2="585" y2="71" marker-end="url(#ta-gate-arrow)" />
+
+              <text x="350" y="26" text-anchor="middle" class="fig-tick">every new suite, no exceptions</text>
+
+              <path class="fig-line-accent" d="M214 100 L214 152" stroke-dasharray="4 3" />
+              <path class="fig-line-accent" d="M359 100 L359 152" stroke-dasharray="4 3" />
+              <path class="fig-line-accent" d="M504 100 L504 152" stroke-dasharray="4 3" />
+              <path class="fig-line-accent" d="M504 152 L69 152 L69 105" marker-end="url(#ta-back-arrow)" />
+              <text x="290" y="172" text-anchor="middle" class="fig-note">one red result and the count starts over at zero</text>
+            </svg>
+          </div>
+          <p class="figcaption">
+            The word doing the work is <em>consecutively</em>. Ten green runs out of twelve would
+            be a flaky suite with a good average; ten in a row is a suite that has not failed. A
+            red result anywhere does not subtract one from the tally, it resets it, which makes
+            merging an intermittently failing test slower than fixing it.
+          </p>
+        </div>
+
         <h3>Beyond functional tests</h3>
         <p>
           Functional testing was only one lane. The same platform carries API performance

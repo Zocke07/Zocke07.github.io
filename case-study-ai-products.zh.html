@@ -24,7 +24,7 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-ai-products.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-ai-products.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <link rel="stylesheet" href="assets/css/style.css?v=7" />
   <style>
     /* Only what is unique to this page; the shared case-study
        rules live in style.css. */
@@ -169,12 +169,116 @@
           <li><b>手動端對端驗證</b><span>這一步由我親自負責。用真實瀏覽器對上真正在運行的執行個體，明確寫出測試目標、預期訊號與通過標準。</span></li>
           <li><b>明確簽核，或把不簽核的決定記錄下來</b><span>當我們選擇接受某個缺口或跳過某一輪驗證時，這個決定連同理由都會寫下來，而不是留給大家自行意會。</span></li>
         </ol>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 720 215" role="img" aria-labelledby="aigatetitle aigatedesc">
+              <title id="aigatetitle">一個能乾淨編譯的缺陷，實際上是在哪裡被攔下來的</title>
+              <desc id="aigatedesc">一項變更由左至右通過五道關卡：提案與設計、驗收條件、實作查核清單、親手驗證，以及簽核。一個能乾淨編譯、讀起來也正確的缺陷，會毫無阻礙地通過前三步，最後在親手驗證這一步被攔下來。</desc>
+
+              <defs>
+                <marker id="ai-gate-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--text-muted)" />
+                </marker>
+              </defs>
+
+              <rect class="fig-box" x="20" y="34" width="118" height="52" rx="6" />
+              <text x="79" y="57" text-anchor="middle" class="fig-label">提案</text>
+              <text x="79" y="73" text-anchor="middle" class="fig-tick">與設計</text>
+
+              <rect class="fig-box" x="160" y="34" width="118" height="52" rx="6" />
+              <text x="219" y="57" text-anchor="middle" class="fig-label">驗收</text>
+              <text x="219" y="73" text-anchor="middle" class="fig-tick">條件</text>
+
+              <rect class="fig-box" x="300" y="34" width="118" height="52" rx="6" />
+              <text x="359" y="57" text-anchor="middle" class="fig-label">實作</text>
+              <text x="359" y="73" text-anchor="middle" class="fig-tick">查核清單</text>
+
+              <rect class="fig-box-accent" x="440" y="34" width="118" height="52" rx="6" />
+              <text x="499" y="57" text-anchor="middle" class="fig-label fig-label-hero">親手</text>
+              <text x="499" y="73" text-anchor="middle" class="fig-note">驗證</text>
+
+              <rect class="fig-box" x="580" y="34" width="118" height="52" rx="6" />
+              <text x="639" y="57" text-anchor="middle" class="fig-label">簽核</text>
+              <text x="639" y="73" text-anchor="middle" class="fig-tick">或記錄下的缺口</text>
+
+              <line class="fig-line" x1="138" y1="60" x2="156" y2="60" marker-end="url(#ai-gate-arrow)" />
+              <line class="fig-line" x1="278" y1="60" x2="296" y2="60" marker-end="url(#ai-gate-arrow)" />
+              <line class="fig-line" x1="418" y1="60" x2="436" y2="60" marker-end="url(#ai-gate-arrow)" />
+              <line class="fig-line" x1="558" y1="60" x2="576" y2="60" marker-end="url(#ai-gate-arrow)" />
+
+              <text x="499" y="24" text-anchor="middle" class="fig-note">我負責的那一步</text>
+
+              <path class="fig-line-accent" d="M499 86 L499 132" stroke-dasharray="3 3" />
+              <line x1="20" y1="146" x2="480" y2="146" stroke="var(--text-muted)" stroke-width="1.4"
+                    stroke-dasharray="5 4" />
+              <text x="20" y="136" class="fig-tick">一個能乾淨編譯、讀起來也正確的缺陷</text>
+
+              <circle cx="499" cy="146" r="11" fill="none" stroke="var(--accent)" stroke-width="2" />
+              <path d="M494 141 L504 151 M504 141 L494 151" stroke="var(--accent)" stroke-width="2" fill="none" />
+              <text x="499" y="180" text-anchor="middle" class="fig-label fig-label-hero">在這裡被攔下</text>
+              <text x="499" y="197" text-anchor="middle" class="fig-tick">被壓掉的格式、被截斷的模型輸出</text>
+            </svg>
+          </div>
+          <p class="figcaption">
+            前三步都只是在「讀」這項變更，只有第四步真的把它跑起來。這就是這道關卡值回票價的全部理由，
+            因為真正要命的那些缺陷，對瀏覽器之前的每一個環節來說都是隱形的。
+          </p>
+        </div>
+
         <p>
           第四步就是這套流程值回票價的地方。一再有人以為某個修正已經完成，結果並沒有：某條在隔離環境下運作正常的寫回路徑，一碰到真實編輯器就把超連結壓成純文字；一段較長的譯文則在送到頁面之前，就被模型悄悄截斷了。這兩件事在 diff 裡都看不出來，但實際動手用，一分鐘之內就一目了然。
         </p>
         <p>
           在 IDE 擴充套件這邊，驗證的樣貌不太一樣，因為那裡做得出測試套件。團隊的解法要應付三個真的很棘手的相依：即時的編輯器 API、真實的版本控制系統，以及不具確定性的模型。做法是把測試放進真正的編輯器執行個體裡跑，在磁碟上建立用完即丟的儲存庫來實際執行指令，並把模型換成 stub，讓結果具備確定性、執行起來也不花錢。審閱那套測試套件的過程，是我今天對於如何測試「看似不可測之物」的認識的主要來源。
         </p>
+        <div class="figure">
+          <div class="figure-scroll">
+            <svg class="fig-svg" viewBox="0 0 700 240" role="img" aria-labelledby="aitesttitle aitestdesc">
+              <title id="aitesttitle">三個棘手的相依，以及各自採用的替代做法</title>
+              <desc id="aitestdesc">三列對照。即時的編輯器 API，做法是把測試放進真正的編輯器執行個體裡跑；真實的版本控制系統，做法是在磁碟上建立用完即丟的儲存庫；不具確定性的模型，則換成 stub，讓結果具備確定性且不花錢。</desc>
+
+              <defs>
+                <marker id="ai-sub-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+
+              <text x="140" y="24" text-anchor="middle" class="fig-panel-title">難以測試的地方</text>
+              <text x="530" y="24" text-anchor="middle" class="fig-panel-title">測試套件改用的做法</text>
+
+              <rect class="fig-box-muted" x="14" y="42" width="252" height="52" rx="6" />
+              <text x="140" y="66" text-anchor="middle" class="fig-label">即時的編輯器 API</text>
+              <text x="140" y="83" text-anchor="middle" class="fig-tick">沒辦法直接 import 進來呼叫</text>
+              <rect class="fig-box-accent" x="390" y="42" width="296" height="52" rx="6" />
+              <text x="538" y="66" text-anchor="middle" class="fig-label">放進真正的編輯器執行個體裡跑</text>
+              <text x="538" y="83" text-anchor="middle" class="fig-tick">相依本身，每次執行時啟動</text>
+              <line class="fig-line-accent" x1="266" y1="68" x2="385" y2="68" marker-end="url(#ai-sub-arrow)" />
+
+              <rect class="fig-box-muted" x="14" y="108" width="252" height="52" rx="6" />
+              <text x="140" y="132" text-anchor="middle" class="fig-label">真實的版本控制系統</text>
+              <text x="140" y="149" text-anchor="middle" class="fig-tick">狀態在磁碟上，不在記憶體裡</text>
+              <rect class="fig-box-accent" x="390" y="108" width="296" height="52" rx="6" />
+              <text x="538" y="132" text-anchor="middle" class="fig-label">建立用完即丟的儲存庫</text>
+              <text x="538" y="149" text-anchor="middle" class="fig-tick">執行真實指令，事後整個丟掉</text>
+              <line class="fig-line-accent" x1="266" y1="134" x2="385" y2="134" marker-end="url(#ai-sub-arrow)" />
+
+              <rect class="fig-box-muted" x="14" y="174" width="252" height="52" rx="6" />
+              <text x="140" y="198" text-anchor="middle" class="fig-label">不具確定性的模型</text>
+              <text x="140" y="215" text-anchor="middle" class="fig-tick">每次呼叫答案都不同，而且要計費</text>
+              <rect class="fig-box-accent" x="390" y="174" width="296" height="52" rx="6" />
+              <text x="538" y="198" text-anchor="middle" class="fig-label">換成 stub</text>
+              <text x="538" y="215" text-anchor="middle" class="fig-tick">結果具備確定性，執行不花錢</text>
+              <line class="fig-line-accent" x1="266" y1="200" x2="385" y2="200" marker-end="url(#ai-sub-arrow)" />
+            </svg>
+          </div>
+          <p class="figcaption">
+            三個之中有兩個維持真實、一個被替換掉，而這個取捨並不是隨意的。編輯器與儲存庫正是缺陷真正藏身的
+            地方，把它們假造掉，等於連結果一起假造。模型之所以換成 stub，是因為它的變異屬於雜訊，而不是這裡
+            要測的東西，也因為一套每跑一次就跟你收錢的測試，最後就不會有人去跑它。
+          </p>
+        </div>
       </div>
     </section>
 
