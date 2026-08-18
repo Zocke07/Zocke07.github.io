@@ -27,6 +27,64 @@
   <link rel="stylesheet" href="assets/css/style.css?v=6" />
   <style>
     /* 只保留這個頁面獨有的樣式；共用的案例研究樣式放在 style.css。 */
+    /* 分割區間表格與活動圖。在窄螢幕上於自身區塊內橫向捲動，而不是把頁面撐寬。 */
+    .blocks {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      box-shadow: var(--shadow);
+      margin: 1.5rem 0 0.6rem;
+      max-width: 46rem;
+      overflow-x: auto;
+    }
+    .blocks table { border-collapse: collapse; width: 100%; min-width: 36rem; }
+    .blocks th, .blocks td {
+      text-align: left;
+      padding: 0.55rem 0.85rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      font-size: 0.85rem;
+      font-weight: 400;
+    }
+    .blocks thead th {
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .blocks tbody th { font-weight: 600; color: var(--text); }
+    .blocks tbody td { color: var(--text-muted); }
+    .blocks tbody tr:last-child th, .blocks tbody tr:last-child td { border-bottom: 0; }
+    .blocks .v {
+      display: block;
+      margin-top: 0.2rem;
+      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.78rem;
+      color: var(--accent);
+    }
+
+    .figure { margin: 1.5rem 0 0.6rem; max-width: 46rem; overflow-x: auto; }
+    .figure svg { display: block; width: 100%; min-width: 32rem; height: auto; }
+
+    /* 報告簡報裡的原始圖檔。在深淺兩種主題下都保留自己的紙張底色。
+       因為它是為 16:9 投影片畫的，會跳出 46rem 的內文欄寬、佔滿整個頁面寬度；
+       低於這個寬度時才橫向捲動。 */
+    .figure-doc {
+      background: #ffffff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin: 1.5rem 0 0.6rem;
+      overflow-x: auto;
+      padding: 0.8rem;
+    }
+    .prose > .figure-doc { max-width: none; }
+    .figure-doc a { display: block; }
+    .figure-doc img { display: block; width: 100%; min-width: 50rem; height: auto; }
+    :root[data-theme="dark"] .figure-doc { background: #e9edf3; }
+    :root[data-theme="dark"] .figure-doc img { filter: saturate(0.9) brightness(0.97); }
+    .figure-caption,
+    .blocks-caption { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; max-width: 46rem; }
   </style>
 </head>
 <body>
@@ -148,7 +206,73 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
           用基本選擇來涵蓋輸入空間分割，是一個刻意的取捨。它假設各個特徵之間不太會互相影響，所以抓不到那種「要兩個特徵同時錯」才會出現的缺陷。團隊是明知如此才這樣選的，因為五個人用手驅動一支手機，負擔不起完整的組合。而我負責的區塊裡，唯一真的存在欄位交互作用的畫面，會在下面單獨處理。
         </p>
 
+        <h3>把它套在一個真實畫面上會長成什麼樣子</h3>
+        <div class="figure-doc">
+          <a href="assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener"
+             aria-label="在新分頁開啟完整尺寸的活動圖">
+            <img src="assets/img/tc1-activity-diagram.png" width="2000" height="749" loading="lazy"
+                 alt="新增健康數據畫面的活動圖。判斷菱形由左到右串成一條主幹，每種紀錄類型各一個，而標示為 TC1-1 到 TC1-7 的每一條分支，都往下接到該測試案例所要輸入的欄位。" />
+          </a>
+        </div>
+        <p class="figure-caption">
+          團隊為「新增健康數據」畫的活動圖，直接取自我們的報告。圖上標示的每一條分支，從 TC1-1 到 TC1-7，都是一個測試案例：實際操作 App，每一個真的通往某處的判斷，就變成一個案例，末端接上它自己的輸入。我負責的區塊也長成同樣的形狀，五條分支分別帶著 2、1、6、4、2 個測試案例。這張圖畫的是另一個功能區塊，背後的程式碼是隊友寫的，但方法是我們五個人共同遵循的那一套。
+          <a href="assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener">開啟完整尺寸 →</a>
+        </p>
 
+        <h3>我那十五個測試背後的分割區間</h3>
+        <div class="blocks">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">特徵</th>
+                <th scope="col">分割區間 1</th>
+                <th scope="col">分割區間 2</th>
+                <th scope="col">分割區間 3</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">血糖目標</th>
+                <td>下限小於上限 <span class="v">99/100 · 98/99 · 101/102</span></td>
+                <td>下限等於上限 <span class="v">100/100</span></td>
+                <td>下限大於上限 <span class="v">101/100</span></td>
+              </tr>
+              <tr>
+                <th scope="row">日常作息時間</th>
+                <td>最小值 <span class="v">00:00</span></td>
+                <td>中間值 <span class="v">12:30</span></td>
+                <td>最大值 <span class="v">23:59</span></td>
+              </tr>
+              <tr>
+                <th scope="row">作息先後順序</th>
+                <td>五個時間依序排列</td>
+                <td>午餐落在早餐與晚餐之外</td>
+                <td>晚餐落在午餐與睡前之外</td>
+              </tr>
+              <tr>
+                <th scope="row">自訂食物名稱</th>
+                <td>非空字串 <span class="v">Hamburger</span></td>
+                <td>空字串</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">報表收件人</th>
+                <td>有填電子郵件</td>
+                <td>沒有填</td>
+                <td></td>
+              </tr>
+              <tr>
+                <th scope="row">量測單位</th>
+                <td>預設 <span class="v">mg/dL, kg</span></td>
+                <td>切換後 <span class="v">mmol/L, lb</span></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="blocks-caption">
+          這就是那套方法要求填的表格，只是換成我負責的那五個畫面。空白的格子表示這個特徵只有兩個值得分開處理的區間。表格裡的每一個值，在變數檔裡都是一個具名常數，而不是直接打在步驟裡的數字。
+        </p>
 
         <h3>分割區間，取值落在它的邊緣</h3>
         <p>
@@ -163,6 +287,76 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         <h3>跨越多個欄位的限制條件</h3>
         <p>
           日常作息是一天當中的五個時間點，彼此必須維持先後順序，所以午餐一定要落在早餐和晚餐之間。沒有任何單一欄位能驗證這件事，而這也正是基本選擇註定會漏掉的東西：這個準則每次只變動一個特徵，但這條規則要兩個欄位互相牴觸才會被打破。所以那四個案例裡有三個，是把時間這個特徵掃過它的各個分割區間，把 00:00、12:30 與 23:59 分別寫進五個作息裡，再逐一確認讀回來的值正確。第四個則反過來設計：先把早餐推到午餐之後，斷言 App 跳出的那句抱怨，關掉對話框，接著再把晚餐推到睡前時間之後，連第二句抱怨也一併斷言。一個測試，兩種打破順序的方式。
+        </p>
+        <div class="figure">
+          <svg viewBox="0 0 620 580" role="img" aria-labelledby="routine-flow-title routine-flow-desc">
+            <title id="routine-flow-title">日常作息順序測試的活動圖</title>
+            <desc id="routine-flow-desc">
+              輸入五個作息時間並按下 Done 之後，App 會先檢查午餐是否落在早餐與晚餐之間，接著再檢查晚餐是否落在午餐與睡前之間。任何一項檢查沒過都會跳出警告，測試會先斷言這句警告，再修正數值重試。只有兩項檢查都通過時，五個時間才會被存檔。
+            </desc>
+            <defs>
+              <marker id="rt-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                      markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="var(--text-muted)" />
+              </marker>
+            </defs>
+            <g stroke="var(--text-muted)" stroke-width="1.5" fill="none" marker-end="url(#rt-arrow)">
+              <path d="M200,34 L200,48" />
+              <path d="M200,90 L200,118" />
+              <path d="M200,156 L200,177" />
+              <path d="M200,287 L200,337" />
+              <path d="M200,447 L200,480" />
+              <path d="M200,520 L200,543" />
+              <path d="M335,232 L380,232" />
+              <path d="M335,392 L380,392" />
+              <path d="M590,232 L605,232 L605,69 L300,69" />
+            </g>
+            <path d="M590,392 L605,392 L605,232" stroke="var(--text-muted)" stroke-width="1.5" fill="none" />
+
+            <circle cx="200" cy="26" r="8" fill="var(--text-muted)" />
+
+            <g fill="var(--card-bg)" stroke="var(--border)" stroke-width="1.5">
+              <rect x="100" y="48" width="200" height="42" rx="8" />
+              <rect x="125" y="118" width="150" height="38" rx="8" />
+              <rect x="110" y="480" width="180" height="40" rx="8" />
+            </g>
+            <g fill="var(--card-bg)" stroke="var(--accent)" stroke-width="1.5">
+              <polygon points="200,177 335,232 200,287 65,232" />
+              <polygon points="200,337 335,392 200,447 65,392" />
+            </g>
+            <g fill="color-mix(in srgb, var(--accent) 8%, var(--bg))"
+               stroke="color-mix(in srgb, var(--accent) 28%, var(--border))" stroke-width="1.5">
+              <rect x="380" y="208" width="210" height="48" rx="8" />
+              <rect x="380" y="368" width="210" height="48" rx="8" />
+            </g>
+
+            <circle cx="200" cy="552" r="9" fill="none" stroke="var(--text-muted)" stroke-width="1.5" />
+            <circle cx="200" cy="552" r="5" fill="var(--text-muted)" />
+
+            <g font-family="inherit" font-size="12.5" fill="var(--text)" text-anchor="middle">
+              <text x="200" y="74">輸入五個作息時間</text>
+              <text x="200" y="142">按下 Done</text>
+              <text x="200" y="228">午餐是否落在</text>
+              <text x="200" y="244">早餐與晚餐之間？</text>
+              <text x="200" y="388">晚餐是否落在</text>
+              <text x="200" y="404">午餐與睡前之間？</text>
+              <text x="200" y="505">五個時間存檔</text>
+              <text x="485" y="228">警告：午餐必須落在</text>
+              <text x="485" y="244">早餐與晚餐之間</text>
+              <text x="485" y="388">警告：晚餐必須落在</text>
+              <text x="485" y="404">午餐與睡前之間</text>
+            </g>
+            <g font-family="inherit" font-size="11" fill="var(--text-muted)">
+              <text x="212" y="316">是</text>
+              <text x="212" y="468">是</text>
+              <text x="357" y="225" text-anchor="middle">否</text>
+              <text x="357" y="385" text-anchor="middle">否</text>
+              <text x="452" y="61" text-anchor="middle">修正數值後重試</text>
+            </g>
+          </svg>
+        </div>
+        <p class="figure-caption">
+          那一個測試的活動圖。圖上那兩個判斷點就是它存在的全部理由，也正是任何「一個欄位一組分割」都到不了的地方。
         </p>
 
         <h3>前置條件用寫的，不用猜的</h3>
