@@ -71,7 +71,7 @@ sections.forEach((s) => spy.observe(s));
 // --- Reveal on scroll ---
 // Tag content blocks below the hero; stagger siblings via --delay.
 const revealTargets = document.querySelectorAll(
-  ".section-title, .entry, .card, .skill-group, .languages, .contact p, .contact .hero-actions"
+  ".section-title, .about p, .entry, .card, .skill-group, .languages, .contact p, .contact .hero-actions"
 );
 
 const siblingCount = new Map();

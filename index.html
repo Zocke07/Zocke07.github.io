@@ -25,7 +25,7 @@
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/index.zh.html" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=3" />
+  <link rel="stylesheet" href="assets/css/style.css?v=6" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -36,9 +36,10 @@
       <a class="nav-brand" href="#top">Rivan Wong</a>
       <div class="nav-right">
         <ul id="nav-menu" class="nav-menu">
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#projects">Projects</a></li>
+          <li><a href="#about">About</a></li>
           <li><a href="#education">Education</a></li>
+          <li><a href="#experience">Experience</a></li>
+          <li><a href="#projects">Work &amp; Research</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
@@ -72,6 +73,65 @@
         </p>
         <img class="hero-portrait" src="assets/img/portrait.jpg" width="560" height="560"
              alt="Portrait of Rivan Wong" />
+      </div>
+    </section>
+
+    <!-- ===================== About ===================== -->
+    <section id="about" class="section">
+      <div class="container prose about">
+        <h2 class="section-title">About</h2>
+        <p class="about-lead">
+          I grew up in Indonesia and moved to Taipei in 2021 for university. The degree was
+          taught in Chinese, a language I picked up as I went and have studied and worked in
+          ever since.
+        </p>
+        <p>
+          I was a math kid before any of that, and the appeal was always that the answer could
+          be checked. That is close to why QA suits me: I would rather find out early that I am
+          wrong, while being wrong is still cheap.
+        </p>
+        <p>
+          Not everything at university happened in class. A good part of it went to student
+          activities and volunteering, much of that helping international students settle into
+          a place I had arrived at not long before myself.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Education ===================== -->
+    <section id="education" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">Education</h2>
+
+        <article class="entry">
+          <div class="entry-head">
+            <div>
+              <h3>M.S. in Computer Science and Information Engineering</h3>
+              <p class="entry-org">National Taipei University of Technology <span lang="zh-Hant">(國立臺北科技大學)</span> · Taipei, Taiwan</p>
+            </div>
+            <p class="entry-date">2025 – 2026</p>
+          </div>
+          <ul class="entry-points">
+            <li>GPA: 4.0 / 4.0</li>
+            <li>Completed in one year through the university's selective Bachelor's–Master's program <span lang="zh-Hant">(學碩一貫學程)</span>.</li>
+            <li>Thesis: <em>Trust-Aware Layer-Wise Median Absolute Deviation (L-MAD) for Byzantine-Robust Aggregation in Federated Edge Learning</em>, advised by Shiang-Jiun Chen, Ph.D., in the Software Security Lab. <a href="case-study-lmad.html">Read the case study →</a></li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="entry-head">
+            <div>
+              <h3>B.S. in Computer Science and Information Engineering</h3>
+              <p class="entry-org">National Taipei University of Technology · Taipei, Taiwan</p>
+            </div>
+            <p class="entry-date">2021 – 2025</p>
+          </div>
+          <ul class="entry-points">
+            <li>GPA: 3.5 / 4.0</li>
+            <li>Member of the Software Security Lab, working on test automation; my industry-academia co-op with Sunbird Software was based there.</li>
+          </ul>
+        </article>
+
       </div>
     </section>
 
@@ -143,7 +203,7 @@
     <!-- ===================== Projects ===================== -->
     <section id="projects" class="section section-alt">
       <div class="container">
-        <h2 class="section-title">Projects</h2>
+        <h2 class="section-title">Work &amp; Research</h2>
         <div class="card-grid">
           <article class="card">
             <h3>The Defense That Says Where It Breaks</h3>
@@ -160,6 +220,23 @@
               <li>PyTorch</li><li>Flower</li><li>Federated Learning</li><li>Adversarial ML</li><li>Python</li>
             </ul>
             <p class="entry-more"><a href="case-study-lmad.html">Read the case study →</a></p>
+          </article>
+
+          <article class="card">
+            <h3>Test Automation Best Practices: A Case Study Analysis</h3>
+            <p class="card-meta">Capstone Project · Industry-Academia Research</p>
+            <p class="card-body">
+              My graduation capstone, written from inside the Sunbird co-op with two teammates.
+              It documents how a commercial test automation team actually works, from test steps
+              confirmed with the product manager before any code is written to a CI gate of ten
+              runs plus five throttled, and analyzes four years of the team's statistics to
+              explain why output declined. Because the real code stays behind the NDA, I built
+              the exhibit from scratch on a target I could publish.
+            </p>
+            <ul class="tags entry-tags">
+              <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>Research</li>
+            </ul>
+            <p class="entry-more"><a href="case-study-capstone.html">The process was fine, the output still fell: a case study →</a></p>
           </article>
           <article class="card">
             <h3>How 730+ Tests Run at Once Without Stepping on Each Other</h3>
@@ -207,96 +284,59 @@
               <li>Robot Framework</li><li>Appium</li><li>Android</li><li>Test Design</li>
             </ul>
             <p class="entry-more"><a href="project-mobile-testing.html">Project notes: no reset button →</a></p>
-            <p class="entry-more"><a href="https://github.com/qwe8496516/Health2SyncProject" target="_blank" rel="noopener">View on GitHub →</a></p>
           </article>
           <article class="card">
             <h3>Sky Scraper Escape</h3>
             <p class="card-meta">C++ · MFC · Object-Oriented Design</p>
             <p class="card-body">
               Fly a plane through a city skyline across seven levels, each adding a twist:
-              narrowed vision, flickering obstacles, buildings that move vertically, gravity
-              that inverts. Built for an OOP lab course on top of a teaching game framework
-              that allows exactly three states. The design is the interesting part. I mirrored
-              the framework's own state interface onto a level base class, so every level and
-              the menu became interchangeable objects behind one pointer, and the main loop
-              forwards events without knowing which one it is talking to. I wrote most of the
-              team's game code: the player, that base class, and the menu and level-select
-              screens.
+              narrowed vision, flickering obstacles, gravity that inverts. Built for an OOP lab
+              course on a teaching framework that allows exactly three states. I mirrored the
+              framework's state interface onto a level base class, so every level and the menu
+              became interchangeable objects behind one pointer. I wrote most of the team's
+              game code.
             </p>
             <ul class="tags entry-tags">
               <li>C++</li><li>OOP</li><li>MFC</li><li>DirectDraw</li><li>Git</li>
             </ul>
             <p class="entry-more"><a href="case-study-sky-scraper-escape.html">The menu is just another level: a case study →</a></p>
-            <p class="entry-more"><a href="https://github.com/Zocke07/Sky-Scraper-Escape" target="_blank" rel="noopener">View on GitHub →</a></p>
           </article>
-          <article class="card">
-            <h3>Test Automation Best Practices: A Case Study Analysis</h3>
-            <p class="card-meta">Capstone Project · Industry-Academia Research</p>
+          <article class="card card-brief">
+            <h3>From a Truth Table to a Pipelined CPU</h3>
+            <p class="card-meta">Undergraduate Coursework · VHDL / FPGA · Embedded Linux</p>
             <p class="card-body">
-              My graduation capstone, written from inside the Sunbird co-op with two teammates.
-              It documents how a commercial test automation team actually works: test steps
-              designed by hand and confirmed with the product manager before any code is written,
-              mob programming sessions, a CI gate of ten runs plus five throttled, and pull
-              requests that close only when the company's engineers approve. It also analyzes
-              four years of the team's test-case statistics to explain why output declined.
-              Because the real code stays behind the NDA, I built the exhibit from scratch: a
-              small web app and Robot Framework suites walking the same requirement-to-review
-              pipeline on a target I could publish.
+              Two semesters of hardware labs. The first built upward in VHDL on an FPGA: a
+              seven-segment decoder derived from a truth table, then adders composed out of
+              single-bit full adders, an ALU, a shift register, a state machine, a restoring
+              divider, and finally a four-stage pipelined CPU that catches read-after-write
+              hazards between instructions still in flight and forwards the result instead of
+              stalling. The second worked down the stack on an NVIDIA Jetson TX2: from a
+              cross-compiled C++ binary toggling pins through Linux sysfs, through a Qt GUI and a
+              browser-driven Node.js server, down to a loadable kernel module that registers a
+              character device, so user space controls the hardware by writing to /dev. Our
+              three-person final project tied those together into a room-management panel, where
+              the server loads the module, writes commands to the device node, blinks a timer on
+              a worker thread, and polls a photoresistor through a hand-clocked SPI loop. Lab
+              assignments rather than products, and also why I know what the software above them
+              stands on.
             </p>
             <ul class="tags entry-tags">
-              <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>Research</li>
+              <li>VHDL</li><li>FPGA</li><li>Computer Architecture</li><li>Embedded Linux</li><li>Kernel Modules</li>
             </ul>
-            <p class="entry-more"><a href="https://github.com/Zocke07/Automation-Demonstration" target="_blank" rel="noopener">View the exhibit on GitHub →</a></p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ===================== Education ===================== -->
-    <section id="education" class="section">
-      <div class="container">
-        <h2 class="section-title">Education</h2>
-
-        <article class="entry">
-          <div class="entry-head">
-            <div>
-              <h3>M.S. in Computer Science and Information Engineering</h3>
-              <p class="entry-org">National Taipei University of Technology <span lang="zh-Hant">(國立臺北科技大學)</span> · Taipei, Taiwan</p>
-            </div>
-            <p class="entry-date">2025 – 2026</p>
-          </div>
-          <ul class="entry-points">
-            <li>GPA: 4.0 / 4.0</li>
-            <li>Completed in one year through the university's selective Bachelor's–Master's program <span lang="zh-Hant">(學碩一貫學程)</span>.</li>
-            <li>Thesis: <em>Trust-Aware Layer-Wise Median Absolute Deviation (L-MAD) for Byzantine-Robust Aggregation in Federated Edge Learning</em>, advised by Shiang-Jiun Chen, Ph.D., in the Software Security Lab. <a href="case-study-lmad.html">Read the case study →</a></li>
-          </ul>
-        </article>
-
-        <article class="entry">
-          <div class="entry-head">
-            <div>
-              <h3>B.S. in Computer Science and Information Engineering</h3>
-              <p class="entry-org">National Taipei University of Technology · Taipei, Taiwan</p>
-            </div>
-            <p class="entry-date">2021 – 2025</p>
-          </div>
-          <ul class="entry-points">
-            <li>GPA: 3.5 / 4.0</li>
-            <li>Member of the Software Security Lab, working on test automation; my industry-academia co-op with Sunbird Software was based there.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
     <!-- ===================== Skills ===================== -->
-    <section id="skills" class="section section-alt">
+    <section id="skills" class="section">
       <div class="container">
         <h2 class="section-title">Skills</h2>
         <div class="skills-grid">
           <div class="skill-group">
             <h3>Programming Languages</h3>
             <ul class="tags">
-              <li>Python</li><li>TypeScript</li><li>C++</li><li>Java</li><li>JavaScript</li><li>HTML</li><li>CSS</li>
+              <li>Python</li><li>TypeScript</li><li>C++</li><li>Java</li><li>JavaScript</li><li>VHDL</li><li>HTML</li><li>CSS</li>
             </ul>
           </div>
           <div class="skill-group">
@@ -308,13 +348,13 @@
           <div class="skill-group">
             <h3>Systems &amp; Platforms</h3>
             <ul class="tags">
-              <li>Linux (Ubuntu)</li><li>Windows</li>
+              <li>Linux (Ubuntu)</li><li>Windows</li><li>Embedded Linux</li><li>Linux Kernel Modules</li><li>FPGA</li>
             </ul>
           </div>
           <div class="skill-group">
             <h3>Methodologies &amp; Concepts</h3>
             <ul class="tags">
-              <li>Agile (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>Test Automation</li><li>Equivalence Partitioning</li><li>Boundary Value Analysis</li><li>Machine Learning</li>
+              <li>Agile (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>Test Automation</li><li>Machine Learning</li><li>Digital Logic Design</li>
             </ul>
           </div>
         </div>
@@ -329,13 +369,9 @@
     </section>
 
     <!-- ===================== Contact ===================== -->
-    <section id="contact" class="section">
+    <section id="contact" class="section section-alt">
       <div class="container contact">
         <h2 class="section-title">Contact</h2>
-        <p>
-          I'm open to opportunities in QA, test automation, and software engineering.
-          The fastest way to reach me is by email.
-        </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="mailto:rivanwong@gmail.com">rivanwong@gmail.com</a>
           <a class="btn" href="https://github.com/Zocke07" target="_blank" rel="noopener">github.com/Zocke07</a>

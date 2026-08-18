@@ -6,7 +6,7 @@
      3. Layout helpers
      4. Header & navigation
      5. Hero
-     6. Sections & entries (experience / education timeline)
+     6. Sections & entries (about / experience / education)
      7. Cards (projects)
      8. Skills & languages
      9. Footer & back-to-top
@@ -345,6 +345,12 @@ a:hover { text-decoration: underline; }
 .btn-primary:hover { opacity: 0.92; }
 
 /* ---------- 6. Sections & entries (timeline) ---------- */
+/* The about section is a plain prose column: it borrows .prose from section 11
+   for its measure and paragraph rhythm, so only these two rules are its own. */
+.about-lead { font-size: 1.05rem; }
+/* .prose leaves a trailing margin the section padding would otherwise stack on. */
+.about p:last-child { margin-bottom: 0; }
+
 .entry {
   position: relative;
   padding-left: 1.75rem;
@@ -479,6 +485,25 @@ a:hover { text-decoration: underline; }
   border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
   box-shadow: var(--shadow-lift);
 }
+
+/* Cards with no page of their own. The lift and the raised surface both imply
+   something to open, so a card that has nowhere to go drops them and sits flush
+   with the section instead. Delete the class from a card once it gets a page. */
+.card-brief {
+  background: transparent;
+  box-shadow: none;
+}
+.card-brief:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border);
+}
+/* Such a card is also the whole story rather than a teaser, so it runs longer
+   than the doorway cards. Spanning the row keeps it from being read against a
+   neighbour half its length, and fills the half-empty last row an odd card
+   count leaves behind. The body keeps the site's measure at that width. */
+.card-brief { grid-column: 1 / -1; }
+.card-brief .card-body { max-width: 46rem; }
 
 .card h3 { margin-bottom: 0.25rem; }
 

@@ -25,7 +25,7 @@
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/index.zh.html" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=3" />
+  <link rel="stylesheet" href="assets/css/style.css?v=6" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -36,9 +36,10 @@
       <a class="nav-brand" href="#top">黃家輝</a>
       <div class="nav-right">
         <ul id="nav-menu" class="nav-menu">
-          <li><a href="#experience">經歷</a></li>
-          <li><a href="#projects">專案作品</a></li>
+          <li><a href="#about">關於我</a></li>
           <li><a href="#education">學歷</a></li>
+          <li><a href="#experience">經歷</a></li>
+          <li><a href="#projects">作品與研究</a></li>
           <li><a href="#skills">技能</a></li>
           <li><a href="#contact">聯絡方式</a></li>
         </ul>
@@ -69,6 +70,59 @@
         </p>
         <img class="hero-portrait" src="assets/img/portrait.jpg" width="560" height="560"
              alt="黃家輝 Rivan Wong 的個人照" />
+      </div>
+    </section>
+
+    <!-- ===================== About ===================== -->
+    <section id="about" class="section">
+      <div class="container prose about">
+        <h2 class="section-title">關於我</h2>
+        <p class="about-lead">
+          我在印尼長大，2021 年來到臺北唸大學。科系全程以中文授課，中文是我一邊唸書一邊學起來的，也一直是我求學與工作使用的語言。
+        </p>
+        <p>
+          更早以前，我是個喜歡數學的小孩，真正吸引我的一直是「答案可以被驗證」這件事。這大概也解釋了我為什麼適合做軟體品質保證，我寧願早一點知道自己錯了，趁犯錯的代價還很小的時候。
+        </p>
+        <p>
+          大學生活不是只有課堂。我把不少時間投入學生社團與志工服務，其中很多是陪剛到臺灣的國際學生適應環境，而當時我自己也才剛適應不久。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Education ===================== -->
+    <section id="education" class="section section-alt">
+      <div class="container">
+        <h2 class="section-title">學歷</h2>
+
+        <article class="entry">
+          <div class="entry-head">
+            <div>
+              <h3>資訊工程碩士</h3>
+              <p class="entry-org">國立臺北科技大學 <span lang="en">(National Taipei University of Technology)</span> · 臺灣臺北</p>
+            </div>
+            <p class="entry-date">2025 – 2026</p>
+          </div>
+          <ul class="entry-points">
+            <li>GPA：4.0 / 4.0</li>
+            <li>透過學校甄選制的學碩一貫學程，以一年完成碩士學位。</li>
+            <li>碩士論文：<em>基於信任感知之逐層中位數絕對偏差 (L-MAD) 之聯邦邊緣學習拜占庭強健聚合機制</em>，於軟體安全實驗室完成，指導教授為陳香君博士。<a href="case-study-lmad.zh.html">閱讀案例研究 →</a></li>
+          </ul>
+        </article>
+
+        <article class="entry">
+          <div class="entry-head">
+            <div>
+              <h3>資訊工程學士</h3>
+              <p class="entry-org">國立臺北科技大學 · 臺灣臺北</p>
+            </div>
+            <p class="entry-date">2021 – 2025</p>
+          </div>
+          <ul class="entry-points">
+            <li>GPA：3.5 / 4.0</li>
+            <li>軟體安全實驗室成員，專注於自動化測試；與 Sunbird Software 的產學合作即以此實驗室為據點。</li>
+          </ul>
+        </article>
+
       </div>
     </section>
 
@@ -131,7 +185,7 @@
     <!-- ===================== Projects ===================== -->
     <section id="projects" class="section section-alt">
       <div class="container">
-        <h2 class="section-title">專案作品</h2>
+        <h2 class="section-title">作品與研究</h2>
         <div class="card-grid">
           <article class="card">
             <h3>說得出自己何時失效的防禦</h3>
@@ -143,6 +197,18 @@
               <li>PyTorch</li><li>Flower</li><li>聯邦式學習</li><li>對抗式機器學習</li><li>Python</li>
             </ul>
             <p class="entry-more"><a href="case-study-lmad.zh.html">閱讀案例研究 →</a></p>
+          </article>
+
+          <article class="card">
+            <h3>Test Automation Best Practices: A Case Study Analysis</h3>
+            <p class="card-meta">畢業專題 · 產學合作研究</p>
+            <p class="card-body">
+              我的畢業專題，和兩位隊友在 Sunbird 產學合作的第一線寫成。它記錄了一個商業自動化測試團隊實際的運作方式：從動手寫程式前先與產品經理確認測試步驟，到 CI 關卡的十次正常網速加五次慢速節流，並分析團隊四年份的測試案例統計，解釋產出下滑的原因。由於實際程式碼受保密協議保護，展示品是我在一個可以公開的標的上從零打造的。
+            </p>
+            <ul class="tags entry-tags">
+              <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>研究</li>
+            </ul>
+            <p class="entry-more"><a href="case-study-capstone.zh.html">流程沒有問題，產出還是掉了：案例研究 →</a></p>
           </article>
           <article class="card">
             <h3>730 組以上的測試如何同時執行而不互相干擾</h3>
@@ -176,80 +242,41 @@
               <li>Robot Framework</li><li>Appium</li><li>Android</li><li>測試設計</li>
             </ul>
             <p class="entry-more"><a href="project-mobile-testing.zh.html">專案筆記：沒有重置鍵 →</a></p>
-            <p class="entry-more"><a href="https://github.com/qwe8496516/Health2SyncProject" target="_blank" rel="noopener">在 GitHub 上查看 →</a></p>
           </article>
           <article class="card">
             <h3>Sky Scraper Escape</h3>
             <p class="card-meta">C++ · MFC · 物件導向設計</p>
             <p class="card-body">
-              駕駛飛機穿越城市天際線，共七個關卡，每一關都加入新的變化：視野變窄、障礙物忽隱忽現、建築物上下移動、重力反轉。這是物件導向程式設計實習課程的專題，建構在一套只允許三種狀態的教學用遊戲框架之上。真正有趣的是架構設計：我把框架本身的狀態介面對應到自己寫的關卡基底類別，讓每個關卡與選單都成為同一個指標背後可互換的物件，主迴圈把事件轉發出去時，並不需要知道對象是誰。團隊自行撰寫的遊戲程式碼大部分由我完成：玩家物件、這個基底類別，以及主選單與關卡選擇畫面。
+              駕駛飛機穿越城市天際線，共七個關卡，每一關都加入新的變化：視野變窄、障礙物忽隱忽現、重力反轉。這是物件導向程式設計實習課程的專題，建構在一套只允許三種狀態的教學用遊戲框架之上。我把框架本身的狀態介面對應到自己寫的關卡基底類別，讓每個關卡與選單都成為同一個指標背後可互換的物件。團隊自行撰寫的遊戲程式碼大部分由我完成。
             </p>
             <ul class="tags entry-tags">
               <li>C++</li><li>OOP</li><li>MFC</li><li>DirectDraw</li><li>Git</li>
             </ul>
             <p class="entry-more"><a href="case-study-sky-scraper-escape.zh.html">選單也只是另一個關卡：案例研究 →</a></p>
-            <p class="entry-more"><a href="https://github.com/Zocke07/Sky-Scraper-Escape" target="_blank" rel="noopener">在 GitHub 上查看 →</a></p>
           </article>
-          <article class="card">
-            <h3>Test Automation Best Practices: A Case Study Analysis</h3>
-            <p class="card-meta">畢業專題 · 產學合作研究</p>
+          <article class="card card-brief">
+            <h3>從真值表到管線化 CPU</h3>
+            <p class="card-meta">大學部課程 · VHDL / FPGA · 嵌入式 Linux</p>
             <p class="card-body">
-              我的畢業專題，和兩位隊友在 Sunbird 產學合作的第一線寫成。它記錄了一個商業自動化測試團隊實際的運作方式：動手寫程式之前，先以手動方式設計測試步驟並經產品經理確認；以 mob programming 進行實作；CI 關卡要跑十次正常網速加五次慢速節流；pull request 只有在公司工程師核准後才算完成。報告同時分析了團隊四年份的測試案例統計，解釋產出下滑的原因。由於實際程式碼受保密協議保護，展示品是我從零打造的：一個小型網頁應用程式加上 Robot Framework 測試套件，在一個可以公開的標的上重現同一條從需求到審查的流程。
+              兩個學期的硬體實習課程。前一個學期在 FPGA 上以 VHDL 由下往上堆疊：先從真值表推導出七段顯示器解碼電路，再用一位元全加器組出多位元加法器，接著是 ALU、移位暫存器、狀態機、還原式除法器，最後是一顆四階管線化 CPU，能偵測仍在管線中的指令之間的 RAW 資料危障，並把運算結果前饋回去，而不是插入停頓。後一個學期則在 NVIDIA Jetson TX2 上一層層往下走：從跨平台編譯的 C++ 執行檔透過 Linux sysfs 控制腳位，經過 Qt GUI 與以瀏覽器操作的 Node.js 伺服器，一直到自己寫的可載入核心模組，註冊字元裝置，讓使用者空間改以寫入 /dev 的方式操作硬體。三人合作的期末專案把這些串成一個房間管理面板：伺服器載入模組、對裝置節點寫入指令、在工作執行緒上讓計時燈號閃爍，並透過自己打時脈的 SPI 迴圈輪詢光敏電阻。這些是實習作業而不是產品，但也是我知道上層軟體究竟站在什麼東西上面的原因。
             </p>
             <ul class="tags entry-tags">
-              <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>研究</li>
+              <li>VHDL</li><li>FPGA</li><li>計算機架構</li><li>嵌入式 Linux</li><li>核心模組</li>
             </ul>
-            <p class="entry-more"><a href="https://github.com/Zocke07/Automation-Demonstration" target="_blank" rel="noopener">在 GitHub 上查看展示 →</a></p>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ===================== Education ===================== -->
-    <section id="education" class="section">
-      <div class="container">
-        <h2 class="section-title">學歷</h2>
-
-        <article class="entry">
-          <div class="entry-head">
-            <div>
-              <h3>資訊工程碩士</h3>
-              <p class="entry-org">國立臺北科技大學 <span lang="en">(National Taipei University of Technology)</span> · 臺灣臺北</p>
-            </div>
-            <p class="entry-date">2025 – 2026</p>
-          </div>
-          <ul class="entry-points">
-            <li>GPA：4.0 / 4.0</li>
-            <li>透過學校甄選制的學碩一貫學程，以一年完成碩士學位。</li>
-            <li>碩士論文：<em>基於信任感知之逐層中位數絕對偏差 (L-MAD) 之聯邦邊緣學習拜占庭強健聚合機制</em>，於軟體安全實驗室完成，指導教授為陳香君博士。<a href="case-study-lmad.zh.html">閱讀案例研究 →</a></li>
-          </ul>
-        </article>
-
-        <article class="entry">
-          <div class="entry-head">
-            <div>
-              <h3>資訊工程學士</h3>
-              <p class="entry-org">國立臺北科技大學 · 臺灣臺北</p>
-            </div>
-            <p class="entry-date">2021 – 2025</p>
-          </div>
-          <ul class="entry-points">
-            <li>GPA：3.5 / 4.0</li>
-            <li>軟體安全實驗室成員，專注於自動化測試；與 Sunbird Software 的產學合作即以此實驗室為據點。</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
     <!-- ===================== Skills ===================== -->
-    <section id="skills" class="section section-alt">
+    <section id="skills" class="section">
       <div class="container">
         <h2 class="section-title">技能</h2>
         <div class="skills-grid">
           <div class="skill-group">
             <h3>程式語言</h3>
             <ul class="tags">
-              <li>Python</li><li>TypeScript</li><li>C++</li><li>Java</li><li>JavaScript</li><li>HTML</li><li>CSS</li>
+              <li>Python</li><li>TypeScript</li><li>C++</li><li>Java</li><li>JavaScript</li><li>VHDL</li><li>HTML</li><li>CSS</li>
             </ul>
           </div>
           <div class="skill-group">
@@ -261,13 +288,13 @@
           <div class="skill-group">
             <h3>系統與平台</h3>
             <ul class="tags">
-              <li>Linux (Ubuntu)</li><li>Windows</li>
+              <li>Linux (Ubuntu)</li><li>Windows</li><li>嵌入式 Linux</li><li>Linux 核心模組</li><li>FPGA</li>
             </ul>
           </div>
           <div class="skill-group">
             <h3>方法論與概念</h3>
             <ul class="tags">
-              <li>敏捷開發 (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>自動化測試</li><li>等價分割測試設計</li><li>邊界值分析</li><li>機器學習</li>
+              <li>敏捷開發 (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>自動化測試</li><li>機器學習</li><li>數位邏輯設計</li>
             </ul>
           </div>
         </div>
@@ -282,12 +309,9 @@
     </section>
 
     <!-- ===================== Contact ===================== -->
-    <section id="contact" class="section">
+    <section id="contact" class="section section-alt">
       <div class="container contact">
         <h2 class="section-title">聯絡方式</h2>
-        <p>
-          我對軟體品質保證、自動化測試與軟體工程相關的工作機會保持開放。用電子郵件聯絡我是最快的方式。
-        </p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="mailto:rivanwong@gmail.com">rivanwong@gmail.com</a>
           <a class="btn" href="https://github.com/Zocke07" target="_blank" rel="noopener">github.com/Zocke07</a>
