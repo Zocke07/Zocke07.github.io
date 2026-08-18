@@ -91,7 +91,7 @@
           六位實習生，分處兩個國家，為一家大型電信公司開發兩項內部 AI 產品。這是一支新團隊，沒有配置 QA 工程師，最需要自動化測試的那項產品也沒有測試套件；程式碼中更有相當比例是在 AI 協助下寫成的，因此不管實際能不能運作，看起來都很合理。總得有人判斷每一項變更到底什麼時候才真的算準備好，這就是我的工作。
         </p>
         <p class="hero-blurb role-line">
-          <strong>我的角色：</strong>一半是遠端團隊的技術專案管理者，一半是在其他人必須信任這個東西之前，先親自把它測過一遍的人。我負責協調工作，並掌管驗證關卡。產品本身則是整個團隊的成果。
+          <strong>我的角色：</strong>一半是遠端團隊的技術專案管理者，一半是在其他人必須信任這個東西之前，先親自把它測過一遍的人。我負責協調工作、掌管驗證關卡，並為另外兩項內部專案建置自動化測試套件。產品本身則是整個團隊的成果。
         </p>
         <ul class="facts" role="list">
           <li><strong>6 人</strong>的分散式團隊</li>
@@ -296,8 +296,24 @@
       </div>
     </section>
 
+    <!-- ===================== Automation ===================== -->
+    <section id="automation" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">不需要我在場也能跑的那一半</h2>
+        <p>
+          上面那道關卡之所以必須靠人工，是有原因的。在地化工具沒有自動化測試套件，而真正重要的那些缺陷，也只有親手驗證才攔得下來。這份工作的另一半，就是不讓這件事成為故事的全部。
+        </p>
+        <p>
+          我為另外兩項內部專案建置了自動化測試套件。一項以 Python 撰寫，用 PyTest 針對關鍵 API 端點執行，讓迴歸問題在部署之前浮現，而不是在部署之後。另一項以 Java 撰寫，把在那之前一直以人工進行的驗證流程自動化。
+        </p>
+        <p>
+          兩者都稱不上亮眼，而這大致就是重點。書面關卡需要有人站在那裡；測試套件不需要，它所涵蓋的工作也就不再是工作。
+        </p>
+      </div>
+    </section>
+
     <!-- ===================== Learnings ===================== -->
-    <section id="learnings" class="section section-alt">
+    <section id="learnings" class="section">
       <div class="container prose">
         <h2 class="section-title">主要工程收穫</h2>
         <ol class="learnings" role="list">

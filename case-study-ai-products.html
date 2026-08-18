@@ -96,8 +96,9 @@
         </p>
         <p class="hero-blurb role-line">
           <strong>My role:</strong> part technical program manager for the remote team, part the
-          person who tested the thing before anyone else had to trust it. I coordinated the work
-          and owned the verification gate. The products themselves are the team's build.
+          person who tested the thing before anyone else had to trust it. I coordinated the work,
+          owned the verification gate, and built the automated test suites for two other internal
+          projects. The products themselves are the team's build.
         </p>
         <ul class="facts" role="list">
           <li><strong>6-person</strong> distributed team</li>
@@ -347,8 +348,30 @@
       </div>
     </section>
 
+    <!-- ===================== Automation ===================== -->
+    <section id="automation" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">The Half That Runs Without Me</h2>
+        <p>
+          The gate above is manual by necessity. The localization tool had no automated suite,
+          and hands-on verification was the only thing that caught the defects that mattered.
+          The other half of the job was making sure that was not the whole story.
+        </p>
+        <p>
+          I built the automated test suites for two other internal projects. One is Python,
+          using PyTest against critical API endpoints so a regression surfaces before deployment
+          rather than after it. The other is Java, automating a verification workflow that until
+          then had been done by hand.
+        </p>
+        <p>
+          Neither is glamorous, and that is roughly the point. A written gate needs a person
+          standing at it. A suite does not, and the work it covers stops being work.
+        </p>
+      </div>
+    </section>
+
     <!-- ===================== Learnings ===================== -->
-    <section id="learnings" class="section section-alt">
+    <section id="learnings" class="section">
       <div class="container prose">
         <h2 class="section-title">Key Engineering Learnings</h2>
         <ol class="learnings" role="list">
