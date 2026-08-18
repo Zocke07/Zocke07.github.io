@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>流程沒有問題，產出還是掉了 · 黃家輝 Rivan Wong</title>
+  <meta name="description" content="畢業專題記錄了一個商業自動化測試團隊從需求到合併的七道關卡，接著統計四年產出，發現在流程完全沒變的情況下，產出比高峰掉了約三分之二。" />
+  <meta property="og:title" content="流程沒有問題，產出還是掉了" />
+  <meta property="og:description" content="一個自動化測試團隊四年的產出數據，以及健康的流程與下滑的數字為什麼可以同時成立。" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/case-study-capstone.zh.html" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og-capstone.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="畢業專題案例研究：商業自動化測試團隊四年的測試案例產出。" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    document.documentElement.dataset.theme =
+      localStorage.getItem("theme") ||
+      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  </script>
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-capstone.html" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-capstone.zh.html" />
+  <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
+  <link rel="stylesheet" href="assets/css/style.css?v=6" />
+  <style>
+    /* Page-local: the one chart on the site. Scales with its container rather
+       than a fixed width, and takes every colour from the theme tokens so it
+       flips with the rest of the page. */
+    .chart {
+      max-width: 46rem;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--card-bg);
+      padding: 1rem;
+    }
+    .chart svg { width: 100%; height: auto; display: block; }
+    .chart-grid { stroke: var(--border); stroke-width: 1; }
+    .chart-bar { fill: var(--accent); }
+    .chart-line { fill: none; stroke: var(--text-muted); stroke-width: 2; stroke-dasharray: 5 3; }
+    .chart-dot { fill: var(--text-muted); }
+    .chart-label { fill: var(--text-muted); font-size: 12px; font-family: var(--font); }
+    .chart-value { fill: var(--accent-contrast); font-size: 12px; font-weight: 700; font-family: var(--font); }
+    .chart-key { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
+    .chart-key span { display: inline-flex; align-items: center; gap: 0.4rem; }
+    .chart-key i { width: 14px; height: 3px; border-radius: 2px; background: var(--accent); }
+    .chart-key i.dashed { background: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="主要導覽">
+      <a class="nav-brand" href="index.zh.html">黃家輝</a>
+      <div class="nav-right">
+        <ul id="nav-menu" class="nav-menu">
+          <li><a href="index.zh.html#experience">工作經歷</a></li>
+          <li><a href="index.zh.html#projects">專案</a></li>
+          <li><a href="index.zh.html#education">學歷</a></li>
+          <li><a href="index.zh.html#skills">技能</a></li>
+          <li><a href="index.zh.html#contact">聯絡方式</a></li>
+        </ul>
+        <a class="lang-toggle" href="case-study-capstone.html" hreflang="en" lang="en"
+           aria-label="Switch to English">EN</a>
+        <button class="theme-toggle" aria-label="切換配色主題">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="開關導覽選單">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ===================== Case study hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">畢業專題 · 產學合作研究 · Sunbird Software</p>
+        <h1>流程沒有問題，產出還是掉了</h1>
+        <p class="hero-blurb">
+          我們的畢業專題原本要做的，是把一個商業自動化測試團隊實際的運作方式一關一關記錄下來：從挑選需求 ticket，一路到公司自己的工程師願意合併的那個 pull request。接著我們統計了這個團隊四年的產出，發現在流程完全沒有改變的情況下，產出比高峰期掉了大約三分之二。到頭來，流程本身反而是整份研究裡最不有趣的發現。真正有趣的是：一套健康的流程，和持續下滑的數字，其實可以同時成立。
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>我的角色：</strong>畢業專題三位學生之一，並且在專題涵蓋的這一年半裡，以產學合作的身分實際待在團隊內部。這份報告是三個人的共同成果，指導教授為陳香君博士；報告中所記錄的實務作法，屬於公司的工程師，不屬於我們。
+        </p>
+        <ul class="facts" role="list">
+          <li>分析 <strong>4 年</strong>的測試案例產出</li>
+          <li>在團隊內部 <strong>18 個月</strong></li>
+          <li>每週投入 <strong>10–20 小時</strong>開發</li>
+          <li><strong>每兩週</strong>向公司報告一次成果</li>
+          <li>從 ticket 到合併共 <strong>7 道關卡</strong></li>
+          <li><strong>3 位學生</strong>，一位指導教授</li>
+        </ul>
+        <p class="nda-note">
+          <strong>關於保密：</strong>本文遵守我簽署的保密協議。產品名稱、內部 ticket 編號與商業邏輯均已省略或一般化，內容也未重製專題報告本身。留下來的是工程流程與數據的形狀，兩者都屬於業界通行的一般實務。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The question ===================== -->
+    <section id="question" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">問題意識</h2>
+        <p>
+          談自動化測試最佳實務的文章從來不少，而且幾乎都是描述性的：一個有紀律的團隊會怎麼做、應該守住哪一道關卡、測試不穩定為什麼昂貴。但很少有人接著去衡量一個已經在照做的團隊，然後問一句：這些做法真的有反映在產出上嗎？
+        </p>
+        <p>
+          我們剛好有能回答第二個問題的位置。三個人是待在團隊裡面，而不是在外面觀察，跟著公司的工程師跑同樣的 sprint，開發的是一套企業級資料中心基礎設施管理平台。所以這份專題問的不是一個問題，而是兩個：這條流程對一個人實際上要求了什麼？以及，把幾年份的產出攤開來數，會看到什麼？
+        </p>
+        <p>
+          第一個問題得到的是一份描述。第二個問題得到的是一個問題，而後者更有價值，也不是我們原本預期會看到的東西。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The pipeline ===================== -->
+    <section id="pipeline" class="section">
+      <div class="container prose">
+        <h2 class="section-title">這條流程實際要求什麼</h2>
+        <p>
+          從接下一張需求 ticket，到一個測試案例被算作完成，中間隔著七道關卡。每一道單獨看都不稀奇，真正需要紀律的是：沒有任何一道可以跳過，包括那兩道在第一次救到你之前，感覺都只是額外成本的關卡。
+        </p>
+        <ol class="gate-flow" role="list">
+          <li><b>挑選案例</b><span>在 sprint 規劃會議上從 backlog 挑出案例，並估計每一個的難度與所需工時。</span></li>
+          <li><b>先手寫測試步驟，並取得確認</b><span>依需求文件細化步驟，先以手動測試找出邏輯漏洞，再把寫好的步驟送交產品經理確認。此時還沒有任何程式碼。</span></li>
+          <li><b>以關鍵字實作，而且一起寫</b><span>Mob programming：整個團隊同時處理同一個案例。步驟被寫成可重用的關鍵字，遵守團隊的命名與去重複規範，完成後再跑一次 lint。</span></li>
+          <li><b>在 CI 上證明它站得住</b><span>先在正常網速下跑十次，再刻意限制頻寬跑五次，讓案例必須在慢速環境下也能通過，而不只是在順暢的環境。</span></li>
+          <li><b>程式碼審查與 sprint 審查</b><span>依團隊既定風格檢查程式碼，並另外向負責人展示這個 sprint 的成果。</span></li>
+          <li><b>開出 pull request</b><span>分支只能透過 PR 往主線合併。</span></li>
+          <li><b>修到工程師點頭為止</b><span>公司的工程師會審查並留下意見。案例不是通過測試就算完成，而是他們合併了才算完成。</span></li>
+        </ol>
+        <p>
+          第二關特別值得停下來看。用文字把測試步驟寫出來、手動跑過一遍、還要等產品經理同意，才准開始寫程式，感覺是所有起手式裡最慢的一種。但它也是唯一一道能在誤解還只是一段文字、而不是一整個測試套件的時候，就把它攔下來的關卡。
+        </p>
+        <p>
+          這一頁談的是流程與流程的產出。至於測試套件本身是怎麼寫成的，才能讓數百組同時跑在同一台線上伺服器上，<a href="case-study-test-automation.zh.html">那是另一篇案例研究</a>。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Findings ===================== -->
+    <section id="findings" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">四年的數據說了什麼</h2>
+        <p>
+          我們調出團隊連續四個年度（每年九月到隔年九月）的測試案例紀錄，統計兩個數字：建立的案例數，以及被合併的案例數。上面那條流程在這四年之間，沒有改變過。
+        </p>
+
+        <div class="chart">
+          <svg viewBox="0 0 640 250" role="img" aria-labelledby="chart-title chart-desc">
+            <title id="chart-title">2020 至 2024 年每年建立與合併的測試案例數</title>
+            <desc id="chart-desc">建立的案例數從 2020 至 2021 年的約 25 個，在 2021 至 2022 年攀升到接近 80 個的高峰，2022 至 2023 年降到約 55 個，2023 至 2024 年再降到不到 30 個。合併的案例數曲線較為平緩，並在最後兩個年度高於建立數。</desc>
+
+            <!-- gridlines and y-axis labels -->
+            <g class="chart-grid">
+              <line x1="60" y1="30"  x2="620" y2="30"  />
+              <line x1="60" y1="75"  x2="620" y2="75"  />
+              <line x1="60" y1="120" x2="620" y2="120" />
+              <line x1="60" y1="165" x2="620" y2="165" />
+              <line x1="60" y1="210" x2="620" y2="210" />
+            </g>
+            <g class="chart-label" text-anchor="end">
+              <text x="50" y="34">100</text>
+              <text x="50" y="79">75</text>
+              <text x="50" y="124">50</text>
+              <text x="50" y="169">25</text>
+              <text x="50" y="214">0</text>
+            </g>
+
+            <!-- bars: cases created -->
+            <g class="chart-bar">
+              <rect x="95"  y="165" width="70" height="45"  rx="3" />
+              <rect x="235" y="66"  width="70" height="144" rx="3" />
+              <rect x="375" y="111" width="70" height="99"  rx="3" />
+              <rect x="515" y="160" width="70" height="50"  rx="3" />
+            </g>
+            <g class="chart-value" text-anchor="middle">
+              <text x="130" y="185">25</text>
+              <text x="270" y="86">80</text>
+              <text x="410" y="131">55</text>
+              <text x="550" y="180">28</text>
+            </g>
+
+            <!-- line: cases merged -->
+            <polyline class="chart-line" points="130,170 270,98 410,102 550,151" />
+            <g class="chart-dot">
+              <circle cx="130" cy="170" r="4" />
+              <circle cx="270" cy="98"  r="4" />
+              <circle cx="410" cy="102" r="4" />
+              <circle cx="550" cy="151" r="4" />
+            </g>
+
+            <!-- x-axis labels -->
+            <g class="chart-label" text-anchor="middle">
+              <text x="130" y="232">2020–21</text>
+              <text x="270" y="232">2021–22</text>
+              <text x="410" y="232">2022–23</text>
+              <text x="550" y="232">2023–24</text>
+            </g>
+          </svg>
+          <p class="chart-key">
+            <span><i></i> 建立的測試案例</span>
+            <span><i class="dashed"></i> 合併的測試案例</span>
+          </p>
+        </div>
+
+        <p>
+          產出在第二個年度達到高峰，約八十個案例，之後連續兩年下滑，最後掉到不足三十個。相對高峰大約掉了三分之二，最後一年甚至只比第一年剛起步時高一點。
+        </p>
+        <p>
+          報告把下滑歸因於三個原因，而這三個原因真正值得注意的地方，是它們的位置。<b>需求變得更複雜</b>，單一案例要做到完整覆蓋所需的時間因此拉長。<b>產品版本不穩定</b>，原本可以投入新案例的心力，改為修補被建置破壞掉的既有案例。以及<b>跨職能團隊之間的溝通逐漸脫節</b>，期待與需求對不起來，覆蓋範圍因此留下缺口。
+        </p>
+        <p>
+          沒有任何一項是「團隊變差了」。每一個原因都位在被衡量的這群人的上游，而這正是為什麼單看那個數字會產生誤導。
+        </p>
+        <p>
+          圖上還有一個細節支持這個讀法：最後兩個年度，<em>合併</em>的案例數高於<em>建立</em>的案例數。一個停擺的團隊不會關掉比開出更多的東西。這個形狀比較像是團隊正在消化既有的進行中工作與返工，而不是開展新的覆蓋範圍，而這恰好就是那三個原因會預期的結果。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Limits ===================== -->
+    <section id="limits" class="section">
+      <div class="container prose">
+        <h2 class="section-title">這些數字無法斷定的事</h2>
+        <p>
+          這個發現值得說清楚，它的弱點也一樣。測試案例的數量是產出的替代指標，不是價值的指標。一個涵蓋跨子系統複雜互動的案例，和一個只涵蓋單一下拉選單的案例，同樣都算一個。如果後期的案例個別來說更難，而第一個原因正暗示如此，那麼數量的下滑就誇大了實際工作量的下滑，而我們手上沒有任何能把兩者分開的量測方式。
+        </p>
+        <p>
+          那三個原因是團隊自己的說法，不是實驗結果。我們沒有操作任何變因再觀察效果，而是去問了為什麼、聽了答案，並確認它和數據的形狀一致。只要標示清楚，這是可以發表的東西，但它和「已經證明」並不是同一件事。
+        </p>
+        <p>
+          另外，四個年度裡我們只在場於最後一年。前三年的數據是我們接手讀到的紀錄，不是我們親眼看著產生的。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Exhibit ===================== -->
+    <section id="exhibit" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">必須重做一次的展示品</h2>
+        <p>
+          畢業專題理應要能展示，而我們記錄的卻是不能離開公司的工作。我們寫過的每一個測試套件、每一個關鍵字、以及它們對應的每一張 ticket，全都在保密協議之後。把真正的成果拿出來展示，從一開始就不是選項。
+        </p>
+        <p>
+          所以展示品是一次重建。我從零做了一個小型網頁應用程式，以及一組針對它撰寫的 Robot Framework 測試套件，刻意在一個可以公開的標的上走過同樣的七道關卡：先設計並寫下步驟、以組合而非複製的方式撰寫關鍵字、跑一次 lint、合併前重複執行。
+        </p>
+        <p>
+          它誠實地展示了流程，但完全沒有展示規模。真正平台的難處在於數百組套件爭用同一台線上伺服器，而一個為展示而生的小應用程式完全沒有這個問題。它忠實地模擬了流程，卻很不忠實地模擬了難題，這件事值得講明白。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section">
+      <div class="container prose">
+        <h2 class="section-title">主要的工程學習</h2>
+        <ol class="learnings" role="list">
+          <li><b>流程指標不等於生產力指標。</b>每年幾個案例，量的是做出了多少，卻完全沒有說每一個有多難。單獨拿給一個不在現場的人看，它描述的是一支正在衰退的團隊。但實際的三個原因，沒有一個在團隊的控制範圍內。</li>
+          <li><b>產出下滑時，要往上游看。</b>需求複雜度成長、建置不穩定、跨團隊認知落差，這些都是從別的地方來的，最後落在守住最後一道關卡的人身上。團隊是這個數字被量到的地方，不是它被決定的地方。</li>
+          <li><b>最慢的那道關卡，最後是划算的。</b>用文字寫下測試步驟、手動跑過一遍、還要等產品經理同意才能寫程式，是整條流程裡最不吸引人的一段。它也是唯一一個誤解還很便宜的地方。</li>
+          <li><b>「完成」是別人定義的。</b>通過 CI 不算完成，公司的工程師核准 pull request 才算。這把「完成」的定義從作者手上移開，而它本來就不該放在那裡。</li>
+          <li><b>衡量自己所屬的團隊並不舒服，但仍然值得做。</b>比較輕鬆的那個版本，是我們原本打算寫的那份描述。真正讓我們學到東西的版本，需要我們公佈一個對自己所屬群體並不好看的數字，然後謹慎地說清楚它證明了什麼、又沒有證明什麼。</li>
+        </ol>
+        <p class="entry-more">
+          <a href="https://github.com/Zocke07/Automation-Demonstration" target="_blank" rel="noopener">在 GitHub 上查看展示 →</a>
+        </p>
+        <p class="entry-more"><a href="index.zh.html#projects">← 返回作品集</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong · 以純 HTML 與 CSS 打造，部署於 GitHub Pages。</p>
+    </div>
+  </footer>
+
+  <button class="to-top" aria-label="回到頁首">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
