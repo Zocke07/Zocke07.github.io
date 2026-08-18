@@ -24,118 +24,10 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/project-mobile-testing.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=3" />
+  <link rel="stylesheet" href="assets/css/style.css?v=6" />
   <style>
-    /* Project notes: a lighter page than the case studies, same design tokens. */
-    .case-hero { padding: 5rem 0 3rem; }
-    .case-hero .hero-blurb { max-width: 46rem; }
-    .case-hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; margin-bottom: 0.75rem; }
-
-    .role-line { color: var(--text); }
-    .role-line strong { color: var(--accent); }
-
-    .source-note {
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: var(--radius);
-      background: var(--bg-alt);
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      padding: 0.75rem 1rem;
-      margin-top: 1.5rem;
-      max-width: 46rem;
-    }
-
-    .facts {
-      list-style: none;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
-      gap: 0.4rem 2rem;
-      margin: 1.5rem 0 0;
-      padding: 0;
-      max-width: 46rem;
-    }
-    .facts li { font-size: 0.95rem; color: var(--text-muted); padding-left: 1.15rem; position: relative; }
-    .facts li::before {
-      content: "";
-      position: absolute; left: 0; top: 0.6em;
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent);
-    }
-    .facts strong { color: var(--text); }
-
-    .prose > *:not(.section-title) { max-width: 46rem; }
-    .prose p { margin-bottom: 1rem; }
-    .prose h3 { margin: 2rem 0 0.6rem; font-size: 1.05rem; }
-
-    .prose code {
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 0.88em;
-      background: color-mix(in srgb, var(--accent) 8%, var(--bg));
-      border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
-      border-radius: 5px;
-      padding: 0.08em 0.35em;
-      overflow-wrap: anywhere;
-    }
-
-    .snippet {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-      margin: 1.5rem 0 0.6rem;
-      max-width: 46rem;
-      /* Long lines scroll inside the block instead of widening the page. */
-      overflow-x: auto;
-      padding: 1rem 1.1rem;
-    }
-    .snippet code {
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 0.82rem;
-      line-height: 1.65;
-      white-space: pre;
-      display: block;
-      background: none; border: 0; padding: 0;
-    }
-    .snippet .cm { color: var(--text-muted); }
-    .snippet-caption { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; max-width: 46rem; }
-
-    .layer-stack {
-      display: grid;
-      gap: 0.5rem;
-      margin: 1.5rem 0 2rem;
-      max-width: 46rem;
-      list-style: none;
-      padding: 0;
-    }
-    .layer {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--card-bg);
-      padding: 0.7rem 1rem;
-      box-shadow: var(--shadow);
-    }
-    .layer b { display: block; font-size: 0.95rem; }
-    .layer span { font-size: 0.85rem; color: var(--text-muted); }
-
-    .learnings { counter-reset: learning; list-style: none; padding: 0; max-width: 46rem; }
-    .learnings li {
-      counter-increment: learning;
-      position: relative;
-      padding-left: 2.6rem;
-      margin-bottom: 1.25rem;
-    }
-    .learnings li::before {
-      content: counter(learning, decimal-leading-zero);
-      position: absolute; left: 0; top: 0.1rem;
-      font-weight: 700; color: var(--accent);
-      font-size: 1.05rem;
-    }
-    .learnings b { display: block; margin-bottom: 0.15rem; }
-
-    @media (max-width: 640px) {
-      .case-hero { padding: 4rem 0 2.5rem; }
-    }
+    /* Only what is unique to this page; the shared case-study
+       rules live in style.css. */
   </style>
 </head>
 <body>
@@ -289,6 +181,8 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
           one phone by hand cannot afford the full combinations. The one screen in my area where
           fields genuinely do interact is handled further down.
         </p>
+
+
 
         <h3>Blocks, and values taken from the edge of them</h3>
         <p>

@@ -24,90 +24,7 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-test-automation.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-test-automation.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=3" />
-  <style>
-    /* Case-study–specific styles, built on the site's design tokens. */
-    .case-hero { padding: 5rem 0 3rem; }
-    /* One shared measure across hero and body prose. */
-    .case-hero .hero-blurb { max-width: 46rem; }
-    .case-hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; margin-bottom: 0.75rem; }
-
-    .role-line { color: var(--text); }
-    .role-line strong { color: var(--accent); }
-
-    .nda-note {
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: var(--radius);
-      background: var(--bg-alt);
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      padding: 0.75rem 1rem;
-      margin-top: 1.5rem;
-      max-width: 46rem;
-    }
-
-    .facts {
-      list-style: none;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-      gap: 0.4rem 2rem;
-      margin: 1.5rem 0 0;
-      padding: 0;
-      max-width: 46rem;
-    }
-    .facts li { font-size: 0.95rem; color: var(--text-muted); padding-left: 1.15rem; position: relative; }
-    .facts li::before {
-      content: "";
-      position: absolute; left: 0; top: 0.6em;
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent);
-    }
-    .facts strong { color: var(--text); }
-
-    /* Cap line length for readability without narrowing the container,
-       so body text lines up with the hero and the home page. */
-    .prose > *:not(.section-title) { max-width: 46rem; }
-    .prose p { margin-bottom: 1rem; }
-    .prose h3 { margin: 2rem 0 0.6rem; font-size: 1.05rem; }
-
-    .layer-stack {
-      display: grid;
-      gap: 0.5rem;
-      margin: 1.5rem 0 2rem;
-      max-width: 46rem;
-      list-style: none;
-      padding: 0;
-    }
-    .layer {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--card-bg);
-      padding: 0.7rem 1rem;
-      box-shadow: var(--shadow);
-    }
-    .layer b { display: block; font-size: 0.95rem; }
-    .layer span { font-size: 0.85rem; color: var(--text-muted); }
-
-    .learnings { counter-reset: learning; list-style: none; padding: 0; max-width: 46rem; }
-    .learnings li {
-      counter-increment: learning;
-      position: relative;
-      padding-left: 2.6rem;
-      margin-bottom: 1.25rem;
-    }
-    .learnings li::before {
-      content: counter(learning, decimal-leading-zero);
-      position: absolute; left: 0; top: 0.1rem;
-      font-weight: 700; color: var(--accent);
-      font-size: 1.05rem;
-    }
-    .learnings b { display: block; margin-bottom: 0.15rem; }
-
-    @media (max-width: 640px) {
-      .case-hero { padding: 4rem 0 2.5rem; }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/style.css?v=6" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -208,7 +125,6 @@
         <p>
           數百組套件共用同一台運作中的伺服器，因此平台以 Pabot 的共享記憶體函式庫為基礎，做了一套以標籤為依據的分散式鎖管理器：只要套件會動到共用子系統（例如檔案匯入），就用標籤宣告出來，再由監聽器只把真正會衝突的套件排成循序執行。鎖一律以整組套件為單位取得，避免死結；每一次鎖的狀態轉換都會以標準的 trace 格式輸出，讓平行狀況可以用視覺化的方式檢視。寫新測試代表要理解這份約定並宣告正確的資源，所以我寫的套件在結構上天生就能安全平行執行。
         </p>
-
         <h3>把測試不穩定當成工程問題來解</h3>
         <p>
           平台不是在測試裡到處灑 sleep，而是把穩定性集中在每次執行都會套用的監聽器管線裡：每個互動之後固定延遲一小段時間，讓瀏覽器不會被推得比真實使用者還快；修補過的等待機制可以容忍失效的 DOM 元素；針對已知的瀏覽器互動競爭狀況做重試；確保瀏覽器一定會關閉；以及在任何內容寫進日誌之前先遮蔽密碼。測試失敗時，瀏覽器主控台與網路記錄會附在報告上，而且只針對失敗的測試，讓每個紅燈結果都自帶足以追查原因的證據。
@@ -218,7 +134,6 @@
         <p>
           測試程式碼比照正式產品的標準要求。每一組新套件都要在自訂的靜態分析規則下零警告通過、連續十次執行全綠，接著在網路節流的情況下再通過五次，才能合併。在 CI 中，通過率未達 100% 的結果會讓該次建置被標記為失敗。正是這道關卡讓這種規模的測試套件值得信任：沒有人需要爭論紅色的建置是不是「大概只是測試不穩定而已」。
         </p>
-
         <h3>功能測試之外</h3>
         <p>
           功能測試只是其中一條線。同一個平台上還有 API 效能測試：以 CSV 參數化的負載設定，在一系列虛擬使用者數量之間做並行度掃描，並調整負載設定讓不同層級的結果保持可比較，另外有一條 Python 流程會自動把原始結果收斂成格式化的摘要報表。這部分不是我做的，但在旁邊一起工作，讓我實際看懂效能退化在數字上長什麼樣子，也看到一次不需要有人盯著的發版背後，累積了多少一點也不華麗的自動化。

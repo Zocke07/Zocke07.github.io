@@ -11,8 +11,9 @@
      8. Skills & languages
      9. Footer & back-to-top
     10. Reveal-on-scroll animations
-    11. Responsive
-    12. Reduced motion
+    11. Case studies & project notes
+    12. Responsive
+    13. Reduced motion
    ===================================================== */
 
 /* ---------- 1. Design tokens ---------- */
@@ -574,8 +575,157 @@ a:hover { text-decoration: underline; }
   animation: fade-up 0.6s var(--ease) var(--delay, 0s) backwards;
 }
 
-/* ---------- 11. Responsive ---------- */
+/* ---------- 11. Case studies & project notes ---------- */
+/* Shared by every case-study-*.html and project-mobile-testing.html. Each of
+   those pages links this stylesheet first, then adds only the pieces unique to
+   it in an inline <style> block, so page-local rules still win the cascade. */
+
+.case-hero { padding: 5rem 0 3rem; }
+/* One shared measure across hero and body prose. */
+.case-hero .hero-blurb { max-width: 46rem; }
+.case-hero h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); line-height: 1.2; margin-bottom: 0.75rem; }
+
+.role-line { color: var(--text); }
+.role-line strong { color: var(--accent); }
+
+/* Two names for one callout: NDA scope on the work pages, source attribution
+   on the project notes. */
+.nda-note,
+.source-note {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--bg-alt);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  padding: 0.75rem 1rem;
+  margin-top: 1.5rem;
+  max-width: 46rem;
+}
+
+.facts {
+  list-style: none;
+  display: grid;
+  /* min() keeps a track from outgrowing its container on narrow screens. */
+  grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+  gap: 0.4rem 2rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  max-width: 46rem;
+}
+.facts li { font-size: 0.95rem; color: var(--text-muted); padding-left: 1.15rem; position: relative; }
+.facts li::before {
+  content: "";
+  position: absolute; left: 0; top: 0.6em;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--accent);
+}
+.facts strong { color: var(--text); }
+
+/* Cap line length for readability without narrowing the container,
+   so body text lines up with the hero and the home page. */
+.prose > *:not(.section-title) { max-width: 46rem; }
+.prose p { margin-bottom: 1rem; }
+.prose h3 { margin: 2rem 0 0.6rem; font-size: 1.05rem; }
+.prose code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.88em;
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, var(--border));
+  border-radius: 5px;
+  padding: 0.08em 0.35em;
+  overflow-wrap: anywhere;
+}
+
+.snippet {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+  margin: 1.5rem 0 0.6rem;
+  max-width: 46rem;
+  /* Long lines scroll inside the block instead of widening the page. */
+  overflow-x: auto;
+  padding: 1rem 1.1rem;
+}
+.snippet code {
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  white-space: pre;
+  display: block;
+  background: none; border: 0; padding: 0;
+}
+.snippet .cm { color: var(--text-muted); }
+.snippet-caption { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; max-width: 46rem; }
+
+/* Stacked cards. .layer-stack is the plain variant; .gate-flow and .levels are
+   the same card with a step number in the gutter. */
+.layer-stack,
+.gate-flow,
+.levels {
+  display: grid;
+  gap: 0.5rem;
+  margin: 1.5rem 0 2rem;
+  max-width: 46rem;
+  list-style: none;
+  padding: 0;
+}
+.gate-flow,
+.levels { counter-reset: step; }
+
+.layer,
+.gate-flow li,
+.levels li {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card-bg);
+  padding: 0.7rem 1rem;
+  box-shadow: var(--shadow);
+}
+.gate-flow li,
+.levels li {
+  counter-increment: step;
+  padding-left: 3rem;
+  position: relative;
+}
+.gate-flow li::before,
+.levels li::before {
+  content: counter(step);
+  position: absolute; left: 1rem; top: 0.7rem;
+  font-weight: 700; color: var(--accent);
+}
+.layer b,
+.gate-flow b,
+.levels b { display: block; font-size: 0.95rem; }
+.layer span,
+.gate-flow span,
+.levels span { font-size: 0.85rem; color: var(--text-muted); }
+
+.learnings { counter-reset: learning; list-style: none; padding: 0; max-width: 46rem; }
+.learnings li {
+  counter-increment: learning;
+  position: relative;
+  padding-left: 2.6rem;
+  margin-bottom: 1.25rem;
+}
+.learnings li::before {
+  content: counter(learning, decimal-leading-zero);
+  position: absolute; left: 0; top: 0.1rem;
+  font-weight: 700; color: var(--accent);
+  font-size: 1.05rem;
+}
+.learnings b { display: block; margin-bottom: 0.15rem; }
+
 @media (max-width: 640px) {
+  .case-hero { padding: 4rem 0 2.5rem; }
+}
+
+/* ---------- 12. Responsive ---------- */
+/* The nav collapses on its own breakpoint, wider than the layout one below:
+   six items plus the brand and the two toggles need about 765px, and the row
+   wraps rather than scrolls once it runs out. */
+@media (max-width: 820px) {
   .nav-toggle { display: flex; }
   .nav-right { gap: 0.75rem; }
 
@@ -603,7 +753,9 @@ a:hover { text-decoration: underline; }
   .nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
   .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
   .nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+}
 
+@media (max-width: 640px) {
   .entry-head { flex-direction: column; gap: 0.15rem; }
   .section { padding: 3rem 0; }
   .hero { padding: 4rem 0 3rem; }
@@ -621,7 +773,7 @@ a:hover { text-decoration: underline; }
   .to-top { bottom: 1rem; right: 1rem; }
 }
 
-/* ---------- 12. Reduced motion ---------- */
+/* ---------- 13. Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
