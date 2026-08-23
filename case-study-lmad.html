@@ -9,7 +9,7 @@
   <meta property="og:description" content="A Byzantine-robust aggregation rule for federated edge learning, and the twenty-seed study that says exactly when it fails." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://zocke07.github.io/case-study-lmad.html" />
-  <meta property="og:image" content="https://zocke07.github.io/assets/img/og-lmad.png" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og/lmad.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Master's thesis: a Byzantine-robust defense for federated edge learning that states where it breaks." />
@@ -24,36 +24,12 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-lmad.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-lmad.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=7" />
+  <link rel="stylesheet" href="assets/css/style.css?v=8" />
   <style>
-    /* Only what is unique to this page; the shared case-study
-       rules live in style.css. */
-    /* ---- Figures: inline SVG drawn from the site's own theme tokens, so
-           they follow light/dark instead of shipping a baked-in background. ---- */
-    .figure { margin: 1.75rem 0 2rem; max-width: 46rem; }
-    .figure-scroll { overflow-x: auto; }
-    .fig-svg { display: block; width: 100%; min-width: 30rem; height: auto; }
-    .figcaption {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 0.6rem;
-      padding-left: 0.9rem;
-      border-left: 2px solid var(--border);
-    }
-    .fig-tick { font-size: 11px; fill: var(--text-muted); }
-    .fig-label { font-size: 12px; fill: var(--text); }
-    .fig-label-hero { font-weight: 700; fill: var(--accent); }
-    .fig-axis { font-size: 12px; fill: var(--text-muted); }
-    .fig-note { font-size: 11px; fill: var(--accent); }
-    .fig-panel-title { font-size: 13px; font-weight: 600; fill: var(--text); }
+    /* Only what is unique to this page; the shared case-study rules,
+       including every .figure/.fig-* class, live in style.css. */
 
     /* ---- Results table ---- */
-    /* Not in the shared stylesheet, so it is defined here for the table caption. */
-    .sr-only {
-      position: absolute; width: 1px; height: 1px;
-      padding: 0; margin: -1px; overflow: hidden;
-      clip: rect(0 0 0 0); white-space: nowrap; border: 0;
-    }
     .table-scroll { overflow-x: auto; max-width: 46rem; margin: 1.5rem 0 0.6rem; }
     .result-table {
       border-collapse: collapse;
@@ -215,7 +191,7 @@
           exceeds the threshold is dropped <em>on its own</em>, and the client's remaining layers
           are aggregated normally.
         </p>
-        <div class="figure">
+        <div class="figure is-loose">
           <div class="figure-scroll">
             <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="fig2title fig2desc">
 <title id="fig2title">Whole-client rejection compared with per-layer rejection</title>
@@ -343,7 +319,7 @@
             </tbody>
           </table>
         </div>
-        <div class="figure">
+        <div class="figure is-loose">
           <div class="figure-scroll">
             <svg class="fig-svg" viewBox="0 0 700 320" role="img" aria-labelledby="f1title f1desc">
               <title id="f1title">DDoS-class F1 under the reference 30% label-flipping attack</title>
@@ -423,7 +399,7 @@
           <em>and</em> far more robust. Against the cheap traditional rules the trade-off is real
           but small, roughly 18 ms per round over Krum in exchange for 25.7 points of F&#8321;.
         </p>
-        <div class="figure">
+        <div class="figure is-loose">
           <div class="figure-scroll">
             <svg class="fig-svg" viewBox="0 0 640 400" role="img" aria-labelledby="fig1title fig1desc">
 <title id="fig1title">Aggregation cost versus robustness for seven strategies</title>
@@ -624,7 +600,7 @@
         <!-- TODO: uncomment once the NTUT library deposit is public and the code repo is
              trimmed for release, then delete this comment.
         <p class="entry-more"><a href="THESIS_URL" target="_blank" rel="noopener">Read the full thesis (NTUT library) →</a></p>
-        <p class="entry-more"><a href="CODE_URL" target="_blank" rel="noopener">L-MAD experiment code on GitHub →</a></p>
+        <p class="entry-more"><a href="https://github.com/Zocke07/L-MAD" target="_blank" rel="noopener">L-MAD experiment code on GitHub →</a></p>
         -->
         <p class="entry-more"><a href="index.html#projects">← Back to portfolio</a></p>
       </div>

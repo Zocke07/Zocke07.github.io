@@ -9,7 +9,7 @@
   <meta property="og:description" content="Automating a stateful Android app with no API, no test hooks, and no way to put it back the way you found it except by hand." />
   <meta property="og:type" content="article" />
   <meta property="og:url" content="https://zocke07.github.io/project-mobile-testing.html" />
-  <meta property="og:image" content="https://zocke07.github.io/assets/img/og-mobile.png" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og/mobile.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Project notes: automating a stateful Android app that has no reset button." />
@@ -24,12 +24,12 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing.html" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/project-mobile-testing.zh.html" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=7" />
+  <link rel="stylesheet" href="assets/css/style.css?v=8" />
   <style>
-    /* Only what is unique to this page; the shared case-study
-       rules live in style.css. */
-    /* Partition table and activity diagram. Both scroll inside themselves on
-       narrow screens rather than widening the page. */
+    /* Only what is unique to this page; the shared figure and exhibit rules
+       live in style.css. */
+    /* Partition table. Scrolls inside itself on narrow screens rather than
+       widening the page. */
     .blocks {
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -65,29 +65,6 @@
       font-size: 0.78rem;
       color: var(--accent);
     }
-
-    .figure { margin: 1.5rem 0 0.6rem; max-width: 46rem; overflow-x: auto; }
-    .figure svg { display: block; width: 100%; min-width: 32rem; height: auto; }
-
-    /* A scanned exhibit from the report deck. Keeps its own paper background in
-       both themes. It is drawn for a 16:9 slide, so it breaks out of the 46rem
-       prose column and takes the full page width; below that it scrolls. */
-    .figure-doc {
-      background: #ffffff;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      margin: 1.5rem 0 0.6rem;
-      overflow-x: auto;
-      padding: 0.8rem;
-    }
-    .prose > .figure-doc { max-width: none; }
-    .figure-doc a { display: block; }
-    .figure-doc img { display: block; width: 100%; min-width: 50rem; height: auto; }
-    :root[data-theme="dark"] .figure-doc { background: #e9edf3; }
-    :root[data-theme="dark"] .figure-doc img { filter: saturate(0.9) brightness(0.97); }
-    .figure-caption,
-    .blocks-caption { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem; max-width: 46rem; }
   </style>
 </head>
 <body>
@@ -244,7 +221,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         </p>
 
         <h3>What that looks like on a real screen</h3>
-        <div class="figure-doc">
+        <div class="figure-doc is-wide">
           <a href="assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener"
              aria-label="Open the activity diagram at full size in a new tab">
             <img src="assets/img/tc1-activity-diagram.png" width="2000" height="749" loading="lazy"
@@ -350,7 +327,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
           dialog, then pushes dinner past bedtime and asserts that second complaint too. One test,
           two ways to break the ordering.
         </p>
-        <div class="figure">
+        <div class="figure is-tight is-scroll">
           <svg viewBox="0 0 620 580" role="img" aria-labelledby="routine-flow-title routine-flow-desc">
             <title id="routine-flow-title">Activity diagram for the daily routine ordering test</title>
             <desc id="routine-flow-desc">
