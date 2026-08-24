@@ -805,6 +805,11 @@ a:hover { text-decoration: underline; }
 :root[data-theme="dark"] .figure-doc { background: #e9edf3; }
 :root[data-theme="dark"] .figure-doc img { filter: saturate(0.9) brightness(0.97); }
 
+/* Portrait exhibits read better narrower than the prose column. This has to
+   outrank `.prose > *`, which is why it is written as a child selector rather
+   than a plain .figure-doc rule. */
+.prose > .figure-doc { max-width: 26rem; }
+
 /* .is-wide: drawn for a 16:9 slide, so it breaks out of the 46rem prose
    column to the full page width and scrolls below that. */
 .prose > .figure-doc.is-wide { max-width: none; }
