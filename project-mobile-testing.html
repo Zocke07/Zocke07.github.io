@@ -8,7 +8,7 @@
   <meta property="og:title" content="No Reset Button" />
   <meta property="og:description" content="Automating a stateful Android app with no API, no test hooks, and no way to put it back the way you found it except by hand." />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://zocke07.github.io/project-mobile-testing.html" />
+  <meta property="og:url" content="https://zocke07.github.io/project-mobile-testing" />
   <meta property="og:image" content="https://zocke07.github.io/assets/img/og/mobile.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -21,10 +21,11 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing.html" />
-  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/project-mobile-testing.zh.html" />
+  <link rel="canonical" href="https://zocke07.github.io/project-mobile-testing" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/project-mobile-testing" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=9" />
   <style>
     /* Only what is unique to this page; the shared figure and exhibit rules
        live in style.css. */
@@ -73,17 +74,17 @@
   <!-- ===================== Header / Nav ===================== -->
   <header class="site-header">
     <nav class="container nav" aria-label="Primary">
-      <a class="nav-brand" href="index.html">Rivan Wong</a>
+      <a class="nav-brand" href="/">Rivan Wong</a>
       <div class="nav-right">
         <ul id="nav-menu" class="nav-menu">
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#education">Education</a></li>
-          <li><a href="index.html#experience">Experience</a></li>
-          <li><a href="index.html#projects">Work &amp; Research</a></li>
-          <li><a href="index.html#skills">Skills</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#education">Education</a></li>
+          <li><a href="/#experience">Experience</a></li>
+          <li><a href="/#projects">Work &amp; Research</a></li>
+          <li><a href="/#skills">Skills</a></li>
+          <li><a href="/#contact">Contact</a></li>
         </ul>
-        <a class="lang-toggle" href="project-mobile-testing.zh.html" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+        <a class="lang-toggle" href="/zh/project-mobile-testing" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
            aria-label="切換至繁體中文">中文</a>
         <button class="theme-toggle" aria-label="Switch color theme">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -222,9 +223,9 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
 
         <h3>What that looks like on a real screen</h3>
         <div class="figure-doc is-wide">
-          <a href="assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener"
+          <a href="/assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener"
              aria-label="Open the activity diagram at full size in a new tab">
-            <img src="assets/img/tc1-activity-diagram.png" width="2000" height="749" loading="lazy"
+            <img src="/assets/img/tc1-activity-diagram.png" width="2000" height="749" loading="lazy"
                  alt="Activity diagram for the Add Health Data screen. A spine of decision diamonds
                       runs left to right, one per record type, and each labelled branch TC1-1 through
                       TC1-7 drops to the inputs that test case enters." />
@@ -237,7 +238,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
           the same shape, five branches carrying two, one, six, four and two test cases. This one
           is a different feature area and the code behind it is a teammate's, but the method is the
           one all five of us worked to.
-          <a href="assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener">Open it full size →</a>
+          <a href="/assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener">Open it full size →</a>
         </p>
 
         <h3>The blocks behind my fifteen tests</h3>
@@ -467,7 +468,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         <p class="entry-more">
           <a href="https://github.com/qwe8496516/Health2SyncProject" target="_blank" rel="noopener">View the source on GitHub →</a>
         </p>
-        <p class="entry-more"><a href="index.html#projects">← Back to portfolio</a></p>
+        <p class="entry-more"><a href="/#projects">← Back to portfolio</a></p>
       </div>
     </section>
   </main>
@@ -482,6 +483,6 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

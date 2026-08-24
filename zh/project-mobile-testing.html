@@ -8,7 +8,7 @@
   <meta property="og:title" content="沒有重置鍵" />
   <meta property="og:description" content="替一款有狀態的 Android App 做自動化測試：沒有 API、沒有測試掛鉤，也沒有任何方法能把它還原成原本的樣子，只能一步一步點回去。" />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://zocke07.github.io/project-mobile-testing.zh.html" />
+  <meta property="og:url" content="https://zocke07.github.io/zh/project-mobile-testing" />
   <meta property="og:image" content="https://zocke07.github.io/assets/img/og/mobile.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -21,10 +21,11 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing.html" />
-  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/project-mobile-testing.zh.html" />
+  <link rel="canonical" href="https://zocke07.github.io/zh/project-mobile-testing" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/project-mobile-testing" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=9" />
   <style>
     /* 只保留這個頁面獨有的樣式；共用的圖表與原始圖檔樣式放在 style.css。 */
     /* 分割區間表格。在窄螢幕上於自身區塊內橫向捲動，而不是把頁面撐寬。 */
@@ -70,17 +71,17 @@
   <!-- ===================== Header / Nav ===================== -->
   <header class="site-header">
     <nav class="container nav" aria-label="主要導覽">
-      <a class="nav-brand" href="index.zh.html">Rivan Wong</a>
+      <a class="nav-brand" href="/zh/">Rivan Wong</a>
       <div class="nav-right">
         <ul id="nav-menu" class="nav-menu">
-          <li><a href="index.zh.html#about">關於我</a></li>
-          <li><a href="index.zh.html#education">學歷</a></li>
-          <li><a href="index.zh.html#experience">工作經歷</a></li>
-          <li><a href="index.zh.html#projects">作品與研究</a></li>
-          <li><a href="index.zh.html#skills">技能</a></li>
-          <li><a href="index.zh.html#contact">聯絡方式</a></li>
+          <li><a href="/zh/#about">關於我</a></li>
+          <li><a href="/zh/#education">學歷</a></li>
+          <li><a href="/zh/#experience">工作經歷</a></li>
+          <li><a href="/zh/#projects">作品與研究</a></li>
+          <li><a href="/zh/#skills">技能</a></li>
+          <li><a href="/zh/#contact">聯絡方式</a></li>
         </ul>
-        <a class="lang-toggle" href="project-mobile-testing.html" hreflang="en" lang="en"
+        <a class="lang-toggle" href="/project-mobile-testing" hreflang="en" lang="en"
            aria-label="Switch to English">EN</a>
         <button class="theme-toggle" aria-label="切換配色主題">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -185,15 +186,15 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
 
         <h3>把它套在一個真實畫面上會長成什麼樣子</h3>
         <div class="figure-doc is-wide">
-          <a href="assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener"
+          <a href="/assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener"
              aria-label="在新分頁開啟完整尺寸的活動圖">
-            <img src="assets/img/tc1-activity-diagram.png" width="2000" height="749" loading="lazy"
+            <img src="/assets/img/tc1-activity-diagram.png" width="2000" height="749" loading="lazy"
                  alt="新增健康數據畫面的活動圖。判斷菱形由左到右串成一條主幹，每種紀錄類型各一個，而標示為 TC1-1 到 TC1-7 的每一條分支，都往下接到該測試案例所要輸入的欄位。" />
           </a>
         </div>
         <p class="figure-caption">
           團隊為「新增健康數據」畫的活動圖，直接取自我們的報告。圖上標示的每一條分支，從 TC1-1 到 TC1-7，都是一個測試案例：實際操作 App，每一個真的通往某處的判斷，就變成一個案例，末端接上它自己的輸入。我負責的區塊也長成同樣的形狀，五條分支分別帶著 2、1、6、4、2 個測試案例。這張圖畫的是另一個功能區塊，背後的程式碼是隊友寫的，但方法是我們五個人共同遵循的那一套。
-          <a href="assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener">開啟完整尺寸 →</a>
+          <a href="/assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener">開啟完整尺寸 →</a>
         </p>
 
         <h3>我那十五個測試背後的分割區間</h3>
@@ -385,7 +386,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         <p class="entry-more">
           <a href="https://github.com/qwe8496516/Health2SyncProject" target="_blank" rel="noopener">在 GitHub 上查看原始碼 →</a>
         </p>
-        <p class="entry-more"><a href="index.zh.html#projects">← 返回作品集</a></p>
+        <p class="entry-more"><a href="/zh/#projects">← 返回作品集</a></p>
       </div>
     </section>
   </main>
@@ -400,6 +401,6 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

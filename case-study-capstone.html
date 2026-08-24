@@ -8,7 +8,7 @@
   <meta property="og:title" content="The Process Was Fine. The Output Still Fell." />
   <meta property="og:description" content="Four years of a test automation team's output, and why a healthy pipeline and falling numbers turned out to be compatible." />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://zocke07.github.io/case-study-capstone.html" />
+  <meta property="og:url" content="https://zocke07.github.io/case-study-capstone" />
   <meta property="og:image" content="https://zocke07.github.io/assets/img/og/capstone.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -21,10 +21,11 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-capstone.html" />
-  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-capstone.zh.html" />
+  <link rel="canonical" href="https://zocke07.github.io/case-study-capstone" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-capstone" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-capstone" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=9" />
   <style>
     /* Page-local: the one chart on the site. Scales with its container rather
        than a fixed width, and takes every colour from the theme tokens so it
@@ -56,17 +57,17 @@
   <!-- ===================== Header / Nav ===================== -->
   <header class="site-header">
     <nav class="container nav" aria-label="Primary">
-      <a class="nav-brand" href="index.html">Rivan Wong</a>
+      <a class="nav-brand" href="/">Rivan Wong</a>
       <div class="nav-right">
         <ul id="nav-menu" class="nav-menu">
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#education">Education</a></li>
-          <li><a href="index.html#experience">Experience</a></li>
-          <li><a href="index.html#projects">Work &amp; Research</a></li>
-          <li><a href="index.html#skills">Skills</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#education">Education</a></li>
+          <li><a href="/#experience">Experience</a></li>
+          <li><a href="/#projects">Work &amp; Research</a></li>
+          <li><a href="/#skills">Skills</a></li>
+          <li><a href="/#contact">Contact</a></li>
         </ul>
-        <a class="lang-toggle" href="case-study-capstone.zh.html" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+        <a class="lang-toggle" href="/zh/case-study-capstone" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
            aria-label="切換至繁體中文">中文</a>
         <button class="theme-toggle" aria-label="Switch color theme">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -160,9 +161,9 @@
           <li><b>Fix until the engineers approve</b><span>The company's engineers review and comment. The case is not finished when it passes. It is finished when they merge it.</span></li>
         </ol>
         <div class="figure-doc">
-          <a href="assets/img/capstone-dev-workflow.png" target="_blank" rel="noopener"
+          <a href="/assets/img/capstone-dev-workflow.png" target="_blank" rel="noopener"
              aria-label="Open the development workflow diagram at full size in a new tab">
-            <img src="assets/img/capstone-dev-workflow.png" width="410" height="540" loading="lazy"
+            <img src="/assets/img/capstone-dev-workflow.png" width="410" height="540" loading="lazy"
                  alt="Flowchart of the development workflow, shaded into four tool regions. Product
                       backlog feeds a sprint backlog, then developing, case refinement and code
                       review in the Robot Editor region; a sprint review in the Microsoft Teams
@@ -186,7 +187,7 @@
         <p>
           This page is about the process and what came out of it. For how the suites themselves are
           built so that hundreds of them can run at once against one live server,
-          <a href="case-study-test-automation.html">that is the other case study</a>.
+          <a href="/case-study-test-automation">that is the other case study</a>.
         </p>
       </div>
     </section>
@@ -348,7 +349,7 @@
         <p class="entry-more">
           <a href="https://github.com/Zocke07/Automation-Demonstration" target="_blank" rel="noopener">View the exhibit on GitHub →</a>
         </p>
-        <p class="entry-more"><a href="index.html#projects">← Back to portfolio</a></p>
+        <p class="entry-more"><a href="/#projects">← Back to portfolio</a></p>
       </div>
     </section>
   </main>
@@ -363,6 +364,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

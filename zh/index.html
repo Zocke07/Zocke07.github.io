@@ -8,7 +8,7 @@
   <meta property="og:title" content="黃家輝 Rivan Wong · 個人作品集" />
   <meta property="og:description" content="資訊工程碩士 · 軟體品質保證與自動化測試 · 臺灣臺北" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://zocke07.github.io/index.zh.html" />
+  <meta property="og:url" content="https://zocke07.github.io/zh/" />
   <meta property="og:image" content="https://zocke07.github.io/assets/img/og/home.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -21,11 +21,12 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/index.html" />
-  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/index.zh.html" />
+  <link rel="canonical" href="https://zocke07.github.io/zh/" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=9" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -43,7 +44,7 @@
           <li><a href="#skills">技能</a></li>
           <li><a href="#contact">聯絡方式</a></li>
         </ul>
-        <a class="lang-toggle" href="index.html" hreflang="en" lang="en"
+        <a class="lang-toggle" href="/" hreflang="en" lang="en"
            aria-label="Switch to English">EN</a>
         <button class="theme-toggle" aria-label="切換配色主題">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -68,7 +69,7 @@
         <p class="hero-blurb">
           國立臺北科技大學資訊工程碩士，碩士階段研究聯邦式學習在對抗情境下的安全性，並曾在 Taiwan Mobile 與 Sunbird Software 累積自動化測試、API 測試與技術專案管理的第一線實務經驗。
         </p>
-        <img class="hero-portrait" src="assets/img/portrait-2026.jpg" width="560" height="560"
+        <img class="hero-portrait" src="/assets/img/portrait-2026.jpg" width="560" height="560"
              alt="身著畢業服、懷抱綿羊的黃家輝" />
       </div>
     </section>
@@ -105,7 +106,7 @@
           <ul class="entry-points">
             <li>GPA：4.0 / 4.0</li>
             <li>透過學校甄選制的學碩一貫學程，以一年完成碩士學位。</li>
-            <li>碩士論文：<em>基於信任感知之逐層中位數絕對偏差 (L-MAD) 之聯邦邊緣學習拜占庭強健聚合機制</em>，於軟體安全實驗室完成，指導教授為陳香君博士。<a href="case-study-lmad.zh.html">閱讀案例研究 →</a></li>
+            <li>碩士論文：<em>基於信任感知之逐層中位數絕對偏差 (L-MAD) 之聯邦邊緣學習拜占庭強健聚合機制</em>，於軟體安全實驗室完成，指導教授為陳香君博士。<a href="/zh/case-study-lmad">閱讀案例研究 →</a></li>
           </ul>
         </article>
 
@@ -151,7 +152,7 @@
           <ul class="tags entry-tags">
             <li>Python</li><li>PyTest</li><li>Java</li><li>TypeScript</li><li>Jira</li><li>VS Code 擴充套件</li><li>LLM API</li><li>UAT</li><li>敏捷開發</li>
           </ul>
-          <p class="entry-more"><a href="case-study-ai-products.zh.html">與六位實習生一起交付兩項 AI 產品：案例研究 →</a></p>
+          <p class="entry-more"><a href="/zh/case-study-ai-products">與六位實習生一起交付兩項 AI 產品：案例研究 →</a></p>
 
           <p class="entry-note">內部名稱、端點與商業邏輯均已一般化處理；文中的規模數字描述的是團隊整體產出。</p>
         </article>
@@ -176,7 +177,7 @@
           <ul class="tags entry-tags">
             <li>Robot Framework</li><li>Selenium</li><li>Python</li><li>REST API</li><li>Scrum</li>
           </ul>
-          <p class="entry-more"><a href="case-study-test-automation.zh.html">730 組以上的測試如何同時執行：案例研究 →</a></p>
+          <p class="entry-more"><a href="/zh/case-study-test-automation">730 組以上的測試如何同時執行：案例研究 →</a></p>
           <p class="entry-note">產品與客戶細節依保密協議一般化處理；文中的規模數字描述的是我參與其中、由團隊共同維護的平台。</p>
         </article>
       </div>
@@ -196,7 +197,7 @@
             <ul class="tags entry-tags">
               <li>PyTorch</li><li>Flower</li><li>聯邦式學習</li><li>對抗式機器學習</li><li>Python</li>
             </ul>
-            <p class="entry-more"><a href="case-study-lmad.zh.html">閱讀案例研究 →</a></p>
+            <p class="entry-more"><a href="/zh/case-study-lmad">閱讀案例研究 →</a></p>
           </article>
 
           <article class="card">
@@ -208,7 +209,7 @@
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>研究</li>
             </ul>
-            <p class="entry-more"><a href="case-study-capstone.zh.html">流程沒有問題，產出還是掉了：案例研究 →</a></p>
+            <p class="entry-more"><a href="/zh/case-study-capstone">流程沒有問題，產出還是掉了：案例研究 →</a></p>
           </article>
           <article class="card">
             <h3>730 組以上的測試如何同時執行而不互相干擾</h3>
@@ -219,7 +220,7 @@
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Selenium</li><li>平行測試</li><li>CI</li>
             </ul>
-            <p class="entry-more"><a href="case-study-test-automation.zh.html">閱讀案例研究 →</a></p>
+            <p class="entry-more"><a href="/zh/case-study-test-automation">閱讀案例研究 →</a></p>
           </article>
           <article class="card">
             <h3>與六位實習生一起交付兩項 AI 產品</h3>
@@ -230,7 +231,7 @@
             <ul class="tags entry-tags">
               <li>TypeScript</li><li>LLM API</li><li>UAT</li><li>Jira</li>
             </ul>
-            <p class="entry-more"><a href="case-study-ai-products.zh.html">閱讀案例研究 →</a></p>
+            <p class="entry-more"><a href="/zh/case-study-ai-products">閱讀案例研究 →</a></p>
           </article>
           <article class="card">
             <h3>健康管理 App 的行動端自動化測試</h3>
@@ -241,7 +242,7 @@
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Appium</li><li>Android</li><li>測試設計</li>
             </ul>
-            <p class="entry-more"><a href="project-mobile-testing.zh.html">專案筆記：沒有重置鍵 →</a></p>
+            <p class="entry-more"><a href="/zh/project-mobile-testing">專案筆記：沒有重置鍵 →</a></p>
           </article>
           <article class="card">
             <h3>Sky Scraper Escape</h3>
@@ -252,7 +253,7 @@
             <ul class="tags entry-tags">
               <li>C++</li><li>OOP</li><li>MFC</li><li>DirectDraw</li><li>Git</li>
             </ul>
-            <p class="entry-more"><a href="case-study-sky-scraper-escape.zh.html">選單也只是另一個關卡：案例研究 →</a></p>
+            <p class="entry-more"><a href="/zh/case-study-sky-scraper-escape">選單也只是另一個關卡：案例研究 →</a></p>
           </article>
           <article class="card card-brief">
             <h3>從真值表到管線化 CPU</h3>
@@ -330,6 +331,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

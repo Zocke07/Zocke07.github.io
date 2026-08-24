@@ -8,7 +8,7 @@
   <meta property="og:title" content="選單也只是另一個關卡" />
   <meta property="og:description" content="七個關卡、一組介面，以及一個學生時期的遊戲專案教會我如何為還看不見的變更預留空間。" />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://zocke07.github.io/case-study-sky-scraper-escape.zh.html" />
+  <meta property="og:url" content="https://zocke07.github.io/zh/case-study-sky-scraper-escape" />
   <meta property="og:image" content="https://zocke07.github.io/assets/img/og/sky.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -21,10 +21,11 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-sky-scraper-escape.html" />
-  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-sky-scraper-escape.zh.html" />
+  <link rel="canonical" href="https://zocke07.github.io/zh/case-study-sky-scraper-escape" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-sky-scraper-escape" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-sky-scraper-escape" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=9" />
   <style>
     /* The one raster on this page: a frame rebuilt from the game's own bitmaps.
        It carries its own art, so unlike .figure-doc it needs no paper panel. */
@@ -46,17 +47,17 @@
   <!-- ===================== Header / Nav ===================== -->
   <header class="site-header">
     <nav class="container nav" aria-label="主要導覽">
-      <a class="nav-brand" href="index.zh.html">Rivan Wong</a>
+      <a class="nav-brand" href="/zh/">Rivan Wong</a>
       <div class="nav-right">
         <ul id="nav-menu" class="nav-menu">
-          <li><a href="index.zh.html#about">關於我</a></li>
-          <li><a href="index.zh.html#education">學歷</a></li>
-          <li><a href="index.zh.html#experience">工作經歷</a></li>
-          <li><a href="index.zh.html#projects">作品與研究</a></li>
-          <li><a href="index.zh.html#skills">技能</a></li>
-          <li><a href="index.zh.html#contact">聯絡方式</a></li>
+          <li><a href="/zh/#about">關於我</a></li>
+          <li><a href="/zh/#education">學歷</a></li>
+          <li><a href="/zh/#experience">工作經歷</a></li>
+          <li><a href="/zh/#projects">作品與研究</a></li>
+          <li><a href="/zh/#skills">技能</a></li>
+          <li><a href="/zh/#contact">聯絡方式</a></li>
         </ul>
-        <a class="lang-toggle" href="case-study-sky-scraper-escape.html" hreflang="en" lang="en"
+        <a class="lang-toggle" href="/case-study-sky-scraper-escape" hreflang="en" lang="en"
            aria-label="Switch to English">EN</a>
         <button class="theme-toggle" aria-label="切換配色主題">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -247,7 +248,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
           <code>OnShow</code>，先呼叫基底類別的版本，然後才加上自己的點子。那些變化本身都刻意做得很小，大多只是多一個欄位加上多一個函式。
         </p>
         <div class="figure-shot">
-          <img src="assets/img/sky-level1-frame.jpg" width="1192" height="670" loading="lazy"
+          <img src="/assets/img/sky-level1-frame.jpg" width="1192" height="670" loading="lazy"
                alt="關卡一的一個畫面。一架小型客機在畫面左側飛過夕陽下的像素風城市。三組障礙物由右側逼近：
                     一朵從畫面上緣垂下的雲，以及一棟從下緣升起的大樓，兩者之間留著一道飛機必須穿過的縫隙。" />
         </div>
@@ -321,7 +322,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         <p class="entry-more">
           <a href="https://github.com/Zocke07/Sky-Scraper-Escape" target="_blank" rel="noopener">在 GitHub 上查看原始碼 →</a>
         </p>
-        <p class="entry-more"><a href="index.zh.html#projects">← 返回作品集</a></p>
+        <p class="entry-more"><a href="/zh/#projects">← 返回作品集</a></p>
       </div>
     </section>
   </main>
@@ -336,6 +337,6 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

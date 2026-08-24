@@ -21,11 +21,12 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/index.html" />
-  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/index.zh.html" />
+  <link rel="canonical" href="https://zocke07.github.io/" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=9" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -43,7 +44,7 @@
           <li><a href="#skills">Skills</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
-        <a class="lang-toggle" href="index.zh.html" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+        <a class="lang-toggle" href="/zh/" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
            aria-label="切換至繁體中文">中文</a>
         <button class="theme-toggle" aria-label="Switch color theme">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -71,7 +72,7 @@
           automation, API testing, and technical program management at Taiwan Mobile and
           Sunbird Software.
         </p>
-        <img class="hero-portrait" src="assets/img/portrait-2026.jpg" width="560" height="560"
+        <img class="hero-portrait" src="/assets/img/portrait-2026.jpg" width="560" height="560"
              alt="Rivan Wong in graduation robes, holding a sheep" />
       </div>
     </section>
@@ -115,7 +116,7 @@
           <ul class="entry-points">
             <li>GPA: 4.0 / 4.0</li>
             <li>Completed in one year through the university's selective Bachelor's–Master's program <span lang="zh-Hant">(學碩一貫學程)</span>.</li>
-            <li>Thesis: <em>Trust-Aware Layer-Wise Median Absolute Deviation (L-MAD) for Byzantine-Robust Aggregation in Federated Edge Learning</em>, advised by Shiang-Jiun Chen, Ph.D., in the Software Security Lab. <a href="case-study-lmad.html">Read the case study →</a></li>
+            <li>Thesis: <em>Trust-Aware Layer-Wise Median Absolute Deviation (L-MAD) for Byzantine-Robust Aggregation in Federated Edge Learning</em>, advised by Shiang-Jiun Chen, Ph.D., in the Software Security Lab. <a href="/case-study-lmad">Read the case study →</a></li>
           </ul>
         </article>
 
@@ -165,7 +166,7 @@
           <ul class="tags entry-tags">
             <li>Python</li><li>PyTest</li><li>Java</li><li>TypeScript</li><li>Jira</li><li>VS Code Extensions</li><li>LLM APIs</li><li>UAT</li><li>Agile</li>
           </ul>
-          <p class="entry-more"><a href="case-study-ai-products.html">Shipping two AI products with six interns: a case study →</a></p>
+          <p class="entry-more"><a href="/case-study-ai-products">Shipping two AI products with six interns: a case study →</a></p>
 
           <p class="entry-note">Internal names, endpoints, and business logic are generalized; the scale figures describe team output.</p>
         </article>
@@ -196,7 +197,7 @@
           <ul class="tags entry-tags">
             <li>Robot Framework</li><li>Selenium</li><li>Python</li><li>REST API</li><li>Scrum</li>
           </ul>
-          <p class="entry-more"><a href="case-study-test-automation.html">How 730+ tests run at once: a case study →</a></p>
+          <p class="entry-more"><a href="/case-study-test-automation">How 730+ tests run at once: a case study →</a></p>
           <p class="entry-note">Product and client details are generalized under NDA; the scale figures describe the team-owned platform I worked inside.</p>
         </article>
       </div>
@@ -221,7 +222,7 @@
             <ul class="tags entry-tags">
               <li>PyTorch</li><li>Flower</li><li>Federated Learning</li><li>Adversarial ML</li><li>Python</li>
             </ul>
-            <p class="entry-more"><a href="case-study-lmad.html">Read the case study →</a></p>
+            <p class="entry-more"><a href="/case-study-lmad">Read the case study →</a></p>
           </article>
 
           <article class="card">
@@ -238,7 +239,7 @@
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>Research</li>
             </ul>
-            <p class="entry-more"><a href="case-study-capstone.html">The process was fine, the output still fell: a case study →</a></p>
+            <p class="entry-more"><a href="/case-study-capstone">The process was fine, the output still fell: a case study →</a></p>
           </article>
           <article class="card">
             <h3>How 730+ Tests Run at Once Without Stepping on Each Other</h3>
@@ -253,7 +254,7 @@
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Selenium</li><li>Parallel Testing</li><li>CI</li>
             </ul>
-            <p class="entry-more"><a href="case-study-test-automation.html">Read the case study →</a></p>
+            <p class="entry-more"><a href="/case-study-test-automation">Read the case study →</a></p>
           </article>
           <article class="card">
             <h3>Shipping Two AI Products With Six Interns</h3>
@@ -269,7 +270,7 @@
             <ul class="tags entry-tags">
               <li>TypeScript</li><li>LLM APIs</li><li>UAT</li><li>Jira</li>
             </ul>
-            <p class="entry-more"><a href="case-study-ai-products.html">Read the case study →</a></p>
+            <p class="entry-more"><a href="/case-study-ai-products">Read the case study →</a></p>
           </article>
           <article class="card">
             <h3>Mobile Test Automation for a Health Tracking App</h3>
@@ -285,7 +286,7 @@
             <ul class="tags entry-tags">
               <li>Robot Framework</li><li>Appium</li><li>Android</li><li>Test Design</li>
             </ul>
-            <p class="entry-more"><a href="project-mobile-testing.html">Project notes: no reset button →</a></p>
+            <p class="entry-more"><a href="/project-mobile-testing">Project notes: no reset button →</a></p>
           </article>
           <article class="card">
             <h3>Sky Scraper Escape</h3>
@@ -301,7 +302,7 @@
             <ul class="tags entry-tags">
               <li>C++</li><li>OOP</li><li>MFC</li><li>DirectDraw</li><li>Git</li>
             </ul>
-            <p class="entry-more"><a href="case-study-sky-scraper-escape.html">The menu is just another level: a case study →</a></p>
+            <p class="entry-more"><a href="/case-study-sky-scraper-escape">The menu is just another level: a case study →</a></p>
           </article>
           <article class="card card-brief">
             <h3>From a Truth Table to a Pipelined CPU</h3>
@@ -392,6 +393,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

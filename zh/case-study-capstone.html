@@ -8,7 +8,7 @@
   <meta property="og:title" content="流程沒有問題，產出還是掉了" />
   <meta property="og:description" content="一個自動化測試團隊四年的產出數據，以及健康的流程與下滑的數字為什麼可以同時成立。" />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://zocke07.github.io/case-study-capstone.zh.html" />
+  <meta property="og:url" content="https://zocke07.github.io/zh/case-study-capstone" />
   <meta property="og:image" content="https://zocke07.github.io/assets/img/og/capstone.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -21,10 +21,11 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-capstone.html" />
-  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-capstone.zh.html" />
+  <link rel="canonical" href="https://zocke07.github.io/zh/case-study-capstone" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-capstone" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-capstone" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=9" />
   <style>
     /* Page-local: the one chart on the site. Scales with its container rather
        than a fixed width, and takes every colour from the theme tokens so it
@@ -56,17 +57,17 @@
   <!-- ===================== Header / Nav ===================== -->
   <header class="site-header">
     <nav class="container nav" aria-label="主要導覽">
-      <a class="nav-brand" href="index.zh.html">黃家輝</a>
+      <a class="nav-brand" href="/zh/">黃家輝</a>
       <div class="nav-right">
         <ul id="nav-menu" class="nav-menu">
-          <li><a href="index.zh.html#about">關於我</a></li>
-          <li><a href="index.zh.html#education">學歷</a></li>
-          <li><a href="index.zh.html#experience">經歷</a></li>
-          <li><a href="index.zh.html#projects">作品與研究</a></li>
-          <li><a href="index.zh.html#skills">技能</a></li>
-          <li><a href="index.zh.html#contact">聯絡方式</a></li>
+          <li><a href="/zh/#about">關於我</a></li>
+          <li><a href="/zh/#education">學歷</a></li>
+          <li><a href="/zh/#experience">經歷</a></li>
+          <li><a href="/zh/#projects">作品與研究</a></li>
+          <li><a href="/zh/#skills">技能</a></li>
+          <li><a href="/zh/#contact">聯絡方式</a></li>
         </ul>
-        <a class="lang-toggle" href="case-study-capstone.html" hreflang="en" lang="en"
+        <a class="lang-toggle" href="/case-study-capstone" hreflang="en" lang="en"
            aria-label="Switch to English">EN</a>
         <button class="theme-toggle" aria-label="切換配色主題">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -138,9 +139,9 @@
           <li><b>修到工程師點頭為止</b><span>公司的工程師會審查並留下意見。案例不是通過測試就算完成，而是他們合併了才算完成。</span></li>
         </ol>
         <div class="figure-doc">
-          <a href="assets/img/capstone-dev-workflow.png" target="_blank" rel="noopener"
+          <a href="/assets/img/capstone-dev-workflow.png" target="_blank" rel="noopener"
              aria-label="在新分頁中開啟完整尺寸的開發流程圖">
-            <img src="assets/img/capstone-dev-workflow.png" width="410" height="540" loading="lazy"
+            <img src="/assets/img/capstone-dev-workflow.png" width="410" height="540" loading="lazy"
                  alt="開發流程圖，依所屬工具分成四個色塊區域。產品 backlog 進入 sprint backlog，接著是
                       Robot Editor 區域中的開發、案例細化與程式碼審查；Microsoft Teams 區域中的 sprint
                       審查會把建議繞回上游；建立分支後進入 Jenkins 區域的 CI 執行與 RfLint 分析；最後在
@@ -154,7 +155,7 @@
           第二關特別值得停下來看。用文字把測試步驟寫出來、手動跑過一遍、還要等產品經理同意，才准開始寫程式，感覺是所有起手式裡最慢的一種。但它也是唯一一道能在誤解還只是一段文字、而不是一整個測試套件的時候，就把它攔下來的關卡。
         </p>
         <p>
-          這一頁談的是流程與流程的產出。至於測試套件本身是怎麼寫成的，才能讓數百組同時跑在同一台線上伺服器上，<a href="case-study-test-automation.zh.html">那是另一篇案例研究</a>。
+          這一頁談的是流程與流程的產出。至於測試套件本身是怎麼寫成的，才能讓數百組同時跑在同一台線上伺服器上，<a href="/zh/case-study-test-automation">那是另一篇案例研究</a>。
         </p>
       </div>
     </section>
@@ -286,7 +287,7 @@
         <p class="entry-more">
           <a href="https://github.com/Zocke07/Automation-Demonstration" target="_blank" rel="noopener">在 GitHub 上查看展示 →</a>
         </p>
-        <p class="entry-more"><a href="index.zh.html#projects">← 返回作品集</a></p>
+        <p class="entry-more"><a href="/zh/#projects">← 返回作品集</a></p>
       </div>
     </section>
   </main>
@@ -301,6 +302,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>

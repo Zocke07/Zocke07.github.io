@@ -8,7 +8,7 @@
   <meta property="og:title" content="The Menu Is Just Another Level" />
   <meta property="og:description" content="Seven levels, one interface, and what a student game taught me about designing for the change you cannot see yet." />
   <meta property="og:type" content="article" />
-  <meta property="og:url" content="https://zocke07.github.io/case-study-sky-scraper-escape.html" />
+  <meta property="og:url" content="https://zocke07.github.io/case-study-sky-scraper-escape" />
   <meta property="og:image" content="https://zocke07.github.io/assets/img/og/sky.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -21,10 +21,11 @@
       localStorage.getItem("theme") ||
       (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
   </script>
-  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-sky-scraper-escape.html" />
-  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/case-study-sky-scraper-escape.zh.html" />
+  <link rel="canonical" href="https://zocke07.github.io/case-study-sky-scraper-escape" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-sky-scraper-escape" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-sky-scraper-escape" />
   <!-- ?v= busts the browser cache when the stylesheet changes; bump on edit. -->
-  <link rel="stylesheet" href="assets/css/style.css?v=8" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=9" />
   <style>
     /* The one raster on this page: a frame rebuilt from the game's own bitmaps.
        It carries its own art, so unlike .figure-doc it needs no paper panel. */
@@ -46,17 +47,17 @@
   <!-- ===================== Header / Nav ===================== -->
   <header class="site-header">
     <nav class="container nav" aria-label="Primary">
-      <a class="nav-brand" href="index.html">Rivan Wong</a>
+      <a class="nav-brand" href="/">Rivan Wong</a>
       <div class="nav-right">
         <ul id="nav-menu" class="nav-menu">
-          <li><a href="index.html#about">About</a></li>
-          <li><a href="index.html#education">Education</a></li>
-          <li><a href="index.html#experience">Experience</a></li>
-          <li><a href="index.html#projects">Work &amp; Research</a></li>
-          <li><a href="index.html#skills">Skills</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#education">Education</a></li>
+          <li><a href="/#experience">Experience</a></li>
+          <li><a href="/#projects">Work &amp; Research</a></li>
+          <li><a href="/#skills">Skills</a></li>
+          <li><a href="/#contact">Contact</a></li>
         </ul>
-        <a class="lang-toggle" href="case-study-sky-scraper-escape.zh.html" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+        <a class="lang-toggle" href="/zh/case-study-sky-scraper-escape" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
            aria-label="切換至繁體中文">中文</a>
         <button class="theme-toggle" aria-label="Switch color theme">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
@@ -296,7 +297,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
           extra method.
         </p>
         <div class="figure-shot">
-          <img src="assets/img/sky-level1-frame.jpg" width="1192" height="670" loading="lazy"
+          <img src="/assets/img/sky-level1-frame.jpg" width="1192" height="670" loading="lazy"
                alt="A frame of level one. A small airliner flies at the left over a pixel-art city
                     at sunset. Three obstacle pairs approach from the right: a cloud hanging from
                     the top of the screen and a building rising from the bottom, with a gap between
@@ -403,7 +404,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         <p class="entry-more">
           <a href="https://github.com/Zocke07/Sky-Scraper-Escape" target="_blank" rel="noopener">View the source on GitHub →</a>
         </p>
-        <p class="entry-more"><a href="index.html#projects">← Back to portfolio</a></p>
+        <p class="entry-more"><a href="/#projects">← Back to portfolio</a></p>
       </div>
     </section>
   </main>
@@ -418,6 +419,6 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="assets/js/main.js"></script>
+  <script src="/assets/js/main.js"></script>
 </body>
 </html>
