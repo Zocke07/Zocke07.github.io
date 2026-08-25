@@ -304,28 +304,22 @@
             </ul>
             <p class="entry-more"><a href="/case-study-sky-scraper-escape">The menu is just another level: a case study →</a></p>
           </article>
-          <article class="card card-brief">
+          <article class="card is-wide">
             <h3>From a Truth Table to a Pipelined CPU</h3>
             <p class="card-meta">Undergraduate Coursework · VHDL / FPGA · Embedded Linux</p>
             <p class="card-body">
-              Two semesters of hardware labs. The first built upward in VHDL on an FPGA: a
-              seven-segment decoder derived from a truth table, then adders composed out of
-              single-bit full adders, an ALU, a shift register, a state machine, a restoring
-              divider, and finally a four-stage pipelined CPU that catches read-after-write
-              hazards between instructions still in flight and forwards the result instead of
-              stalling. The second worked down the stack on an NVIDIA Jetson TX2: from a
-              cross-compiled C++ binary toggling pins through Linux sysfs, through a Qt GUI and a
-              browser-driven Node.js server, down to a loadable kernel module that registers a
-              character device, so user space controls the hardware by writing to /dev. Our
-              three-person final project tied those together into a room-management panel, where
-              the server loads the module, writes commands to the device node, blinks a timer on
-              a worker thread, and polls a photoresistor through a hand-clocked SPI loop. Lab
-              assignments rather than products, and also why I know what the software above them
-              stands on.
+              Two semesters of hardware labs, pointed in opposite directions. The first built
+              upward in VHDL, from a seven-segment decoder read off a truth table to a four-stage
+              pipelined CPU that forwards a result rather than stalling on it. The second worked
+              down an NVIDIA Jetson TX2, from a cross-compiled binary through a Qt GUI and a
+              browser-driven server to a kernel module registering a character device. Notes on
+              coursework rather than a claim on it: what the code does, why it works, and where
+              it does not.
             </p>
             <ul class="tags entry-tags">
               <li>VHDL</li><li>FPGA</li><li>Computer Architecture</li><li>Embedded Linux</li><li>Kernel Modules</li>
             </ul>
+            <p class="entry-more"><a href="/case-study-microprocessors">The pipeline is a statement order: coursework notes →</a></p>
           </article>
         </div>
       </div>

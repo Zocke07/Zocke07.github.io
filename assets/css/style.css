@@ -513,6 +513,14 @@ a:hover { text-decoration: underline; }
 .card-brief { grid-column: 1 / -1; }
 .card-brief .card-body { max-width: 46rem; }
 
+/* Same span, for a card that does have a page but lands alone on the last row.
+   An odd card count otherwise ends the grid on a hole. The chrome stays, since
+   this one is still a doorway; only the body keeps the site's measure so the
+   text is not twice the length of every other card's. Move the class if the
+   number of cards changes parity. */
+.card.is-wide { grid-column: 1 / -1; }
+.card.is-wide .card-body { max-width: 46rem; }
+
 .card h3 { margin-bottom: 0.25rem; }
 
 .card-meta {

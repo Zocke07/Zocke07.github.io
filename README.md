@@ -11,6 +11,7 @@ case-study-test-automation.html  # long-form case studies, linked from Experienc
 case-study-ai-products.html
 case-study-capstone.html
 case-study-lmad.html
+case-study-microprocessors.html
 case-study-sky-scraper-escape.html
 project-mobile-testing.html      # project notes, same layout as a case study
 zh/                              # Traditional Chinese twin of every page above
@@ -88,7 +89,7 @@ thesis page, the partition table on the mobile-testing notes. Prefer a modifier
 (`.figure.is-loose`, `.figure-doc.is-wide`) over redefining a shared class, so a
 class means one thing across the site.
 
-The stylesheet is linked as `style.css?v=N`. Bump `N` in all 14 pages whenever
+The stylesheet is linked as `style.css?v=N`. Bump `N` in all 16 pages whenever
 the CSS changes, or returning visitors keep the cached copy.
 
 ## Social cards

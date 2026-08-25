@@ -255,15 +255,21 @@
             </ul>
             <p class="entry-more"><a href="/zh/case-study-sky-scraper-escape">選單也只是另一個關卡：案例研究 →</a></p>
           </article>
-          <article class="card card-brief">
+          <article class="card is-wide">
             <h3>從真值表到管線化 CPU</h3>
             <p class="card-meta">大學部課程 · VHDL / FPGA · 嵌入式 Linux</p>
             <p class="card-body">
-              兩個學期的硬體實習課程。前一個學期在 FPGA 上以 VHDL 由下往上堆疊：先從真值表推導出七段顯示器解碼電路，再用一位元全加器組出多位元加法器，接著是 ALU、移位暫存器、狀態機、還原式除法器，最後是一顆四階管線化 CPU，能偵測仍在管線中的指令之間的 RAW 資料危障，並把運算結果前饋回去，而不是插入停頓。後一個學期則在 NVIDIA Jetson TX2 上一層層往下走：從跨平台編譯的 C++ 執行檔透過 Linux sysfs 控制腳位，經過 Qt GUI 與以瀏覽器操作的 Node.js 伺服器，一直到自己寫的可載入核心模組，註冊字元裝置，讓使用者空間改以寫入 /dev 的方式操作硬體。三人合作的期末專案把這些串成一個房間管理面板：伺服器載入模組、對裝置節點寫入指令、在工作執行緒上讓計時燈號閃爍，並透過自己打時脈的 SPI 迴圈輪詢光敏電阻。這些是實習作業而不是產品，但也是我知道上層軟體究竟站在什麼東西上面的原因。
+              兩個學期的硬體實習課程，方向剛好相反。前一個學期在 FPGA 上用 VHDL 往上疊：
+              從真值表推出來的七段顯示器解碼電路，一路疊到一顆四階段管線化 CPU，
+              它會把運算結果前饋回去，而不是插入停頓。後一個學期在 NVIDIA Jetson TX2 上往下走：
+              從交叉編譯的執行檔，經過 Qt GUI 與瀏覽器操作的伺服器，
+              一直到一個註冊字元裝置的可載入核心模組。這是課程作業的閱讀筆記，而不是在主張這些成果屬於我：
+              這些程式碼做了什麼、為什麼會動，以及哪裡不成立。
             </p>
             <ul class="tags entry-tags">
               <li>VHDL</li><li>FPGA</li><li>計算機架構</li><li>嵌入式 Linux</li><li>核心模組</li>
             </ul>
+            <p class="entry-more"><a href="/zh/case-study-microprocessors">管線其實是一種敘述順序：課程筆記 →</a></p>
           </article>
         </div>
       </div>
