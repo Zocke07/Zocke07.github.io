@@ -65,6 +65,15 @@
       margin-bottom: 1.15rem;
     }
     .limits b { display: block; margin-bottom: 0.15rem; }
+
+    /* ---- Thesis diagrams ----
+       Landscape line art lifted from the document: too wide for the 26rem
+       portrait measure .figure-doc defaults to, and too tall to earn a
+       full-width breakout. Sit them on the prose measure so their edges line up
+       with the paragraphs, and let them scroll rather than shrink below that. */
+    .prose > .figure-doc.is-diagram { max-width: 46rem; }
+    .figure-doc.is-diagram { overflow-x: auto; }
+    .figure-doc.is-diagram img { min-width: 28rem; }
   </style>
 </head>
 <body>
@@ -118,7 +127,7 @@
           <li>伺服器端輔助資料 <strong>0</strong> 筆</li>
         </ul>
         <p class="nda-note">
-          <strong>關於本文範圍：</strong>這頁是寫給一般軟體讀者的摘要，不能取代論文本身。頁面上的每張圖都依論文原始結果重繪，目的是讓它跟著本站的淺色與深色主題走，數值沒有經過任何重新縮放或改寫，全部就是論文定稿的數字。
+          <strong>關於本文範圍：</strong>這頁是寫給一般軟體讀者的摘要，不能取代論文本身。長條圖與散布圖是依論文原始結果重繪，目的是讓它跟著本站的淺色與深色主題走；系統架構圖與攻擊成功率圖則直接取自論文原圖。數值沒有經過任何重新縮放或改寫，全部就是論文定稿的數字。
         </p>
       </div>
     </section>
@@ -150,6 +159,16 @@
         <h2 class="section-title">L-MAD 做了什麼</h2>
         <p>
           兩個階段，而且兩個階段都不需要伺服器端持有任何資料。
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/aggregation.webp" target="_blank" rel="noopener"
+             aria-label="以原始尺寸在新分頁開啟聚合流程圖">
+            <img src="/assets/img/lmad/aggregation.webp" width="1500" height="399" loading="lazy"
+                 alt="聚合流程圖：用戶端的層更新由左側進入，先經過第一階段可靠度預判與選用的損失探測閘門，再進入第二階段 MAD 閘門逐一決定接受或拒斥；被定罪的用戶端進入永久封鎖名冊。若該回合全部遭拒，則退回穩健中位數，否則將被接受的用戶端加權平均為全域模型。" />
+          </a>
+        </div>
+        <p class="figure-caption">
+          先看整條路徑，再看零件。更新從左側進入，通過兩道閘門，最後併入全域模型。被預判定罪的用戶端會進入封鎖名冊，兩條分支都不再納入。值得先注意的是右下角：若某一回合把所有更新都拒斥掉，聚合器會退回穩健中位數，而不是直接失敗。
         </p>
 
         <h3>第一階段：跨輪次的可靠度預檢</h3>
@@ -250,6 +269,31 @@
         <h3>三個讓它跑得動的設計取捨</h3>
         <p>
           方法要能在預算內執行才有意義。層級剖析讓閘門只作用在高風險決策層，而不是每一個張量。由變異數導出的門檻值設有上限，避免異質但誠實的資料把容許範圍撐大到閘門再也擋不住任何東西。而精確的逐元素中位數背後還有一個分塊、記憶體有界的近似法，供模型塞不進預算時使用。無論模型多大，伺服器端每個用戶端的狀態都維持為常數。
+        </p>
+
+        <h3>它實際跑在什麼系統上</h3>
+        <p>
+          上面這些在真的跑起來之前都還只是紙上結果。整套框架分成四個子系統：存放原始資料集與實驗指標的儲存層、前處理與模型層、負責訓練並回傳參數的邊緣用戶端，以及負責層級剖析、聚合與評估的伺服器。這篇文章裡的每一組實驗都是從它跑出來的。
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/architecture.webp" target="_blank" rel="noopener"
+             aria-label="以原始尺寸在新分頁開啟系統架構圖">
+            <img src="/assets/img/lmad/architecture.webp" width="1500" height="1320" loading="lazy"
+                 alt="系統架構圖，由四個堆疊的子系統組成：資料與持久化、前處理與模型、邊緣用戶端，以及聯邦伺服器，各自包含所屬模組。" />
+          </a>
+        </div>
+        <p class="figure-caption">
+          四個子系統。這樣切分有一個容易被忽略的理由：層級剖析與聚合都放在伺服器端，因此用戶端無法影響自己被評判的方式。
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/federated-server.webp" target="_blank" rel="noopener"
+             aria-label="以原始尺寸在新分頁開啟聯邦伺服器流程圖">
+            <img src="/assets/img/lmad/federated-server.webp" width="1500" height="930" loading="lazy"
+                 alt="聯邦伺服器迴圈流程圖：初始化全域模型、廣播給 K 個用戶端，用戶端訓練並擷取參數，伺服器接收 K 份參數更新、剖析尚未處理的層、進行聚合並做全域評估，直到達到回合上限。" />
+          </a>
+        </div>
+        <p class="figure-caption">
+          一個回合的完整流程。在剖析與聚合那一步之前，這就是一般的聯邦平均；L-MAD 取代的正是那一步裡的平均。
         </p>
       </div>
     </section>
@@ -419,6 +463,30 @@
           引用論文上的數字，等於是拿自己調校過的方法去比對方在他們資料集上的預設設定。所以六個基準方法全部在同一套框架裡重建，而且最接近的競爭方法還另外跑了自己的參數掃描，讓比較對上的是它的最佳設定而不是第一個設定。其中兩個基準實作附有自己的 pytest 測試，另外資料載入器、標籤翻轉轉換與模型也各自有測試，因為競爭方法裡一個沒被發現的錯誤，等於是替我自己憑空製造出結果。
         </p>
 
+        <h3>這些數字是從哪條資料管線跑出來的</h3>
+        <p>
+          強健性的結論，好不過它底下那條資料路徑，所以在任何策略開跑之前，這條路徑的兩半都已經固定下來。前處理是決定性的，而且只在訓練切分上擬合。異質性則住在切分這一步：由 Dirichlet 分配決定各標籤在用戶端之間分布得多不平均，而這正是下面那組掃描要移動的軸。
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/preprocessing.webp" target="_blank" rel="noopener"
+             aria-label="以原始尺寸在新分頁開啟前處理流程圖">
+            <img src="/assets/img/lmad/preprocessing.webp" width="1500" height="1024" loading="lazy"
+                 alt="前處理流程圖：Edge-IIoT 資料集先經過攻擊類型篩選與無狀態清理，以八比二切分為全域訓練池與測試集，再進行特徵編碼、缺值填補與特徵選擇，最後進入資料分布階段。" />
+          </a>
+        </div>
+        <p class="figure-caption">
+          前處理。切分發生在編碼與特徵選擇擬合之前，因此測試集不會有任何資訊流進轉換器。
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/distribution.webp" target="_blank" rel="noopener"
+             aria-label="以原始尺寸在新分頁開啟資料分布流程圖">
+            <img src="/assets/img/lmad/distribution.webp" width="1500" height="787" loading="lazy"
+                 alt="資料分布流程圖：前處理後的訓練池依 Dirichlet 非獨立同分布配置或均勻獨立同分布洗牌，切成 K 份用戶端分割，各自再分為本地訓練與驗證集，最後進行全域與本地 z-score 標準化。" />
+          </a>
+        </div>
+        <p class="figure-caption">
+          資料切分。Dirichlet 那一條分支製造的是「誠實的不一致」，而這正是整件事的難處：防禦必須把它跟「刻意的不一致」分開。
+        </p>
         <h3>掃過各個軸線，而不只是基準點</h3>
         <p>
           21 組實驗涵蓋攻擊者比例、攻擊強度、偵測門檻值、Dirichlet 異質性、規模擴展到 100 個用戶端的聯邦、四種攻擊類型，以及逐一移除各機制以確認它確實有貢獻的消融實驗。只在單一操作點上被描述過的防禦，等於沒有人知道該怎麼部署。
@@ -427,6 +495,16 @@
         <h3>20 組種子，因為 3 組只是軼事</h3>
         <p>
           結果發現，每個基準方法的三組種子平均值，都藏著某個讓它徹底崩潰的資料切分。跑滿 20 組資料切分之後，我自己的方法也露出同樣的性質：它在其中 40% 上會失敗。要把這件事講清楚，需要對失敗率計算 Wilson 信賴區間，以及做配對顯著性檢定（McNemar 與 Wilcoxon），而不是盯著長條圖目測。檢定結果顯示 L-MAD 顯著優於未設防的 FedAvg（p = 0.003），但與 LGP、BRAFL、ATTA-FL-Lite <em>無法</em>區分（p &#8805; 0.06）。後面這項發現，在論文裡佔的篇幅和前面那項一樣大。
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/asr.webp" target="_blank" rel="noopener"
+             aria-label="以原始尺寸在新分頁開啟攻擊成功率圖">
+            <img src="/assets/img/lmad/asr.webp" width="1500" height="833" loading="lazy"
+                 alt="七張攻擊成功率對訓練回合的小型折線圖，分別對應 FedAvg、Krum、Trimmed Mean、LGP、BRAFL、ATTA-FL-Lite 與 L-MAD，每張都附有變異數帶。" />
+          </a>
+        </div>
+        <p class="figure-caption">
+          這正是那些顯著性檢定要取代的東西。每張小圖是一個策略在各回合的攻擊成功率，陰影為跨種子的分布範圍。這些帶狀範圍寬到用肉眼挑贏家等於猜測，這也是上面那組比較改用 McNemar 與 Wilcoxon 的理由。
         </p>
 
         <h3>設計一個會讓自己難堪的實驗</h3>

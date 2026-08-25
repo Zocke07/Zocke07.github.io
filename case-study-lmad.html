@@ -67,6 +67,15 @@
       margin-bottom: 1.15rem;
     }
     .limits b { display: block; margin-bottom: 0.15rem; }
+
+    /* ---- Thesis diagrams ----
+       Landscape line art lifted from the document: too wide for the 26rem
+       portrait measure .figure-doc defaults to, and too tall to earn a
+       full-width breakout. Sit them on the prose measure so their edges line up
+       with the paragraphs, and let them scroll rather than shrink below that. */
+    .prose > .figure-doc.is-diagram { max-width: 46rem; }
+    .figure-doc.is-diagram { overflow-x: auto; }
+    .figure-doc.is-diagram img { min-width: 28rem; }
   </style>
 </head>
 <body>
@@ -128,9 +137,10 @@
         </ul>
         <p class="nda-note">
           <strong>A note on scope:</strong> this page is a summary written for a general software
-          audience, not a substitute for the thesis. Every figure here is redrawn from the
-          document's own results so it follows this site's light and dark themes; nothing has been
-          rescaled or reframed. The numbers are the deposited ones.
+          audience, not a substitute for the thesis. The bar and scatter charts are redrawn from
+          the document’s own results so they follow this site’s light and dark themes; the
+          system diagrams and the attack-success panels are the thesis figures as they appear in
+          it. Nothing has been rescaled or reframed. The numbers are the deposited ones.
         </p>
       </div>
     </section>
@@ -172,6 +182,16 @@
         <h2 class="section-title">What L-MAD Does</h2>
         <p>
           Two stages, neither of which needs any data on the server.
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/aggregation.webp" target="_blank" rel="noopener"
+             aria-label="Open the aggregation flow diagram at full size in a new tab">
+            <img src="/assets/img/lmad/aggregation.webp" width="1500" height="399" loading="lazy"
+                 alt="Aggregation flow diagram. Client layer updates enter at the left, pass a Stage 1 reliability pre-pass and an optional loss-probe gate, then a Stage 2 MAD gate that accepts or rejects each client. Convicted clients enter a permanent ban register. If every update is rejected the path falls back to a robust median; otherwise accepted clients are averaged into the global model." />
+          </a>
+        </div>
+        <p class="figure-caption">
+          The whole path, before the parts. Updates enter left, clear two gates, and land in the global model. Anyone the pre-pass convicts goes into the ban register and stays out of both branches. The one thing worth noting early is the bottom right: if a round rejects everything, the aggregator falls back to the robust median rather than failing.
         </p>
 
         <h3>Stage 1: a cross-round reliability pre-pass</h3>
@@ -288,6 +308,35 @@
           tolerance until the gate stops rejecting anything. And the exact element-wise median has
           a chunked, memory-bounded approximation behind it for when the model does not fit the
           budget. Server state stays constant per client regardless of model size.
+        </p>
+
+        <h3>The system it runs inside</h3>
+        <p>
+          None of the above is a paper result until something runs it. The harness is four
+          subsystems: storage for the raw dataset and the experiment metrics, a preprocessing
+          and model layer, the edge clients that train and hand back parameters, and the server
+          that profiles layers, aggregates and evaluates. Every experiment in this write-up came
+          out of it.
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/architecture.webp" target="_blank" rel="noopener"
+             aria-label="Open the system architecture diagram with four stacked subsystems: data and persistence, preprocessing and model, edge client, and federated server, each containing its own modules at full size in a new tab">
+            <img src="/assets/img/lmad/architecture.webp" width="1500" height="1320" loading="lazy"
+                 alt="System architecture diagram with four stacked subsystems: data and persistence, preprocessing and model, edge client, and federated server, each containing its own modules." />
+          </a>
+        </div>
+        <p class="figure-caption">
+          Four subsystems. The split matters for a reason that is easy to miss: layer profiling and aggregation sit on the server, so a client cannot influence how it is judged.
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/federated-server.webp" target="_blank" rel="noopener"
+             aria-label="Open the flowchart of the federated server loop: initialise the global model, broadcast to k clients, clients train and extract parameters, the server receives k parameter updates, profiles unprocessed layers, aggregates them and evaluates globally, repeating until the round limit at full size in a new tab">
+            <img src="/assets/img/lmad/federated-server.webp" width="1500" height="930" loading="lazy"
+                 alt="Flowchart of the federated server loop: initialise the global model, broadcast to K clients, clients train and extract parameters, the server receives K parameter updates, profiles unprocessed layers, aggregates them and evaluates globally, repeating until the round limit." />
+          </a>
+        </div>
+        <p class="figure-caption">
+          One round, end to end. The loop is ordinary federated averaging until the profiling and aggregation step, which is where L-MAD replaces the mean.
         </p>
       </div>
     </section>
@@ -482,6 +531,34 @@
           me.
         </p>
 
+        <h3>The pipeline the numbers come out of</h3>
+        <p>
+          A robustness claim is only as good as the data path under it, so both halves of that
+          path are fixed before any strategy runs. Preprocessing is deterministic and fitted on
+          the training split alone. Partitioning is where the heterogeneity lives: a Dirichlet
+          allocation that decides how unevenly the labels are spread across clients, which is
+          the axis the sweep below moves.
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/preprocessing.webp" target="_blank" rel="noopener"
+             aria-label="Open the preprocessing flowchart: the edge-iiot dataset passes attack-type filtering and stateless cleaning, splits eighty-twenty into a global training pool and test set, then feature encoding, imputation and feature selection, producing the data distribution stage at full size in a new tab">
+            <img src="/assets/img/lmad/preprocessing.webp" width="1500" height="1024" loading="lazy"
+                 alt="Preprocessing flowchart: the Edge-IIoT dataset passes attack-type filtering and stateless cleaning, splits eighty-twenty into a global training pool and test set, then feature encoding, imputation and feature selection, producing the data distribution stage." />
+          </a>
+        </div>
+        <p class="figure-caption">
+          Preprocessing. The split happens before encoding and selection are fitted, so nothing from the test set reaches the transforms.
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/distribution.webp" target="_blank" rel="noopener"
+             aria-label="Open the data distribution flowchart: the preprocessed training pool is partitioned either by a dirichlet non-iid allocation or a uniform iid shuffle into k client partitions, each split into local train and validation sets, followed by global and local z-score scaling at full size in a new tab">
+            <img src="/assets/img/lmad/distribution.webp" width="1500" height="787" loading="lazy"
+                 alt="Data distribution flowchart: the preprocessed training pool is partitioned either by a Dirichlet non-IID allocation or a uniform IID shuffle into K client partitions, each split into local train and validation sets, followed by global and local z-score scaling." />
+          </a>
+        </div>
+        <p class="figure-caption">
+          Partitioning. The Dirichlet branch is what makes clients disagree honestly, which is the whole difficulty: a defense has to separate that from clients disagreeing on purpose.
+        </p>
         <h3>Sweep the axes, not just the reference point</h3>
         <p>
           Twenty-one experiment groups cover attacker ratio, attack intensity, the detection
@@ -500,6 +577,19 @@
           charts. The tests place L-MAD above undefended FedAvg with p = 0.003, and
           <em>not</em> separably from LGP, BRAFL, or ATTA-FL-Lite at p &#8805; 0.06. That second
           finding is in the thesis at the same size as the first.
+        </p>
+        <div class="figure-doc is-diagram">
+          <a href="/assets/img/lmad/asr.webp" target="_blank" rel="noopener"
+             aria-label="Open the seven small line charts of attack success rate against training round, one per strategy: fedavg, krum, trimmed mean, lgp, brafl, atta-fl-lite and l-mad, each with a shaded variance band at full size in a new tab">
+            <img src="/assets/img/lmad/asr.webp" width="1500" height="833" loading="lazy"
+                 alt="Seven small line charts of attack success rate against training round, one per strategy: FedAvg, Krum, Trimmed Mean, LGP, BRAFL, ATTA-FL-Lite and L-MAD, each with a shaded variance band." />
+          </a>
+        </div>
+        <p class="figure-caption">
+          What the significance tests replace. Each panel is one strategy's attack success
+          across rounds, shaded by the spread across seeds. The bands are wide enough that picking
+          a winner by eye would be guesswork, which is why the comparison is made with McNemar and
+          Wilcoxon instead.
         </p>
 
         <h3>Design the experiment that would embarrass you</h3>
