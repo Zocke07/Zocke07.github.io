@@ -824,6 +824,91 @@ a:hover { text-decoration: underline; }
 .figure-doc.is-wide { overflow-x: auto; }
 .figure-doc.is-wide img { min-width: 50rem; }
 
+/* Screen-recorded clips. The recording carries its own art, so the frame gets
+   the same treatment .figure-shot uses for the raster on the Sky Scraper page,
+   a border and a radius clipping the video, rather than the paper panel
+   .figure-doc needs. The grid is the site's usual auto-fit one and the block
+   inherits the 46rem measure from `.prose > *`, so the clips keep the left rail
+   and the line length of the paragraphs around them.
+
+   main.js starts each clip when it scrolls into view and stops it when it
+   leaves. Stopping them hands the browser's own controls back, so a halted clip
+   becomes a player you can scrub; while they run they carry no chrome, because
+   the control scrim is a black gradient across the bottom third of a portrait
+   video. */
+.clips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+  gap: 1.5rem;
+  margin: 1rem 0 0.6rem;
+}
+.clip { margin: 0; }
+.clip-frame {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  line-height: 0;
+}
+/* The device screen the clips are cropped to, so the box matches the footage
+   exactly and reserves the right height before a frame has loaded. `contain`
+   over the section ground is the fallback if a clip of another shape is ever
+   dropped in. */
+.clip video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 566 / 1244;
+  object-fit: contain;
+  background: var(--bg-alt);
+}
+/* The same ruled caption .figure uses, which is the idiom for a caption that
+   belongs inside its exhibit. The bottom margin is the grid gap's job here. */
+.clip figcaption {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0.6rem 0 0;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--border);
+}
+.clip figcaption b {
+  display: block;
+  margin-bottom: 0.15rem;
+  font-weight: 600;
+  color: var(--text);
+}
+/* A phone screenshot is mostly white, and four of them at full brightness sit
+   on a dark page the way a lit window does. Knocked back with the same figures
+   .figure-doc uses on its scans, so bright exhibits are handled one way here. */
+:root[data-theme="dark"] .clip video { filter: saturate(0.9) brightness(0.97); }
+/* One control for the set rather than a badge on each clip: every corner of a
+   phone screen has something in it, and auto-playing video only has to offer
+   one way to stop. Same pill as .lang-toggle so it reads as a control this site
+   already owns. It appears only once main.js is running, because without
+   JavaScript the clips keep their native controls and the button has no job. */
+.clips-toggle { display: none; }
+.clips-toggle.is-ready {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 1.5rem 0 0;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: none;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.clips-toggle:hover { color: var(--accent); border-color: var(--accent); }
+.clips-toggle .icon-play { display: none; }
+.clips-toggle.is-paused .icon-play { display: block; }
+.clips-toggle.is-paused .icon-pause { display: none; }
+
 /* Caption under an exhibit or a data block. */
 .figure-caption,
 .blocks-caption {

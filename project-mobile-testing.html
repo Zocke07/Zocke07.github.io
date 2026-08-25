@@ -198,8 +198,98 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
       </div>
     </section>
 
+    <!-- ===================== Demo clips ===================== -->
+    <section id="demo" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">Watching It Run</h2>
+        <p>
+          Four of my five settings suites, recorded off the emulator with Robot Framework
+          driving. There is no CI on this project and no report anybody outside the team ever
+          sees, so these are the closest thing it has to a build log: the app, the framework,
+          and nobody's hands. The small zoom control at the right edge belongs to the emulator
+          rather than the app.
+        </p>
+        <p>
+          Nothing here is sped up. The clock in the status bar keeps normal time, so the
+          sixteen seconds the favorite food test spends creating one item and deleting it again
+          are sixteen real seconds. Multiply that by the five time pickers in the daily routines
+          suite and you have the eighteen minutes further down this page. Each clip is cut to the
+          stretch where the app is on screen rather than the launcher, and one thing in one of
+          them is painted over: the export screen offers a saved address under Quick Select, and
+          it is pixelated out.
+        </p>
+        <button class="clips-toggle" type="button"
+                data-play-label="Play the clips"
+                data-pause-label="Pause the clips">
+          <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.2v14H7zM13.8 5H17v14h-3.2z"/></svg>
+          <span>Pause the clips</span>
+        </button>
+        <div class="clips">
+          <figure class="clip">
+            <div class="clip-frame">
+              <video src="/assets/vid/h2s-tc0402-units.mp4"
+                     poster="/assets/img/h2s/h2s-tc0402-units.jpg"
+                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+            </div>
+            <figcaption>
+              <b>TC_0402 · Units</b>
+              The test quoted above, running. Blood glucose to mmol/L, weight to lb, both read
+              back off the screen, then the teardown puts them at mg/dL and kg again. Half the
+              clip is the undo.
+            </figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="clip-frame">
+              <video src="/assets/vid/h2s-tc0401-export-report.mp4"
+                     poster="/assets/img/h2s/h2s-tc0401-export-report.jpg"
+                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+            </div>
+            <figcaption>
+              <b>TC_0401 · Export the report</b>
+              The refusal case: Send tapped with the email field empty, and the app has to say
+              so rather than quietly do nothing. The banner across the top, two more exports for
+              free, is the precondition the suite documents in its first line.
+            </figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="clip-frame">
+              <video src="/assets/vid/h2s-tc0403-goals.mp4"
+                     poster="/assets/img/h2s/h2s-tc0403-goals.jpg"
+                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+            </div>
+            <figcaption>
+              <b>TC_0403 · Personal goals</b>
+              Two fields out of a screenful, daily steps and weekly exercise time, set to 50 and
+              25, confirmed, then reopened and read back. The swipe that reaches them is the
+              hard-coded one. The teardown returns them to 7,500 and 150.
+            </figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="clip-frame">
+              <video src="/assets/vid/h2s-tc0405-favorite-food.mp4"
+                     poster="/assets/img/h2s/h2s-tc0405-favorite-food.jpg"
+                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+            </div>
+            <figcaption>
+              <b>TC_0405 · Favorite food</b>
+              Creates a custom food called Hamburger, checks the list now has it, and ends on an
+              empty list again because the teardown deletes it.
+            </figcaption>
+          </figure>
+        </div>
+        <p>
+          Watch the ends rather than the middles. Units finishes back on mg/dL and kg, goals on
+          7,500 steps and 150 minutes, favorite food on an empty list: these are the three tests
+          of my fifteen that genuinely put back what they changed. Export is one of the four that
+          only backs out of the screens it opened, which it can afford, because it never got as
+          far as changing anything.
+        </p>
+      </div>
+    </section>
+
     <!-- ===================== Test design ===================== -->
-    <section id="design" class="section section-alt">
+    <section id="design" class="section">
       <div class="container prose">
         <h2 class="section-title">Choosing What to Test</h2>
         <p>
@@ -414,7 +504,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     </section>
 
     <!-- ===================== Limits ===================== -->
-    <section id="limits" class="section">
+    <section id="limits" class="section section-alt">
       <div class="container prose">
         <h2 class="section-title">What It Cannot Do</h2>
         <p>
@@ -457,7 +547,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     </section>
 
     <!-- ===================== Takeaways ===================== -->
-    <section id="takeaways" class="section section-alt">
+    <section id="takeaways" class="section">
       <div class="container prose">
         <h2 class="section-title">What I Took From It</h2>
         <ol class="learnings" role="list">

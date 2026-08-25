@@ -167,8 +167,77 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
       </div>
     </section>
 
+    <!-- ===================== Demo clips ===================== -->
+    <section id="demo" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">看它跑起來</h2>
+        <p>
+          我那五組設定頁套件裡的四組，由 Robot Framework 驅動，直接錄自模擬器。這個專案沒有 CI，也沒有團隊以外的人看得到的報告，所以這幾段就是它最接近建置日誌的東西：App、框架，沒有人的手。畫面右緣那個小小的縮放控制項屬於模擬器，不是 App 的一部分。
+        </p>
+        <p>
+          這裡沒有任何一段是加速的。狀態列的時鐘照常走，所以「我的最愛食物」那個測試花在建立一筆再刪掉的十六秒，就是實實在在的十六秒。把它乘上日常作息那組要處理的五個時間選擇器，就是本頁下面那十八分鐘。每一段都只剪到 App 真正在畫面上的那一段，前後的啟動器畫面都去掉了；另外有一處是塗掉的：匯出畫面的「快速選擇」會列出一個曾經用過的信箱，那一行打上了馬賽克。
+        </p>
+        <button class="clips-toggle" type="button"
+                data-play-label="播放影片"
+                data-pause-label="暫停影片">
+          <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          <svg class="icon-pause" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 5h3.2v14H7zM13.8 5H17v14h-3.2z"/></svg>
+          <span>暫停影片</span>
+        </button>
+        <div class="clips">
+          <figure class="clip">
+            <div class="clip-frame">
+              <video src="/assets/vid/h2s-tc0402-units.mp4"
+                     poster="/assets/img/h2s/h2s-tc0402-units.jpg"
+                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+            </div>
+            <figcaption>
+              <b>TC_0402 · 單位</b>
+              上面引用的那個測試，實際跑起來的樣子。血糖改成 mmol/L、體重改成 lb，兩個都從畫面上讀回來驗過，接著 teardown 再把它們改回 mg/dL 與 kg。這段影片有一半在做還原。
+            </figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="clip-frame">
+              <video src="/assets/vid/h2s-tc0401-export-report.mp4"
+                     poster="/assets/img/h2s/h2s-tc0401-export-report.jpg"
+                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+            </div>
+            <figcaption>
+              <b>TC_0401 · 匯出報表</b>
+              這是拒絕的案例：信箱欄位空著就按下傳送，App 必須明確講出來，而不是安靜地什麼都不做。畫面最上方那行「還可以免費匯出兩次」，正是這組套件在第一行就寫下的前置條件。
+            </figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="clip-frame">
+              <video src="/assets/vid/h2s-tc0403-goals.mp4"
+                     poster="/assets/img/h2s/h2s-tc0403-goals.jpg"
+                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+            </div>
+            <figcaption>
+              <b>TC_0403 · 個人目標</b>
+              整頁目標裡只動兩個欄位：每日步數與每週運動時間，設成 50 與 25，按下確認，再重新打開讀回來。滑到那兩個欄位用的就是寫死座標的那個手勢。teardown 會把它們還原成 7,500 與 150。
+            </figcaption>
+          </figure>
+          <figure class="clip">
+            <div class="clip-frame">
+              <video src="/assets/vid/h2s-tc0405-favorite-food.mp4"
+                     poster="/assets/img/h2s/h2s-tc0405-favorite-food.jpg"
+                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+            </div>
+            <figcaption>
+              <b>TC_0405 · 我的最愛食物</b>
+              建立一筆叫 Hamburger 的自訂食物，確認清單上真的有它，最後又停在空的清單上，因為 teardown 把它刪掉了。
+            </figcaption>
+          </figure>
+        </div>
+        <p>
+          與其看中間，不如看結尾。單位那段停在 mg/dL 與 kg、目標那段停在 7,500 步與 150 分鐘、最愛食物那段停在空清單：這三個就是我十五個測試裡，真的會把改動還原回去的那三個。匯出則屬於另外四個「只退出剛才打開的畫面」的案例，而它退得起，因為它根本沒走到改動任何東西那一步。
+        </p>
+      </div>
+    </section>
+
     <!-- ===================== Test design ===================== -->
-    <section id="design" class="section section-alt">
+    <section id="design" class="section">
       <div class="container prose">
         <h2 class="section-title">決定要測什麼</h2>
         <p>
@@ -345,7 +414,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     </section>
 
     <!-- ===================== Limits ===================== -->
-    <section id="limits" class="section">
+    <section id="limits" class="section section-alt">
       <div class="container prose">
         <h2 class="section-title">它做不到的事</h2>
         <p>
@@ -375,7 +444,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     </section>
 
     <!-- ===================== Takeaways ===================== -->
-    <section id="takeaways" class="section section-alt">
+    <section id="takeaways" class="section">
       <div class="container prose">
         <h2 class="section-title">我從中學到的事</h2>
         <ol class="learnings" role="list">
