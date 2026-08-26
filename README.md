@@ -19,12 +19,13 @@ assets/
   css/style.css                  # design tokens + numbered per-component sections
   js/main.js                     # theme toggle, reveal-on-scroll, rotator, nav
   img/                           # in-page figures and the portrait
-  img/og/                        # 1200x630 social cards, one per page
+  img/og/                        # 1200x630 social cards, <slug>.png and <slug>-zh.png
   cv/rivan-wong-cv.pdf           # copy of CV/build/cv.pdf, see below
 tools/serve.py                   # local preview, resolves URLs like GitHub Pages
 tools/check.py                   # eight regression checks; run before every commit
 tools/bump.py                    # stamps ?v= from a hash of the asset
 tools/cv.py                      # refreshes the CV copy from CV/build
+tools/og.py                      # renders a page's social card from its own metadata
 .github/workflows/check.yml      # runs tools/check.py on every push
 ```
 
@@ -110,10 +111,30 @@ to be a counter bumped by hand in 32 places.
 
 ## Social cards
 
-Each page points `og:image` at its own 1200x630 card in `assets/img/og/`. The
-cards share one template: dark background, blue kicker in caps, title, rule,
-two-line description, and the `RW` badge with the site name. Both language
-versions of a page share a single English card.
+Each page points `og:image` at its own 1200x630 card in `assets/img/og/`:
+`<slug>.png` in English, `<slug>-zh.png` in Chinese. They share one template:
+dark background, blue kicker, title, rule, two-line description, and the `RW`
+badge with the name.
+
+The Chinese cards are generated:
+
+```sh
+python3 tools/og.py                  # every Chinese page
+python3 tools/og.py zh/index.html    # just one
+```
+
+The text comes out of the page itself, the hero kicker plus `og:title` and
+`og:description`, so a card cannot drift from what it illustrates. The home card
+is the exception and carries its own two lines, because its kicker is a location
+and its description is a tagline, neither of which is card copy.
+
+The English cards were drawn by hand before the generator existed and are close
+but not identical to what it produces, so `tools/og.py` leaves them alone unless
+`--all` is passed. Its palette and geometry were measured off `og/lmad.png`, so
+the two sets sit in the same family.
+
+`tools/check.py` fails if a Chinese page points at an English card, which is
+what it did for all eight of them until now.
 
 ## Preview locally
 
@@ -142,7 +163,7 @@ Pushes to `main` publish automatically once GitHub Pages is enabled:
 ## Checks
 
 ```sh
-python3 tools/check.py            # all eight
+python3 tools/check.py            # all nine
 python3 tools/check.py links      # or just one
 ```
 
@@ -156,6 +177,7 @@ python3 tools/check.py links      # or just one
 | `assets` | every tracked file under `assets/` is referenced by some page |
 | `stamps` | every `?v=` matches the hash of the file it points at |
 | `cv` | `assets/cv/rivan-wong-cv.pdf` still matches `CV/build/cv.pdf` |
+| `og` | each page points at its own card and declares the right `og:locale` |
 
 `parity` is the one worth understanding: it is what catches a change made to one
 language and forgotten in the other. It compares structure, not prose, so the

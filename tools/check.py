@@ -3,7 +3,7 @@
 
     python3 tools/check.py
 
-Eight checks, each independent and each printing its own verdict:
+Nine checks, each independent and each printing its own verdict:
 
   1. structure   tag balance, invalid nesting, duplicate ids, heading order
   2. links       every internal href/src/poster resolves on disk
@@ -13,6 +13,7 @@ Eight checks, each independent and each printing its own verdict:
   6. assets      every file under assets/ is referenced by some page
   7. stamps      every ?v= matches the hash of the file it points at
   8. cv          the CV in assets/ still matches the one built in CV/
+  9. og          each page points at its own social card and declares its locale
 
 Exits non-zero if any check fails, so it can gate a commit.
 """
@@ -288,6 +289,26 @@ def check_assets():
     return f"{len(on_disk & tracked)} tracked assets, {len(refs)} referenced"
 
 
+# ---------- 9. social cards ----------
+def check_og():
+    for f in PAGES:
+        text = Path(f).read_text(encoding="utf-8")
+        zh = f.startswith("zh/")
+        m = re.search(r'og:image" content="([^"]+)"', text)
+        if not m:
+            fail("og", f"{f}: no og:image")
+            continue
+        card = m.group(1)
+        if zh and not card.endswith("-zh.png"):
+            fail("og", f"{f}: shares the English card {Path(card).name}")
+        if not zh and card.endswith("-zh.png"):
+            fail("og", f"{f}: points at a Chinese card {Path(card).name}")
+        want = "zh_TW" if zh else "en_US"
+        if f'og:locale" content="{want}"' not in text:
+            fail("og", f"{f}: og:locale should be {want}")
+    return f"{len(PAGES)} cards + locales"
+
+
 # ---------- 8. CV copy ----------
 def check_cv():
     import subprocess
@@ -319,6 +340,7 @@ CHECKS = [
     ("assets", check_assets),
     ("stamps", check_stamps),
     ("cv", check_cv),
+    ("og", check_og),
 ]
 
 if __name__ == "__main__":
