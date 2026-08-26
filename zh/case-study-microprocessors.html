@@ -97,10 +97,12 @@
           第二個學期的一切，包括每一次實驗課與期末專題，都是三人小組共同完成、以小組名義繳交的。
           底下沒有任何一段是以「我的作品」提出的。
           為了寫這篇，我把兩個儲存庫重新讀過一遍，而不是憑印象寫，所以每一項說法都指得出一個我打得開的檔案，
-          包括那些不好看的部分。VHDL 那半邊是公開的：
-          <a href="https://github.com/Zocke07/Microprocessor-Based-Systems" target="_blank" rel="noopener">Microprocessor-Based-Systems</a>。
-          嵌入式那半邊沒有公開，原因寫在最後一節，但它的
-          <a href="https://youtu.be/etMc-rT7v48" target="_blank" rel="noopener">demo 影片是公開的</a>，
+          包括那些不好看的部分。兩半邊都是公開的：VHDL 在
+          <a href="https://github.com/Zocke07/Microprocessor-Based-Systems" target="_blank" rel="noopener">Microprocessor-Based-Systems</a>，
+          嵌入式那學期在
+          <a href="https://github.com/Zocke07/Microprocessor-Based-Systems-Lab" target="_blank" rel="noopener">Microprocessor-Based-Systems-Lab</a>，
+          還有
+          <a href="https://youtu.be/etMc-rT7v48" target="_blank" rel="noopener">demo 影片</a>，
           下面那張照片就是影片的其中一格。本頁所有示意圖都是照著原始碼重畫的，沒有任何一張是課程投影片。
         </aside>
       </div>
@@ -666,12 +668,13 @@ setTimeout(() =&gt; {
           每次載入都 404，而且毫無後果。
         </p>
 
-        <h3>原始碼裡的憑證，也就是其中一個儲存庫至今沒有公開的原因</h3>
+        <h3>原始碼裡的憑證</h3>
         <p>
           通知功能佔分數的百分之五，而我們自己的報告記載它並沒有做成功。它留下來的東西，
-          是一個帶著學校信箱與明文密碼的郵件傳輸設定，就躺在伺服器那個檔案裡；
-          這是我沒有把那個儲存庫公開的唯一理由，另外還有一份小組成績報告和一份考卷，
-          那些不是我能拿去發表的東西。那組密碼在 2024 年就該是環境變數，也該在課程結束當天就換掉。
+          是一個帶著學校信箱與明文密碼的郵件傳輸設定，而且不只躺在一個檔案裡，
+          因為那段設定被複製到網頁伺服器那支程式裡又存了一份。多一份副本就是這麼一回事：
+          錯誤變成兩倍，找到它的機會少一半。現在兩支都改讀環境變數了；
+          而且一開始就不該用帳號本身的密碼，應用程式密碼至少可以單獨撤銷。
         </p>
       </div>
     </section>
