@@ -585,7 +585,7 @@ vfs_write(fd, value, strlen(value), &amp;pos);</code></pre>
           mutex, toggling the four room LEDs, sleeping for one second, and releasing. The lock is
           held across the sleep. Taking a lock and then sleeping inside it means no two threads are
           ever inside the loop at once, so the threads run strictly one after another and the
-          program's behaviour is identical to a sequential loop. The mutex is not protecting shared
+          program's behavior is identical to a sequential loop. The mutex is not protecting shared
           state from a race. It is being used as the thing that makes the LEDs blink in order. It
           was worth twenty percent and it demonstrated cleanly, and it is a sequential program with
           threads drawn on it.

@@ -163,7 +163,7 @@ Pushes to `main` publish automatically once GitHub Pages is enabled:
 ## Checks
 
 ```sh
-python3 tools/check.py            # all nine
+python3 tools/check.py            # all ten
 python3 tools/check.py links      # or just one
 ```
 
@@ -178,10 +178,15 @@ python3 tools/check.py links      # or just one
 | `stamps` | every `?v=` matches the hash of the file it points at |
 | `cv` | `assets/cv/rivan-wong-cv.pdf` still matches `CV/build/cv.pdf` |
 | `og` | each page points at its own card and declares the right `og:locale` |
+| `copy` | English prose keeps one spelling and punctuation convention |
 
 `parity` is the one worth understanding: it is what catches a change made to one
 language and forgotten in the other. It compares structure, not prose, so the
 Chinese text being shorter does not trip it.
+
+`copy` holds the English pages to one convention: American spelling (defense,
+center, -ize) and straight apostrophes. Six strays had accumulated, one of them
+a page spelling the same claim two different ways.
 
 ## The CV
 

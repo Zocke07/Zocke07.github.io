@@ -3,7 +3,7 @@
 
     python3 tools/check.py
 
-Nine checks, each independent and each printing its own verdict:
+Ten checks, each independent and each printing its own verdict:
 
   1. structure   tag balance, invalid nesting, duplicate ids, heading order
   2. links       every internal href/src/poster resolves on disk
@@ -14,6 +14,7 @@ Nine checks, each independent and each printing its own verdict:
   7. stamps      every ?v= matches the hash of the file it points at
   8. cv          the CV in assets/ still matches the one built in CV/
   9. og          each page points at its own social card and declares its locale
+ 10. copy        English prose keeps one spelling and punctuation convention
 
 Exits non-zero if any check fails, so it can gate a commit.
 """
@@ -289,6 +290,37 @@ def check_assets():
     return f"{len(on_disk & tracked)} tracked assets, {len(refs)} referenced"
 
 
+# ---------- 10. copy conventions ----------
+# The English pages are American throughout (defense, center, -ize) and use
+# straight apostrophes. These caught the handful of strays that disagreed,
+# including one page that spelled the same claim two ways.
+PROSE_RULES = [
+    (r"\banalys(?:e|ed|es|ing)\b", "British -yse; the site uses -yze"),
+    (r"\bbehaviour\b", "British spelling; the site uses behavior"),
+    (r"\bcolour\b", "British spelling; the site uses color"),
+    (r"\bcentre\b", "British spelling; the site uses center"),
+    (r"\bdefence\b", "British spelling; the site uses defense"),
+    ("\u2019", "curly apostrophe; the site uses straight"),
+    (r"\bwhich compiled\b", "restrictive clause wants 'that'"),
+]
+
+
+def check_copy():
+    for f in PAGES:
+        if f.startswith("zh/"):
+            continue
+        raw = Path(f).read_text(encoding="utf-8")
+        body = re.sub(r"<(head|script|style|svg|pre)\b.*?</\1>", " ", raw, flags=re.S)
+        body = re.sub(r"<!--.*?-->", " ", body, flags=re.S)
+        body = re.sub(r"<[^>]+>", " ", body)
+        for pat, why in PROSE_RULES:
+            for m in re.finditer(pat, body):
+                ln = body[:m.start()].count("\n") + 1
+                fail("copy", f"{f}: {m.group(0)!r} ({why})")
+                break
+    return "English spelling + punctuation conventions"
+
+
 # ---------- 9. social cards ----------
 def check_og():
     for f in PAGES:
@@ -341,6 +373,7 @@ CHECKS = [
     ("stamps", check_stamps),
     ("cv", check_cv),
     ("og", check_og),
+    ("copy", check_copy),
 ]
 
 if __name__ == "__main__":
