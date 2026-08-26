@@ -21,6 +21,8 @@ assets/
   img/                           # in-page figures and the portrait
   img/og/                        # 1200x630 social cards, one per page
 tools/serve.py                   # local preview, resolves URLs like GitHub Pages
+tools/check.py                   # seven regression checks; run before every commit
+tools/bump.py                    # stamps ?v= from a hash of the asset
 ```
 
 ## URLs
@@ -59,6 +61,10 @@ step when a page is added or renamed:
 - `<link rel="canonical">`,
 - `og:url`, which is absolute and language-specific.
 
+The header, footer and back-to-top wording must also stay identical *within* a
+language. Seven of those strings had drifted into two spellings across the
+Chinese pages before `tools/check.py` started asserting it.
+
 The two files share `style.css` and `main.js`. Strings the JS needs come from
 `data-` attributes in the markup (the hero rotator reads `data-phrases`), so
 `main.js` holds no English or Chinese text and neither copy has its own script.
@@ -81,16 +87,23 @@ for dark mode). A header toggle switches themes and remembers the choice.
 All animations are disabled automatically for visitors who set
 `prefers-reduced-motion`.
 
-Case-study pages reuse the same stylesheet. Section 11 holds every rule the
-long-form pages share, including the `.figure` / `.fig-*` classes and the
-`.figure-doc` exhibit panel. A page keeps a `<style>` block only for layouts
-nobody else uses: the chart on the capstone page, the results table on the
-thesis page, the partition table on the mobile-testing notes. Prefer a modifier
-(`.figure.is-loose`, `.figure-doc.is-wide`) over redefining a shared class, so a
-class means one thing across the site.
+Case-study pages reuse the same stylesheet, and no page carries a `<style>`
+block of its own. Section 11 holds every rule the long-form pages share,
+including the `.figure` / `.fig-*` classes and the `.figure-doc` exhibit panel;
+section 11b holds the components used by exactly one page and its Chinese twin
+(the capstone chart, the thesis results table, the mobile-testing partition
+table). Page-local CSS lived in the pages until the two copies of it drifted,
+which is why it is here instead: one definition serves both languages.
 
-The stylesheet is linked as `style.css?v=N`. Bump `N` in all 16 pages whenever
-the CSS changes, or returning visitors keep the cached copy.
+Prefer a modifier (`.figure.is-loose`, `.figure-doc.is-wide`) over redefining a
+shared class, so a class means one thing across the site. The raised-panel
+chrome (border, radius, ground, shadow) comes from one shared selector list at
+the top of section 11; a new panel joins that list rather than restating it.
+
+`style.css` and `main.js` are linked as `?v=<hash>`, where the hash comes from
+the file itself. Run `python3 tools/bump.py` after changing either one; it
+rewrites all 16 pages, and `tools/check.py` fails if a stamp is stale. It used
+to be a counter bumped by hand in 32 places.
 
 ## Social cards
 
@@ -123,9 +136,63 @@ Pushes to `main` publish automatically once GitHub Pages is enabled:
 2. Source: **Deploy from a branch**, Branch: **main**, Folder: **/ (root)**.
 3. Push. The site appears at <https://zocke07.github.io/>.
 
+## Checks
+
+```sh
+python3 tools/check.py            # all seven
+python3 tools/check.py links      # or just one
+```
+
+| check | asserts |
+| --- | --- |
+| `structure` | tag balance, no duplicate ids, one `<h1>`, no skipped heading levels, no malformed markup |
+| `links` | every internal `href`/`src`/`poster` resolves on disk, using the extensionless convention |
+| `parity` | each English page and its Chinese twin share an identical `id=` and `class=` sequence |
+| `chrome` | the header, footer and control labels are identical within each language |
+| `deadcss` | every class in `style.css` is used by a page or applied by `main.js` |
+| `assets` | every tracked file under `assets/` is referenced by some page |
+| `stamps` | every `?v=` matches the hash of the file it points at |
+
+`parity` is the one worth understanding: it is what catches a change made to one
+language and forgotten in the other. It compares structure, not prose, so the
+Chinese text being shorter does not trip it.
+
 ## Ideas for later
 
 - Link a downloadable PDF resume in the hero.
+- Add a LinkedIn link, a `schema.org/Person` JSON-LD block, `sitemap.xml`,
+  `robots.txt`, and a branded `404.html`.
+- Chinese social cards. All eight `zh/` pages point `og:image` at the English
+  card, so a Chinese page shared to LINE shows a Chinese title over an English
+  image. Also worth adding `og:locale`.
 - Serve both languages from one URL. Worth revisiting only if editing two files
   becomes the real bottleneck: switching language already keeps your place, and
   the current split is what makes each language separately indexable.
+
+## When to move to a framework
+
+Deliberately none today. The site is 16 pages on one stylesheet and one script,
+with no dependencies and no build step: `git push` deploys it, the first visit
+costs about 18 KB gzipped over zero external requests, and it will still build
+untouched in five years.
+
+What that costs is real and worth naming: the head, header, footer and
+back-to-top blocks are repeated on every page, about 1,150 lines site-wide, of
+which roughly 640 line-instances are 40 distinct lines copied sixteen times.
+Adding a nav item is sixteen edits.
+
+If that stops being worth it, the answer is **Astro**, not React or Vue. It
+ships zero JavaScript by default and outputs static HTML to the same GitHub
+Pages, so nothing above is traded away; a layout would erase the repeated
+chrome, its i18n routing would compute the four bilingual sync points instead of
+restating them, and `astro:assets` would hash filenames and generate WebP, which
+retires `tools/bump.py` and the image-optimisation step. React or Vue would
+spend a runtime bundle and hydration to render pages that are entirely static
+prose, and would be slower on the phone a recruiter actually reads this on.
+
+Migrate when any one of these is true:
+
+1. A third language is added.
+2. Unique page count passes about 12 (it is 8 now).
+3. Case studies would be better authored in Markdown than in hand-written HTML.
+4. You catch yourself avoiding a change because of how many files it touches.
