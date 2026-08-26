@@ -86,11 +86,11 @@
           what the software I test is standing on.
         </p>
         <p class="hero-blurb role-line">
-          <strong>What this page is:</strong> not a claim on the work. The second semester was
-          done in a group of three and the first was individual coursework, and rather than try
-          to sort out who typed which line two years afterwards, this is a reading of what the
-          code does, why it works, and where it does not. The exercises belong to the course.
-          The understanding is the part I am putting my name to.
+          <strong>What this page is:</strong> not a claim on the work. All of it was done in a
+          team, two of us in the first semester and three in the second, and rather than try to
+          sort out who typed which line two years afterwards, this is a reading of what the code
+          does, why it works, and where it does not. The exercises belong to the course. The
+          understanding is the part I am putting my name to.
         </p>
         <ul class="facts" role="list">
           <li><strong>9</strong> VHDL exercises, gates to CPU</li>
@@ -101,12 +101,12 @@
           <li><strong>5</strong> languages in the final project</li>
         </ul>
         <p class="source-note">
-          <strong>Scope and credit:</strong> the first semester's nine VHDL exercises were
-          individual coursework. Everything in the second semester, the labs as well as the final
-          project, was done by a group of three and submitted under the group's name. Nothing below
-          is offered as my own work. I re-read both repositories to write this rather than working
-          from memory, so every claim points at a file I can open, including the unflattering ones.
-          The VHDL half is public:
+          <strong>Scope and credit:</strong> none of this was solo work. The first semester's nine
+          VHDL exercises were done in a pair; everything in the second semester, the labs as well
+          as the final project, was done by a group of three and submitted under the group's name.
+          Nothing below is offered as my own work. I re-read both repositories to write this rather
+          than working from memory, so every claim points at a file I can open, including the
+          unflattering ones. The VHDL half is public:
           <a href="https://github.com/Zocke07/Microprocessor-Based-Systems" target="_blank" rel="noopener">Microprocessor-Based-Systems</a>.
           The embedded half is not, for reasons the last section gets to, but its
           <a href="https://youtu.be/etMc-rT7v48" target="_blank" rel="noopener">demo video is public</a>
@@ -133,7 +133,7 @@
           application code and ends inside the kernel.
         </p>
         <ol class="levels" role="list">
-          <li><b>Seven-segment decoder</b><span>Seven Boolean equations, one per segment, taken off a truth table by hand. The second objective needed three digits, so I pasted the same seven equations three times and suffixed every signal name, twenty-one outputs in one file, no components anywhere.</span></li>
+          <li><b>Seven-segment decoder</b><span>Seven Boolean equations, one per segment, taken off a truth table by hand. The second objective needed three digits, so the same seven equations are pasted three times with every signal name suffixed, twenty-one outputs in one file, no components anywhere.</span></li>
           <li><b>Adder and subtractor</b><span>Eight one-bit full adders chained by their carries into an eight-bit adder, then the same again with a full subtractor. This is where the decoder stopped being copied and became a component in a package, instantiated by name.</span></li>
           <li><b>BCD adder</b><span>Binary addition gives the wrong answer in decimal, so each digit tests for a carry or a result above nine and adds six to correct it. Sixteen full adders and one boolean expression per digit, structural the whole way down.</span></li>
           <li><b>Simple ALU</b><span>A one-bit slice built from two multiplexers, a full adder and a four-way output select, then seven of them generated in a loop and wired carry to carry.</span></li>
