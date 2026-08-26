@@ -17,56 +17,23 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
   <script>
     // Set the theme before styles load to avoid a flash of the wrong theme.
-    document.documentElement.dataset.theme =
-      localStorage.getItem("theme") ||
-      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
   </script>
   <link rel="canonical" href="https://zocke07.github.io/project-mobile-testing" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/project-mobile-testing" />
-  <!-- ?v= busts the browser cache; bump it on both when style.css or main.js changes. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=13" />
-  <style>
-    /* Only what is unique to this page; the shared figure and exhibit rules
-       live in style.css. */
-    /* Partition table. Scrolls inside itself on narrow screens rather than
-       widening the page. */
-    .blocks {
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--card-bg);
-      box-shadow: var(--shadow);
-      margin: 1.5rem 0 0.6rem;
-      max-width: 46rem;
-      overflow-x: auto;
-    }
-    .blocks table { border-collapse: collapse; width: 100%; min-width: 36rem; }
-    .blocks th, .blocks td {
-      text-align: left;
-      padding: 0.55rem 0.85rem;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-      font-size: 0.85rem;
-      font-weight: 400;
-    }
-    .blocks thead th {
-      font-size: 0.72rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-    .blocks tbody th { font-weight: 600; color: var(--text); }
-    .blocks tbody td { color: var(--text-muted); }
-    .blocks tbody tr:last-child th, .blocks tbody tr:last-child td { border-bottom: 0; }
-    .blocks .v {
-      display: block;
-      margin-top: 0.2rem;
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
-      font-size: 0.78rem;
-      color: var(--accent);
-    }
-  </style>
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=ea64a392" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -76,7 +43,10 @@
     <nav class="container nav" aria-label="Primary">
       <a class="nav-brand" href="/">Rivan Wong</a>
       <div class="nav-right">
-        <ul id="nav-menu" class="nav-menu">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
           <li><a href="/#about">About</a></li>
           <li><a href="/#education">Education</a></li>
           <li><a href="/#experience">Experience</a></li>
@@ -86,18 +56,15 @@
         </ul>
         <a class="lang-toggle" href="/zh/project-mobile-testing" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
            aria-label="切換至繁體中文">中文</a>
-        <button class="theme-toggle" aria-label="Switch color theme">
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Dark theme">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
           <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
-          <span></span><span></span><span></span>
         </button>
       </div>
     </nav>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <!-- ===================== Hero ===================== -->
     <section class="hero case-hero">
       <div class="container">
@@ -124,7 +91,7 @@
           <li><strong>Zero</strong> test hooks or APIs available</li>
           <li><strong>1080 × 2400</strong>, the screen the gestures assume</li>
         </ul>
-        <p class="source-note">
+        <aside class="source-note">
           <strong>Scope and credit:</strong> the suite is a five-person team effort and my share
           of it is about a sixth. What I claim here is the settings area, where I committed every
           line of all seven files. Fourteen of the 78 keywords in my library are reused from a
@@ -132,7 +99,7 @@
           keywords are built on were written by others, and so was the test design method below,
           which the whole team worked to.
           <a href="https://github.com/qwe8496516/Health2SyncProject" target="_blank" rel="noopener">The repository is public</a>.
-        </p>
+        </aside>
       </div>
     </section>
 
@@ -180,8 +147,7 @@
           the routines suite with all five times at 23:59. That is the real gap in this design and
           the first thing I would fix.
         </p>
-        <div class="snippet">
-          <code><span class="cm"># Change the units, prove they changed, then change them back.</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm"># Change the units, prove they changed, then change them back.</span>
 Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     Click "Units" Option
     Modify Blood Glucose Unit    mmol/L
@@ -189,8 +155,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     Verify Blood Glucose Unit Is Changed    mmol/L
     Verify Weight Unit Is Changed           lb
     [Teardown]    Run Keywords    Modify Blood Glucose Unit    mg/dL
-    ...                    AND    Modify Weight Unit           kg</code>
-        </div>
+    ...                    AND    Modify Weight Unit           kg</code></pre>
         <p class="snippet-caption">
           The teardown is half the test. That is what no reset button costs you, and it is a cost
           only the tests that actually restore something have paid.
@@ -218,7 +183,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
           them is painted over: the export screen offers a saved address under Quick Select, and
           it is pixelated out.
         </p>
-        <button class="clips-toggle" type="button"
+        <button class="clips-toggle" type="button" aria-pressed="true"
                 data-play-label="Play the clips"
                 data-pause-label="Pause the clips">
           <svg class="icon-play" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
@@ -230,7 +195,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
             <div class="clip-frame">
               <video src="/assets/vid/h2s-tc0402-units.mp4"
                      poster="/assets/img/h2s/h2s-tc0402-units.jpg"
-                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+                     width="566" height="1244" controls loop muted playsinline preload="metadata" aria-label="Screen recording, TC_0402 · Units"></video>
             </div>
             <figcaption>
               <b>TC_0402 · Units</b>
@@ -243,7 +208,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
             <div class="clip-frame">
               <video src="/assets/vid/h2s-tc0401-export-report.mp4"
                      poster="/assets/img/h2s/h2s-tc0401-export-report.jpg"
-                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+                     width="566" height="1244" controls loop muted playsinline preload="metadata" aria-label="Screen recording, TC_0401 · Export the report"></video>
             </div>
             <figcaption>
               <b>TC_0401 · Export the report</b>
@@ -256,7 +221,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
             <div class="clip-frame">
               <video src="/assets/vid/h2s-tc0403-goals.mp4"
                      poster="/assets/img/h2s/h2s-tc0403-goals.jpg"
-                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+                     width="566" height="1244" controls loop muted playsinline preload="metadata" aria-label="Screen recording, TC_0403 · Personal goals"></video>
             </div>
             <figcaption>
               <b>TC_0403 · Personal goals</b>
@@ -269,7 +234,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
             <div class="clip-frame">
               <video src="/assets/vid/h2s-tc0405-favorite-food.mp4"
                      poster="/assets/img/h2s/h2s-tc0405-favorite-food.jpg"
-                     width="566" height="1244" controls loop muted playsinline preload="metadata"></video>
+                     width="566" height="1244" controls loop muted playsinline preload="metadata" aria-label="Screen recording, TC_0405 · Favorite food"></video>
             </div>
             <figcaption>
               <b>TC_0405 · Favorite food</b>
@@ -312,28 +277,31 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         </p>
 
         <h3>What that looks like on a real screen</h3>
-        <div class="figure-doc is-wide">
-          <a href="/assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener"
-             aria-label="Open the activity diagram at full size in a new tab">
-            <img src="/assets/img/tc1-activity-diagram.png" width="2000" height="749" loading="lazy"
-                 alt="Activity diagram for the Add Health Data screen. A spine of decision diamonds
-                      runs left to right, one per record type, and each labelled branch TC1-1 through
-                      TC1-7 drops to the inputs that test case enters." />
-          </a>
-        </div>
-        <p class="figure-caption">
-          The team's activity diagram for Add Health Data, taken straight out of our report. Each
-          labelled branch, TC1-1 through TC1-7, is one test case: walk the app, and every decision
-          that leads somewhere becomes a case with its own inputs at the end. My own area came out
-          the same shape, five branches carrying two, one, six, four and two test cases. This one
-          is a different feature area and the code behind it is a teammate's, but the method is the
-          one all five of us worked to.
-          <a href="/assets/img/tc1-activity-diagram.png" target="_blank" rel="noopener">Open it full size →</a>
-        </p>
+        <figure class="figure">
+          <div class="figure-doc is-wide" tabindex="0">
+            <a href="/assets/img/tc1-activity-diagram.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/tc1-activity-diagram.webp" width="2000" height="749" loading="lazy" decoding="async"
+                   alt="Activity diagram for the Add Health Data screen. A spine of decision diamonds
+                        runs left to right, one per record type, and each labelled branch TC1-1 through
+                        TC1-7 drops to the inputs that test case enters." />
+              <span class="sr-only">Open full size in a new tab</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            The team's activity diagram for Add Health Data, taken straight out of our report. Each
+            labelled branch, TC1-1 through TC1-7, is one test case: walk the app, and every decision
+            that leads somewhere becomes a case with its own inputs at the end. My own area came out
+            the same shape, five branches carrying two, one, six, four and two test cases. This one
+            is a different feature area and the code behind it is a teammate's, but the method is the
+            one all five of us worked to.
+            <a href="/assets/img/tc1-activity-diagram.webp" target="_blank" rel="noopener">Open it full size<span class="sr-only"> in a new tab</span> →</a>
+          </figcaption>
+        </figure>
 
         <h3>The blocks behind my fifteen tests</h3>
-        <div class="blocks">
+        <div class="blocks" tabindex="0">
           <table>
+            <caption class="sr-only">Equivalence partitions for the settings area, by input</caption>
             <thead>
               <tr>
                 <th scope="col">Characteristic</th>
@@ -418,7 +386,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
           dialog, then pushes dinner past bedtime and asserts that second complaint too. One test,
           two ways to break the ordering.
         </p>
-        <div class="figure is-tight is-scroll">
+        <figure class="figure is-tight is-scroll" tabindex="0">
           <svg viewBox="0 0 620 580" role="img" aria-labelledby="routine-flow-title routine-flow-desc">
             <title id="routine-flow-title">Activity diagram for the daily routine ordering test</title>
             <desc id="routine-flow-desc">
@@ -487,11 +455,11 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
               <text x="452" y="61" text-anchor="middle">correct the values and retry</text>
             </g>
           </svg>
-        </div>
-        <p class="figure-caption">
-          The activity diagram for that one test. The two decision points are the whole reason it
-          exists, and they are the part no per-field partition would have reached.
-        </p>
+          <figcaption class="figure-caption">
+            The activity diagram for that one test. The two decision points are the whole reason it
+            exists, and they are the part no per-field partition would have reached.
+          </figcaption>
+        </figure>
 
         <h3>Preconditions written down instead of assumed</h3>
         <p>
@@ -569,10 +537,10 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     </div>
   </footer>
 
-  <button class="to-top" aria-label="Back to top">
+  <button class="to-top" type="button" aria-label="Back to top">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=13"></script>
+  <script src="/assets/js/main.js?v=f3cfc9da"></script>
 </body>
 </html>

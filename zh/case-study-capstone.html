@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>流程沒有問題，產出還是掉了 · 黃家輝 Rivan Wong</title>
+  <title>流程沒有問題，產出還是掉了 · Rivan Wong</title>
   <meta name="description" content="畢業專題記錄了一個商業自動化測試團隊從需求到合併的七道關卡，接著統計四年產出，發現在流程完全沒變的情況下，產出比高峰掉了約三分之二。" />
   <meta property="og:title" content="流程沒有問題，產出還是掉了" />
   <meta property="og:description" content="一個自動化測試團隊四年的產出數據，以及健康的流程與下滑的數字為什麼可以同時成立。" />
@@ -17,39 +17,23 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
   <script>
     // Set the theme before styles load to avoid a flash of the wrong theme.
-    document.documentElement.dataset.theme =
-      localStorage.getItem("theme") ||
-      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
   </script>
   <link rel="canonical" href="https://zocke07.github.io/zh/case-study-capstone" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-capstone" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-capstone" />
-  <!-- ?v= busts the browser cache; bump it on both when style.css or main.js changes. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=13" />
-  <style>
-    /* Page-local: the one chart on the site. Scales with its container rather
-       than a fixed width, and takes every colour from the theme tokens so it
-       flips with the rest of the page. */
-    .chart {
-      max-width: 46rem;
-      margin: 1.5rem 0;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      background: var(--card-bg);
-      padding: 1rem;
-    }
-    .chart svg { width: 100%; height: auto; display: block; }
-    .chart-grid { stroke: var(--border); stroke-width: 1; }
-    .chart-bar { fill: var(--accent); }
-    .chart-line { fill: none; stroke: var(--text-muted); stroke-width: 2; stroke-dasharray: 5 3; }
-    .chart-dot { fill: var(--text-muted); }
-    .chart-label { fill: var(--text-muted); font-size: 12px; font-family: var(--font); }
-    .chart-value { fill: var(--accent-contrast); font-size: 12px; font-weight: 700; font-family: var(--font); }
-    .chart-key { display: flex; flex-wrap: wrap; gap: 1.25rem; margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
-    .chart-key span { display: inline-flex; align-items: center; gap: 0.4rem; }
-    .chart-key i { width: 14px; height: 3px; border-radius: 2px; background: var(--accent); }
-    .chart-key i.dashed { background: var(--text-muted); }
-  </style>
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=ea64a392" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -57,30 +41,30 @@
   <!-- ===================== Header / Nav ===================== -->
   <header class="site-header">
     <nav class="container nav" aria-label="主要導覽">
-      <a class="nav-brand" href="/zh/">黃家輝</a>
+      <a class="nav-brand" href="/zh/">Rivan Wong</a>
       <div class="nav-right">
-        <ul id="nav-menu" class="nav-menu">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="切換導覽選單">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
           <li><a href="/zh/#about">關於我</a></li>
           <li><a href="/zh/#education">學歷</a></li>
-          <li><a href="/zh/#experience">經歷</a></li>
+          <li><a href="/zh/#experience">工作經歷</a></li>
           <li><a href="/zh/#projects">作品與研究</a></li>
           <li><a href="/zh/#skills">技能</a></li>
           <li><a href="/zh/#contact">聯絡方式</a></li>
         </ul>
         <a class="lang-toggle" href="/case-study-capstone" hreflang="en" lang="en"
            aria-label="Switch to English">EN</a>
-        <button class="theme-toggle" aria-label="切換配色主題">
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="深色主題">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
           <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="開關導覽選單">
-          <span></span><span></span><span></span>
         </button>
       </div>
     </nav>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <!-- ===================== Case study hero ===================== -->
     <section class="hero case-hero">
       <div class="container">
@@ -100,9 +84,9 @@
           <li>從 ticket 到合併共 <strong>7 道關卡</strong></li>
           <li><strong>3 位學生</strong>，一位指導教授</li>
         </ul>
-        <p class="nda-note">
+        <aside class="nda-note">
           <strong>關於保密：</strong>本文遵守我簽署的保密協議。產品名稱、內部 ticket 編號與商業邏輯均已省略或一般化，內容也未重製專題報告本身。留下來的是工程流程與數據的形狀，兩者都屬於業界通行的一般實務。
-        </p>
+        </aside>
       </div>
     </section>
 
@@ -138,19 +122,21 @@
           <li><b>開出 pull request</b><span>分支只能透過 PR 往主線合併。</span></li>
           <li><b>修到工程師點頭為止</b><span>公司的工程師會審查並留下意見。案例不是通過測試就算完成，而是他們合併了才算完成。</span></li>
         </ol>
-        <div class="figure-doc">
-          <a href="/assets/img/capstone-dev-workflow.png" target="_blank" rel="noopener"
-             aria-label="在新分頁中開啟完整尺寸的開發流程圖">
-            <img src="/assets/img/capstone-dev-workflow.png" width="410" height="540" loading="lazy"
-                 alt="開發流程圖，依所屬工具分成四個色塊區域。產品 backlog 進入 sprint backlog，接著是
-                      Robot Editor 區域中的開發、案例細化與程式碼審查；Microsoft Teams 區域中的 sprint
-                      審查會把建議繞回上游；建立分支後進入 Jenkins 區域的 CI 執行與 RfLint 分析；最後在
-                      GitHub 區域等待 pull request 審查，被退回時則繞回修改。" />
-          </a>
-        </div>
-        <p class="figure-caption">
-          同樣的七道關卡，這是我們報告裡原本畫的樣子，並依每個階段所在的工具上色。流程圖能顯示、而上面那份列表無法顯示的，是那些迴圈：審查被退回時是回到<em>修改</em>，而不是回到最開始；sprint 審查提出的建議則從案例細化重新進入。這裡沒有任何一條通往完成的直線。
-        </p>
+        <figure class="figure">
+          <div class="figure-doc">
+            <a href="/assets/img/capstone-dev-workflow.png" target="_blank" rel="noopener">
+              <img src="/assets/img/capstone-dev-workflow.png" width="410" height="540" loading="lazy" decoding="async"
+                   alt="開發流程圖，依所屬工具分成四個色塊區域。產品 backlog 進入 sprint backlog，接著是
+                        Robot Editor 區域中的開發、案例細化與程式碼審查；Microsoft Teams 區域中的 sprint
+                        審查會把建議繞回上游；建立分支後進入 Jenkins 區域的 CI 執行與 RfLint 分析；最後在
+                        GitHub 區域等待 pull request 審查，被退回時則繞回修改。" />
+              <span class="sr-only">在新分頁開啟完整尺寸</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            同樣的七道關卡，這是我們報告裡原本畫的樣子，並依每個階段所在的工具上色。流程圖能顯示、而上面那份列表無法顯示的，是那些迴圈：審查被退回時是回到<em>修改</em>，而不是回到最開始；sprint 審查提出的建議則從案例細化重新進入。這裡沒有任何一條通往完成的直線。
+          </figcaption>
+        </figure>
         <p>
           第二關特別值得停下來看。用文字把測試步驟寫出來、手動跑過一遍、還要等產品經理同意，才准開始寫程式，感覺是所有起手式裡最慢的一種。但它也是唯一一道能在誤解還只是一段文字、而不是一整個測試套件的時候，就把它攔下來的關卡。
         </p>
@@ -298,10 +284,10 @@
     </div>
   </footer>
 
-  <button class="to-top" aria-label="回到頁首">
+  <button class="to-top" type="button" aria-label="回到頁首">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=13"></script>
+  <script src="/assets/js/main.js?v=f3cfc9da"></script>
 </body>
 </html>

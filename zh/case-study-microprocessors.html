@@ -17,30 +17,23 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
   <script>
     // Set the theme before styles load to avoid a flash of the wrong theme.
-    document.documentElement.dataset.theme =
-      localStorage.getItem("theme") ||
-      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
   </script>
   <link rel="canonical" href="https://zocke07.github.io/zh/case-study-microprocessors" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-microprocessors" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-microprocessors" />
-  <!-- ?v= busts the browser cache; bump it on both when style.css or main.js changes. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=13" />
-  <style>
-    /* The one photograph on this page: a frame of the final project's own demo
-       video. It carries its own image, so unlike .figure-doc it needs no paper
-       panel behind it. */
-    .figure-shot {
-      margin: 1.5rem 0 0.6rem;
-      max-width: 46rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      line-height: 0;
-    }
-    .figure-shot img { display: block; width: 100%; height: auto; }
-  </style>
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=ea64a392" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -50,7 +43,10 @@
     <nav class="container nav" aria-label="主要導覽">
       <a class="nav-brand" href="/zh/">Rivan Wong</a>
       <div class="nav-right">
-        <ul id="nav-menu" class="nav-menu">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="切換導覽選單">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
           <li><a href="/zh/#about">關於我</a></li>
           <li><a href="/zh/#education">學歷</a></li>
           <li><a href="/zh/#experience">工作經歷</a></li>
@@ -60,18 +56,15 @@
         </ul>
         <a class="lang-toggle" href="/case-study-microprocessors" hreflang="en" lang="en"
            aria-label="Switch to English">EN</a>
-        <button class="theme-toggle" aria-label="切換配色主題">
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="深色主題">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
           <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="切換導覽選單">
-          <span></span><span></span><span></span>
         </button>
       </div>
     </nav>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <!-- ===================== Case study hero ===================== -->
     <section class="hero case-hero">
       <div class="container">
@@ -97,7 +90,7 @@
           <li><strong>236</strong> 行核心 C，一個字元裝置</li>
           <li>期末專題裡用上 <strong>5</strong> 種語言</li>
         </ul>
-        <p class="source-note">
+        <aside class="source-note">
           <strong>範圍與歸屬：</strong>這裡沒有任何一項是我獨力完成的。第一個學期那九個 VHDL 實驗是兩個人一組做的；
           第二個學期的一切，包括每一次實驗課與期末專題，都是三人小組共同完成、以小組名義繳交的。
           底下沒有任何一段是以「我的作品」提出的。
@@ -107,7 +100,7 @@
           嵌入式那半邊沒有公開，原因寫在最後一節，但它的
           <a href="https://youtu.be/etMc-rT7v48" target="_blank" rel="noopener">demo 影片是公開的</a>，
           下面那張照片就是影片的其中一格。本頁所有示意圖都是照著原始碼重畫的，沒有任何一張是課程投影片。
-        </p>
+        </aside>
       </div>
     </section>
 
@@ -140,15 +133,13 @@
           有一個細節一路活到最後。第一週那七條方程式現在還在期末專案裡，而且不是精神上的：
           逐字比對，它們就是同樣的算式，只是輸入訊號改了名字。
         </p>
-        <div class="snippet">
-          <code><span class="cm">-- lab1_1.vhd，這門課的第一個實驗：a 線段，直接從真值表抄下來</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code><span class="cm">-- lab1_1.vhd，這門課的第一個實驗：a 線段，直接從真值表抄下來</span>
 a  &lt;= (X and not Y and not Z) or (W and X and not Y)
    or (not W and not X and not Y and Z) or (W and not X and Y and Z);
 
 <span class="cm">-- final/hex.vhd，最後一個實驗：同一條式子，改了名字</span>
 a1 &lt;= (s2 and not s1 and not s0) or (s3 and s2 and not s1)
-   or (not s3 and not s2 and not s1 and s0) or (s3 and not s2 and s1 and s0);</code>
-        </div>
+   or (not s3 and not s2 and not s1 and s0) or (s3 and not s2 and s1 and s0);</code></pre>
         <p class="snippet-caption">
           把 <code>W,X,Y,Z</code> 換成 <code>s3,s2,s1,s0</code> 之後，七個線段全部相符。
           這顆處理器的顯示路徑，就是這門課第一個實驗的成果，一個字都沒動過。
@@ -179,8 +170,7 @@ a1 &lt;= (s2 and not s1 and not s0) or (s3 and s2 and not s1)
           而下一行敘述才會把那個值蓋掉。這些管線暫存器不是我宣告出來的硬體，
           而是四行敘述照著特定順序排列所留下的縫隙，根本沒有被宣告出來。
         </p>
-        <div class="snippet">
-          <code><span class="cm">-- PipelineCPU.vhd，精簡過：四個階段在檔案裡出現的順序</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code><span class="cm">-- PipelineCPU.vhd，精簡過：四個階段在檔案裡出現的順序</span>
 process(Clock)
   variable tmpIns1, tmpIns2, tmpIns3, tmpIns4 : std_logic_vector(7 downto 0) := "11110000";
 begin
@@ -197,13 +187,12 @@ begin
     <span class="cm">--Instruction fetch</span>
     tmpIns1 := Instruction;
   end if;
-end process;</code>
-        </div>
+end process;</code></pre>
         <p class="snippet-caption">
           把那四塊裡的任兩塊對調，這顆處理器就不再是管線化的了。而檔案裡沒有任何一行提到這件事。
         </p>
-        <div class="figure">
-          <div class="figure-scroll">
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 700 372" role="img" aria-labelledby="pipetitle pipedesc">
               <title id="pipetitle">一個時序 process 裡倒著排列的四個管線階段</title>
               <desc id="pipedesc">process 主體依序列出寫回、執行、指令解碼、指令擷取。每個階段都把排在它下面那個階段所持有的指令複製到自己的變數裡，所以指令是由主體的下方往上方前進，而主體本身是由上往下執行的。</desc>
@@ -246,13 +235,13 @@ end process;</code>
               <text x="300" y="352" class="fig-note">指令則由下往上前進，一個時脈一個階段</text>
             </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             那三條彎曲的箭頭就是整條管線。第一行敘述會在第二行把 <code>tmpIns3</code> 蓋掉之前，
             先把它複製進 <code>tmpIns4</code>，所以同一個變數在不同的行讀起來，代表的是兩道不同的指令。
             四個暫存器的初值都是 <code>"11110000"</code>，opcode 為 <code>1111</code>，
             解碼時視為「沒有指令」：所以開機時管線裡裝滿的是氣泡，而不是垃圾值。
-          </p>
-        </div>
+          </figcaption>
+        </figure>
         <p>
           至少板子對管線本身是誠實的。一個叫 <code>ExcuteStatus</code> 的四位元輸出接到四顆綠色 LED，
           一個階段一顆，由持有它的那個階段點亮，遇到氣泡就熄掉。用按鈕一道一道送指令進去，
@@ -271,8 +260,7 @@ end process;</code>
           要到寫回階段才把結果寫進去，而那時下一道指令早在兩個階段之前就把運算元讀走了。
           作業裡偵測這個衝突並用停頓解決佔百分之十，改用前饋解決再佔百分之十。所以這裡有一個偵測器。
         </p>
-        <div class="snippet">
-          <code><span class="cm">-- PipelineCPU.vhd，解碼階段裡，原封不動</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code><span class="cm">-- PipelineCPU.vhd，解碼階段裡，原封不動</span>
 if ((not(tmpIns3(3 downto 2) = "00")) and
     ((tmpIns3(3 downto 2) = tmpIns2(3 downto 2)) or
      (tmpIns3(3 downto 2) = tmpIns2(1 downto 0)))) then
@@ -282,8 +270,7 @@ else
   HazardDetection &lt;= '0';
   case tmpIns2(3 downto 2) is
     when "00" =&gt; tmpRs := r0tmp;
-    ...</code>
-        </div>
+    ...</code></pre>
         <p class="snippet-caption">
           <code>tmpIns3</code> 是正在執行的那道指令，<code>tmpIns2</code> 是正在解碼的那道。
           第 3、2 位元是目的暫存器，第 1、0 位元是第二個運算元。
@@ -306,8 +293,8 @@ else
           <code>excuteResult</code> 和執行階段剛剛把它寫進去的那個影子暫存器，在結構上必然相等。
           偵測本身是真的，但它邀功的那個前饋，其實是檔案排版的副作用。
         </p>
-        <div class="figure">
-          <div class="figure-scroll">
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="hztitle hzdesc">
               <title id="hztitle">被前饋的值究竟是從哪裡來的</title>
               <desc id="hzdesc">管線裡相差一個週期的兩道指令。在第三個週期，第一道指令位於執行階段，第二道位於解碼階段。執行階段寫入影子暫存器變數，而解碼階段在同一個時脈邊緣就讀到它，所以前饋是靠敘述順序完成的，而不是靠那段明寫的 hazard 判斷。</desc>
@@ -355,10 +342,10 @@ else
               <text x="170" y="256" class="fig-note">r2 + r1 被算成了 r1 + r1</text>
             </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             藍色箭頭是真正在運作的前饋。虛線框裡的是這段程式碼自稱在做的前饋，在兩者答案不一致的那組輸入上。
-          </p>
-        </div>
+          </figcaption>
+        </figure>
 
         <h3>而在偵測器真的會改變答案的地方，它是錯的</h3>
         <p>
@@ -407,19 +394,21 @@ else
           四顆 LED 是四間房間，第五顆是預約計時器，走廊上的光敏電阻決定走廊燈需不需要開。
           在瀏覽器裡勾選房間、設定時間，被選到的房間就會在這段時間內閃爍。
         </p>
-        <div class="figure-shot">
-          <img src="/assets/img/micro-final-rig.jpg" width="1400" height="784" loading="lazy"
-               alt="實驗桌上正在運作的期末專題。左邊是插著幾顆亮起的 LED 的麵包板，用一束杜邦線接到一塊
-                    NVIDIA Jetson TX2 開發板上。右邊的筆電瀏覽器開著 Smart Room Management 頁面，
-                    上面有四個房間的核取方塊與三個是非題，旁邊還有一個正在印出伺服器日誌的終端機。" />
-        </div>
-        <p class="figcaption">
-          擷取自我們 2024 年 6 月的 demo 影片。這頁裡所有不是 VHDL 的東西，都在這張照片的某個角落，
-          包括那些不會動的部分。右邊那個終端機印的就是伺服器自言自語的日誌：<code>sum : 4</code>
-          是 pthread 程式在它的執行緒輪流拿過互斥鎖之後印出來的計數，<code>noTimer</code>
-          就是旁邊那顆選了「No」的圓鈕，而 <code>1001</code> 則是計時器收到的房間選擇，
-          正好就是瀏覽器裡被勾起來的那兩格。
-        </p>
+        <figure class="figure">
+          <div class="figure-shot">
+            <img src="/assets/img/micro-final-rig.jpg" width="1400" height="784" loading="lazy" decoding="async"
+                 alt="實驗桌上正在運作的期末專題。左邊是插著幾顆亮起的 LED 的麵包板，用一束杜邦線接到一塊
+                      NVIDIA Jetson TX2 開發板上。右邊的筆電瀏覽器開著 Smart Room Management 頁面，
+                      上面有四個房間的核取方塊與三個是非題，旁邊還有一個正在印出伺服器日誌的終端機。" />
+          </div>
+          <figcaption class="figcaption">
+            擷取自我們 2024 年 6 月的 demo 影片。這頁裡所有不是 VHDL 的東西，都在這張照片的某個角落，
+            包括那些不會動的部分。右邊那個終端機印的就是伺服器自言自語的日誌：<code>sum : 4</code>
+            是 pthread 程式在它的執行緒輪流拿過互斥鎖之後印出來的計數，<code>noTimer</code>
+            就是旁邊那顆選了「No」的圓鈕，而 <code>1001</code> 則是計時器收到的房間選擇，
+            正好就是瀏覽器裡被勾起來的那兩格。
+          </figcaption>
+        </figure>
       </div>
     </section>
 
@@ -436,8 +425,7 @@ else
         <p>
           但它也不是驅動程式。以下就是它全部的協定和全部的機制：
         </p>
-        <div class="snippet">
-          <code><span class="cm">/* demo.c：write 處理函式的協定就只有四個字元寬 */</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code><span class="cm">/* demo.c：write 處理函式的協定就只有四個字元寬 */</span>
 copy_from_user(userChar, buf, count);
 userChar[count - 1] = '\0';
 strncpy(gpio, userChar, 3);   <span class="cm">/* "255" */</span>
@@ -446,8 +434,7 @@ value[0] = userChar[3];       <span class="cm">/* '1'、'0'，其他字元一律
 <span class="cm">/* 而這就是這次 write 最後真正做的事，從核心裡面 */</span>
 snprintf(buf, sizeof(buf), "/sys/class/gpio/gpio%s/value", gpio);
 fd = filp_open(buf, O_WRONLY, 0);
-vfs_write(fd, value, strlen(value), &amp;pos);</code>
-        </div>
+vfs_write(fd, value, strlen(value), &amp;pos);</code></pre>
         <p class="snippet-caption">
           外面還包著 <code>set_fs(get_ds())</code>，因為要讓核心在期待使用者空間緩衝區的地方
           接受一個核心空間的緩衝區，就得這樣做。需要這行呼叫本身就是味道。
@@ -459,8 +446,8 @@ vfs_write(fd, value, strlen(value), &amp;pos);</code>
           驅動程式存在的意義是當那個堆疊的最底層。這一個卻爬回它本該取代的那一層，
           然後請那一層幫忙做事。它多加了一跳，而不是少掉一跳。
         </p>
-        <div class="figure">
-          <div class="figure-scroll">
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 700 500" role="img" aria-labelledby="hoptitle hopdesc">
               <title id="hoptitle">瀏覽器點擊到 LED 之間的八層，對照實驗二的一層</title>
               <desc id="hopdesc">一條垂直的鏈：瀏覽器請求、Express 處理函式、載入核心模組、一個 sudo 子行程、寫入 /dev/demo、模組的 write 處理函式、從核心寫回 sysfs 的 GPIO value 檔，最後是 LED。左邊分出來的那一條顯示實驗二的使用者空間程式是直接寫同一個 sysfs 檔案的。</desc>
@@ -518,11 +505,11 @@ vfs_write(fd, value, strlen(value), &amp;pos);</code>
               <text x="118" y="168" class="fig-note">寫同一個檔案</text>
             </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             左邊那條藍線是實驗二。右邊那條鏈是四週後的同一顆 LED，而夾在中間的那個模組，
             最後做的事是去寫實驗二寫過的同一個檔案。這八層裡有三層之所以存在，是因為專題規範對它們給分。
-          </p>
-        </div>
+          </figcaption>
+        </figure>
         <p>
           這個實驗真正教的東西，值得跟它自稱在教的東西分開來講。它讓人看見字元裝置怎麼註冊、
           <code>copy_from_user</code> 為什麼存在、major number 是幹嘛的，
@@ -571,15 +558,13 @@ vfs_write(fd, value, strlen(value), &amp;pos);</code>
           實驗二的順序是 255、481、392、254。Qt 程式的順序是 392、255、481、254。
           期末專題的順序是 255、392、481、254。同樣四條線，對於「哪一顆是 LED2」有三種意見。
         </p>
-        <div class="snippet">
-          <code><span class="cm">// lab04.js：瀏覽器的 LED1 其實是板子上的 LED3，用改名解決</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code><span class="cm">// lab04.js：瀏覽器的 LED1 其實是板子上的 LED3，用改名解決</span>
 let response = {
     "LED1": req.query.LED3,
     "LED2": req.query.LED1,
     "LED3": req.query.LED2,
     "LED4": req.query.LED4,
-}</code>
-        </div>
+}</code></pre>
         <p class="snippet-caption">
           一張置換表，放在網頁伺服器裡，代替兩層底下那份沒被改對的接腳對照表。
         </p>
@@ -606,14 +591,12 @@ let response = {
           按 <kbd>j</kbd> 拍照、按 <kbd>q</kbd> 離開。它沒有「拍一張然後結束」的參數，
           所以伺服器把它開起來，然後對它打字。
         </p>
-        <div class="snippet">
-          <code><span class="cm">// final.js：自動化一支只吃鍵盤輸入的程式</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code><span class="cm">// final.js：自動化一支只吃鍵盤輸入的程式</span>
 const captureProcess = spawn('nvgstcapture-1.0', ['--prev-res=3']);
 setTimeout(() =&gt; {
     captureProcess.stdin.write('j\n');                            <span class="cm">// 拍照</span>
     setTimeout(() =&gt; captureProcess.stdin.write('q\n'), 1000);    <span class="cm">// 離開</span>
-}, 1000);</code>
-        </div>
+}, 1000);</code></pre>
         <p class="snippet-caption">
           兩個 <code>setTimeout</code>，用來取代任何關於「那支程式準備好了沒」的知識。
           這是一個競爭條件，正確的做法是等它的輸出，而不是等一秒。
@@ -714,14 +697,14 @@ setTimeout(() =&gt; {
 
   <footer class="site-footer">
     <div class="container">
-      <p>© <span id="year"></span> Rivan Wong · 以純 HTML 與 CSS 製作，部署於 GitHub Pages。</p>
+      <p>© <span id="year"></span> Rivan Wong · 以純 HTML 與 CSS 打造，部署於 GitHub Pages。</p>
     </div>
   </footer>
 
-  <button class="to-top" aria-label="回到頂端">
+  <button class="to-top" type="button" aria-label="回到頁首">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=13"></script>
+  <script src="/assets/js/main.js?v=f3cfc9da"></script>
 </body>
 </html>

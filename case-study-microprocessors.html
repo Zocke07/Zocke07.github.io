@@ -17,30 +17,23 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
   <script>
     // Set the theme before styles load to avoid a flash of the wrong theme.
-    document.documentElement.dataset.theme =
-      localStorage.getItem("theme") ||
-      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
   </script>
   <link rel="canonical" href="https://zocke07.github.io/case-study-microprocessors" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-microprocessors" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-microprocessors" />
-  <!-- ?v= busts the browser cache; bump it on both when style.css or main.js changes. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=13" />
-  <style>
-    /* The one photograph on this page: a frame of the final project's own demo
-       video. It carries its own image, so unlike .figure-doc it needs no paper
-       panel behind it. */
-    .figure-shot {
-      margin: 1.5rem 0 0.6rem;
-      max-width: 46rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      line-height: 0;
-    }
-    .figure-shot img { display: block; width: 100%; height: auto; }
-  </style>
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=ea64a392" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -50,7 +43,10 @@
     <nav class="container nav" aria-label="Primary">
       <a class="nav-brand" href="/">Rivan Wong</a>
       <div class="nav-right">
-        <ul id="nav-menu" class="nav-menu">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
           <li><a href="/#about">About</a></li>
           <li><a href="/#education">Education</a></li>
           <li><a href="/#experience">Experience</a></li>
@@ -60,18 +56,15 @@
         </ul>
         <a class="lang-toggle" href="/zh/case-study-microprocessors" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
            aria-label="切換至繁體中文">中文</a>
-        <button class="theme-toggle" aria-label="Switch color theme">
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Dark theme">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
           <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
-          <span></span><span></span><span></span>
         </button>
       </div>
     </nav>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <!-- ===================== Case study hero ===================== -->
     <section class="hero case-hero">
       <div class="container">
@@ -100,7 +93,7 @@
           <li><strong>236</strong> lines of kernel C, one character device</li>
           <li><strong>5</strong> languages in the final project</li>
         </ul>
-        <p class="source-note">
+        <aside class="source-note">
           <strong>Scope and credit:</strong> none of this was solo work. The first semester's nine
           VHDL exercises were done in a pair; everything in the second semester, the labs as well
           as the final project, was done by a group of three and submitted under the group's name.
@@ -112,7 +105,7 @@
           <a href="https://youtu.be/etMc-rT7v48" target="_blank" rel="noopener">demo video is public</a>
           and the photograph below is a frame of it. Every diagram here is drawn from the source.
           None of the course's own slides appear on this page.
-        </p>
+        </aside>
       </div>
     </section>
 
@@ -148,15 +141,13 @@
           the final project, and not in spirit: character for character, they are the same
           expressions with the input signals renamed.
         </p>
-        <div class="snippet">
-          <code><span class="cm">-- lab1_1.vhd, the first exercise of the course: segment a, off the truth table</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">-- lab1_1.vhd, the first exercise of the course: segment a, off the truth table</span>
 a  &lt;= (X and not Y and not Z) or (W and X and not Y)
    or (not W and not X and not Y and Z) or (W and not X and Y and Z);
 
 <span class="cm">-- final/hex.vhd, the last one: the same equation, renamed</span>
 a1 &lt;= (s2 and not s1 and not s0) or (s3 and s2 and not s1)
-   or (not s3 and not s2 and not s1 and s0) or (s3 and not s2 and s1 and s0);</code>
-        </div>
+   or (not s3 and not s2 and not s1 and s0) or (s3 and not s2 and s1 and s0);</code></pre>
         <p class="snippet-caption">
           All seven segments match under the renaming <code>W,X,Y,Z</code> to
           <code>s3,s2,s1,s0</code>. The processor's display path is the first exercise of the
@@ -191,8 +182,7 @@ a1 &lt;= (s2 and not s1 and not s0) or (s3 and s2 and not s1)
           a moment before the next statement overwrites it. The pipeline registers are not
           declared hardware at all. They are the gaps between four statements in a particular order.
         </p>
-        <div class="snippet">
-          <code><span class="cm">-- PipelineCPU.vhd, condensed: the four stages as they appear in the file</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">-- PipelineCPU.vhd, condensed: the four stages as they appear in the file</span>
 process(Clock)
   variable tmpIns1, tmpIns2, tmpIns3, tmpIns4 : std_logic_vector(7 downto 0) := "11110000";
 begin
@@ -209,14 +199,13 @@ begin
     <span class="cm">--Instruction fetch</span>
     tmpIns1 := Instruction;
   end if;
-end process;</code>
-        </div>
+end process;</code></pre>
         <p class="snippet-caption">
           Swap any two of those four blocks and the processor stops being pipelined. Nothing in the
           file says so.
         </p>
-        <div class="figure">
-          <div class="figure-scroll">
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 700 372" role="img" aria-labelledby="pipetitle pipedesc">
               <title id="pipetitle">One clocked process holding four pipeline stages in reverse order</title>
               <desc id="pipedesc">The process body lists write back first, then execution, then instruction decode, then instruction fetch. Each stage copies the instruction held by the stage listed below it into its own variable, so instructions advance from the bottom of the body to the top while the body itself executes from top to bottom.</desc>
@@ -259,15 +248,15 @@ end process;</code>
               <text x="300" y="352" class="fig-note">an instruction advances bottom to top, one stage per clock</text>
             </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             The three curved arrows are the whole pipeline. Statement one copies <code>tmpIns3</code>
             into <code>tmpIns4</code> before statement two overwrites <code>tmpIns3</code>, so a
             variable holds two instructions' worth of meaning depending on which line is reading it.
             The four registers start at <code>"11110000"</code>, opcode <code>1111</code>, which the
             decoder treats as no instruction: the pipe boots full of bubbles rather than full of
             garbage.
-          </p>
-        </div>
+          </figcaption>
+        </figure>
         <p>
           The board reports the pipeline honestly, at least. A four-bit output called
           <code>ExcuteStatus</code> drives four green LEDs, one per stage, each set by the stage
@@ -290,8 +279,7 @@ end process;</code>
           detecting that collision and stalling, and another ten for forwarding the value instead.
           So there is a detector.
         </p>
-        <div class="snippet">
-          <code><span class="cm">-- PipelineCPU.vhd, in the decode stage, verbatim</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">-- PipelineCPU.vhd, in the decode stage, verbatim</span>
 if ((not(tmpIns3(3 downto 2) = "00")) and
     ((tmpIns3(3 downto 2) = tmpIns2(3 downto 2)) or
      (tmpIns3(3 downto 2) = tmpIns2(1 downto 0)))) then
@@ -301,8 +289,7 @@ else
   HazardDetection &lt;= '0';
   case tmpIns2(3 downto 2) is
     when "00" =&gt; tmpRs := r0tmp;
-    ...</code>
-        </div>
+    ...</code></pre>
         <p class="snippet-caption">
           <code>tmpIns3</code> is the instruction in execution, <code>tmpIns2</code> the one being
           decoded. Bits 3 and 2 are the destination register, bits 1 and 0 the second operand.
@@ -330,8 +317,8 @@ else
           stage just wrote it into are equal by construction. The detection is real, but the
           forwarding it claims credit for is a property of the file's layout.
         </p>
-        <div class="figure">
-          <div class="figure-scroll">
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="hztitle hzdesc">
               <title id="hztitle">Where a forwarded value actually comes from</title>
               <desc id="hzdesc">Two instructions in the pipeline one cycle apart. In cycle three the first instruction is in its execution stage and the second is in decode. The execution stage writes the shadow register variable and the decode stage reads it in the same clock edge, so the value is forwarded by statement order rather than by the explicit hazard branch.</desc>
@@ -379,11 +366,11 @@ else
               <text x="170" y="256" class="fig-note">r2 + r1 is computed as r1 + r1</text>
             </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             The blue arrow is the forwarding that works. The dashed panel is the forwarding the
             code claims to be doing, on the one input pattern where the two disagree.
-          </p>
-        </div>
+          </figcaption>
+        </figure>
 
         <h3>And where the detector does change the answer, it is wrong</h3>
         <p>
@@ -443,22 +430,24 @@ else
           photoresistor in the hall decides whether the hall light is needed. Choose rooms in a
           browser, set a timer, and the chosen rooms blink for its duration.
         </p>
-        <div class="figure-shot">
-          <img src="/assets/img/micro-final-rig.jpg" width="1400" height="784" loading="lazy"
-               alt="The final project running on a lab bench. On the left, a breadboard with lit
-                    LEDs wired through a bundle of jumper wires to an NVIDIA Jetson TX2 development
-                    board. On the right, a laptop showing the Smart Room Management page in a
-                    browser, with four room checkboxes and three yes-or-no questions under it, and
-                    a terminal beside the browser printing the server's log." />
-        </div>
-        <p class="figcaption">
-          A frame from our demo video, June 2024. Everything on this page that is not VHDL lives
-          somewhere in that picture, including the parts that do not work. The terminal on the right
-          is the server's log talking to itself: <code>sum : 4</code> is the counter the pthread
-          program prints once its threads have taken the mutex in turn, <code>noTimer</code> is the
-          No that the radio button beside it is showing, and <code>1001</code> is the room selection
-          the timer was handed, which is the same two boxes ticked in the browser.
-        </p>
+        <figure class="figure">
+          <div class="figure-shot">
+            <img src="/assets/img/micro-final-rig.jpg" width="1400" height="784" loading="lazy" decoding="async"
+                 alt="The final project running on a lab bench. On the left, a breadboard with lit
+                      LEDs wired through a bundle of jumper wires to an NVIDIA Jetson TX2 development
+                      board. On the right, a laptop showing the Smart Room Management page in a
+                      browser, with four room checkboxes and three yes-or-no questions under it, and
+                      a terminal beside the browser printing the server's log." />
+          </div>
+          <figcaption class="figcaption">
+            A frame from our demo video, June 2024. Everything on this page that is not VHDL lives
+            somewhere in that picture, including the parts that do not work. The terminal on the right
+            is the server's log talking to itself: <code>sum : 4</code> is the counter the pthread
+            program prints once its threads have taken the mutex in turn, <code>noTimer</code> is the
+            No that the radio button beside it is showing, and <code>1001</code> is the room selection
+            the timer was handed, which is the same two boxes ticked in the browser.
+          </figcaption>
+        </figure>
       </div>
     </section>
 
@@ -476,8 +465,7 @@ else
         <p>
           It is also not a driver. Here is the entire protocol and the entire mechanism:
         </p>
-        <div class="snippet">
-          <code><span class="cm">/* demo.c: the write handler's protocol is four characters wide */</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">/* demo.c: the write handler's protocol is four characters wide */</span>
 copy_from_user(userChar, buf, count);
 userChar[count - 1] = '\0';
 strncpy(gpio, userChar, 3);   <span class="cm">/* "255" */</span>
@@ -486,8 +474,7 @@ value[0] = userChar[3];       <span class="cm">/* '1', '0', or anything else mea
 <span class="cm">/* and this is what the write ends up doing, from inside the kernel */</span>
 snprintf(buf, sizeof(buf), "/sys/class/gpio/gpio%s/value", gpio);
 fd = filp_open(buf, O_WRONLY, 0);
-vfs_write(fd, value, strlen(value), &amp;pos);</code>
-        </div>
+vfs_write(fd, value, strlen(value), &amp;pos);</code></pre>
         <p class="snippet-caption">
           Wrapped in <code>set_fs(get_ds())</code>, which is what you have to do to make the kernel
           accept a kernel-space buffer where it expects a user-space one. Needing that call is the
@@ -501,8 +488,8 @@ vfs_write(fd, value, strlen(value), &amp;pos);</code>
           be the bottom of the stack. This one climbed back up to the layer it was supposed to
           replace and asked that layer to do the work. It added a hop instead of removing one.
         </p>
-        <div class="figure">
-          <div class="figure-scroll">
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 700 500" role="img" aria-labelledby="hoptitle hopdesc">
               <title id="hoptitle">Eight layers between a browser click and an LED, next to lab 2's one</title>
               <desc id="hopdesc">A vertical chain: browser request, Express handler, insmod of the kernel module, a sudo child process, a write to /dev/demo, the module's write handler, a write from the kernel back into the sysfs GPIO value file, and finally the LED. A branch on the left shows that lab 2's user-space program wrote that same sysfs file directly.</desc>
@@ -560,12 +547,12 @@ vfs_write(fd, value, strlen(value), &amp;pos);</code>
               <text x="118" y="168" class="fig-note">to the same file</text>
             </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             The blue path on the left is lab 2. The chain on the right is the same LED four weeks
             later, and the module in the middle of it ends by writing the file lab 2 wrote. Three of
             those eight layers exist because the project brief awarded points for them.
-          </p>
-        </div>
+          </figcaption>
+        </figure>
         <p>
           What the exercise genuinely teaches is worth separating from what it claims. It shows how
           a character device gets registered, why <code>copy_from_user</code> exists, what a major
@@ -619,15 +606,13 @@ vfs_write(fd, value, strlen(value), &amp;pos);</code>
           392, 255, 481, 254. The final project ordered them 255, 392, 481, 254. Same four wires,
           three different opinions about which is LED2.
         </p>
-        <div class="snippet">
-          <code><span class="cm">// lab04.js: the browser's LED1 is the board's LED3, resolved by renaming</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">// lab04.js: the browser's LED1 is the board's LED3, resolved by renaming</span>
 let response = {
     "LED1": req.query.LED3,
     "LED2": req.query.LED1,
     "LED3": req.query.LED2,
     "LED4": req.query.LED4,
-}</code>
-        </div>
+}</code></pre>
         <p class="snippet-caption">
           A permutation table, in the web server, standing in for a corrected pin map two layers
           down.
@@ -658,14 +643,12 @@ let response = {
           where you press <kbd>j</kbd> to capture and <kbd>q</kbd> to quit. There is no flag for
           "take one photograph and exit", so the server spawns it and types into it.
         </p>
-        <div class="snippet">
-          <code><span class="cm">// final.js: automating a program that only accepts keystrokes</span>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">// final.js: automating a program that only accepts keystrokes</span>
 const captureProcess = spawn('nvgstcapture-1.0', ['--prev-res=3']);
 setTimeout(() =&gt; {
     captureProcess.stdin.write('j\n');                            <span class="cm">// capture</span>
     setTimeout(() =&gt; captureProcess.stdin.write('q\n'), 1000);    <span class="cm">// quit</span>
-}, 1000);</code>
-        </div>
+}, 1000);</code></pre>
         <p class="snippet-caption">
           Two <code>setTimeout</code> calls standing in for any knowledge of whether the process was
           ready. It is a race, and the fix is to wait for output rather than for a second.
@@ -781,10 +764,10 @@ setTimeout(() =&gt; {
     </div>
   </footer>
 
-  <button class="to-top" aria-label="Back to top">
+  <button class="to-top" type="button" aria-label="Back to top">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=13"></script>
+  <script src="/assets/js/main.js?v=f3cfc9da"></script>
 </body>
 </html>

@@ -17,16 +17,24 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
   <script>
     // Set the theme before styles load to avoid a flash of the wrong theme.
-    document.documentElement.dataset.theme =
-      localStorage.getItem("theme") ||
-      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
   </script>
   <link rel="canonical" href="https://zocke07.github.io/" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
-  <!-- ?v= busts the browser cache; bump it on both when style.css or main.js changes. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=13" />
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=ea64a392" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -36,7 +44,10 @@
     <nav class="container nav" aria-label="Primary">
       <a class="nav-brand" href="#top">Rivan Wong</a>
       <div class="nav-right">
-        <ul id="nav-menu" class="nav-menu">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
           <li><a href="#about">About</a></li>
           <li><a href="#education">Education</a></li>
           <li><a href="#experience">Experience</a></li>
@@ -46,18 +57,15 @@
         </ul>
         <a class="lang-toggle" href="/zh/" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
            aria-label="切換至繁體中文">中文</a>
-        <button class="theme-toggle" aria-label="Switch color theme">
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Dark theme">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
           <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
-          <span></span><span></span><span></span>
         </button>
       </div>
     </nav>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <!-- ===================== Hero ===================== -->
     <section id="top" class="hero">
       <div class="container hero-inner">
@@ -111,12 +119,12 @@
               <h3>M.S. in Computer Science and Information Engineering</h3>
               <p class="entry-org">National Taipei University of Technology <span lang="zh-Hant">(國立臺北科技大學)</span> · Taipei, Taiwan</p>
             </div>
-            <p class="entry-date">2025 – 2026</p>
+            <p class="entry-date"><time datetime="2025">2025</time> – <time datetime="2026">2026</time></p>
           </div>
-          <ul class="entry-points">
+          <ul class="entry-points" role="list">
             <li>GPA: 4.0 / 4.0</li>
             <li>Completed in one year through the university's selective Bachelor's–Master's program <span lang="zh-Hant">(學碩一貫學程)</span>.</li>
-            <li>Thesis: <em>Trust-Aware Layer-Wise Median Absolute Deviation (L-MAD) for Byzantine-Robust Aggregation in Federated Edge Learning</em>, advised by Shiang-Jiun Chen, Ph.D., in the Software Security Lab. <a href="/case-study-lmad">Read the case study →</a></li>
+            <li>Thesis: <em>Trust-Aware Layer-Wise Median Absolute Deviation (L-MAD) for Byzantine-Robust Aggregation in Federated Edge Learning</em>, advised by Shiang-Jiun Chen, Ph.D., in the Software Security Lab. <a href="/case-study-lmad">The defense that says where it breaks: a case study →</a></li>
           </ul>
         </article>
 
@@ -126,9 +134,9 @@
               <h3>B.S. in Computer Science and Information Engineering</h3>
               <p class="entry-org">National Taipei University of Technology · Taipei, Taiwan</p>
             </div>
-            <p class="entry-date">2021 – 2025</p>
+            <p class="entry-date"><time datetime="2021">2021</time> – <time datetime="2025">2025</time></p>
           </div>
-          <ul class="entry-points">
+          <ul class="entry-points" role="list">
             <li>GPA: 3.5 / 4.0</li>
             <li>Member of the Software Security Lab, working on test automation; my industry-academia co-op with Sunbird Software was based there.</li>
           </ul>
@@ -148,7 +156,7 @@
               <h3>Test Automation, Technical Project Management &amp; QA Intern</h3>
               <p class="entry-org">Taiwan Mobile Co., Ltd. · Taipei, Taiwan</p>
             </div>
-            <p class="entry-date">Jul 2025 – Jun 2026</p>
+            <p class="entry-date"><time datetime="2025-07">Jul 2025</time> – <time datetime="2026-06">Jun 2026</time></p>
           </div>
           <p class="entry-intro">
             My job had two halves. I built the automated test suites for two internal projects,
@@ -157,13 +165,13 @@
             to trust it. The team built internal AI developer tools, including a VS Code extension
             that turns the company's development standards into an in-editor AI reviewer.
           </p>
-          <ul class="entry-points">
+          <ul class="entry-points" role="list">
             <li>Built the automated test suites for two internal projects: one in Python with PyTest, covering critical API endpoints so regressions surface before deployment; the other in Java, automating a verification workflow that had been done by hand.</li>
             <li>Owned pre-release verification for two internal AI products, running end-to-end testing that caught defects which compiled cleanly and looked correct in the diff, including silently dropped formatting and truncated model output.</li>
             <li>Coordinated delivery across two locations as the technical link between on-site engineers and remote interns, managing sprint tasks in Jira so both sides worked from one view of state.</li>
             <li>Held changes to a written gate: proposal and design agreed before code, explicit acceptance criteria, then hands-on sign-off before release.</li>
           </ul>
-          <ul class="tags entry-tags">
+          <ul class="tags entry-tags" role="list">
             <li>Python</li><li>PyTest</li><li>Java</li><li>TypeScript</li><li>Jira</li><li>VS Code Extensions</li><li>LLM APIs</li><li>UAT</li><li>Agile</li>
           </ul>
           <p class="entry-more"><a href="/case-study-ai-products">Shipping two AI products with six interns: a case study →</a></p>
@@ -177,7 +185,7 @@
               <h3>Test Automation Intern (Industry-Academia Co-op)</h3>
               <p class="entry-org">Sunbird Software Inc., Taiwan Branch · via the Software Security Lab, National Taipei University of Technology</p>
             </div>
-            <p class="entry-date">Jul 2023 – Dec 2024</p>
+            <p class="entry-date"><time datetime="2023-07">Jul 2023</time> – <time datetime="2024-12">Dec 2024</time></p>
           </div>
           <p class="entry-intro">
             I wrote automated tests for an enterprise data-center infrastructure management
@@ -188,13 +196,13 @@
             in the company's own office, and it is where I learned that a test suite is something
             you maintain, not something you finish.
           </p>
-          <ul class="entry-points">
+          <ul class="entry-points" role="list">
             <li>Turned ticket-level requirement specs into end-to-end suites, composing them from a shared library of several thousand reusable keywords and setting up test state through a REST API instead of slow UI flows.</li>
             <li>Cleared the same merge gate every time: zero warnings from a custom lint rule set, ten clean runs back to back, then five more with the network deliberately throttled.</li>
             <li>Wrote tests that stay safe under parallel execution, declaring the shared subsystems each suite touches so hundreds of suites can run against one live server without colliding.</li>
             <li>Worked the team's real engineering cycle throughout, with Scrum ceremonies, code review, and release deadlines.</li>
           </ul>
-          <ul class="tags entry-tags">
+          <ul class="tags entry-tags" role="list">
             <li>Robot Framework</li><li>Selenium</li><li>Python</li><li>REST API</li><li>Scrum</li>
           </ul>
           <p class="entry-more"><a href="/case-study-test-automation">How 730+ tests run at once: a case study →</a></p>
@@ -219,10 +227,10 @@
               more than 25 points clear of six reimplemented baselines, and its last chapter is
               built to prove my own weakest claim wrong.
             </p>
-            <ul class="tags entry-tags">
+            <ul class="tags entry-tags" role="list">
               <li>PyTorch</li><li>Flower</li><li>Federated Learning</li><li>Adversarial ML</li><li>Python</li>
             </ul>
-            <p class="entry-more"><a href="/case-study-lmad">Read the case study →</a></p>
+            <p class="entry-more"><a href="/case-study-lmad">The defense that says where it breaks: a case study →</a></p>
           </article>
 
           <article class="card">
@@ -236,7 +244,7 @@
               explain why output declined. Because the real code stays behind the NDA, I built
               the exhibit from scratch on a target I could publish.
             </p>
-            <ul class="tags entry-tags">
+            <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>Research</li>
             </ul>
             <p class="entry-more"><a href="/case-study-capstone">The process was fine, the output still fell: a case study →</a></p>
@@ -251,10 +259,10 @@
               Every merge cleared the same gate: zero lint warnings, ten clean runs, then five
               more with the network throttled.
             </p>
-            <ul class="tags entry-tags">
+            <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Selenium</li><li>Parallel Testing</li><li>CI</li>
             </ul>
-            <p class="entry-more"><a href="/case-study-test-automation">Read the case study →</a></p>
+            <p class="entry-more"><a href="/case-study-test-automation">How 730+ tests run at once: a case study →</a></p>
           </article>
           <article class="card">
             <h3>Shipping Two AI Products With Six Interns</h3>
@@ -267,10 +275,10 @@
               formatting, truncated model output. One of the two products was a VS Code extension
               that turns the company's development standards into an in-editor AI reviewer.
             </p>
-            <ul class="tags entry-tags">
+            <ul class="tags entry-tags" role="list">
               <li>TypeScript</li><li>LLM APIs</li><li>UAT</li><li>Jira</li>
             </ul>
-            <p class="entry-more"><a href="/case-study-ai-products">Read the case study →</a></p>
+            <p class="entry-more"><a href="/case-study-ai-products">Shipping two AI products with six interns: a case study →</a></p>
           </article>
           <article class="card">
             <h3>Mobile Test Automation for a Health Tracking App</h3>
@@ -283,7 +291,7 @@
               hard part was a stateful app with no reset hook, where cleanup is something every
               test has to pay for itself.
             </p>
-            <ul class="tags entry-tags">
+            <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Appium</li><li>Android</li><li>Test Design</li>
             </ul>
             <p class="entry-more"><a href="/project-mobile-testing">Project notes: no reset button →</a></p>
@@ -299,7 +307,7 @@
               became interchangeable objects behind one pointer. I wrote most of the team's
               game code.
             </p>
-            <ul class="tags entry-tags">
+            <ul class="tags entry-tags" role="list">
               <li>C++</li><li>OOP</li><li>MFC</li><li>DirectDraw</li><li>Git</li>
             </ul>
             <p class="entry-more"><a href="/case-study-sky-scraper-escape">The menu is just another level: a case study →</a></p>
@@ -316,7 +324,7 @@
               coursework rather than a claim on it: what the code does, why it works, and where
               it does not.
             </p>
-            <ul class="tags entry-tags">
+            <ul class="tags entry-tags" role="list">
               <li>VHDL</li><li>FPGA</li><li>Computer Architecture</li><li>Embedded Linux</li><li>Kernel Modules</li>
             </ul>
             <p class="entry-more"><a href="/case-study-microprocessors">The pipeline is a statement order: coursework notes →</a></p>
@@ -332,32 +340,32 @@
         <div class="skills-grid">
           <div class="skill-group">
             <h3>Programming Languages</h3>
-            <ul class="tags">
+            <ul class="tags" role="list">
               <li>Python</li><li>TypeScript</li><li>C++</li><li>Java</li><li>JavaScript</li><li>VHDL</li><li>HTML</li><li>CSS</li>
             </ul>
           </div>
           <div class="skill-group">
             <h3>Tools &amp; Frameworks</h3>
-            <ul class="tags">
+            <ul class="tags" role="list">
               <li>Git</li><li>GitHub</li><li>Jenkins</li><li>Jira</li><li>Notion</li><li>VS Code</li><li>Selenium</li><li>Appium</li><li>Robot Framework</li><li>PyTest</li>
             </ul>
           </div>
           <div class="skill-group">
             <h3>Systems &amp; Platforms</h3>
-            <ul class="tags">
+            <ul class="tags" role="list">
               <li>Linux (Ubuntu)</li><li>Windows</li><li>Embedded Linux</li><li>Linux Kernel Modules</li><li>FPGA</li>
             </ul>
           </div>
           <div class="skill-group">
             <h3>Methodologies &amp; Concepts</h3>
-            <ul class="tags">
+            <ul class="tags" role="list">
               <li>Agile (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>Test Automation</li><li>Machine Learning</li><li>Digital Logic Design</li>
             </ul>
           </div>
         </div>
 
         <h2 class="section-title languages-title">Languages</h2>
-        <ul class="languages">
+        <ul class="languages" role="list">
           <li><strong>Indonesian</strong>: Native</li>
           <li><strong>English</strong>: Fluent (TOEIC 965)</li>
           <li><strong>Chinese (Mandarin)</strong>: Intermediate (TOCFL B2)</li>
@@ -369,10 +377,10 @@
     <section id="contact" class="section section-alt">
       <div class="container contact">
         <h2 class="section-title">Contact</h2>
-        <div class="hero-actions">
+        <address class="hero-actions">
           <a class="btn btn-primary" href="mailto:rivanwong@gmail.com">rivanwong@gmail.com</a>
           <a class="btn" href="https://github.com/Zocke07" target="_blank" rel="noopener">github.com/Zocke07</a>
-        </div>
+        </address>
       </div>
     </section>
   </main>
@@ -383,10 +391,10 @@
     </div>
   </footer>
 
-  <button class="to-top" aria-label="Back to top">
+  <button class="to-top" type="button" aria-label="Back to top">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=13"></script>
+  <script src="/assets/js/main.js?v=f3cfc9da"></script>
 </body>
 </html>

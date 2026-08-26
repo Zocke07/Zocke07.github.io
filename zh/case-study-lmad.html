@@ -17,64 +17,23 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
   <script>
     // Set the theme before styles load to avoid a flash of the wrong theme.
-    document.documentElement.dataset.theme =
-      localStorage.getItem("theme") ||
-      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
   </script>
   <link rel="canonical" href="https://zocke07.github.io/zh/case-study-lmad" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-lmad" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-lmad" />
-  <!-- ?v= busts the browser cache; bump it on both when style.css or main.js changes. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=13" />
-  <style>
-    /* 只保留這個頁面獨有的樣式；共用的案例研究樣式（含所有 .figure/.fig-* 類別）放在 style.css。 */
-
-    /* ---- 結果表格 ---- */
-    .table-scroll { overflow-x: auto; max-width: 46rem; margin: 1.5rem 0 0.6rem; }
-    .result-table {
-      border-collapse: collapse;
-      width: 100%;
-      min-width: 26rem;
-      font-size: 0.92rem;
-    }
-    .result-table th, .result-table td {
-      text-align: right;
-      padding: 0.5rem 0.75rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .result-table th:first-child, .result-table td:first-child { text-align: left; }
-    .result-table thead th {
-      font-size: 0.8rem;
-      letter-spacing: 0.04em;
-      color: var(--text-muted);
-      border-bottom: 1.5px solid var(--text-muted);
-    }
-    .result-table tbody tr:last-child td { border-bottom: none; }
-    .result-table .row-hero td {
-      background: color-mix(in srgb, var(--accent) 10%, transparent);
-      font-weight: 700;
-      color: var(--text);
-    }
-    .result-table .row-hero td:first-child { color: var(--accent); }
-
-    /* ---- 限制 ---- */
-    .limits { list-style: none; padding: 0; max-width: 46rem; }
-    .limits li {
-      border-left: 2px solid var(--border);
-      padding: 0 0 0 1rem;
-      margin-bottom: 1.15rem;
-    }
-    .limits b { display: block; margin-bottom: 0.15rem; }
-
-    /* ---- Thesis diagrams ----
-       Landscape line art lifted from the document: too wide for the 26rem
-       portrait measure .figure-doc defaults to, and too tall to earn a
-       full-width breakout. Sit them on the prose measure so their edges line up
-       with the paragraphs, and let them scroll rather than shrink below that. */
-    .prose > .figure-doc.is-diagram { max-width: 46rem; }
-    .figure-doc.is-diagram { overflow-x: auto; }
-    .figure-doc.is-diagram img { min-width: 28rem; }
-  </style>
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=ea64a392" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -84,7 +43,10 @@
     <nav class="container nav" aria-label="主要導覽">
       <a class="nav-brand" href="/zh/">Rivan Wong</a>
       <div class="nav-right">
-        <ul id="nav-menu" class="nav-menu">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="切換導覽選單">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
           <li><a href="/zh/#about">關於我</a></li>
           <li><a href="/zh/#education">學歷</a></li>
           <li><a href="/zh/#experience">工作經歷</a></li>
@@ -94,18 +56,15 @@
         </ul>
         <a class="lang-toggle" href="/case-study-lmad" hreflang="en" lang="en"
            aria-label="Switch to English">EN</a>
-        <button class="theme-toggle" aria-label="切換配色主題">
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="深色主題">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
           <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="切換導覽選單">
-          <span></span><span></span><span></span>
         </button>
       </div>
     </nav>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <!-- ===================== Case study hero ===================== -->
     <section class="hero case-hero">
       <div class="container">
@@ -126,9 +85,9 @@
           <li><strong>21</strong> 組實驗、20 組隨機種子</li>
           <li>伺服器端輔助資料 <strong>0</strong> 筆</li>
         </ul>
-        <p class="nda-note">
+        <aside class="nda-note">
           <strong>關於本文範圍：</strong>這頁是寫給一般軟體讀者的摘要，不能取代論文本身。長條圖與散布圖是依論文原始結果重繪，目的是讓它跟著本站的淺色與深色主題走；系統架構圖與攻擊成功率圖則直接取自論文原圖。數值沒有經過任何重新縮放或改寫，全部就是論文定稿的數字。
-        </p>
+        </aside>
       </div>
     </section>
 
@@ -160,16 +119,18 @@
         <p>
           兩個階段，而且兩個階段都不需要伺服器端持有任何資料。
         </p>
-        <div class="figure-doc is-diagram">
-          <a href="/assets/img/lmad/aggregation.webp" target="_blank" rel="noopener"
-             aria-label="以原始尺寸在新分頁開啟聚合流程圖">
-            <img src="/assets/img/lmad/aggregation.webp" width="1500" height="399" loading="lazy"
-                 alt="聚合流程圖：用戶端的層更新由左側進入，先經過第一階段可靠度預判與選用的損失探測閘門，再進入第二階段 MAD 閘門逐一決定接受或拒斥；被定罪的用戶端進入永久封鎖名冊。若該回合全部遭拒，則退回穩健中位數，否則將被接受的用戶端加權平均為全域模型。" />
-          </a>
-        </div>
-        <p class="figure-caption">
-          先看整條路徑，再看零件。更新從左側進入，通過兩道閘門，最後併入全域模型。被預判定罪的用戶端會進入封鎖名冊，兩條分支都不再納入。值得先注意的是右下角：若某一回合把所有更新都拒斥掉，聚合器會退回穩健中位數，而不是直接失敗。
-        </p>
+        <figure class="figure">
+          <div class="figure-doc is-diagram" tabindex="0">
+            <a href="/assets/img/lmad/aggregation.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/lmad/aggregation.webp" width="1500" height="399" loading="lazy" decoding="async"
+                   alt="聚合流程圖：用戶端的層更新由左側進入，先經過第一階段可靠度預判與選用的損失探測閘門，再進入第二階段 MAD 閘門逐一決定接受或拒斥；被定罪的用戶端進入永久封鎖名冊。若該回合全部遭拒，則退回穩健中位數，否則將被接受的用戶端加權平均為全域模型。" />
+              <span class="sr-only">在新分頁開啟完整尺寸</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            先看整條路徑，再看零件。更新從左側進入，通過兩道閘門，最後併入全域模型。被預判定罪的用戶端會進入封鎖名冊，兩條分支都不再納入。值得先注意的是右下角：若某一回合把所有更新都拒斥掉，聚合器會退回穩健中位數，而不是直接失敗。
+          </figcaption>
+        </figure>
 
         <h3>第一階段：跨輪次的可靠度預檢</h3>
         <p>
@@ -180,8 +141,8 @@
         <p>
           通過第一階段的用戶端，接著逐層與該層的母體中位數比對，容許範圍由中位數絕對偏差（MAD）決定。MAD 的崩潰點是 50%，這是任何位置估計量所能達到的上限，而平均數是 0%。超過門檻的那一層會被<em>單獨</em>丟棄，該用戶端其餘的層照常參與聚合。
         </p>
-        <div class="figure is-loose">
-          <div class="figure-scroll">
+        <figure class="figure is-loose">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="fig2title fig2desc">
 <title id="fig2title">整體用戶端拒斥與逐層拒斥的比較</title>
 <desc id="fig2desc">兩個由六個用戶端乘以四層構成的網格。在整體用戶端拒斥下，兩個遭毒化的用戶端被完全丟棄，共八格。在 L-MAD 下只有各自的兩個遭毒化決策層被丟棄，因此有四個良性的層得以保留。</desc>
@@ -261,10 +222,10 @@
 <text x="325" y="261" class="fig-tick">整體拒斥規則會一併丟掉的良性層</text>
 </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             拒斥的單位。整體用戶端規則為了移除兩個攻擊者丟掉八格，逐層閘門只丟掉四格，其餘保留。標示出來的那幾格就是兩者的差別。
-          </p>
-        </div>
+          </figcaption>
+        </figure>
 
         <h3>三個讓它跑得動的設計取捨</h3>
         <p>
@@ -275,26 +236,30 @@
         <p>
           上面這些在真的跑起來之前都還只是紙上結果。整套框架分成四個子系統：存放原始資料集與實驗指標的儲存層、前處理與模型層、負責訓練並回傳參數的邊緣用戶端，以及負責層級剖析、聚合與評估的伺服器。這篇文章裡的每一組實驗都是從它跑出來的。
         </p>
-        <div class="figure-doc is-diagram">
-          <a href="/assets/img/lmad/architecture.webp" target="_blank" rel="noopener"
-             aria-label="以原始尺寸在新分頁開啟系統架構圖">
-            <img src="/assets/img/lmad/architecture.webp" width="1500" height="1320" loading="lazy"
-                 alt="系統架構圖，由四個堆疊的子系統組成：資料與持久化、前處理與模型、邊緣用戶端，以及聯邦伺服器，各自包含所屬模組。" />
-          </a>
-        </div>
-        <p class="figure-caption">
-          四個子系統。這樣切分有一個容易被忽略的理由：層級剖析與聚合都放在伺服器端，因此用戶端無法影響自己被評判的方式。
-        </p>
-        <div class="figure-doc is-diagram">
-          <a href="/assets/img/lmad/federated-server.webp" target="_blank" rel="noopener"
-             aria-label="以原始尺寸在新分頁開啟聯邦伺服器流程圖">
-            <img src="/assets/img/lmad/federated-server.webp" width="1500" height="930" loading="lazy"
-                 alt="聯邦伺服器迴圈流程圖：初始化全域模型、廣播給 K 個用戶端，用戶端訓練並擷取參數，伺服器接收 K 份參數更新、剖析尚未處理的層、進行聚合並做全域評估，直到達到回合上限。" />
-          </a>
-        </div>
-        <p class="figure-caption">
-          一個回合的完整流程。在剖析與聚合那一步之前，這就是一般的聯邦平均；L-MAD 取代的正是那一步裡的平均。
-        </p>
+        <figure class="figure">
+          <div class="figure-doc is-diagram" tabindex="0">
+            <a href="/assets/img/lmad/architecture.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/lmad/architecture.webp" width="1500" height="1320" loading="lazy" decoding="async"
+                   alt="系統架構圖，由四個堆疊的子系統組成：資料與持久化、前處理與模型、邊緣用戶端，以及聯邦伺服器，各自包含所屬模組。" />
+              <span class="sr-only">在新分頁開啟完整尺寸</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            四個子系統。這樣切分有一個容易被忽略的理由：層級剖析與聚合都放在伺服器端，因此用戶端無法影響自己被評判的方式。
+          </figcaption>
+        </figure>
+        <figure class="figure">
+          <div class="figure-doc is-diagram" tabindex="0">
+            <a href="/assets/img/lmad/federated-server.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/lmad/federated-server.webp" width="1500" height="930" loading="lazy" decoding="async"
+                   alt="聯邦伺服器迴圈流程圖：初始化全域模型、廣播給 K 個用戶端，用戶端訓練並擷取參數，伺服器接收 K 份參數更新、剖析尚未處理的層、進行聚合並做全域評估，直到達到回合上限。" />
+              <span class="sr-only">在新分頁開啟完整尺寸</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            一個回合的完整流程。在剖析與聚合那一步之前，這就是一般的聯邦平均；L-MAD 取代的正是那一步裡的平均。
+          </figcaption>
+        </figure>
       </div>
     </section>
 
@@ -305,25 +270,25 @@
         <p>
           基準威脅模型是 30% 的目標式標籤翻轉攻擊，也就是十個用戶端中有三個把正常流量標記成攻擊流量，資料集為 DNN-EdgeIIoT。由於類別比例約為 4.8 比 1，主要指標採用 DDoS 類別的 F&#8321; 而非準確率。攻擊成功率則是遭毒化模型把正常流量誤判為攻擊的比例，因此越低越好。
         </p>
-        <div class="table-scroll">
+        <div class="table-scroll" tabindex="0">
           <table class="result-table">
             <caption class="sr-only">30% 標籤翻轉基準攻擊下的防禦能力</caption>
             <thead>
               <tr><th scope="col">方法</th><th scope="col">DDoS-F&#8321;（%）</th><th scope="col">Macro-F&#8321;（%）</th><th scope="col">攻擊成功率（%）</th></tr>
             </thead>
             <tbody>
-              <tr class="row-hero"><td>L-MAD</td><td>97.52</td><td>98.50</td><td>0.38</td></tr>
-              <tr><td>Krum</td><td>71.86</td><td>76.75</td><td>25.79</td></tr>
-              <tr><td>ATTA-FL-Lite</td><td>66.01</td><td>73.76</td><td>28.64</td></tr>
-              <tr><td>LGP</td><td>64.81</td><td>70.96</td><td>32.83</td></tr>
-              <tr><td>BRAFL</td><td>59.52</td><td>63.85</td><td>39.31</td></tr>
-              <tr><td>截尾平均數</td><td>51.42</td><td>60.86</td><td>43.54</td></tr>
-              <tr><td>FedAvg（未設防）</td><td>48.42</td><td>54.36</td><td>51.53</td></tr>
+              <tr class="row-hero"><th scope="row">L-MAD</th><td>97.52</td><td>98.50</td><td>0.38</td></tr>
+              <tr><th scope="row">Krum</th><td>71.86</td><td>76.75</td><td>25.79</td></tr>
+              <tr><th scope="row">ATTA-FL-Lite</th><td>66.01</td><td>73.76</td><td>28.64</td></tr>
+              <tr><th scope="row">LGP</th><td>64.81</td><td>70.96</td><td>32.83</td></tr>
+              <tr><th scope="row">BRAFL</th><td>59.52</td><td>63.85</td><td>39.31</td></tr>
+              <tr><th scope="row">截尾平均數</th><td>51.42</td><td>60.86</td><td>43.54</td></tr>
+              <tr><th scope="row">FedAvg（未設防）</th><td>48.42</td><td>54.36</td><td>51.53</td></tr>
             </tbody>
           </table>
         </div>
-        <div class="figure is-loose">
-          <div class="figure-scroll">
+        <figure class="figure is-loose">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 700 320" role="img" aria-labelledby="f1title f1desc">
               <title id="f1title">在 30% 標籤翻轉攻擊的參考情境下，DDoS 類別的 F1</title>
               <desc id="f1desc">七種聚合策略的橫向長條圖。L-MAD 達到 97.5%，與它自己在乾淨資料上的 97.1% 幾乎齊平。最強的基線 Krum 為 71.9%，未設防的 FedAvg 則為 48.4%。</desc>
@@ -374,12 +339,12 @@
               <text x="395" y="314" text-anchor="middle" class="fig-axis">30% 標籤翻轉攻擊下的 DDoS 類別 F&#8321;（%）</text>
             </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             那條虛線才是最要緊的數字：L-MAD 在乾淨資料上的分數。攻擊只讓它移動不到半個百分點，
             所以這根長條並不是「一片重傷的戰場裡最好看的那一個」，而是一套攻擊幾乎沒能撼動的防禦。
             它與最強基線 Krum 之間的差距，比 Krum 與完全不設防之間的差距還要大。
-          </p>
-        </div>
+          </figcaption>
+        </figure>
         <p>
           L-MAD 維持在 97.52%，與它自己在乾淨資料下的 97.11% 在統計上無法區分，也就是說這場攻擊幾乎沒有讓它付出代價。所有基準方法沒有一個突破 72%。造成這段差距的機制是偵測召回率：L-MAD 攔下 93.4% 的遭毒化貢獻，LGP 是 85.6%，Krum 只有 20.6%，而 Krum 的弱點很值得一提。標籤翻轉的更新在幾何上是<em>偏向中心</em>的，而不是離群值，所以距離式規則很少會挑中它作為要丟棄的對象。
         </p>
@@ -391,8 +356,8 @@
         <p>
           守得住卻塞不進資源預算，就不算是邊緣防禦。對上它唯一的逐層同類 LGP，這裡沒有取捨可談：L-MAD 同時快上約 2.6&#215;<em>並且</em>強健得多。對上便宜的傳統規則，取捨確實存在但幅度不大，大約是每輪比 Krum 多 18 毫秒，換來 25.7 個百分點的 F&#8321;。
         </p>
-        <div class="figure is-loose">
-          <div class="figure-scroll">
+        <figure class="figure is-loose">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 640 400" role="img" aria-labelledby="fig1title fig1desc">
 <title id="fig1title">七種方法的聚合成本與強健性對照</title>
 <desc id="fig1desc">以每輪伺服器平均聚合時間（毫秒）對 DDoS 類別 F1 分數繪製的散布圖。L-MAD 位於 21 毫秒、97.5% 的位置，是所有方法中 F1 最高者，與 FedAvg 及 Krum 同處柏拉圖前緣。</desc>
@@ -443,10 +408,10 @@
 <text x="312" y="136" class="fig-note">柏拉圖前緣</text>
 </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             當沒有任何其他方法同時比它更便宜又更強健時，該方法就位於柏拉圖前緣上。符合條件的只有 FedAvg、Krum 與 L-MAD。截尾平均數、BRAFL、ATTA-FL-Lite 與 LGP 都被 Krum 全面壓過。時間為固定核心上的實際時鐘量測，順序可重現，絕對數值會隨機器負載浮動。
-          </p>
-        </div>
+          </figcaption>
+        </figure>
       </div>
     </section>
 
@@ -467,26 +432,30 @@
         <p>
           強健性的結論，好不過它底下那條資料路徑，所以在任何策略開跑之前，這條路徑的兩半都已經固定下來。前處理是決定性的，而且只在訓練切分上擬合。異質性則住在切分這一步：由 Dirichlet 分配決定各標籤在用戶端之間分布得多不平均，而這正是下面那組掃描要移動的軸。
         </p>
-        <div class="figure-doc is-diagram">
-          <a href="/assets/img/lmad/preprocessing.webp" target="_blank" rel="noopener"
-             aria-label="以原始尺寸在新分頁開啟前處理流程圖">
-            <img src="/assets/img/lmad/preprocessing.webp" width="1500" height="1024" loading="lazy"
-                 alt="前處理流程圖：Edge-IIoT 資料集先經過攻擊類型篩選與無狀態清理，以八比二切分為全域訓練池與測試集，再進行特徵編碼、缺值填補與特徵選擇，最後進入資料分布階段。" />
-          </a>
-        </div>
-        <p class="figure-caption">
-          前處理。切分發生在編碼與特徵選擇擬合之前，因此測試集不會有任何資訊流進轉換器。
-        </p>
-        <div class="figure-doc is-diagram">
-          <a href="/assets/img/lmad/distribution.webp" target="_blank" rel="noopener"
-             aria-label="以原始尺寸在新分頁開啟資料分布流程圖">
-            <img src="/assets/img/lmad/distribution.webp" width="1500" height="787" loading="lazy"
-                 alt="資料分布流程圖：前處理後的訓練池依 Dirichlet 非獨立同分布配置或均勻獨立同分布洗牌，切成 K 份用戶端分割，各自再分為本地訓練與驗證集，最後進行全域與本地 z-score 標準化。" />
-          </a>
-        </div>
-        <p class="figure-caption">
-          資料切分。Dirichlet 那一條分支製造的是「誠實的不一致」，而這正是整件事的難處：防禦必須把它跟「刻意的不一致」分開。
-        </p>
+        <figure class="figure">
+          <div class="figure-doc is-diagram" tabindex="0">
+            <a href="/assets/img/lmad/preprocessing.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/lmad/preprocessing.webp" width="1500" height="1024" loading="lazy" decoding="async"
+                   alt="前處理流程圖：Edge-IIoT 資料集先經過攻擊類型篩選與無狀態清理，以八比二切分為全域訓練池與測試集，再進行特徵編碼、缺值填補與特徵選擇，最後進入資料分布階段。" />
+              <span class="sr-only">在新分頁開啟完整尺寸</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            前處理。切分發生在編碼與特徵選擇擬合之前，因此測試集不會有任何資訊流進轉換器。
+          </figcaption>
+        </figure>
+        <figure class="figure">
+          <div class="figure-doc is-diagram" tabindex="0">
+            <a href="/assets/img/lmad/distribution.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/lmad/distribution.webp" width="1500" height="787" loading="lazy" decoding="async"
+                   alt="資料分布流程圖：前處理後的訓練池依 Dirichlet 非獨立同分布配置或均勻獨立同分布洗牌，切成 K 份用戶端分割，各自再分為本地訓練與驗證集，最後進行全域與本地 z-score 標準化。" />
+              <span class="sr-only">在新分頁開啟完整尺寸</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            資料切分。Dirichlet 那一條分支製造的是「誠實的不一致」，而這正是整件事的難處：防禦必須把它跟「刻意的不一致」分開。
+          </figcaption>
+        </figure>
         <h3>掃過各個軸線，而不只是基準點</h3>
         <p>
           21 組實驗涵蓋攻擊者比例、攻擊強度、偵測門檻值、Dirichlet 異質性、規模擴展到 100 個用戶端的聯邦、四種攻擊類型，以及逐一移除各機制以確認它確實有貢獻的消融實驗。只在單一操作點上被描述過的防禦，等於沒有人知道該怎麼部署。
@@ -496,16 +465,18 @@
         <p>
           結果發現，每個基準方法的三組種子平均值，都藏著某個讓它徹底崩潰的資料切分。跑滿 20 組資料切分之後，我自己的方法也露出同樣的性質：它在其中 40% 上會失敗。要把這件事講清楚，需要對失敗率計算 Wilson 信賴區間，以及做配對顯著性檢定（McNemar 與 Wilcoxon），而不是盯著長條圖目測。檢定結果顯示 L-MAD 顯著優於未設防的 FedAvg（p = 0.003），但與 LGP、BRAFL、ATTA-FL-Lite <em>無法</em>區分（p &#8805; 0.06）。後面這項發現，在論文裡佔的篇幅和前面那項一樣大。
         </p>
-        <div class="figure-doc is-diagram">
-          <a href="/assets/img/lmad/asr.webp" target="_blank" rel="noopener"
-             aria-label="以原始尺寸在新分頁開啟攻擊成功率圖">
-            <img src="/assets/img/lmad/asr.webp" width="1500" height="833" loading="lazy"
-                 alt="七張攻擊成功率對訓練回合的小型折線圖，分別對應 FedAvg、Krum、Trimmed Mean、LGP、BRAFL、ATTA-FL-Lite 與 L-MAD，每張都附有變異數帶。" />
-          </a>
-        </div>
-        <p class="figure-caption">
-          這正是那些顯著性檢定要取代的東西。每張小圖是一個策略在各回合的攻擊成功率，陰影為跨種子的分布範圍。這些帶狀範圍寬到用肉眼挑贏家等於猜測，這也是上面那組比較改用 McNemar 與 Wilcoxon 的理由。
-        </p>
+        <figure class="figure">
+          <div class="figure-doc is-diagram" tabindex="0">
+            <a href="/assets/img/lmad/asr.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/lmad/asr.webp" width="1500" height="833" loading="lazy" decoding="async"
+                   alt="七張攻擊成功率對訓練回合的小型折線圖，分別對應 FedAvg、Krum、Trimmed Mean、LGP、BRAFL、ATTA-FL-Lite 與 L-MAD，每張都附有變異數帶。" />
+              <span class="sr-only">在新分頁開啟完整尺寸</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            這正是那些顯著性檢定要取代的東西。每張小圖是一個策略在各回合的攻擊成功率，陰影為跨種子的分布範圍。這些帶狀範圍寬到用肉眼挑贏家等於猜測，這也是上面那組比較改用 McNemar 與 Wilcoxon 的理由。
+          </figcaption>
+        </figure>
 
         <h3>設計一個會讓自己難堪的實驗</h3>
         <p>
@@ -585,10 +556,10 @@
     </div>
   </footer>
 
-  <button class="to-top" aria-label="回到頂端">
+  <button class="to-top" type="button" aria-label="回到頁首">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=13"></script>
+  <script src="/assets/js/main.js?v=f3cfc9da"></script>
 </body>
 </html>

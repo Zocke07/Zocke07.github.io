@@ -17,15 +17,23 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
   <script>
     // Set the theme before styles load to avoid a flash of the wrong theme.
-    document.documentElement.dataset.theme =
-      localStorage.getItem("theme") ||
-      (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
   </script>
   <link rel="canonical" href="https://zocke07.github.io/case-study-test-automation" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-test-automation" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-test-automation" />
-  <!-- ?v= busts the browser cache; bump it on both when style.css or main.js changes. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=13" />
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=ea64a392" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -35,7 +43,10 @@
     <nav class="container nav" aria-label="Primary">
       <a class="nav-brand" href="/">Rivan Wong</a>
       <div class="nav-right">
-        <ul id="nav-menu" class="nav-menu">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
           <li><a href="/#about">About</a></li>
           <li><a href="/#education">Education</a></li>
           <li><a href="/#experience">Experience</a></li>
@@ -45,18 +56,15 @@
         </ul>
         <a class="lang-toggle" href="/zh/case-study-test-automation" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
            aria-label="切換至繁體中文">中文</a>
-        <button class="theme-toggle" aria-label="Switch color theme">
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Dark theme">
           <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
           <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-        </button>
-        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
-          <span></span><span></span><span></span>
         </button>
       </div>
     </nav>
   </header>
 
-  <main id="main">
+  <main id="main" tabindex="-1">
     <!-- ===================== Case study hero ===================== -->
     <section class="hero case-hero">
       <div class="container">
@@ -82,13 +90,13 @@
           <li><strong>Zero</strong> lint warnings allowed to merge</li>
           <li><strong>10</strong> consecutive green runs to merge</li>
         </ul>
-        <p class="nda-note">
+        <aside class="nda-note">
           <strong>A note on confidentiality:</strong> this write-up respects my NDA. Product and
           client names, internal identifiers, and business logic are omitted or generalized;
           everything here describes industry-standard engineering practice. Scale figures
           describe the team-owned platform I worked in daily, and my personal contributions are
           called out explicitly.
-        </p>
+        </aside>
       </div>
     </section>
 
@@ -160,8 +168,8 @@
           understanding this contract and declaring the right resources, so my suites were
           parallel-safe by construction.
         </p>
-        <div class="figure">
-          <div class="figure-scroll">
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="lockstitle lockdesc">
               <title id="lockstitle">Six suites on one shared timeline under the resource lock manager</title>
               <desc id="lockdesc">Six test suites plotted as bars against time. Four start together and overlap freely. Suites four and five declare the same shared subsystem, so suite five does not start until suite four releases its lock.</desc>
@@ -206,14 +214,14 @@
               <text x="139" y="292" class="fig-tick">both declare the same shared subsystem; everything else overlaps freely</text>
             </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             Serialization is the exception, not the rule. Only the two suites that contend for the
             same subsystem are forced apart; the other four overlap freely, which is what keeps a
             run of this size inside its overnight window. A suite that forgets to declare its
             resource does not get an error, it gets an intermittent failure somewhere else, which
             is why the declaration is part of writing the test rather than a scheduling detail.
-          </p>
-        </div>
+          </figcaption>
+        </figure>
 
         <h3>Flakiness treated as an engineering problem</h3>
         <p>
@@ -234,8 +242,8 @@
           the build. The gate is what makes a suite this size trustworthy: nobody debates
           whether a red build is "probably just flaky."
         </p>
-        <div class="figure">
-          <div class="figure-scroll">
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0">
             <svg class="fig-svg" viewBox="0 0 700 210" role="img" aria-labelledby="gatetitle gatedesc">
               <title id="gatetitle">The merge gate a new suite has to clear</title>
               <desc id="gatedesc">A new suite passes through static analysis with zero warnings, then ten consecutive green runs, then five runs under network throttling, before it may be merged. A red result at any stage returns the suite to the start and the run count begins again.</desc>
@@ -284,13 +292,13 @@
               <text x="290" y="172" text-anchor="middle" class="fig-note">one red result and the count starts over at zero</text>
             </svg>
           </div>
-          <p class="figcaption">
+          <figcaption class="figcaption">
             The word doing the work is <em>consecutively</em>. Ten green runs out of twelve would
             be a flaky suite with a good average; ten in a row is a suite that has not failed. A
             red result anywhere does not subtract one from the tally, it resets it, which makes
             merging an intermittently failing test slower than fixing it.
-          </p>
-        </div>
+          </figcaption>
+        </figure>
 
         <h3>Beyond functional tests</h3>
         <p>
@@ -329,10 +337,10 @@
     </div>
   </footer>
 
-  <button class="to-top" aria-label="Back to top">
+  <button class="to-top" type="button" aria-label="Back to top">
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=13"></script>
+  <script src="/assets/js/main.js?v=f3cfc9da"></script>
 </body>
 </html>
