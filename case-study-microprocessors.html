@@ -120,7 +120,7 @@
           eight for an instruction, a row of LEDs, and six seven-segment displays. Embedded
           Microprocessor Systems Lab, spring 2024, was an NVIDIA Jetson TX2 running Ubuntu 18.04 on
           a 4.9 Tegra kernel, with a breadboard, five LEDs, a photoresistor and an MCP3008
-          analogue-to-digital converter beside it.
+          analog-to-digital converter beside it.
         </p>
         <p>
           The first course accumulates. Each week's exercise is built out of the previous week's
@@ -423,7 +423,7 @@ else
           <li><b>GPIO from user space</b><span>Turning on an LED is <code>open("/sys/class/gpio/export")</code>, write the pin number, write "out" to its direction file, write "1" to its value file. Four file writes and no library.</span></li>
           <li><b>A GUI over the same four writes</b><span>Qt on the board itself: checkboxes, a slider bound to a blink period, keyboard shortcuts, and a <code>QTimer</code> alternating two groups of LEDs.</span></li>
           <li><b>A browser over the same four writes</b><span>An Express server serving a static page and shelling out to the lab 2 binary. The control surface moved off the board and onto anything with a browser on the same network.</span></li>
-          <li><b>An analogue sensor, bit by bit</b><span>A photoresistor cannot be read by a digital pin, so an MCP3008 converts it and the Jetson clocks the conversation out by hand: five bits of command shifted out, twelve clock pulses shifted back in, chip select raised and lowered around the whole exchange. SPI implemented by toggling four wires in a Python loop.</span></li>
+          <li><b>An analog sensor, bit by bit</b><span>A photoresistor cannot be read by a digital pin, so an MCP3008 converts it and the Jetson clocks the conversation out by hand: five bits of command shifted out, twelve clock pulses shifted back in, chip select raised and lowered around the whole exchange. SPI implemented by toggling four wires in a Python loop.</span></li>
           <li><b>Into the kernel</b><span>A loadable module that registers a character device, so the LEDs are switched by writing bytes to <code>/dev/demo</code> instead of by writing to sysfs.</span></li>
         </ol>
         <p>

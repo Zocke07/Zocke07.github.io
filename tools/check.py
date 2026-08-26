@@ -291,15 +291,25 @@ def check_assets():
 
 
 # ---------- 10. copy conventions ----------
-# The English pages are American throughout (defense, center, -ize) and use
-# straight apostrophes. These caught the handful of strays that disagreed,
-# including one page that spelled the same claim two ways.
+# The English pages are US English and use straight apostrophes. The first pass
+# only looked at rendered prose, which missed an alt attribute and an SVG
+# <desc>; this reads the whole file so a stray cannot hide in metadata.
+# Words spelled the same in both conventions (analysis, characteristic,
+# realistic) are deliberately excluded by the word boundaries below.
+BRITISH = (
+    r"analogue|initialis\w*|labell\w*|recognis\w*|behaviour|colour|centre|defence|"
+    r"organis\w*|optimis\w*|normalis\w*|generalis\w*|serialis\w*|specialis\w*|"
+    r"summaris\w*|minimis\w*|maximis\w*|prioritis\w*|standardis\w*|customis\w*|"
+    r"synchronis\w*|categoris\w*|utilis\w*|visualis\w*|authoris\w*|criticis\w*|"
+    r"catalogue|dialogue|monologue|analyse|analysed|analyses|analysing|paralys\w*|"
+    r"grey|whilst|amongst|towards|programme|judgement|practise|licence|offence|"
+    r"pretence|fulfil|skilful|instalment|travell\w*|modell\w*|signall\w*|cancell\w*|"
+    r"marvellous|jewellery|storey|sceptic\w*|mould|smoulder|moustache|aeroplane|"
+    r"ageing|metre|litre|theatre|fibre|calibre|manoeuvre|favour|flavour|honour|"
+    r"humour|labour|neighbour|rumour|vapour|endeavour|armour|learnt|spelt|dreamt|burnt"
+)
 PROSE_RULES = [
-    (r"\banalys(?:e|ed|es|ing)\b", "British -yse; the site uses -yze"),
-    (r"\bbehaviour\b", "British spelling; the site uses behavior"),
-    (r"\bcolour\b", "British spelling; the site uses color"),
-    (r"\bcentre\b", "British spelling; the site uses center"),
-    (r"\bdefence\b", "British spelling; the site uses defense"),
+    (rf"\b(?:{BRITISH})\b", "British spelling; the site is US English"),
     ("\u2019", "curly apostrophe; the site uses straight"),
     (r"\bwhich compiled\b", "restrictive clause wants 'that'"),
 ]
@@ -310,15 +320,21 @@ def check_copy():
         if f.startswith("zh/"):
             continue
         raw = Path(f).read_text(encoding="utf-8")
-        body = re.sub(r"<(head|script|style|svg|pre)\b.*?</\1>", " ", raw, flags=re.S)
+        # Keep alt/aria-label/meta and SVG text; drop only code and comments,
+        # where a British spelling may be someone else's identifier.
+        body = re.sub(r"<(script|style|pre)\b.*?</\1>", " ", raw, flags=re.S)
+        body = re.sub(r"<code\b.*?</code>", " ", body, flags=re.S)
         body = re.sub(r"<!--.*?-->", " ", body, flags=re.S)
-        body = re.sub(r"<[^>]+>", " ", body)
+        body = body.replace("aria-labelledby", " ")   # attribute name, not prose
+        seen = set()
         for pat, why in PROSE_RULES:
-            for m in re.finditer(pat, body):
-                ln = body[:m.start()].count("\n") + 1
+            for m in re.finditer(pat, body, re.I):
+                word = m.group(0).lower()
+                if word in seen:
+                    continue
+                seen.add(word)
                 fail("copy", f"{f}: {m.group(0)!r} ({why})")
-                break
-    return "English spelling + punctuation conventions"
+    return "US English + punctuation, prose and metadata"
 
 
 # ---------- 9. social cards ----------

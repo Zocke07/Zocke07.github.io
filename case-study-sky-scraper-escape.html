@@ -348,7 +348,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
         <h3>The abstraction is named after the afternoon I made it</h3>
         <p>
-          The base class is called <code>levelInit</code>. It does not initialise anything in
+          The base class is called <code>levelInit</code>. It does not initialize anything in
           particular. It is the level interface, and it should be called that. By the time this was
           obvious the name was in every level file, and renaming felt like a bigger change than it
           was. The last commit on the project is literally titled "Rename class to avoid confusion",
@@ -392,7 +392,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         <h2 class="section-title">Key Engineering Learnings</h2>
         <ol class="learnings" role="list">
           <li><b>An interface is cheaper than a branch.</b> Seven levels could have meant seven cases in each of eleven event handlers. Behind one base class it meant one vector and one pointer, and the run state never learned how many levels the game has.</li>
-          <li><b>Copy the design you are already standing on.</b> The framework drove its own states by holding a pointer and forwarding calls. Recognising that pattern and reapplying it one layer down was worth more than any individual feature I wrote that semester.</li>
+          <li><b>Copy the design you are already standing on.</b> The framework drove its own states by holding a pointer and forwarding calls. Recognizing that pattern and reapplying it one layer down was worth more than any individual feature I wrote that semester.</li>
           <li><b>Inheritance shares state easily and behavior badly.</b> Moving shared fields into a base class took an afternoon. The shared per-frame logic stayed copy-pasted across seven files, because adding a method is always easier than moving one.</li>
           <li><b>Name an abstraction after what it is, not when you created it.</b> A class called <code>levelInit</code> that is really a level interface will be misread by every person who opens the file, including the person who wrote it, six weeks later.</li>
           <li><b>The most useful thing I built was the way to skip my own game.</b> A debug key disables collision so a level can be played to the end without dying, because otherwise testing level six meant surviving level six first. I called it cheat mode. What it actually was is a test hook, and it is the first one I ever wrote without being asked.</li>
