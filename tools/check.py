@@ -3,7 +3,7 @@
 
     python3 tools/check.py
 
-Seven checks, each independent and each printing its own verdict:
+Eight checks, each independent and each printing its own verdict:
 
   1. structure   tag balance, invalid nesting, duplicate ids, heading order
   2. links       every internal href/src/poster resolves on disk
@@ -12,6 +12,7 @@ Seven checks, each independent and each printing its own verdict:
   5. deadcss     every class in style.css is used by some page or by main.js
   6. assets      every file under assets/ is referenced by some page
   7. stamps      every ?v= matches the hash of the file it points at
+  8. cv          the CV in assets/ still matches the one built in CV/
 
 Exits non-zero if any check fails, so it can gate a commit.
 """
@@ -287,6 +288,17 @@ def check_assets():
     return f"{len(on_disk & tracked)} tracked assets, {len(refs)} referenced"
 
 
+# ---------- 8. CV copy ----------
+def check_cv():
+    import subprocess
+    r = subprocess.run([sys.executable, "tools/cv.py", "--check"],
+                       capture_output=True, text=True, cwd=ROOT)
+    for line in r.stdout.splitlines():
+        if "STALE" in line or "MISSING" in line:
+            fail("cv", line.strip())
+    return "assets/cv/rivan-wong-cv.pdf"
+
+
 # ---------- 7. cache stamps ----------
 def check_stamps():
     import subprocess
@@ -306,6 +318,7 @@ CHECKS = [
     ("deadcss", check_deadcss),
     ("assets", check_assets),
     ("stamps", check_stamps),
+    ("cv", check_cv),
 ]
 
 if __name__ == "__main__":

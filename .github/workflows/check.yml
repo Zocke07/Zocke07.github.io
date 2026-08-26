@@ -1,0 +1,31 @@
+# The checks in tools/check.py assert things that are only otherwise true by
+# care: markup structure, link integrity, English/Chinese parity, shared chrome
+# wording, dead CSS, unreferenced assets, cache stamps. Running them here means
+# a page cannot be added from a half-remembered template and quietly diverge.
+#
+# There is no build. GitHub Pages deploys the branch as it stands, so this is a
+# gate on correctness, not a step that produces the site.
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # No dependencies to install: check.py is standard library only.
+      - name: Run site checks
+        run: python3 tools/check.py

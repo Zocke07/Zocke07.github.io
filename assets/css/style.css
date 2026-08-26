@@ -14,6 +14,7 @@
     11. Case studies & project notes
     12. Responsive
     13. Reduced motion
+    14. Print
    ===================================================== */
 
 /* ---------- 1. Design tokens ---------- */
@@ -1123,4 +1124,92 @@ a:hover { text-decoration: underline; }
     transition-duration: 0.01ms !important;
   }
   .reveal { opacity: 1; }
+}
+
+/* ---------- 14. Print ---------- */
+/* A hiring manager who prints a case study, or saves it as a PDF to forward,
+   should get the article and nothing else. Without this they get the sticky
+   nav across the top of page one, a floating button over the text, dark
+   backgrounds if their browser happens to be in dark mode, and figures split
+   across a page break. */
+@media print {
+  /* The dark palette is a screen choice. Paper is white. */
+  :root, :root[data-theme="dark"] {
+    --bg: #ffffff;
+    --bg-alt: #ffffff;
+    --text: #000000;
+    --text-muted: #333333;
+    --accent: #10367a;
+    --accent-contrast: #ffffff;
+    --border: #999999;
+    --card-bg: #ffffff;
+    --shadow: none;
+    --shadow-lift: none;
+  }
+
+  /* Chrome and controls: none of it means anything on paper. */
+  .site-header,
+  .to-top,
+  .skip-link,
+  .clips-toggle,
+  .lang-toggle,
+  .theme-toggle,
+  .nav-toggle { display: none !important; }
+
+  /* Nothing animates, and nothing stays hidden waiting for a scroll that will
+     never happen: .reveal starts at opacity 0 and JS may not have run. */
+  .reveal,
+  .reveal.visible { opacity: 1 !important; animation: none !important; }
+  * { transition: none !important; }
+
+  body { background: #ffffff; color: #000000; font-size: 11pt; line-height: 1.45; }
+  .hero::before { display: none; }          /* the accent glow bleeds ink */
+  .section { padding: 1rem 0; }
+  .hero, .case-hero { padding: 0 0 1rem; }
+  .container { max-width: none; padding-inline: 0; }
+
+  /* The measure exists to keep lines readable on a wide screen. On paper the
+     page is the measure, and holding 46rem wastes a third of the sheet. */
+  .prose > *:not(.section-title),
+  .figure, .facts, .snippet, .learnings, .limits,
+  .figure-caption, .blocks-caption, .snippet-caption,
+  .layer-stack, .gate-flow, .levels { max-width: none; }
+
+  /* Keep an exhibit with its caption, and a heading with what follows it. */
+  figure, .snippet, .blocks, .table-scroll, tr, li { break-inside: avoid; }
+  h1, h2, h3 { break-after: avoid; }
+  .section-title { border-bottom-width: 1px; }
+
+  /* Scroll containers cannot scroll on paper; let them shrink instead so the
+     right-hand half is not simply lost. */
+  .figure-scroll, .figure.is-scroll, .figure-doc.is-wide,
+  .figure-doc.is-diagram, .table-scroll, .blocks, .snippet { overflow: visible; }
+  .fig-svg, .figure.is-scroll > svg, .chart svg,
+  .figure-doc.is-wide img, .figure-doc.is-diagram img { min-width: 0; }
+  .blocks table, .result-table { min-width: 0; }
+  .snippet code { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+  /* The panel exhibits already carry their own paper. Resetting the tokens is
+     not enough for these three: they are the only dark-theme rules that name a
+     literal colour or a filter rather than reading a token, so a reader who
+     prints while in dark mode would otherwise get tinted, dimmed exhibits. */
+  .figure-doc { max-width: 100%; }
+  :root[data-theme="dark"] .figure-doc { background: #ffffff; }
+  :root[data-theme="dark"] .figure-doc img,
+  :root[data-theme="dark"] .clip video { filter: none; }
+  .card, .snippet, .layer, .gate-flow li, .levels li,
+  .figure-doc, .figure-shot, .clip-frame, .blocks, .product, .chart {
+    box-shadow: none;
+    border: 1px solid var(--border);
+  }
+
+  /* A clip is a video. On paper it is its poster frame, and the caption
+     carries the description. */
+  .clips { grid-template-columns: repeat(2, 1fr); }
+
+  /* A link the reader cannot click needs its destination spelled out, but only
+     where the destination is not already the link text. */
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.85em; word-break: break-all; }
+  a[href^="#"]::after, a[href^="mailto:"]::after, a[href^="/"]::after { content: ""; }
+  a { color: var(--accent); text-decoration: underline; }
 }

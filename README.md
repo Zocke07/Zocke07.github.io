@@ -20,9 +20,12 @@ assets/
   js/main.js                     # theme toggle, reveal-on-scroll, rotator, nav
   img/                           # in-page figures and the portrait
   img/og/                        # 1200x630 social cards, one per page
+  cv/rivan-wong-cv.pdf           # copy of CV/build/cv.pdf, see below
 tools/serve.py                   # local preview, resolves URLs like GitHub Pages
-tools/check.py                   # seven regression checks; run before every commit
+tools/check.py                   # eight regression checks; run before every commit
 tools/bump.py                    # stamps ?v= from a hash of the asset
+tools/cv.py                      # refreshes the CV copy from CV/build
+.github/workflows/check.yml      # runs tools/check.py on every push
 ```
 
 ## URLs
@@ -139,7 +142,7 @@ Pushes to `main` publish automatically once GitHub Pages is enabled:
 ## Checks
 
 ```sh
-python3 tools/check.py            # all seven
+python3 tools/check.py            # all eight
 python3 tools/check.py links      # or just one
 ```
 
@@ -152,15 +155,39 @@ python3 tools/check.py links      # or just one
 | `deadcss` | every class in `style.css` is used by a page or applied by `main.js` |
 | `assets` | every tracked file under `assets/` is referenced by some page |
 | `stamps` | every `?v=` matches the hash of the file it points at |
+| `cv` | `assets/cv/rivan-wong-cv.pdf` still matches `CV/build/cv.pdf` |
 
 `parity` is the one worth understanding: it is what catches a change made to one
 language and forgotten in the other. It compares structure, not prose, so the
 Chinese text being shorter does not trip it.
 
+## The CV
+
+The hero and the contact section link `assets/cv/rivan-wong-cv.pdf`, which is a
+**copy** of `CV/build/cv.pdf`, not a reference to it.
+
+It has to be a copy. `CV/` is a separate git repository with its own remote, so
+git treats it as a submodule boundary and will not track files inside it as
+ordinary files. Un-excluding it would not help.
+
+After rebuilding the CV:
+
+```sh
+python3 tools/cv.py          # refresh the copy
+```
+
+`tools/check.py` compares the two and fails when they differ, so a stale copy
+cannot ship quietly. On a fresh clone or in CI there is no `CV/` to compare
+against, and the check passes on the copy in the repo.
+
+One local trap worth knowing: `.git/info/exclude` lists `/CV/` with a leading
+slash. Without it the pattern also matched `assets/cv/`, because macOS sets
+`core.ignorecase`, and the PDF silently refused to stage.
+
 ## Ideas for later
 
-- Link a downloadable PDF resume in the hero.
-- Add a LinkedIn link, a `schema.org/Person` JSON-LD block, `sitemap.xml`,
+- Add a LinkedIn link once there is something on the profile worth linking.
+- Add a `schema.org/Person` JSON-LD block, `sitemap.xml`,
   `robots.txt`, and a branded `404.html`.
 - Chinese social cards. All eight `zh/` pages point `og:image` at the English
   card, so a Chinese page shared to LINE shows a Chinese title over an English
