@@ -599,6 +599,14 @@ a:hover { text-decoration: underline; }
 }
 .tags a:focus-visible { outline: none; }
 
+/* The one line on the site that says what it wants. It sits above the contact
+   buttons rather than in the hero, so the page still opens by saying who he is
+   and asks only where a reader has already decided to act. */
+.contact-status {
+  font-size: 1.05rem;
+  margin-bottom: 1.25rem;
+}
+
 .skills-note {
   color: var(--text-muted);
   font-size: 0.95rem;
