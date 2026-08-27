@@ -247,20 +247,20 @@
         </figure>
 
         <p>
-          The fourth step is where the process earned its cost. Fixes that were believed complete
-          repeatedly turned out not to be: a write-back path that worked in isolation flattened
-          hyperlinks to plain text against the real editor, and a long translation was silently
-          truncated by the model before it ever reached the page. Neither was visible in the diff.
-          Both were obvious within a minute of using the thing.
+          Fixes we believed were complete repeatedly turned out not to be: a write-back path
+          that worked in isolation flattened hyperlinks to plain text against the real
+          editor, and a long translation was silently truncated by the model before it ever
+          reached the page. Neither was visible in the diff. Both were obvious within a
+          minute of using the thing.
         </p>
         <p>
-          On the IDE extension, verification looked different because a test suite was possible
-          there. The team's answer covered three genuinely awkward dependencies, a live editor
-          API, a real version control system, and a non-deterministic model, by running tests
-          inside a real editor instance, building throwaway repositories on disk to exercise real
-          commands, and stubbing the model so results were deterministic and cost nothing to run.
-          Reviewing that suite is where I learned most of what I now know about testing the
-          untestable.
+          On the IDE extension, verification looked different because a test suite was
+          possible there. Three dependencies made that awkward: a live editor API, a real
+          version control system, and a non-deterministic model. The team ran its tests
+          inside a real editor instance, built throwaway repositories on disk to exercise
+          real commands, and stubbed the model so results were deterministic and cost
+          nothing to run. Reviewing that suite is where I learned most of what I now know
+          about testing the untestable.
         </p>
         <figure class="figure">
           <div class="figure-scroll" tabindex="0">
@@ -304,10 +304,11 @@
             </svg>
           </div>
           <figcaption class="figcaption">
-            Two of the three are kept real and one is replaced, and the split is not arbitrary.
-            The editor and the repository are where the bugs actually lived, so faking them would
-            have faked the result. The model was stubbed because its variability was noise rather
-            than the thing under test, and because a suite that bills you per run stops being run.
+            Two stay real and one is replaced, and the split follows where the bugs were.
+            The editor and the repository are where they actually lived, so faking those
+            would have faked the result. The model was stubbed because its variability was
+            noise rather than the thing under test, and because a suite that bills you per
+            run stops being run.
           </figcaption>
         </figure>
       </div>

@@ -115,10 +115,10 @@
           <em>unsafe in parallel</em> (two suites mutating the same shared subsystem at once).
         </p>
         <p>
-          The engineering challenge, then, isn't "write Selenium scripts." It's: how do you keep
-          thousands of UI test cases trustworthy enough that a <strong>100% pass threshold</strong> is
-          realistic, fast enough to fit a fixed nightly budget, and safe enough to run dozens of
-          suites concurrently against one server?
+          The engineering challenge is not writing Selenium scripts. It is keeping thousands
+          of UI test cases trustworthy enough that a <strong>100% pass threshold</strong> is
+          realistic, fast enough to fit a fixed nightly budget, and safe enough that dozens
+          of suites can run at once against one server.
         </p>
       </div>
     </section>
@@ -128,13 +128,13 @@
       <div class="container prose">
         <h2 class="section-title">The Technical Solution</h2>
         <p>
-          The platform answers with a layered, keyword-driven architecture on Robot Framework
-          and Selenium, executed in parallel by Pabot under Jenkins. My day-to-day work was
-          acceptance-test-driven: each ticket-level requirement specification became an
-          automated suite composed from a shared domain keyword library, provisioned its test
-          state through a REST API facade instead of slow UI flows, and had to survive a merge
-          gate of static analysis with custom lint rules, ten consecutive green runs, and five
-          further passes under simulated slow-network throttling.
+          The platform is a layered, keyword-driven architecture on Robot Framework and
+          Selenium, executed in parallel by Pabot under Jenkins. My day-to-day work was
+          acceptance-test-driven. Each ticket-level requirement specification became an
+          automated suite, composed from a shared domain keyword library and provisioning
+          its test state through a REST API facade instead of slow UI flows. Then it had to
+          survive the merge gate: static analysis with custom lint rules, ten consecutive
+          green runs, and five further passes under simulated slow-network throttling.
         </p>
         <p>
           The steps came before the code. Each case was first written out as plain-text test
