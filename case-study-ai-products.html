@@ -82,7 +82,7 @@
         <p class="hero-blurb role-line">
           <strong>My role:</strong> part technical project manager for the remote team, part the
           person who tested the thing before anyone else had to trust it. I coordinated the work,
-          owned the verification gate, and built the automated test suites for two other internal
+          owned the verification gate, and wrote the automation for two other internal
           projects. The products themselves are the team's build.
         </p>
         <ul class="facts" role="list">
@@ -344,14 +344,24 @@
           The other half of the job was making sure that was not the whole story.
         </p>
         <p>
-          I built the automated test suites for two other internal projects. One is Python,
-          using PyTest against critical API endpoints so a regression surfaces before deployment
-          rather than after it. The other is Java, automating a verification workflow that until
-          then had been done by hand.
+          I wrote the automation for two other internal projects. One is a Python suite, using
+          PyTest against critical API endpoints so a regression surfaces before deployment
+          rather than after it.
+        </p>
+        <p>
+          The other is Java, and it is not a test suite. A monthly rewards distribution is
+          funded from two sides, ours and an outside partner's, and before it goes out somebody
+          has to prove the numbers agree: that the recipients in the partner's monthly file
+          match the final distribution list, and that the two contributions sum to the total the
+          system expects. That was a reconciliation done by hand. I refactored a colleague's API
+          into a job that does it, reading the month's files straight from a server folder
+          instead of taking filenames as request parameters, and ran it on Jenkins against the
+          test environment.
         </p>
         <p>
           Neither is glamorous, and that is roughly the point. A written gate needs a person
-          standing at it. A suite does not, and the work it covers stops being work.
+          standing at it. Code that runs on its own does not, and the work it covers stops
+          being work.
         </p>
       </div>
     </section>

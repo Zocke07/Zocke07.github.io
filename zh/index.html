@@ -213,16 +213,17 @@
             <p class="entry-date"><time datetime="2025-07">2025 年 7 月</time> – <time datetime="2026-06">2026 年 6 月</time></p>
           </div>
           <p class="entry-intro">
-            我當時的工作分成兩半。我為兩項內部專案建置自動化測試套件，一項以 Python 撰寫，另一項以 Java 撰寫。除此之外，我一半是六人遠端團隊的技術專案經理，一半是在其他人必須信任這個產品之前，先把它徹底測過一遍的人。團隊開發的是公司內部的 AI 開發者工具，其中包括一個 VS Code 擴充套件，把公司的開發規範變成編輯器內的 AI 審查員。
+            我當時的工作分成兩半。我為兩項內部專案撰寫自動化程式，一項是 Python 搭配 PyTest 的測試套件，另一項是以 Java 撰寫的核對作業。除此之外，我一半是六人遠端團隊的技術專案經理，一半是在其他人必須信任這個產品之前，先把它徹底測過一遍的人。團隊開發了兩項公司內部的 AI 工具：一個 VS Code 擴充套件，把公司的開發規範變成編輯器內的 AI 審查員；以及一個瀏覽器擴充套件，在內部內容編寫平台旁邊完成翻譯工作。
           </p>
           <ul class="entry-points" role="list">
-            <li>為兩項內部專案建置自動化測試套件：一項以 Python 搭配 PyTest，在部署前攔下關鍵 API 端點的迴歸問題；另一項以 Java，把原本以人工進行的驗證流程自動化。</li>
-            <li>負責兩項內部 AI 產品的上線前驗證，以端對端測試找出能順利編譯、在 diff 中看起來也正確的缺陷，包括被默默丟掉的排版格式與被截斷的模型輸出。</li>
+            <li>為一項內部專案建置 Python 測試套件，以 PyTest 涵蓋關鍵 API 端點，讓迴歸問題在部署之前浮現，而不是在部署之後。</li>
+            <li>將同事既有的 Java API 重構成在 Jenkins 上執行的自動核對作業：在每月回饋發放之前，比對受贈名單的筆數，並確認雙方出資金額加總後與系統預期的總額一致，取代原本以人工進行的核對。</li>
+            <li>負責這兩項產品的上線前驗證，以端對端測試找出能順利編譯、在 diff 中看起來也正確的缺陷：譯文中被默默丟掉的超連結，以及中途被截斷的模型輸出。</li>
             <li>擔任現場工程師與遠端實習生之間的技術橋樑，協調兩地的交付進度，並在 Jira 上管理 sprint 任務，讓雙方依據同一份狀態工作。</li>
             <li>所有變更都必須通過同一道書面關卡：先取得提案與設計共識再動手寫程式，訂出明確的驗收標準，最後在發布前親自驗過並簽核。</li>
           </ul>
           <ul class="tags entry-tags" role="list">
-            <li>Python</li><li>PyTest</li><li>Java</li><li>Jira</li><li>VS Code 擴充套件</li><li>LLM API</li><li>UAT</li><li>敏捷開發</li>
+            <li>Python</li><li>PyTest</li><li>Java</li><li>Jenkins</li><li>Jira</li><li>VS Code 擴充套件</li><li>LLM API</li><li>UAT</li><li>敏捷開發</li>
           </ul>
           <p class="entry-more"><a href="/zh/case-study-ai-products">與六位實習生一起交付兩項 AI 產品：案例研究 →</a></p>
 
