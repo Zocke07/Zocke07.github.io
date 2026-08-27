@@ -262,10 +262,10 @@
             <p class="card-body">
               Hundreds of browser tests run against one live server at the same time, and
               they have to stay out of each other's way. That is the quality platform behind
-              my work at Sunbird. The case study covers why flakiness is an engineering
-              problem rather than bad luck, and what it takes for a team to trust a red
-              build. Every merge cleared the same gate: zero lint warnings, ten clean runs,
-              then five more with the network throttled.
+              my work at Sunbird. Flakiness there is an engineering problem rather than bad
+              luck: every random failure has a mechanism, which is why nobody argues about
+              whether a red build is real. Every merge cleared the same gate: zero lint
+              warnings, ten clean runs, then five more with the network throttled.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Selenium</li><li>Parallel Testing</li><li>CI</li>
@@ -281,8 +281,8 @@
               direction, and enough verification to tell finished code from code that only
               looked finished. The defects worth catching were the ones that compiled
               cleanly and looked right in the diff: silently dropped formatting, truncated
-              model output. One of the two products was a VS Code extension that turns the
-              company's development standards into an in-editor AI reviewer.
+              model output. Each change ended at a sign-off allowed to say no, with every
+              accepted gap written down.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>TypeScript</li><li>LLM APIs</li><li>UAT</li><li>Jira</li>
