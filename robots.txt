@@ -1,0 +1,9 @@
+# https://zocke07.github.io/
+# Everything here is meant to be read. The only page held back is the 404,
+# which also carries <meta name="robots" content="noindex">.
+
+User-agent: *
+Allow: /
+Disallow: /404.html
+
+Sitemap: https://zocke07.github.io/sitemap.xml

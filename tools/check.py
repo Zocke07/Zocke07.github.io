@@ -31,6 +31,11 @@ ROOT = Path(__file__).resolve().parent.parent
 os.chdir(ROOT)
 
 PAGES = sorted(glob.glob("*.html") + glob.glob("zh/*.html"))
+# Pages that deliberately ship in one copy. GitHub Pages serves the root
+# 404.html for every bad URL on the site, /zh/ ones included, so there is no
+# second file to keep in step and nothing for parity or og to compare. It is
+# still held to structure, links, chrome and copy like every other page.
+SINGLETON = {"404.html"}
 CSS = Path("assets/css/style.css")
 JS = Path("assets/js/main.js")
 
@@ -204,7 +209,7 @@ def seq(path, attr):
 
 
 def check_parity():
-    pairs = [(f, f"zh/{f}") for f in glob.glob("*.html")]
+    pairs = [(f, f"zh/{f}") for f in glob.glob("*.html") if f not in SINGLETON]
     for en, zh in pairs:
         if not Path(zh).is_file():
             fail("parity", f"{en} has no zh twin")
@@ -340,7 +345,8 @@ def check_copy():
 
 # ---------- 9. social cards ----------
 def check_og():
-    for f in PAGES:
+    cards = [f for f in PAGES if f not in SINGLETON]
+    for f in cards:
         text = Path(f).read_text(encoding="utf-8")
         zh = f.startswith("zh/")
         m = re.search(r'og:image" content="([^"]+)"', text)
@@ -355,7 +361,7 @@ def check_og():
         want = "zh_TW" if zh else "en_US"
         if f'og:locale" content="{want}"' not in text:
             fail("og", f"{f}: og:locale should be {want}")
-    return f"{len(PAGES)} cards + locales"
+    return f"{len(cards)} cards + locales"
 
 
 # ---------- 8. CV copy ----------
@@ -380,6 +386,28 @@ def check_stamps():
     return "style.css + main.js"
 
 
+# ---------- 12. CJK line breaks ----------
+def check_cjk():
+    import subprocess
+    r = subprocess.run([sys.executable, "tools/cjk.py", "--check"],
+                       capture_output=True, text=True, cwd=ROOT)
+    if r.returncode:
+        for line in r.stderr.splitlines():
+            if "stray space" in line:
+                fail("cjk", line.strip())
+    return r.stdout.strip() or "Chinese pages"
+
+
+# ---------- 11. sitemap ----------
+def check_sitemap():
+    import subprocess
+    r = subprocess.run([sys.executable, "tools/sitemap.py", "--check"],
+                       capture_output=True, text=True, cwd=ROOT)
+    if r.returncode:
+        fail("sitemap", (r.stderr or r.stdout).strip() or "sitemap.xml is stale")
+    return r.stdout.strip().replace("sitemap.xml ", "") or "sitemap.xml"
+
+
 CHECKS = [
     ("structure", check_structure),
     ("links", check_links),
@@ -391,6 +419,8 @@ CHECKS = [
     ("cv", check_cv),
     ("og", check_og),
     ("copy", check_copy),
+    ("sitemap", check_sitemap),
+    ("cjk", check_cjk),
 ]
 
 if __name__ == "__main__":

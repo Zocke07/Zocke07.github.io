@@ -14,6 +14,9 @@ case-study-lmad.html
 case-study-microprocessors.html
 case-study-sky-scraper-escape.html
 project-mobile-testing.html      # project notes, same layout as a case study
+404.html                         # served for every bad URL, in both languages
+sitemap.xml                      # generated; see tools/sitemap.py
+robots.txt
 zh/                              # Traditional Chinese twin of every page above
 assets/
   css/style.css                  # design tokens + numbered per-component sections
@@ -22,10 +25,12 @@ assets/
   img/og/                        # 1200x630 social cards, <slug>.png and <slug>-zh.png
   cv/rivan-wong-cv.pdf           # copy of CV/build/cv.pdf, see below
 tools/serve.py                   # local preview, resolves URLs like GitHub Pages
-tools/check.py                   # ten regression checks; run before every commit
+tools/check.py                   # twelve regression checks; run before every commit
 tools/bump.py                    # stamps ?v= from a hash of the asset
 tools/cv.py                      # refreshes the CV copy from CV/build
 tools/og.py                      # renders a page's social card from its own metadata
+tools/sitemap.py                 # rebuilds sitemap.xml from the pages' own canonicals
+tools/cjk.py                     # unwraps Chinese lines that would render a stray space
 .github/workflows/check.yml      # runs tools/check.py on every push
 ```
 
@@ -77,6 +82,15 @@ Language survives navigation: every link inside a Chinese page points at another
 Chinese page, and the toggle swaps to the same page in the other language rather
 than returning to the home page.
 
+**Chinese paragraphs go on one line, however long.** HTML turns a newline in the
+source into a space. Between two English words that is what you want, which is
+why the English pages wrap freely; between two Chinese characters there is no
+space to represent and the browser inserts one anyway. It had done so in 128
+places, and the same hard wrap had also cut `NVIDIA` and `GUI` in half, so the
+home page read "NVIDI A Jetson TX2". `tools/cjk.py` finds and joins these, and
+`tools/check.py` fails if one comes back. Breaking between a Chinese character
+and a Latin one is fine: that space is wanted, and the pages already write it.
+
 ## Editing content
 
 All landing-page content lives in `index.html`, organized into clearly commented
@@ -84,6 +98,12 @@ sections (Hero, About, Education, Experience, Projects, Skills, Contact). To add
 an entry, copy an existing `<article class="entry">` (experience/education) or
 `<article class="card">` (projects) block and edit the text. Mirror the same edit
 into `zh/index.html`.
+
+A skill tag in the Skills section is a link when a case study demonstrates it
+and plain text when none does, and the hover lift belongs to the linked ones
+only. It used to sit on all 29 tags and promise a click that none could honor.
+Before adding a link, check the destination actually discusses the skill; the
+point of the section is that it keeps the same promise as the rest of the site.
 
 Colors, fonts, and spacing are CSS custom properties at the top of
 `assets/css/style.css` (`:root` for light mode, `:root[data-theme="dark"]`
@@ -106,7 +126,7 @@ the top of section 11; a new panel joins that list rather than restating it.
 
 `style.css` and `main.js` are linked as `?v=<hash>`, where the hash comes from
 the file itself. Run `python3 tools/bump.py` after changing either one; it
-rewrites all 16 pages, and `tools/check.py` fails if a stamp is stale. It used
+rewrites all 17 pages, and `tools/check.py` fails if a stamp is stale. It used
 to be a counter bumped by hand in 32 places.
 
 ## Social cards
@@ -136,6 +156,34 @@ the two sets sit in the same family.
 `tools/check.py` fails if a Chinese page points at an English card, which is
 what it did for all eight of them until now.
 
+## Search engines
+
+`sitemap.xml` is generated, not written:
+
+```sh
+python3 tools/sitemap.py            # rebuild
+python3 tools/sitemap.py --check    # used by tools/check.py
+```
+
+Each URL is read out of that page's own `<link rel="canonical">` and its
+hreflang alternates out of its `<link rel="alternate">`, so the sitemap cannot
+name a URL the page disagrees with. Hand-maintaining it would have been a fifth
+place to remember when a page is added, next to the four above.
+
+There is no `<lastmod>`, `<changefreq>` or `<priority>`. The latter two are
+ignored, and a lastmod that is only the file's mtime claims a freshness nobody
+verified. It also keeps the file stable, so a diff here means a page was added
+or removed and nothing else.
+
+Both home pages carry a `schema.org/Person` JSON-LD block. Everything in it is
+also stated in the page body; it must not become the only place a claim lives.
+
+`404.html` ships in one copy on purpose. GitHub Pages serves the root 404 for
+every bad URL on the site, `/zh/` ones included, so there is no second file to
+keep in step and it says its piece in both languages. `tools/check.py` knows
+this through its `SINGLETON` set, which is what exempts it from `parity` and
+`og` while still holding it to `structure`, `links`, `chrome` and `copy`.
+
 ## Preview locally
 
 ```sh
@@ -163,7 +211,7 @@ Pushes to `main` publish automatically once GitHub Pages is enabled:
 ## Checks
 
 ```sh
-python3 tools/check.py            # all ten
+python3 tools/check.py            # all twelve
 python3 tools/check.py links      # or just one
 ```
 
@@ -179,6 +227,8 @@ python3 tools/check.py links      # or just one
 | `cv` | `assets/cv/rivan-wong-cv.pdf` still matches `CV/build/cv.pdf` |
 | `og` | each page points at its own card and declares the right `og:locale` |
 | `copy` | English prose keeps one spelling and punctuation convention |
+| `sitemap` | `sitemap.xml` still matches the pages' own canonical URLs |
+| `cjk` | no Chinese line break renders as a stray space |
 
 `parity` is the one worth understanding: it is what catches a change made to one
 language and forgotten in the other. It compares structure, not prose, so the
@@ -214,11 +264,6 @@ slash. Without it the pattern also matched `assets/cv/`, because macOS sets
 ## Ideas for later
 
 - Add a LinkedIn link once there is something on the profile worth linking.
-- Add a `schema.org/Person` JSON-LD block, `sitemap.xml`,
-  `robots.txt`, and a branded `404.html`.
-- Chinese social cards. All eight `zh/` pages point `og:image` at the English
-  card, so a Chinese page shared to LINE shows a Chinese title over an English
-  image. Also worth adding `og:locale`.
 - Serve both languages from one URL. Worth revisiting only if editing two files
   becomes the real bottleneck: switching language already keeps your place, and
   the current split is what makes each language separately indexable.

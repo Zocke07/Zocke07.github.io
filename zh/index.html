@@ -31,12 +31,71 @@
         (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     })();
   </script>
+  <!-- schema.org/Person. Every value here is also stated in the page body;
+       this markup restates it in the form a search engine can read, and must
+       not become the only place a claim lives. -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "@id": "https://zocke07.github.io/#rivan",
+      "name": "黃家輝",
+      "alternateName": "Rivan Wong",
+      "url": "https://zocke07.github.io/zh/",
+      "image": "https://zocke07.github.io/assets/img/portrait-2026.jpg",
+      "jobTitle": "軟體工程師",
+      "email": "mailto:rivanwong@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "新北市",
+        "addressCountry": "TW"
+      },
+      "nationality": {
+        "@type": "Country",
+        "name": "ID"
+      },
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "國立臺北科技大學",
+        "sameAs": "https://www.ntut.edu.tw/"
+      },
+      "knowsLanguage": [
+        {
+          "@type": "Language",
+          "name": "Indonesian",
+          "alternateName": "id"
+        },
+        {
+          "@type": "Language",
+          "name": "English",
+          "alternateName": "en"
+        },
+        {
+          "@type": "Language",
+          "name": "Chinese (Mandarin)",
+          "alternateName": "zh-Hant"
+        }
+      ],
+      "knowsAbout": [
+        "Test Automation",
+        "Software Quality Assurance",
+        "Federated Learning",
+        "Machine Learning Security",
+        "Python",
+        "TypeScript",
+        "Embedded Linux"
+      ],
+      "sameAs": [
+        "https://github.com/Zocke07"
+      ]
+    }
+  </script>
   <link rel="canonical" href="https://zocke07.github.io/zh/" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2fea551a" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=3374a8b4" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -272,11 +331,7 @@
             <h3>從真值表到管線化 CPU</h3>
             <p class="card-meta">大學部課程 · VHDL / FPGA · 嵌入式 Linux</p>
             <p class="card-body">
-              兩個學期的硬體實習課程，方向剛好相反。前一個學期在 FPGA 上用 VHDL 往上疊：先是從真值表推出來的七段顯
-              示器解碼電路，然後是一顆四階段管線化 CPU，它會把運算結果前饋回去，而不是插入停頓。後一個學期在 NVIDI
-              A Jetson TX2 上往下走，起點是交叉編譯的執行檔，終點是一個註冊字元裝置的可載入核心模組，中間經過 Qt G
-              UI 與瀏覽器操作的伺服器。這是課程作業的閱讀筆記，不是在主張這些成果屬於我：這些程式碼做了什麼、為什
-              麼會動，以及哪裡不成立。
+              兩個學期的硬體實習課程，方向剛好相反。前一個學期在 FPGA 上用 VHDL 往上疊：先是從真值表推出來的七段顯示器解碼電路，然後是一顆四階段管線化 CPU，它會把運算結果前饋回去，而不是插入停頓。後一個學期在 NVIDIA Jetson TX2 上往下走，起點是交叉編譯的執行檔，終點是一個註冊字元裝置的可載入核心模組，中間經過 Qt GUI 與瀏覽器操作的伺服器。這是課程作業的閱讀筆記，不是在主張這些成果屬於我：這些程式碼做了什麼、為什麼會動，以及哪裡不成立。
             </p>
             <ul class="tags entry-tags" role="list">
               <li>VHDL</li><li>FPGA</li><li>計算機架構</li><li>嵌入式 Linux</li><li>核心模組</li>
@@ -291,29 +346,30 @@
     <section id="skills" class="section">
       <div class="container">
         <h2 class="section-title">技能</h2>
+        <p class="skills-note">有連結的標籤會開啟這項工作所在的頁面；其餘的是用過、但沒有頁面可以指的。</p>
         <div class="skills-grid">
           <div class="skill-group">
             <h3>程式語言</h3>
             <ul class="tags" role="list">
-              <li>Python</li><li>TypeScript</li><li>C++</li><li>Java</li><li>JavaScript</li><li>VHDL</li><li>HTML</li><li>CSS</li>
+              <li><a href="/zh/case-study-test-automation" aria-label="Python，見測試基礎架構案例">Python</a></li><li><a href="/zh/case-study-ai-products" aria-label="TypeScript，見 AI 產品案例">TypeScript</a></li><li><a href="/zh/case-study-sky-scraper-escape" aria-label="C++，見 Sky Scraper Escape 案例">C++</a></li><li><a href="/zh/case-study-ai-products" aria-label="Java，見 AI 產品案例">Java</a></li><li><a href="/zh/case-study-microprocessors" aria-label="JavaScript，見微處理機課程筆記">JavaScript</a></li><li><a href="/zh/case-study-microprocessors" aria-label="VHDL，見微處理機課程筆記">VHDL</a></li><li>HTML</li><li>CSS</li>
             </ul>
           </div>
           <div class="skill-group">
             <h3>工具與框架</h3>
             <ul class="tags" role="list">
-              <li>Git</li><li>GitHub</li><li>Jenkins</li><li>Jira</li><li>Notion</li><li>VS Code</li><li>Selenium</li><li>Appium</li><li>Robot Framework</li><li>PyTest</li>
+              <li>Git</li><li>GitHub</li><li><a href="/zh/case-study-test-automation" aria-label="Jenkins，見測試基礎架構案例">Jenkins</a></li><li><a href="/zh/case-study-ai-products" aria-label="Jira，見 AI 產品案例">Jira</a></li><li>Notion</li><li>VS Code</li><li><a href="/zh/case-study-test-automation" aria-label="Selenium，見測試基礎架構案例">Selenium</a></li><li><a href="/zh/project-mobile-testing" aria-label="Appium，見行動測試專案筆記">Appium</a></li><li><a href="/zh/project-mobile-testing" aria-label="Robot Framework，見行動測試專案筆記">Robot Framework</a></li><li><a href="/zh/case-study-lmad" aria-label="PyTest，見 L-MAD 論文案例">PyTest</a></li>
             </ul>
           </div>
           <div class="skill-group">
             <h3>系統與平台</h3>
             <ul class="tags" role="list">
-              <li>Linux (Ubuntu)</li><li>Windows</li><li>嵌入式 Linux</li><li>Linux 核心模組</li><li>FPGA</li>
+              <li><a href="/zh/case-study-microprocessors" aria-label="Linux (Ubuntu)，見微處理機課程筆記">Linux (Ubuntu)</a></li><li>Windows</li><li><a href="/zh/case-study-microprocessors" aria-label="嵌入式 Linux，見微處理機課程筆記">嵌入式 Linux</a></li><li><a href="/zh/case-study-microprocessors" aria-label="Linux 核心模組，見微處理機課程筆記">Linux 核心模組</a></li><li><a href="/zh/case-study-microprocessors" aria-label="FPGA，見微處理機課程筆記">FPGA</a></li>
             </ul>
           </div>
           <div class="skill-group">
             <h3>方法論與概念</h3>
             <ul class="tags" role="list">
-              <li>敏捷開發 (Scrum / Kanban)</li><li>OOP</li><li>SDLC</li><li>自動化測試</li><li>機器學習</li><li>數位邏輯設計</li>
+              <li><a href="/zh/case-study-ai-products" aria-label="敏捷開發 (Scrum / Kanban)，見 AI 產品案例">敏捷開發 (Scrum / Kanban)</a></li><li><a href="/zh/case-study-sky-scraper-escape" aria-label="OOP，見 Sky Scraper Escape 案例">OOP</a></li><li>SDLC</li><li><a href="/zh/case-study-test-automation" aria-label="自動化測試，見測試基礎架構案例">自動化測試</a></li><li><a href="/zh/case-study-lmad" aria-label="機器學習，見 L-MAD 論文案例">機器學習</a></li><li><a href="/zh/case-study-microprocessors" aria-label="數位邏輯設計，見微處理機課程筆記">數位邏輯設計</a></li>
             </ul>
           </div>
         </div>

@@ -35,7 +35,7 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-sky-scraper-escape" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-sky-scraper-escape" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=2fea551a" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=3374a8b4" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -196,9 +196,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
             </svg>
           </div>
           <figcaption class="figcaption">
-            最下面那一排，正是框架原本永遠不會允許的東西。八個畫面躲在同一個型別的同一個指標背後，
-            所以要加第八個關卡，是多加一個元素，而不是去改一個分派器。選單擺在索引零的位置，是這個抽象
-            到底成不成立的檢驗：只要它需要自己的分支，這個形狀就漏了。
+            最下面那一排，正是框架原本永遠不會允許的東西。八個畫面躲在同一個型別的同一個指標背後，所以要加第八個關卡，是多加一個元素，而不是去改一個分派器。選單擺在索引零的位置，是這個抽象到底成不成立的檢驗：只要它需要自己的分支，這個形狀就漏了。
           </figcaption>
         </figure>
         <p>
@@ -244,14 +242,10 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         <figure class="figure">
           <div class="figure-shot">
             <img src="/assets/img/sky-level1-frame.jpg" width="1192" height="670" loading="lazy" decoding="async"
-                 alt="關卡一的一個畫面。一架小型客機在畫面左側飛過夕陽下的像素風城市。三組障礙物由右側逼近：
-                      一朵從畫面上緣垂下的雲，以及一棟從下緣升起的大樓，兩者之間留著一道飛機必須穿過的縫隙。" />
+                 alt="關卡一的一個畫面。一架小型客機在畫面左側飛過夕陽下的像素風城市。三組障礙物由右側逼近：一朵從畫面上緣垂下的雲，以及一棟從下緣升起的大樓，兩者之間留著一道飛機必須穿過的縫隙。" />
           </div>
           <figcaption class="figcaption">
-            關卡一，依照 <code>level1.cpp</code> 實際使用的座標，用遊戲自己的點陣圖重建出來：飛機在它的起始
-            位置 (180, 270)，障礙物成對出現、縫隙為 <code>pathHeight</code> 減十五像素，而大樓與雲則來自
-            每個關卡都重複使用的那同一組兩張圖。這是重建，不是實機截圖，因為這個遊戲是 Windows MFC 執行檔，
-            這張圖是從原始素材組出來的。
+            關卡一，依照 <code>level1.cpp</code> 實際使用的座標，用遊戲自己的點陣圖重建出來：飛機在它的起始位置 (180, 270)，障礙物成對出現、縫隙為 <code>pathHeight</code> 減十五像素，而大樓與雲則來自每個關卡都重複使用的那同一組兩張圖。這是重建，不是實機截圖，因為這個遊戲是 Windows MFC 執行檔，這張圖是從原始素材組出來的。
           </figcaption>
         </figure>
         <ol class="levels" role="list">
