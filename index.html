@@ -97,19 +97,19 @@
         <h2 class="section-title">About</h2>
         <p class="about-lead">
           I grew up in Indonesia and moved to Taipei in 2021 for university. The degree was
-          taught in Chinese, a language I picked up as I went and have studied and worked in
-          ever since.
+          taught in Chinese. I picked the language up as I went, and I have studied and
+          worked in it ever since.
         </p>
         <p>
-          I was a math kid before any of that, and the appeal was always that the answer could
-          be checked. That is close to how I like to build software: I would rather find out
-          early that I am wrong, while being wrong is still cheap.
+          Before any of that I was a math kid, and the part I liked was that you could check
+          the answer. That is close to how I like to build software: I'd rather find out
+          early that I'm wrong, while being wrong is still cheap.
         </p>
         <p>
-          Not everything at university happened in class. A good part of it went to student
-          organizations, volunteering and cultural exchange, including the Taipei Tech
-          International Student Association. Much of that meant helping international students
-          settle into a place I had arrived at not long before myself.
+          I spent a good part of university outside class, on student organizations,
+          volunteering and cultural exchange, including the Taipei Tech International
+          Student Association. Mostly that meant helping international students settle into
+          a place I had arrived at not long before myself.
         </p>
       </div>
     </section>
@@ -226,12 +226,12 @@
             <h3>The Defense That Says Where It Breaks</h3>
             <p class="card-meta">Master's Thesis · Federated Learning Security</p>
             <p class="card-body">
-              Federated learning keeps raw data on the device, which also means the server cannot
-              tell a poisoned model update from an honest one. My thesis proposes L-MAD, a
-              two-stage defense that rejects corrupted layers individually instead of discarding
-              the whole client. It holds 97.5% DDoS-class F&#8321; under a 30% poisoning attack,
-              more than 25 points clear of six reimplemented baselines, and its last chapter is
-              built to prove my own weakest claim wrong.
+              Federated learning keeps raw data on the device, so the server cannot tell a
+              poisoned model update from an honest one. My thesis is L-MAD, a two-stage
+              defense that rejects corrupted layers one at a time instead of discarding the
+              whole client. It holds 97.5% DDoS-class F&#8321; under a 30% poisoning attack,
+              more than 25 points clear of six baselines I reimplemented. The last chapter
+              is where I try to prove my own weakest claim wrong.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>PyTorch</li><li>Flower</li><li>Federated Learning</li><li>Adversarial ML</li><li>Python</li>
@@ -243,12 +243,13 @@
             <h3>Test Automation Best Practices: A Case Study Analysis</h3>
             <p class="card-meta">Capstone Project · Industry-Academia Research</p>
             <p class="card-body">
-              My graduation capstone, written from inside the Sunbird co-op with two teammates.
-              It documents how a commercial test automation team actually works, from test steps
-              confirmed with the product manager before any code is written to a CI gate of ten
-              runs plus five throttled, and analyzes four years of the team's statistics to
-              explain why output declined. Because the real code stays behind the NDA, I built
-              the exhibit from scratch on a target I could publish.
+              My graduation capstone, written with two teammates from inside the Sunbird
+              co-op. It documents how a commercial test automation team actually works: test
+              steps confirmed with the product manager before anyone writes code, then a CI
+              gate of ten runs plus five with the network throttled. It also takes four
+              years of the team's statistics and explains why output declined. The real code
+              stays behind the NDA, so I built the exhibit from scratch on a target I could
+              publish.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>Research</li>
@@ -259,11 +260,12 @@
             <h3>How 730+ Tests Run at Once Without Stepping on Each Other</h3>
             <p class="card-meta">Case Study · Test Infrastructure</p>
             <p class="card-body">
-              A look inside the quality platform behind my work at Sunbird: how hundreds of
-              browser tests share one live server safely, why flakiness is an engineering
-              problem rather than bad luck, and what it takes for a team to trust a red build.
-              Every merge cleared the same gate: zero lint warnings, ten clean runs, then five
-              more with the network throttled.
+              Hundreds of browser tests run against one live server at the same time, and
+              they have to stay out of each other's way. That is the quality platform behind
+              my work at Sunbird. The case study covers why flakiness is an engineering
+              problem rather than bad luck, and what it takes for a team to trust a red
+              build. Every merge cleared the same gate: zero lint warnings, ten clean runs,
+              then five more with the network throttled.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Selenium</li><li>Parallel Testing</li><li>CI</li>
@@ -274,12 +276,13 @@
             <h3>Shipping Two AI Products With Six Interns</h3>
             <p class="card-meta">Case Study · Program Management &amp; QA</p>
             <p class="card-body">
-              A distributed intern team, two AI products, and no QA engineer assigned. How we
-              built enough process to move in the same direction, and enough verification to tell
-              finished code from code that merely looked finished. The defects worth catching
-              were the ones that compiled cleanly and looked right in the diff: silently dropped
-              formatting, truncated model output. One of the two products was a VS Code extension
-              that turns the company's development standards into an in-editor AI reviewer.
+              Two AI products, an intern team spread across two countries, and nobody
+              assigned to QA. We built enough process to keep everyone moving in the same
+              direction, and enough verification to tell finished code from code that only
+              looked finished. The defects worth catching were the ones that compiled
+              cleanly and looked right in the diff: silently dropped formatting, truncated
+              model output. One of the two products was a VS Code extension that turns the
+              company's development standards into an in-editor AI reviewer.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>TypeScript</li><li>LLM APIs</li><li>UAT</li><li>Jira</li>
@@ -290,12 +293,12 @@
             <h3>Mobile Test Automation for a Health Tracking App</h3>
             <p class="card-meta">Course Project · Appium · Robot Framework</p>
             <p class="card-body">
-              A five-person suite of 103 automated test cases driving Health2Sync, a shipping
-              Android diabetes management app, built for a software testing and verification
-              course. I owned the settings area end to end: 15 test cases and most of the
-              78-keyword page library behind them, with test design done before any code. The
-              hard part was a stateful app with no reset hook, where cleanup is something every
-              test has to pay for itself.
+              Five of us wrote 103 automated test cases against Health2Sync, a diabetes
+              management app already shipping on Android, for a software testing and
+              verification course. I owned the settings area end to end: 15 test cases and
+              most of the 78-keyword page library behind them, designed before I wrote any
+              code. The hard part was that the app keeps state and has no reset hook, so
+              every test has to pay for its own cleanup.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Appium</li><li>Android</li><li>Test Design</li>
@@ -306,12 +309,12 @@
             <h3>Sky Scraper Escape</h3>
             <p class="card-meta">C++ · MFC · Object-Oriented Design</p>
             <p class="card-body">
-              Fly a plane through a city skyline across seven levels, each adding a twist:
-              narrowed vision, flickering obstacles, gravity that inverts. Built for an OOP lab
-              course on a teaching framework that allows exactly three states. I mirrored the
-              framework's state interface onto a level base class, so every level and the menu
-              became interchangeable objects behind one pointer. I wrote most of the team's
-              game code.
+              Fly a plane through a city skyline across seven levels, and each one adds a
+              twist: vision narrows, obstacles flicker, gravity inverts. We built it for an
+              OOP lab course, on a teaching framework that allows exactly three states. So I
+              mirrored the framework's state interface onto a level base class, which made
+              every level and the menu interchangeable objects behind one pointer. I wrote
+              most of the team's game code.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>C++</li><li>OOP</li><li>MFC</li><li>DirectDraw</li><li>Git</li>
@@ -322,13 +325,13 @@
             <h3>From a Truth Table to a Pipelined CPU</h3>
             <p class="card-meta">Undergraduate Coursework · VHDL / FPGA · Embedded Linux</p>
             <p class="card-body">
-              Two semesters of hardware labs, pointed in opposite directions. The first built
-              upward in VHDL, from a seven-segment decoder read off a truth table to a four-stage
-              pipelined CPU that forwards a result rather than stalling on it. The second worked
-              down an NVIDIA Jetson TX2, from a cross-compiled binary through a Qt GUI and a
-              browser-driven server to a kernel module registering a character device. Notes on
-              coursework rather than a claim on it: what the code does, why it works, and where
-              it does not.
+              Two semesters of hardware labs, pointed in opposite directions. The first
+              built upward in VHDL: a seven-segment decoder read off a truth table, then a
+              four-stage pipelined CPU that forwards a result rather than stalling on it.
+              The second worked down an NVIDIA Jetson TX2, starting at a cross-compiled
+              binary and ending at a kernel module that registers a character device, with a
+              Qt GUI and a browser-driven server in between. These are notes on coursework,
+              not a claim on it: what the code does, why it works, and where it does not.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>VHDL</li><li>FPGA</li><li>Computer Architecture</li><li>Embedded Linux</li><li>Kernel Modules</li>
