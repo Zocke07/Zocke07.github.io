@@ -101,9 +101,18 @@ into `zh/index.html`.
 
 A skill tag in the Skills section is a link when a case study demonstrates it
 and plain text when none does, and the hover lift belongs to the linked ones
-only. It used to sit on all 29 tags and promise a click that none could honor.
-Before adding a link, check the destination actually discusses the skill; the
-point of the section is that it keeps the same promise as the rest of the site.
+only. It used to sit on every tag and promise a click that none could honor.
+
+The bar for appearing at all is code he wrote. That is why there is no VHDL,
+FPGA, Embedded Linux or Digital Logic Design here: their only evidence is the
+microprocessors page, which says in its own words that nothing on it is offered
+as his own work. They stay on that project's card, where the page explains the
+group work around them. TypeScript went for the same reason, the AI products
+page calling the product "the team's build"; it stays on that project's card,
+where it names what the product was made of rather than what he wrote.
+
+Before adding a link, check the destination actually discusses the skill, and
+that the page attributes it to him.
 
 Colors, fonts, and spacing are CSS custom properties at the top of
 `assets/css/style.css` (`:root` for light mode, `:root[data-theme="dark"]`

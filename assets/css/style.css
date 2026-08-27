@@ -579,7 +579,7 @@ a:hover { text-decoration: underline; }
    not. The chip is drawn on the <li> and the anchor is stretched across it, so
    the target is the whole chip rather than the few characters of text inside.
    The hover lift moved off the bare <li> at the same time: it used to sit on
-   all 29 tags and promise a click that only 21 of them could honor. */
+   every tag and promise a click that only some of them could honor. */
 .tags li { position: relative; }
 .tags a { color: var(--accent); text-decoration: none; }
 .tags a::after {
