@@ -161,7 +161,7 @@ if (sections.some((s) => navLinks.has(s.id))) {
 // --- Reveal on scroll ---
 // Tag content blocks below the hero; stagger siblings via --delay.
 const revealTargets = document.querySelectorAll(
-  ".section-title, .about p, .entry, .card, .skill-group, .languages, .contact .hero-actions"
+  ".section-title, .about p, .entry, .card, .skill-group, .languages, .contact .action-row"
 );
 
 if (revealTargets.length) {

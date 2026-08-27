@@ -9,7 +9,7 @@ submodule boundary and cannot track files inside it as ordinary files. The site
 therefore carries a copy rather than a reference, and a copy can drift from what
 it was copied from. This is the thing that notices.
 
-The source is a local build artefact, so it is absent on a fresh clone and in
+The source is a local build artifact, so it is absent on a fresh clone and in
 CI. That is not a failure: with no source to compare against, the copy in the
 repo is taken as authoritative and the check passes.
 """

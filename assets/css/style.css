@@ -312,21 +312,19 @@ a:hover { text-decoration: underline; }
   margin-bottom: 1.75rem;
 }
 
-/* The action row. Only the contact section uses it now, where it is an
-   <address>, whose UA default italic has to be cancelled. */
-.hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; font-style: normal; }
+/* The contact action row. The <address> holds only the ways to reach me, so the
+   CV sits beside it rather than inside it: a document is not contact
+   information. The group keeps both halves on one wrapping line and cancels the
+   UA default italic that <address> carries. */
+.action-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
+.action-group { display: flex; gap: 0.75rem; flex-wrap: wrap; font-style: normal; }
 
 /* The CV in the hero. A filled button here would be the loudest thing on a page
    whose voice is deliberately quiet, and it had nothing to pair with, so it sat
-   stranded under the blurb. A link reads as part of the prose instead, and the
-   size next to it answers the question a download prompt raises. */
-.hero-cv {
-  display: flex;
-  align-items: baseline;
-  gap: 0.6rem;
-  margin-top: 1.5rem;
-  font-size: 0.95rem;
-}
+   stranded under the blurb. A link reads as part of the prose instead. This one
+   opens the PDF rather than saving it, so a reader can look at the CV without
+   committing a file to disk; the contact section carries the download. */
+.hero-cv { margin-top: 1.5rem; font-size: 0.95rem; }
 .hero-cv a {
   display: inline-flex;
   align-items: center;
@@ -335,9 +333,6 @@ a:hover { text-decoration: underline; }
 }
 /* The glyph sits with the text rather than on its baseline. */
 .hero-cv .cv-glyph { transform: translateY(1px); }
-.cv-meta { color: var(--text-muted); font-size: 0.85rem; font-weight: 400; }
-/* Inside the contact button the size rides the button's own colour. */
-.btn .cv-meta { color: inherit; opacity: 0.75; }
 
 /* Text column plus a portrait that spans it. Children stay direct children of
    .container so the staggered entrance animation above still applies. */

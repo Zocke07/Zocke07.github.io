@@ -22,7 +22,7 @@ assets/
   img/og/                        # 1200x630 social cards, <slug>.png and <slug>-zh.png
   cv/rivan-wong-cv.pdf           # copy of CV/build/cv.pdf, see below
 tools/serve.py                   # local preview, resolves URLs like GitHub Pages
-tools/check.py                   # eight regression checks; run before every commit
+tools/check.py                   # ten regression checks; run before every commit
 tools/bump.py                    # stamps ?v= from a hash of the asset
 tools/cv.py                      # refreshes the CV copy from CV/build
 tools/og.py                      # renders a page's social card from its own metadata
