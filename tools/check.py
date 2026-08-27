@@ -302,6 +302,7 @@ BRITISH = (
     r"summaris\w*|minimis\w*|maximis\w*|prioritis\w*|standardis\w*|customis\w*|"
     r"synchronis\w*|categoris\w*|utilis\w*|visualis\w*|authoris\w*|criticis\w*|"
     r"catalogue|dialogue|monologue|analyse|analysed|analyses|analysing|paralys\w*|"
+    r"artefact\w*|"
     r"grey|whilst|amongst|towards|programme|judgement|practise|licence|offence|"
     r"pretence|fulfil|skilful|instalment|travell\w*|modell\w*|signall\w*|cancell\w*|"
     r"marvellous|jewellery|storey|sceptic\w*|mould|smoulder|moustache|aeroplane|"

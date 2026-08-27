@@ -11,7 +11,7 @@ to tell afterwards. The hash comes from the file, so it cannot drift, and each
 asset carries its own: editing the stylesheet no longer re-downloads the script.
 
 There is still no build step. This rewrites the committed HTML in place; the
-pages remain the deployed artefact.
+pages remain the deployed artifact.
 """
 
 import hashlib
