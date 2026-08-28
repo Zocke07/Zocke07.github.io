@@ -1,2 +1,17 @@
 # macOS
 .DS_Store
+
+# Editor
+.vscode/
+
+# Local only, not part of the published site
+/CV/
+Interviews/
+Temp/
+references/
+assets/img/IMG_*
+
+# Build and tool output
+build/
+__pycache__/
+*.pyc
