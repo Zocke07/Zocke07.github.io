@@ -19,7 +19,6 @@ is wanted, and the pages already write it by hand.
 """
 
 import glob
-import io
 import re
 import sys
 from pathlib import Path

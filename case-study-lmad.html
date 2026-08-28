@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Defense That Says Where It Breaks · Rivan Wong</title>
-  <meta name="description" content="My master's thesis on L-MAD, a Byzantine-robust aggregation rule for federated edge learning: 97.5% DDoS-class F1 under a 30% poisoning attack, 2.6x faster than the nearest layer-wise defense, and a chapter establishing exactly where it fails." />
+  <meta name="description" content="Master's thesis on L-MAD, a Byzantine-robust aggregation rule for federated edge learning: 97.5% DDoS-class F1 under 30% poisoning, 2.6x faster." />
   <meta property="og:title" content="The Defense That Says Where It Breaks" />
   <meta property="og:description" content="A Byzantine-robust aggregation rule for federated edge learning, and the twenty-seed study that says exactly when it fails." />
   <meta property="og:locale" content="en_US" />
@@ -34,8 +34,9 @@
   <link rel="canonical" href="https://zocke07.github.io/case-study-lmad" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-lmad" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-lmad" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-lmad" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=04d3a544" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -143,7 +144,7 @@
           Two stages, neither of which needs any data on the server.
         </p>
         <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0">
+          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <a href="/assets/img/lmad/aggregation.webp" target="_blank" rel="noopener">
               <img src="/assets/img/lmad/aggregation.webp" width="1500" height="399" loading="lazy" decoding="async"
                    alt="Aggregation flow diagram. Client layer updates enter at the left, pass a Stage 1 reliability pre-pass and an optional loss-probe gate, then a Stage 2 MAD gate that accepts or rejects each client. Convicted clients enter a permanent ban register. If every update is rejected the path falls back to a robust median; otherwise accepted clients are averaged into the global model." />
@@ -174,7 +175,7 @@
           are aggregated normally.
         </p>
         <figure class="figure is-loose">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="fig2title fig2desc">
 <title id="fig2title">Whole-client rejection compared with per-layer rejection</title>
 <desc id="fig2desc">Two grids of six clients by four layers. Under whole-client rejection both poisoned clients are discarded entirely, eight cells. Under L-MAD only the two poisoned decision layers of each are discarded, so four benign layers survive.</desc>
@@ -280,7 +281,7 @@
           out of it.
         </p>
         <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0">
+          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <a href="/assets/img/lmad/architecture.webp" target="_blank" rel="noopener">
               <img src="/assets/img/lmad/architecture.webp" width="1500" height="1320" loading="lazy" decoding="async"
                    alt="System architecture diagram with four stacked subsystems: data and persistence, preprocessing and model, edge client, and federated server, each containing its own modules." />
@@ -292,7 +293,7 @@
           </figcaption>
         </figure>
         <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0">
+          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <a href="/assets/img/lmad/federated-server.webp" target="_blank" rel="noopener">
               <img src="/assets/img/lmad/federated-server.webp" width="1500" height="930" loading="lazy" decoding="async"
                    alt="Flowchart of the federated server loop: initialize the global model, broadcast to K clients, clients train and extract parameters, the server receives K parameter updates, profiles unprocessed layers, aggregates them and evaluates globally, repeating until the round limit." />
@@ -317,7 +318,7 @@
           accuracy. Attack success rate is the fraction of normal traffic the poisoned model
           misclassifies, so lower is better.
         </p>
-        <div class="table-scroll" tabindex="0">
+        <div class="table-scroll" tabindex="0" role="group" aria-label="Table, scrollable">
           <table class="result-table">
             <caption class="sr-only">Resilience under the reference 30% label-flipping attack</caption>
             <thead>
@@ -335,7 +336,7 @@
           </table>
         </div>
         <figure class="figure is-loose">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <svg class="fig-svg" viewBox="0 0 700 320" role="img" aria-labelledby="f1title f1desc">
               <title id="f1title">DDoS-class F1 under the reference 30% label-flipping attack</title>
               <desc id="f1desc">Horizontal bars for seven aggregation strategies. L-MAD reaches 97.5 percent, level with its own clean-data score of 97.1. The best baseline, Krum, reaches 71.9 percent, and undefended FedAvg reaches 48.4 percent.</desc>
@@ -415,7 +416,7 @@
           but small, roughly 18 ms per round over Krum in exchange for 25.7 points of F&#8321;.
         </p>
         <figure class="figure is-loose">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <svg class="fig-svg" viewBox="0 0 640 400" role="img" aria-labelledby="fig1title fig1desc">
 <title id="fig1title">Aggregation cost versus robustness for seven strategies</title>
 <desc id="fig1desc">A scatter plot of mean server aggregation time in milliseconds per round against DDoS-class F1 score. L-MAD sits at 21 milliseconds and 97.5 percent, the highest F1 of any strategy, on the Pareto frontier together with FedAvg and Krum.</desc>
@@ -505,7 +506,7 @@
           the axis the sweep below moves.
         </p>
         <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0">
+          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <a href="/assets/img/lmad/preprocessing.webp" target="_blank" rel="noopener">
               <img src="/assets/img/lmad/preprocessing.webp" width="1500" height="1024" loading="lazy" decoding="async"
                    alt="Preprocessing flowchart: the Edge-IIoT dataset passes attack-type filtering and stateless cleaning, splits eighty-twenty into a global training pool and test set, then feature encoding, imputation and feature selection, producing the data distribution stage." />
@@ -517,7 +518,7 @@
           </figcaption>
         </figure>
         <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0">
+          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <a href="/assets/img/lmad/distribution.webp" target="_blank" rel="noopener">
               <img src="/assets/img/lmad/distribution.webp" width="1500" height="787" loading="lazy" decoding="async"
                    alt="Data distribution flowchart: the preprocessed training pool is partitioned either by a Dirichlet non-IID allocation or a uniform IID shuffle into K client partitions, each split into local train and validation sets, followed by global and local z-score scaling." />
@@ -548,7 +549,7 @@
           finding is in the thesis at the same size as the first.
         </p>
         <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0">
+          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <a href="/assets/img/lmad/asr.webp" target="_blank" rel="noopener">
               <img src="/assets/img/lmad/asr.webp" width="1500" height="833" loading="lazy" decoding="async"
                    alt="Seven small line charts of attack success rate against training round, one per strategy: FedAvg, Krum, Trimmed Mean, LGP, BRAFL, ATTA-FL-Lite and L-MAD, each with a shaded variance band." />
@@ -678,6 +679,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=238f3707"></script>
+  <script src="/assets/js/main.js?v=d674b144"></script>
 </body>
 </html>

@@ -55,7 +55,7 @@ def build():
         # Both twins of a pair carry the same alternate block, which is what
         # tells a crawler the two are one page in two languages rather than
         # duplicates competing with each other.
-        for lang in ("en", "zh-Hant-TW"):
+        for lang in ("en", "zh-Hant-TW", "x-default"):
             href = link(text, "alternate", f'hreflang="{lang}"')
             if href:
                 out.append(

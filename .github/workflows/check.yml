@@ -1,10 +1,9 @@
-# The checks in tools/check.py assert things that are only otherwise true by
-# care: markup structure, link integrity, English/Chinese parity, shared chrome
-# wording, dead CSS, unreferenced assets, cache stamps. Running them here means
-# a page cannot be added from a half-remembered template and quietly diverge.
+# tools/check.py asserts what is otherwise true only by care, so a page cannot
+# be added from a half-remembered template and quietly diverge. It documents
+# what it checks; this file only runs it.
 #
-# There is no build. GitHub Pages deploys the branch as it stands, so this is a
-# gate on correctness, not a step that produces the site.
+# There is no build. GitHub Pages deploys the branch as it stands, so nothing
+# here produces the site.
 name: check
 
 on:
@@ -29,3 +28,9 @@ jobs:
       # No dependencies to install: check.py is standard library only.
       - name: Run site checks
         run: python3 tools/check.py
+
+      # check.py reads main.js for the class names it uses, not for whether it
+      # still runs, and a stray brace there takes out every behaviour at once.
+      # ubuntu-latest has node, and --check only parses, so no build appears.
+      - name: Parse main.js
+        run: node --check assets/js/main.js

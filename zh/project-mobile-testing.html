@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>沒有重置鍵 · 黃家輝</title>
-  <meta name="description" content="替一款有狀態、沒有 API 也沒有測試掛鉤的 Android 健康管理 App 做自動化測試：以關鍵字驅動的 Appium 測試、用基本選擇涵蓋的輸入空間分割，以及只能靠 UI 完成的環境還原。專案筆記。" />
+  <meta name="description" content="替一款有狀態、沒有 API 或測試掛鉤的 Android 健康 App 做自動化測試：以關鍵字驅動的 Appium 測試、用基本選擇涵蓋的輸入空間分割，只能靠 UI 完成的環境還原。" />
   <meta property="og:title" content="沒有重置鍵" />
   <meta property="og:description" content="替一款有狀態的 Android App 做自動化測試：沒有 API、沒有測試掛鉤，也沒有任何方法能把它還原成原本的樣子，只能一步一步點回去。" />
   <meta property="og:locale" content="zh_TW" />
@@ -34,8 +34,9 @@
   <link rel="canonical" href="https://zocke07.github.io/zh/project-mobile-testing" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/project-mobile-testing" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/project-mobile-testing" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=04d3a544" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -225,9 +226,9 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
 
         <h3>把它套在一個真實畫面上會長成什麼樣子</h3>
         <figure class="figure">
-          <div class="figure-doc is-wide" tabindex="0">
+          <div class="figure-doc is-wide" tabindex="0" role="group" aria-label="圖表，可捲動">
             <a href="/assets/img/tc1-activity-diagram.webp" target="_blank" rel="noopener">
-              <img src="/assets/img/tc1-activity-diagram.webp" width="2000" height="749" loading="lazy" decoding="async"
+              <img src="/assets/img/tc1-activity-diagram.webp" width="3200" height="1300" loading="lazy" decoding="async"
                    alt="新增健康數據畫面的活動圖。判斷菱形由左到右串成一條主幹，每種紀錄類型各一個，而標示為 TC1-1 到 TC1-7 的每一條分支，都往下接到該測試案例所要輸入的欄位。" />
               <span class="sr-only">在新分頁開啟完整尺寸</span>
             </a>
@@ -239,7 +240,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         </figure>
 
         <h3>我那十五個測試背後的分割區間</h3>
-        <div class="blocks" tabindex="0">
+        <div class="blocks" tabindex="0" role="group" aria-label="表格，可捲動">
           <table>
             <caption class="sr-only">設定區各輸入欄位的等價分割</caption>
             <thead>
@@ -308,7 +309,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         <p>
           日常作息是一天當中的五個時間點，彼此必須維持先後順序，所以午餐一定要落在早餐和晚餐之間。沒有任何單一欄位能驗證這件事，而這也正是基本選擇註定會漏掉的東西：這個準則每次只變動一個特徵，但這條規則要兩個欄位互相牴觸才會被打破。所以那四個案例裡有三個，是把時間這個特徵掃過它的各個分割區間，把 00:00、12:30 與 23:59 分別寫進五個作息裡，再逐一確認讀回來的值正確。第四個則反過來設計：先把早餐推到午餐之後，斷言 App 跳出的那句抱怨，關掉對話框，接著再把晚餐推到睡前時間之後，連第二句抱怨也一併斷言。一個測試，兩種打破順序的方式。
         </p>
-        <figure class="figure is-tight is-scroll" tabindex="0">
+        <figure class="figure is-tight is-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
           <svg viewBox="0 0 620 580" role="img" aria-labelledby="routine-flow-title routine-flow-desc">
             <title id="routine-flow-title">日常作息順序測試的活動圖</title>
             <desc id="routine-flow-desc">
@@ -443,6 +444,6 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=238f3707"></script>
+  <script src="/assets/js/main.js?v=d674b144"></script>
 </body>
 </html>

@@ -4,6 +4,7 @@
     python3 tools/og.py                  # every Chinese page
     python3 tools/og.py zh/index.html    # just one
     python3 tools/og.py --all            # English pages too (see below)
+    python3 tools/og.py --check          # exit 1 if a card has gone stale
 
 The card text is read out of the page: the hero kicker, og:title, and
 og:description. Nothing is restated here, so a card cannot drift from the page
@@ -16,9 +17,14 @@ sets sit in the same family.
 
 Rendering is Chrome headless at exactly 1200x630. That means the system's own
 CJK font (PingFang TC) does the Chinese, which is what the site uses too.
+
+A rendered PNG is not reproducible byte for byte (Chrome version, font build),
+so --check compares the text a card is drawn from against tools/og-cards.json,
+written when it was last rendered.
 """
 
 import html
+import json
 import re
 import shutil
 import subprocess
@@ -28,6 +34,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets/img/og"
+# Kept out of assets/ on purpose: everything tracked under there has to be
+# referenced by a page, and this is a record for the tools, not a served file.
+SIDECAR = ROOT / "tools/og-cards.json"
 
 CHROME = next((p for p in [
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
@@ -176,20 +185,59 @@ SLUG = {
 }
 
 
+def every_page():
+    return [f"zh/{n}" for n in ZH_PAGES] + list(SLUG)
+
+
+def load_sidecar():
+    return json.loads(SIDECAR.read_text(encoding="utf-8")) if SIDECAR.is_file() else {}
+
+
+def save_sidecar(specs):
+    SIDECAR.write_text(json.dumps(specs, ensure_ascii=False, indent=2,
+                                  sort_keys=True) + "\n", encoding="utf-8")
+
+
+def check():
+    """Compare each page's card copy with what its card was drawn from."""
+    recorded = load_sidecar()
+    stale = []
+    for page in every_page():
+        want = card_for(page)
+        have = recorded.get(page)
+        if have is None:
+            stale.append(f"{page}: no card recorded; run python3 tools/og.py --record")
+        elif have != want:
+            fields = sorted(k for k in want if have.get(k) != want[k])
+            stale.append(f"{page}: card is stale, {', '.join(fields)} changed")
+    for s in stale:
+        print(f"  stale: {s}")
+    print(f"{len(stale)} stale card(s) across {len(every_page())} pages")
+    return 1 if stale else 0
+
+
 def main(argv):
+    if "--check" in argv:
+        return check()
     targets = [a for a in argv if a.endswith(".html")]
+    record_all = "--record" in argv
     if not targets:
         targets = [f"zh/{n}" for n in ZH_PAGES]
-        if "--all" in argv:
+        if "--all" in argv or record_all:
             targets += list(SLUG)
+    specs = load_sidecar()
     for page in targets:
         name = Path(page).name
         slug = SLUG[name]
         suffix = "-zh" if page.startswith("zh/") else ""
         out = OUT / f"{slug}{suffix}.png"
-        spec = render(page, out)
+        # --record adopts the cards already in the repo, including the English
+        # ones this tool did not draw, without re-rendering anything.
+        spec = card_for(page) if record_all else render(page, out)
+        specs[page] = spec
         size = out.stat().st_size if out.exists() else 0
         print(f"  {out.relative_to(ROOT)}  {size:>7,} B   {spec['title'][:38]}")
+    save_sidecar(specs)
     return 0
 
 

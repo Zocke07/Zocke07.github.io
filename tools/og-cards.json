@@ -1,0 +1,146 @@
+{
+  "case-study-ai-products.html": {
+    "cjk": "",
+    "desc": "Technical project management and release verification for two AI products built by a distributed intern team.",
+    "kicker": "Case Study · Program Management &amp; QA · Taiwan Mobile",
+    "lang": "en",
+    "long": "",
+    "title": "Between the Code and the People",
+    "who": "Rivan Wong"
+  },
+  "case-study-capstone.html": {
+    "cjk": "",
+    "desc": "Four years of a test automation team&#x27;s output, and why a healthy pipeline and falling numbers turned out to be compatible.",
+    "kicker": "Capstone Project · Industry-Academia Research · Sunbird Software",
+    "lang": "en",
+    "long": "",
+    "title": "The Process Was Fine. The Output Still Fell.",
+    "who": "Rivan Wong"
+  },
+  "case-study-lmad.html": {
+    "cjk": "",
+    "desc": "A Byzantine-robust aggregation rule for federated edge learning, and the twenty-seed study that says exactly when it fails.",
+    "kicker": "Master&#x27;s Thesis · Federated Learning Security · NTUT",
+    "lang": "en",
+    "long": "",
+    "title": "The Defense That Says Where It Breaks",
+    "who": "Rivan Wong"
+  },
+  "case-study-microprocessors.html": {
+    "cjk": "",
+    "desc": "Notes from two semesters under the abstraction: nine VHDL exercises up to a four-stage CPU, then down a Jetson TX2 to a character device.",
+    "kicker": "Coursework Notes · Digital Design &amp; Embedded Linux · Undergraduate",
+    "lang": "en",
+    "long": "",
+    "title": "From a Truth Table to a Pipelined CPU",
+    "who": "Rivan Wong"
+  },
+  "case-study-sky-scraper-escape.html": {
+    "cjk": "",
+    "desc": "Seven levels, one interface, and what a student game taught me about designing for the change you cannot see yet.",
+    "kicker": "Case Study · C++ &amp; Object-Oriented Design · University Project",
+    "lang": "en",
+    "long": "",
+    "title": "The Menu Is Just Another Level",
+    "who": "Rivan Wong"
+  },
+  "case-study-test-automation.html": {
+    "cjk": "",
+    "desc": "Distributed resource locking, listener-based flake control, CI quality gates, and performance testing methodology. An NDA-safe engineering deep dive.",
+    "kicker": "Case Study · Test Automation · Sunbird Software",
+    "lang": "en",
+    "long": " long",
+    "title": "How 730+ Tests Run at Once Without Stepping on Each Other",
+    "who": "Rivan Wong"
+  },
+  "index.html": {
+    "cjk": "",
+    "desc": "Computer Science M.S. QA, test automation, and AI product verification in Taipei.",
+    "kicker": "PORTFOLIO",
+    "lang": "en",
+    "long": "",
+    "title": "Rivan Wong",
+    "who": "Rivan Wong"
+  },
+  "project-mobile-testing.html": {
+    "cjk": "",
+    "desc": "Automating a stateful Android app with no API, no test hooks, and no way to put it back the way you found it except by hand.",
+    "kicker": "Project Notes · Mobile Test Automation · Course Project",
+    "lang": "en",
+    "long": "",
+    "title": "No Reset Button",
+    "who": "Rivan Wong"
+  },
+  "zh/case-study-ai-products.html": {
+    "cjk": "cjk",
+    "desc": "為一支分散兩地的實習生團隊所開發的兩項 AI 產品，負責技術專案管理與發布前驗證。",
+    "kicker": "案例研究 · 專案管理與品質保證 · 台灣大哥大",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "在程式碼與人之間",
+    "who": "黃家輝"
+  },
+  "zh/case-study-capstone.html": {
+    "cjk": "cjk",
+    "desc": "一個自動化測試團隊四年的產出數據，以及健康的流程與下滑的數字為什麼可以同時成立。",
+    "kicker": "畢業專題 · 產學合作研究 · Sunbird Software",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "流程沒有問題，產出還是掉了",
+    "who": "黃家輝"
+  },
+  "zh/case-study-lmad.html": {
+    "cjk": "cjk",
+    "desc": "一套用於聯邦邊緣學習的拜占庭強健聚合機制，以及那份說明它何時會失敗的 20 組種子實驗。",
+    "kicker": "碩士論文 · 聯邦式學習安全 · 北科大",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "說得出自己何時失效的防禦",
+    "who": "黃家輝"
+  },
+  "zh/case-study-microprocessors.html": {
+    "cjk": "cjk",
+    "desc": "兩個學期待在抽象層底下的筆記：九個 VHDL 實驗往上疊成四階段 CPU，再沿著 Jetson TX2 往下做到字元裝置。",
+    "kicker": "課程筆記 · 數位設計與嵌入式 Linux · 大學部",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "從真值表到管線化 CPU",
+    "who": "黃家輝"
+  },
+  "zh/case-study-sky-scraper-escape.html": {
+    "cjk": "cjk",
+    "desc": "七個關卡、一組介面，以及一個學生時期的遊戲專案教會我如何為還看不見的變更預留空間。",
+    "kicker": "案例研究 · C++ 與物件導向設計 · 大學專題",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "選單也只是另一個關卡",
+    "who": "黃家輝"
+  },
+  "zh/case-study-test-automation.html": {
+    "cjk": "cjk",
+    "desc": "分散式資源鎖、以監聽器抑制測試不穩定、CI 品質關卡，以及效能測試方法。一篇符合保密協議的工程深入解析。",
+    "kicker": "案例研究 · 測試自動化 · Sunbird Software",
+    "lang": "zh-Hant-TW",
+    "long": " long",
+    "title": "730+ 項測試如何同時執行而互不干擾",
+    "who": "黃家輝"
+  },
+  "zh/index.html": {
+    "cjk": "cjk",
+    "desc": "國立臺北科技大學資訊工程碩士，專注於軟體工程、自動化測試與聯邦式學習安全。",
+    "kicker": "作品集",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "黃家輝",
+    "who": "黃家輝"
+  },
+  "zh/project-mobile-testing.html": {
+    "cjk": "cjk",
+    "desc": "替一款有狀態的 Android App 做自動化測試：沒有 API、沒有測試掛鉤，也沒有任何方法能把它還原成原本的樣子，只能一步一步點回去。",
+    "kicker": "專案筆記 · 行動端自動化測試 · 課程專題",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "沒有重置鍵",
+    "who": "黃家輝"
+  }
+}

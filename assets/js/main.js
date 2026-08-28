@@ -14,28 +14,58 @@ const $ = (sel, ctx = document) => ctx.querySelector(sel);
 // and iOS, so it changes mid-session more often than it looks.
 const motionQuery = matchMedia("(prefers-reduced-motion: reduce)");
 let reducedMotion = motionQuery.matches;
-const onMotionChange = [];
+// Everything that answers this setting answers in one direction: something that
+// was moving has to stop. Nothing has to start again, because a reader who
+// turns the setting back off has not asked for the motion to resume mid-page.
+const onReduced = [];
+const whenReducedMotion = (fn) => onReduced.push(fn);
 motionQuery.addEventListener("change", (e) => {
   reducedMotion = e.matches;
-  onMotionChange.forEach((fn) => fn());
+  if (reducedMotion) onReduced.forEach((fn) => fn());
 });
 
 // --- Theme toggle ---
 // aria-label names what the button turns on; aria-pressed carries the state,
 // which is otherwise invisible: both icons are aria-hidden, so without it a
 // screen reader could not tell which theme was active or what pressing did.
+const themeQuery = matchMedia("(prefers-color-scheme: dark)");
+const systemTheme = () => (themeQuery.matches ? "dark" : "light");
+const storedTheme = () => {
+  // Reading throws where storage is blocked, which is the same as no choice.
+  try {
+    return localStorage.getItem("theme");
+  } catch (e) {
+    return null;
+  }
+};
+
 const themeToggle = $(".theme-toggle");
+const syncTheme = () =>
+  themeToggle?.setAttribute("aria-pressed", String(root.dataset.theme === "dark"));
+
+// Live, for the same reason the motion query above is: macOS and iOS flip
+// Appearance on their own at sunset. The inline head script reads the query
+// once at parse time and cannot see a change after that. Only pages with no
+// stored choice follow along; an explicit choice outranks the OS.
+themeQuery.addEventListener("change", () => {
+  if (storedTheme()) return;
+  root.dataset.theme = systemTheme();
+  syncTheme();
+});
+
 if (themeToggle) {
-  const syncTheme = () =>
-    themeToggle.setAttribute("aria-pressed", String(root.dataset.theme === "dark"));
   syncTheme();
   themeToggle.addEventListener("click", () => {
-    root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
+    const next = root.dataset.theme === "dark" ? "light" : "dark";
+    root.dataset.theme = next;
     syncTheme();
-    // Writing throws where storage is blocked. The theme has already flipped on
-    // screen by this point, so only the memory of it is lost.
+    // The head script treats any stored value as final, so storing only a
+    // choice that disagrees with the OS is what keeps "follow the system"
+    // reachable. Writing throws where storage is blocked; the theme has
+    // already flipped on screen, so only the memory of it is lost.
     try {
-      localStorage.setItem("theme", root.dataset.theme);
+      if (next === systemTheme()) localStorage.removeItem("theme");
+      else localStorage.setItem("theme", next);
     } catch (e) {
       /* not persistable here; the choice still holds for this page */
     }
@@ -188,11 +218,9 @@ if (revealTargets.length) {
     }, { threshold: 0.1, rootMargin: "0px 0px -40px 0px" });
     revealTargets.forEach((el) => revealer.observe(el));
     // If the reader asks for less motion later, nothing should still be hidden.
-    onMotionChange.push(() => {
-      if (reducedMotion) {
-        revealer.disconnect();
-        showAll();
-      }
+    whenReducedMotion(() => {
+      revealer.disconnect();
+      showAll();
     });
   }
 }
@@ -216,17 +244,36 @@ if (clipFrames.length && clipsToggle) {
   const videos = clipFrames.map((frame) => $("video", frame)).filter(Boolean);
   const label = $("span", clipsToggle);
   const onScreen = new Set();
+  // apply() runs on every observer callback, so `manual` is what stops the
+  // next scroll pausing a clip the reader just pressed play on, which is the
+  // affordance stopping the set exists to offer; the toggle clears it. A play
+  // event cannot say who called play(), so `selfStarted` marks the starts
+  // apply() makes itself for the listener below to discount.
+  const manual = new Set();
+  const selfStarted = new Set();
   // Nothing moves on its own for a reader who has asked for less motion; the
   // button still offers it.
   let running = !reducedMotion;
 
+  videos.forEach((video) => {
+    video.addEventListener("play", () => {
+      if (selfStarted.has(video)) selfStarted.delete(video);
+      else manual.add(video);
+    });
+  });
+
   const apply = () => {
     videos.forEach((video) => {
       video.controls = !running;
-      // Autoplay can be refused (a data saver, iOS low power mode). There is
-      // nothing to recover: the clip simply stays on its poster.
-      if (running && onScreen.has(video)) video.play().catch(() => {});
-      else video.pause();
+      if (manual.has(video)) return;
+      if (running && onScreen.has(video)) {
+        if (!video.paused) return;  // a second play() fires no event to discount
+        selfStarted.add(video);
+        // Autoplay can be refused (a data saver, iOS low power mode). The clip
+        // stays on its poster, and the start it would have accounted for
+        // never happens.
+        video.play().catch(() => selfStarted.delete(video));
+      } else video.pause();
     });
     clipsToggle.classList.toggle("is-paused", !running);
     clipsToggle.setAttribute("aria-pressed", String(running));
@@ -237,6 +284,7 @@ if (clipFrames.length && clipsToggle) {
   clipsToggle.classList.add("is-ready");
   clipsToggle.addEventListener("click", () => {
     running = !running;
+    manual.clear();
     apply();
   });
 
@@ -254,11 +302,12 @@ if (clipFrames.length && clipsToggle) {
   { threshold: 0.33 });
   clipFrames.forEach((frame) => watcher.observe(frame));
 
-  onMotionChange.push(() => {
-    if (reducedMotion && running) {
-      running = false;
-      apply();
-    }
+  whenReducedMotion(() => {
+    if (!running) return;
+    running = false;
+    // Asking for less motion mid-session outranks an earlier hand-start.
+    manual.clear();
+    apply();
   });
 
   apply();
@@ -273,7 +322,7 @@ let phrases = [];
 try {
   phrases = JSON.parse(rotator?.dataset.phrases ?? "[]");
 } catch {
-  phrases = [];
+  /* malformed data-phrases: the tagline stays on the line already in the HTML */
 }
 
 if (rotator && !reducedMotion && phrases.length > 1) {
@@ -313,7 +362,5 @@ if (rotator && !reducedMotion && phrases.length > 1) {
     if (document.hidden) stop();
     else start();
   });
-  onMotionChange.push(() => {
-    if (reducedMotion) stop();
-  });
+  whenReducedMotion(stop);
 }

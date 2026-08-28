@@ -11,7 +11,6 @@ GitHub Pages resolves for free. `python3 -m http.server` does not, so it would
 Binds to 127.0.0.1, so the preview stays off the local network.
 """
 
-import functools
 import http.server
 import os
 import socketserver

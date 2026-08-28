@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>No Reset Button · Rivan Wong</title>
-  <meta name="description" content="Automating a stateful Android health app with no API and no test hooks: keyword-driven Appium tests, input space partitioning covered by base choice, and cleanup that has to happen through the UI. Project notes." />
+  <meta name="description" content="Automating a stateful Android health app with no API and no test hooks: keyword-driven Appium tests, base-choice input space partitioning, UI-only cleanup." />
   <meta property="og:title" content="No Reset Button" />
   <meta property="og:description" content="Automating a stateful Android app with no API, no test hooks, and no way to put it back the way you found it except by hand." />
   <meta property="og:locale" content="en_US" />
@@ -34,8 +34,9 @@
   <link rel="canonical" href="https://zocke07.github.io/project-mobile-testing" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/project-mobile-testing" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/project-mobile-testing" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=04d3a544" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -280,9 +281,9 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
 
         <h3>What that looks like on a real screen</h3>
         <figure class="figure">
-          <div class="figure-doc is-wide" tabindex="0">
+          <div class="figure-doc is-wide" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <a href="/assets/img/tc1-activity-diagram.webp" target="_blank" rel="noopener">
-              <img src="/assets/img/tc1-activity-diagram.webp" width="2000" height="749" loading="lazy" decoding="async"
+              <img src="/assets/img/tc1-activity-diagram.webp" width="3200" height="1300" loading="lazy" decoding="async"
                    alt="Activity diagram for the Add Health Data screen. A spine of decision diamonds
                         runs left to right, one per record type, and each labeled branch TC1-1 through
                         TC1-7 drops to the inputs that test case enters." />
@@ -301,7 +302,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         </figure>
 
         <h3>The blocks behind my fifteen tests</h3>
-        <div class="blocks" tabindex="0">
+        <div class="blocks" tabindex="0" role="group" aria-label="Table, scrollable">
           <table>
             <caption class="sr-only">Equivalence partitions for the settings area, by input</caption>
             <thead>
@@ -388,8 +389,8 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
           dialog, then pushes dinner past bedtime and asserts that second complaint too. One test,
           two ways to break the ordering.
         </p>
-        <figure class="figure is-tight is-scroll" tabindex="0">
-          <svg viewBox="0 0 620 580" role="img" aria-labeledby="routine-flow-title routine-flow-desc">
+        <figure class="figure is-tight is-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
+          <svg viewBox="0 0 620 580" role="img" aria-labelledby="routine-flow-title routine-flow-desc">
             <title id="routine-flow-title">Activity diagram for the daily routine ordering test</title>
             <desc id="routine-flow-desc">
               Five routine times are entered and Done is tapped. The app checks whether lunch falls
@@ -543,6 +544,6 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=238f3707"></script>
+  <script src="/assets/js/main.js?v=d674b144"></script>
 </body>
 </html>

@@ -1,9 +1,9 @@
 # https://zocke07.github.io/
-# Everything here is meant to be read. The only page held back is the 404,
-# which also carries <meta name="robots" content="noindex">.
+# Everything here is meant to be read. The 404 is kept out of the index by its
+# own <meta name="robots" content="noindex, follow">, which a crawler can only
+# act on if it is allowed to fetch the page.
 
 User-agent: *
 Allow: /
-Disallow: /404.html
 
 Sitemap: https://zocke07.github.io/sitemap.xml

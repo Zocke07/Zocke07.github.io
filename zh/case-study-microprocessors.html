@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>從真值表到管線化 CPU · 黃家輝</title>
-  <meta name="description" content="兩個學期硬體課程的閱讀筆記：九個 VHDL 實驗從真值表一路疊到四階段管線化 CPU，接著在 NVIDIA Jetson TX2 上一層一層往下做到核心模組。這些程式碼做了什麼、為什麼會動，以及哪裡不成立。" />
+  <meta name="description" content="兩個學期硬體課程的閱讀筆記：九個 VHDL 實驗從真值表一路疊到四階段管線化 CPU，接著在 NVIDIA Jetson TX2 上一層一層往下做到核心模組。" />
   <meta property="og:title" content="從真值表到管線化 CPU" />
   <meta property="og:description" content="兩個學期待在抽象層底下的筆記：九個 VHDL 實驗往上疊成四階段 CPU，再沿著 Jetson TX2 往下做到字元裝置。" />
   <meta property="og:locale" content="zh_TW" />
@@ -34,8 +34,9 @@
   <link rel="canonical" href="https://zocke07.github.io/zh/case-study-microprocessors" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-microprocessors" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-microprocessors" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-microprocessors" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=04d3a544" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -168,7 +169,7 @@ end process;</code></pre>
           把那四塊裡的任兩塊對調，這顆處理器就不再是管線化的了。而檔案裡沒有任何一行提到這件事。
         </p>
         <figure class="figure">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
             <svg class="fig-svg" viewBox="0 0 700 372" role="img" aria-labelledby="pipetitle pipedesc">
               <title id="pipetitle">一個時序 process 裡倒著排列的四個管線階段</title>
               <desc id="pipedesc">process 主體依序列出寫回、執行、指令解碼、指令擷取。每個階段都把排在它下面那個階段所持有的指令複製到自己的變數裡，所以指令是由主體的下方往上方前進，而主體本身是由上往下執行的。</desc>
@@ -258,7 +259,7 @@ else
           <code>excuteResult</code> 和執行階段剛剛把它寫進去的那個影子暫存器，在結構上必然相等。偵測本身是真的，但它邀功的那個前饋，其實是檔案排版的副作用。
         </p>
         <figure class="figure">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
             <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="hztitle hzdesc">
               <title id="hztitle">被前饋的值究竟是從哪裡來的</title>
               <desc id="hzdesc">管線裡相差一個週期的兩道指令。在第三個週期，第一道指令位於執行階段，第二道位於解碼階段。執行階段寫入影子暫存器變數，而解碼階段在同一個時脈邊緣就讀到它，所以前饋是靠敘述順序完成的，而不是靠那段明寫的 hazard 判斷。</desc>
@@ -393,7 +394,7 @@ vfs_write(fd, value, strlen(value), &amp;pos);</code></pre>
           並寫一個字元進去，而這正是四週前實驗二在使用者空間用大約十行做完的事。驅動程式存在的意義是當那個堆疊的最底層。這一個卻爬回它本該取代的那一層，然後請那一層幫忙做事。它多加了一跳，而不是少掉一跳。
         </p>
         <figure class="figure">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
             <svg class="fig-svg" viewBox="0 0 700 500" role="img" aria-labelledby="hoptitle hopdesc">
               <title id="hoptitle">瀏覽器點擊到 LED 之間的八層，對照實驗二的一層</title>
               <desc id="hopdesc">一條垂直的鏈：瀏覽器請求、Express 處理函式、載入核心模組、一個 sudo 子行程、寫入 /dev/demo、模組的 write 處理函式、從核心寫回 sysfs 的 GPIO value 檔，最後是 LED。左邊分出來的那一條顯示實驗二的使用者空間程式是直接寫同一個 sysfs 檔案的。</desc>
@@ -601,6 +602,6 @@ setTimeout(() =&gt; {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=238f3707"></script>
+  <script src="/assets/js/main.js?v=d674b144"></script>
 </body>
 </html>

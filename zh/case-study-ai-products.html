@@ -34,8 +34,9 @@
   <link rel="canonical" href="https://zocke07.github.io/zh/case-study-ai-products" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-ai-products" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-ai-products" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-ai-products" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=04d3a544" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -155,7 +156,7 @@
           <li><b>明確簽核，或把不簽核的決定記錄下來</b><span>當我們選擇接受某個缺口或跳過某一輪驗證時，這個決定連同理由都會寫下來，而不是留給大家自行意會。</span></li>
         </ol>
         <figure class="figure">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
             <svg class="fig-svg" viewBox="0 0 720 215" role="img" aria-labelledby="aigatetitle aigatedesc">
               <title id="aigatetitle">一個能乾淨編譯的缺陷，實際上是在哪裡被攔下來的</title>
               <desc id="aigatedesc">一項變更由左至右通過五道關卡：提案與設計、驗收條件、實作查核清單、親手驗證，以及簽核。一個能乾淨編譯、讀起來也正確的缺陷，會毫無阻礙地通過前三步，最後在親手驗證這一步被攔下來。</desc>
@@ -217,7 +218,7 @@
           在 IDE 擴充套件這邊，驗證的樣貌不太一樣，因為那裡做得出測試套件。有三個相依讓這件事變得棘手：即時的編輯器 API、真實的版本控制系統，以及不具確定性的模型。團隊把測試放進真正的編輯器執行個體裡跑，在磁碟上建立用完即丟的儲存庫來實際執行指令，並把模型換成 stub，讓結果具備確定性、執行起來也不花錢。審閱那套測試套件的過程，是我今天對於如何測試「看似不可測之物」的認識的主要來源。
         </p>
         <figure class="figure">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
             <svg class="fig-svg" viewBox="0 0 700 240" role="img" aria-labelledby="aitesttitle aitestdesc">
               <title id="aitesttitle">三個棘手的相依，以及各自採用的替代做法</title>
               <desc id="aitestdesc">三列對照。即時的編輯器 API，做法是把測試放進真正的編輯器執行個體裡跑；真實的版本控制系統，做法是在磁碟上建立用完即丟的儲存庫；不具確定性的模型，則換成 stub，讓結果具備確定性且不花錢。</desc>
@@ -323,6 +324,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=238f3707"></script>
+  <script src="/assets/js/main.js?v=d674b144"></script>
 </body>
 </html>

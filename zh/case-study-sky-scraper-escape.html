@@ -34,8 +34,9 @@
   <link rel="canonical" href="https://zocke07.github.io/zh/case-study-sky-scraper-escape" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-sky-scraper-escape" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-sky-scraper-escape" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-sky-scraper-escape" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=04d3a544" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -139,7 +140,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
           遊玩狀態的十一個函式裡，有七個就長這樣：一行、轉發、沒有任何分支。
         </p>
         <figure class="figure">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
             <svg class="fig-svg" viewBox="0 0 700 330" role="img" aria-labelledby="skyarchtitle skyarchdesc">
               <title id="skyarchtitle">同一種間接層做了兩次，下面那層是照著上面那層抄的</title>
               <desc id="skyarchdesc">框架持有一張固定的三個遊戲狀態表格，並把事件轉發給當前的那一個。遊玩狀態在下一層重複了同樣的模式：它持有一個指標，指向一個含八個關卡物件的向量，也就是關卡選擇選單加上七個關卡，並把同樣的十一個事件函式轉發給當前的那一個。</desc>
@@ -327,6 +328,6 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=238f3707"></script>
+  <script src="/assets/js/main.js?v=d674b144"></script>
 </body>
 </html>

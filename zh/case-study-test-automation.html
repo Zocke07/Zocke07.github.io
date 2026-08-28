@@ -34,8 +34,9 @@
   <link rel="canonical" href="https://zocke07.github.io/zh/case-study-test-automation" />
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-test-automation" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-test-automation" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-test-automation" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=04d3a544" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -138,7 +139,7 @@
           數百組套件共用同一台運作中的伺服器，因此平台以 Pabot 的共享記憶體函式庫為基礎，做了一套以標籤為依據的分散式鎖管理器：只要套件會動到共用子系統（例如檔案匯入），就用標籤宣告出來，再由監聽器只把真正會衝突的套件排成循序執行。鎖一律以整組套件為單位取得，避免死結；每一次鎖的狀態轉換都會以標準的 trace 格式輸出，讓平行狀況可以用視覺化的方式檢視。寫新測試代表要理解這份約定並宣告正確的資源，所以我寫的套件在結構上天生就能安全平行執行。
         </p>
         <figure class="figure">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
             <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="lockstitle lockdesc">
               <title id="lockstitle">資源鎖管理器之下，六組套件在同一條時間軸上的執行情形</title>
               <desc id="lockdesc">六組測試套件以長條標示在時間軸上。其中四組同時開始並自由重疊。第四組與第五組宣告了同一個共用子系統，因此第五組要等第四組釋放鎖之後才會開始。</desc>
@@ -198,7 +199,7 @@
           測試程式碼比照正式產品的標準要求。每一組新套件都要在自訂的靜態分析規則下零警告通過、連續十次執行全綠，接著在網路節流的情況下再通過五次，才能合併。在 CI 中，通過率未達 100% 的結果會讓該次建置被標記為失敗。正是這道關卡讓這種規模的測試套件值得信任：沒有人需要爭論紅色的建置是不是「大概只是測試不穩定而已」。
         </p>
         <figure class="figure">
-          <div class="figure-scroll" tabindex="0">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
             <svg class="fig-svg" viewBox="0 0 700 210" role="img" aria-labelledby="gatetitle gatedesc">
               <title id="gatetitle">新套件必須通過的合併關卡</title>
               <desc id="gatedesc">新套件要依序通過零警告的靜態分析、連續十次全綠的執行，以及在網路節流下再執行五次，才能合併。任何一個階段出現紅燈，套件都會回到起點，執行次數重新計算。</desc>
@@ -288,6 +289,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=238f3707"></script>
+  <script src="/assets/js/main.js?v=d674b144"></script>
 </body>
 </html>

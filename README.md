@@ -25,13 +25,15 @@ assets/
   img/og/                        # 1200x630 social cards, <slug>.png and <slug>-zh.png
   cv/rivan-wong-cv.pdf           # copy of CV/build/cv.pdf, see below
 tools/serve.py                   # local preview, resolves URLs like GitHub Pages
-tools/check.py                   # twelve regression checks; run before every commit
+tools/check.py                   # sixteen regression checks; run before every commit
 tools/bump.py                    # stamps ?v= from a hash of the asset
 tools/cv.py                      # refreshes the CV copy from CV/build
 tools/og.py                      # renders a page's social card from its own metadata
 tools/sitemap.py                 # rebuilds sitemap.xml from the pages' own canonicals
 tools/cjk.py                     # unwraps Chinese lines that would render a stray space
-.github/workflows/check.yml      # runs tools/check.py on every push
+tools/og-cards.json              # generated; what each social card was drawn from
+.githooks/pre-commit             # runs tools/check.py before a commit is written
+.github/workflows/check.yml      # runs tools/check.py and node --check on every push
 ```
 
 ## URLs
@@ -66,9 +68,17 @@ Chinese. The pairing is asserted in four places, and all four have to stay in
 step when a page is added or renamed:
 
 - the `.lang-toggle` anchor in the header,
-- the `<link rel="alternate" hreflang="...">` tags,
+- the `<link rel="alternate" hreflang="...">` tags, three per page: `en`,
+  `zh-Hant-TW` and `x-default`,
 - `<link rel="canonical">`,
 - `og:url`, which is absolute and language-specific.
+
+The `alternates` check asserts the middle two against each other: each page's
+canonical has to name that page, and both twins have to publish the same
+alternate block naming each twin by the URL that twin claims for itself. That
+is not something `sitemap` can cover, because `tools/sitemap.py` reads those
+same canonicals as ground truth, so a wrong one is copied faithfully into the
+expected output and the comparison still passes.
 
 The header, footer and back-to-top wording must also stay identical *within* a
 language. Seven of those strings had drifted into two spellings across the
@@ -150,6 +160,7 @@ The Chinese cards are generated:
 ```sh
 python3 tools/og.py                  # every Chinese page
 python3 tools/og.py zh/index.html    # just one
+python3 tools/og.py --check          # used by tools/check.py
 ```
 
 The text comes out of the page itself, the hero kicker plus `og:title` and
@@ -161,6 +172,13 @@ The English cards were drawn by hand before the generator existed and are close
 but not identical to what it produces, so `tools/og.py` leaves them alone unless
 `--all` is passed. Its palette and geometry were measured off `og/lmad.png`, so
 the two sets sit in the same family.
+
+A rendered PNG is not reproducible byte for byte, so the staleness check
+compares the text a card was drawn from instead, recorded in
+`tools/og-cards.json` when it was last rendered. That covers the hand-drawn
+English cards too: `--record` adopts what is already in the repo without
+re-rendering it, and after that an edit to an `og:title` fails the `cards`
+check until the card is redrawn.
 
 `tools/check.py` fails if a Chinese page points at an English card, which is
 what it did for all eight of them until now.
@@ -220,21 +238,25 @@ Pushes to `main` publish automatically once GitHub Pages is enabled:
 ## Checks
 
 ```sh
-python3 tools/check.py            # all twelve
+python3 tools/check.py            # all sixteen
 python3 tools/check.py links      # or just one
 ```
 
 | check | asserts |
 | --- | --- |
 | `structure` | tag balance, no duplicate ids, one `<h1>`, no skipped heading levels, no malformed markup |
-| `links` | every internal `href`/`src`/`poster` resolves on disk, using the extensionless convention |
-| `parity` | each English page and its Chinese twin share an identical `id=` and `class=` sequence |
-| `chrome` | the header, footer and control labels are identical within each language |
-| `deadcss` | every class in `style.css` is used by a page or applied by `main.js` |
+| `links` | every internal URL resolves on disk, absolute `og:image` and canonical forms included |
+| `alternates` | each pair's `canonical` and three `hreflang` values agree in both directions |
+| `parity` | each English page and its Chinese twin share an identical `id=` and `class=` sequence, in `<main>`, `<header>` and `<footer>` |
+| `chrome` | six shared strings are identical within each language, and present on every page |
+| `css` | `style.css` braces and comment markers balance |
+| `deadcss` | no class is declared in `style.css` without a user, or used in markup without `style.css` or `main.js` defining it |
 | `assets` | every tracked file under `assets/` is referenced by some page |
+| `tracked` | git tracks nothing outside the published site |
 | `stamps` | every `?v=` matches the hash of the file it points at |
 | `cv` | `assets/cv/rivan-wong-cv.pdf` still matches `CV/build/cv.pdf` |
 | `og` | each page points at its own card and declares the right `og:locale` |
+| `cards` | each social card still matches the page metadata it was drawn from |
 | `copy` | English prose keeps one spelling and punctuation convention |
 | `sitemap` | `sitemap.xml` still matches the pages' own canonical URLs |
 | `cjk` | no Chinese line break renders as a stray space |
@@ -242,6 +264,23 @@ python3 tools/check.py links      # or just one
 `parity` is the one worth understanding: it is what catches a change made to one
 language and forgotten in the other. It compares structure, not prose, so the
 Chinese text being shorter does not trip it.
+
+Two of these are about the suite's own blind spots rather than the site's.
+`tracked` asserts the repository manifest, because every other check scopes
+itself to pages and assets it already knows about and so would pass on a commit
+that staged an entire unrelated tree. `css` and the CI step that runs
+`node --check assets/js/main.js` cover the two files nothing else parses: a
+missing brace in either ships green otherwise, and takes the stylesheet or every
+behaviour on the site with it.
+
+The suite runs in about a third of a second, which is cheap enough to gate a
+commit. GitHub Pages deploys the branch directly and concurrently with Actions,
+so the workflow reports on a broken page after it is live; `.githooks/pre-commit`
+is the gate that runs first. Switch it on once per clone:
+
+```sh
+git config core.hooksPath .githooks
+```
 
 `copy` holds the English pages to one convention: American spelling (defense,
 center, -ize) and straight apostrophes. Six strays had accumulated, one of them
@@ -281,13 +320,16 @@ slash. Without it the pattern also matched `assets/cv/`, because macOS sets
 
 Deliberately none today. The site is 16 pages on one stylesheet and one script,
 with no dependencies and no build step: `git push` deploys it, the first visit
-costs about 18 KB gzipped over zero external requests, and it will still build
-untouched in five years.
+costs 24 to 35 KB gzipped of HTML, CSS and JS over zero external requests, plus
+one 71 KB portrait on the home page, and it will still build untouched in five
+years. (`style.css` and `main.js` are 17 KB gzipped of that and are shared, so
+every page after the first costs only its own HTML.)
 
 What that costs is real and worth naming: the head, header, footer and
-back-to-top blocks are repeated on every page, about 1,150 lines site-wide, of
-which roughly 640 line-instances are 40 distinct lines copied sixteen times.
-Adding a nav item is sixteen edits.
+back-to-top blocks are repeated on every page. Measured, 68 distinct lines
+appear on 16 or more of the 17 pages, for 2,389 line-instances, about 32% of all
+HTML in the repo. `404.html` carries the full nav too, so adding a nav item is
+seventeen edits.
 
 If that stops being worth it, the answer is **Astro**, not React or Vue. It
 ships zero JavaScript by default and outputs static HTML to the same GitHub

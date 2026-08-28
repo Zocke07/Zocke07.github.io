@@ -1,0 +1,13 @@
+#!/bin/sh
+# Run the site checks before a commit is written, which Actions cannot do:
+# Pages deploys this branch concurrently with CI. See README, "Checks".
+#
+#     git config core.hooksPath .githooks   # switch on, once per clone
+#     git commit --no-verify                # bypass, once, with a reason
+
+python3 tools/check.py || {
+    echo
+    echo "pre-commit: tools/check.py failed; commit aborted."
+    echo "            fix the problems above, or: git commit --no-verify"
+    exit 1
+}
