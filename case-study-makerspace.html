@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Where the Database Can Say No &#183; Rivan Wong</title>
+  <meta name="description" content="A campus makerspace booking system in PostgreSQL: one rule the schema refuses outright, four it cannot reach, and three defects only the seeded data could show." />
+  <meta property="og:title" content="Where the Database Can Say No" />
+  <meta property="og:description" content="A booking system built around one question: which rules can a schema refuse by itself, and what do you do about the ones it cannot?" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/case-study-makerspace" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og/makerspace.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Database case study: a campus makerspace equipment booking system built on PostgreSQL." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <link rel="canonical" href="https://zocke07.github.io/case-study-makerspace" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-makerspace" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-makerspace" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-makerspace" />
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="Primary">
+      <a class="nav-brand" href="/">Rivan Wong</a>
+      <div class="nav-right">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#education">Education</a></li>
+          <li><a href="/#experience">Experience</a></li>
+          <li><a href="/#projects">Work &amp; Research</a></li>
+          <li><a href="/#skills">Skills</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <a class="lang-toggle" href="/zh/case-study-makerspace" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+           aria-label="切換至繁體中文">中文</a>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Dark theme">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- ===================== Case study hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">Self-Directed Project · Database Systems · PostgreSQL</p>
+        <h1>Where the Database Can Say No</h1>
+        <p class="hero-blurb">
+          A campus makerspace lends out 3D printers, laser cutters and CNC mills on a paper
+          sign-up sheet. The sheet cannot stop two people claiming the same slot, cannot tell
+          whether either of them has been trained on the machine, and keeps no record when
+          something comes back late or broken. I replaced it with a three-tier web application
+          over a PostgreSQL schema, and the project turned into one question: of the rules that
+          matter, which ones can the database refuse by itself, and what do you do about the
+          ones it cannot reach?
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>My role:</strong> a self-directed project with no team. The requirements, the
+          ER model, the four migrations, the REST API and the React client are all mine, and so
+          are the three defects at the end that only showed up because I ran the analysis against
+          real rows instead of reading the schema.
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>14 relations</strong>, 5 views, 21 foreign keys</li>
+          <li><strong>28 constraints</strong> declared in the schema</li>
+          <li><strong>4 migrations</strong>, applied in order from empty</li>
+          <li><strong>13 relations</strong> analyzed for dependencies</li>
+          <li><strong>19 screens</strong> covering 19 user stories</li>
+          <li><strong>687 bookings</strong> seeded across 85 members</li>
+        </ul>
+        <aside class="source-note">
+          <strong>Scope and credit:</strong> the makerspace is invented and so is every person in
+          it. The three rooms borrow the name of a real building at Taipei Tech for a recognizable
+          setting, and nothing else about that building, its equipment, or any actual campus
+          operation is represented here. The seeded members, fines and certifications are
+          fabricated to exercise specific query branches, which is the point of them.
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== The three rules ===================== -->
+    <section id="rules" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">Three Rules a Sign-Up Sheet Cannot Keep</h2>
+        <p>
+          The paper sheet has three failure modes, and each one is a rule waiting to be written
+          down. Two members write their names in the same slot and both turn up. Nobody records
+          whether the person signing up has been trained on that machine, so staff check by
+          memory or do not check. A machine comes back two days late and nothing happens, because
+          nothing was written down that a charge could be based on.
+        </p>
+        <p>
+          So the system exists to enforce exactly three things: one booking per machine per time
+          slot, no booking without a current certification, and a recorded, chargeable consequence
+          for an overrun or damage. Everything else in the schema is there to serve one of those.
+        </p>
+        <p>
+          The interesting part is that the three are not alike. The first is a range-exclusion
+          constraint the database can enforce on its own. The second spans five tables and depends
+          on the booking window, which no <code>CHECK</code> may look at. The third is arithmetic
+          that a person has to approve before it becomes money owed. One rule the schema refuses
+          outright, one it cannot reach, one it should not decide.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The one constraint ===================== -->
+    <section id="constraint" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Choosing the Database for One Constraint</h2>
+        <p>
+          "No two bookings for the same machine may overlap" is the rule most systems implement in
+          application code: read the existing bookings, decide, insert. That has a race window
+          between the read and the insert, and under two people clicking Confirm at the same
+          moment it is the window that loses you the machine. PostgreSQL can state the rule as a
+          table constraint instead, which is the reason it was picked over anything else.
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">-- 001_create_schema.sql: the one load-bearing rule the database keeps by itself</span>
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+
+ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
+  EXCLUDE USING gist (
+    equipment_id                  WITH =,
+    tstzrange(starts_at, ends_at) WITH &amp;&amp;
+  ) WHERE (status &lt;&gt; 'cancelled');</code></pre>
+        <p class="snippet-caption">
+          Two concurrent inserts for the same slot cannot both succeed, whatever the application
+          code does or forgets to do.
+        </p>
+        <p>
+          Three details in those six lines are each a question a demo attracts. It is
+          <code>tstzrange</code> and not <code>tsrange</code>, because the latter takes a
+          timestamp without a time zone and would drag the columns to the wrong type. The
+          <code>WHERE</code> clause is what lets a canceled booking release its slot: without it
+          the slot would stay blocked forever, and the member who dropped it could not book it
+          again. And <code>tstzrange</code> is half-open by default, so a booking ending at 14:00 and
+          one starting at 14:00 do not collide, which is the definition the rest of the system
+          uses anyway.
+        </p>
+        <p>
+          The constraint also pays for itself twice. Enforcing it builds a GiST index on
+          <code>(equipment_id, tstzrange(starts_at, ends_at))</code>, and that is exactly the index
+          the availability search wants. The integrity guarantee and the query plan are the same
+          object.
+        </p>
+        <figure class="figure">
+          <div class="figure-doc is-wide" tabindex="0" role="group" aria-label="Screenshot, scrollable">
+            <a href="/assets/img/makerspace/equipment-detail.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/makerspace/equipment-detail.webp" width="1440" height="730" loading="lazy" decoding="async"
+                   alt="Equipment detail screen for a laser cutter. A fourteen-day strip shows two separate lanes, one for bookings and one for maintenance downtime, above a details panel listing category, manufacturer, location, maximum booking length, certification requirement and status, and an availability list showing one confirmed booking." />
+              <span class="sr-only">Open full size in a new tab</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            The machine page draws bookings and downtime in two separate lanes, and the reason is
+            the constraint above: downtime is allowed to overlap a booking, while two bookings
+            never can. Drawing them in one lane would have implied a rule the database does not
+            hold.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== BR-1 ===================== -->
+    <section id="certification" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">The Rule With No Declarative Home</h2>
+        <p>
+          The load-bearing rule of the whole project is the second one: a member may book a machine
+          only while holding a certification that authorizes that machine's category. It spans five
+          tables and depends on the booking window, so it has no home in a <code>CHECK</code>, and
+          it is too important to leave scattered across whichever code path happens to run.
+        </p>
+        <p>
+          It also has an interpretation to settle before any of that. Valid <em>when</em>? I took
+          the strict reading: valid across the entire window, not merely on the day the booking is
+          made. A member whose certification expires on Friday may not book Saturday, and may not
+          book a window that starts Thursday and ends Saturday. The looser reading would let
+          someone reserve a machine they will not be qualified to operate when they walk up to it,
+          which defeats the rule it is supposed to be.
+        </p>
+        <p>
+          The database's contribution is a view rather than a trigger. It flattens the traversal
+          into one relation of member, category and validity window:
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">-- the whole traversal, flattened into (member, category, window)</span>
+CREATE VIEW v_member_category_authorisation AS
+SELECT g.member_id, ca.category_id, g.certification_id,
+       g.granted_at AS valid_from, g.expires_at AS valid_to
+FROM certification_grant AS g
+JOIN category_authorisation AS ca ON ca.certification_id = g.certification_id;</code></pre>
+        <p class="snippet-caption">
+          The booking transaction then satisfies the rule with one query: a row must exist whose
+          category matches the machine's and whose window covers the whole booking, that is
+          <code>valid_from &lt;= starts_at AND valid_to &gt;= ends_at</code>.
+        </p>
+        <p>
+          A trigger would have enforced it more forcefully and documented it worse. The view states
+          the rule in the schema in a form you can read, the booking transaction is the single
+          place that applies it, and the catalog reuses the same view for the "am I certified for
+          this?" column, so the answer a member sees and the answer the server enforces come out of
+          one definition.
+        </p>
+        <p>
+          Two consequences fall out of the same reading. Certification is re-checked at handover,
+          because a booking made legitimately in March can belong to a member whose training
+          lapsed in April: the desk refuses the handover, and the booking is not deleted. And
+          expiry is never retroactive, so a completed booking stays valid history after the
+          certification behind it expires. History is not rewritten by the passage of time.
+        </p>
+        <figure class="figure">
+          <div class="figure-doc is-wide" tabindex="0" role="group" aria-label="Screenshot, scrollable">
+            <a href="/assets/img/makerspace/booking-refused.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/makerspace/booking-refused.webp" width="1440" height="580" loading="lazy" decoding="async"
+                   alt="New booking screen for a CNC router, refused. A red message under the form reads that the member's CNC Router Operation or General Machine Shop Safety certification does not cover this whole window because it expires on 2026-07-22, and suggests booking a renewal before the session, followed by the error code CERTIFICATION_EXPIRED." />
+              <span class="sr-only">Open full size in a new tab</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            Five things can refuse a booking, and each one says which. The message names the
+            certification, the date it expires and the fix, and carries a stable code behind it.
+            A single "booking failed" would have been half the work and none of the use.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== Where rules live ===================== -->
+    <section id="enforcement" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Fourteen Rules, and Where Each One Lives</h2>
+        <p>
+          The schema declares 28 <code>CHECK</code> and <code>EXCLUDE</code> constraints and 21
+          foreign keys, every one with an explicit <code>ON DELETE</code> action. The rule I held
+          myself to is that anything expressible declaratively is declared, because a database
+          constraint cannot be bypassed by a code path that forgot to check. What follows is the
+          split, and the reason each rule sits where it does.
+        </p>
+        <div class="blocks" tabindex="0" role="group" aria-label="Table, scrollable">
+          <table>
+            <caption class="sr-only">Business rules, what each says, and where it is enforced</caption>
+            <thead>
+              <tr>
+                <th scope="col">Rule</th>
+                <th scope="col">What it says</th>
+                <th scope="col">Enforced by</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">No overlap</th>
+                <td>Two non-canceled bookings for one machine may not overlap in time</td>
+                <td>Database <span class="v">EXCLUDE USING gist</span></td>
+              </tr>
+              <tr>
+                <th scope="row">One handover</th>
+                <td>A booking has at most one checkout, and a checkout at most one return</td>
+                <td>Database <span class="v">UNIQUE (booking_id)</span></td>
+              </tr>
+              <tr>
+                <th scope="row">No self-grant</th>
+                <td>Nobody may grant a certification to themselves</td>
+                <td>Database <span class="v">CHECK granted_by &lt;&gt; member</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Retire, never delete</th>
+                <td>A machine with booking or maintenance history is retired by status change</td>
+                <td>Database <span class="v">ON DELETE RESTRICT</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Documented waiver</th>
+                <td>A waived fine records a reason and the staff member who waived it</td>
+                <td>Database <span class="v">CHECK penalty_waiver</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Certification</th>
+                <td>No booking without a certification valid across the whole window</td>
+                <td>Application <span class="v">spans five tables</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Downtime</th>
+                <td>No booking in a window that intersects scheduled maintenance</td>
+                <td>Application <span class="v">range join, another table</span></td>
+              </tr>
+              <tr>
+                <th scope="row">Unpaid fines</th>
+                <td>Outstanding fines at or above the threshold block new bookings</td>
+                <td>Application <span class="v">aggregate over penalty</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="blocks-caption">
+          Eight of the fourteen. The top five are unbypassable and the bottom three are only as
+          good as the transaction around them, which is why each of those lives in exactly one file.
+        </p>
+        <p>
+          The bottom three are not application rules because I preferred them there. Each names its
+          own reason: one queries other tables, one compares ranges across a table boundary, one
+          needs an aggregate. A <code>CHECK</code> can do none of those. Writing the reason next to
+          the rule turned out to matter more than the split itself, because it is the difference
+          between a documented limit and a habit.
+        </p>
+        <p>
+          One rule is deliberately not automated at all. When a return comes in late the system
+          computes the overrun and proposes a fine from the hourly rate, and then stops: staff
+          confirm, adjust or decline it. The arithmetic is the machine's job and the charge is a
+          person's.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Normalization ===================== -->
+    <section id="normalization" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">Normalization That Read the Data, Not the Schema</h2>
+        <p>
+          Thirteen relations went through a functional-dependency analysis: candidate keys,
+          dependencies, then 2NF and 3NF with the ruled-out cases shown rather than asserted.
+          Eleven were already in BCNF. That is a claim about the earlier design rather than luck:
+          surrogate keys everywhere, natural keys kept as <code>UNIQUE</code>, and multivalued
+          attributes resolved into entities before translation leave few places for a transitive
+          dependency to hide.
+        </p>
+        <p>
+          The two that needed work needed different work. In <code>equipment</code>, a machine's
+          product model determines what class of machine it is, so
+          <code>(manufacturer, model)</code> determines <code>category_id</code> while being
+          nothing like a key: twenty machines carried only fifteen distinct model-and-category
+          combinations, and the two Prusa MK4S printers each stored their own copy of the fact that
+          an MK4S is an FDM printer. The anomaly that permits is a one-row update that re-files one
+          printer under "laser cutter" with nothing to object, after which the certification rule
+          would demand a laser certification for that machine and an FDM one for the identical
+          machine beside it. That decomposes into an <code>equipment_model</code> relation, with
+          the migration re-checking the lossless join inside its own transaction and rolling back
+          if it fails.
+        </p>
+        <h3>The one that decomposed into a table that already existed</h3>
+        <p>
+          The second is more interesting. A fine raised from a booking is assessed against the
+          member who made that booking, so <code>booking_id</code> determines
+          <code>member_id</code> in <code>penalty</code>. Textbook 3NF says extract the dependency
+          into its own relation. Do that and you get <code>(booking_id, member_id)</code>, which is
+          a projection of <code>booking</code>: the determinant and the dependent already live
+          together in a table where the determinant is the primary key. Materializing it would
+          create a second copy of something the schema holds already.
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">-- 004_normalize.sql: enforce the dependency against the table that already holds it</span>
+ALTER TABLE booking ADD CONSTRAINT booking_id_member_unique UNIQUE (id, member_id);
+
+ALTER TABLE penalty DROP CONSTRAINT penalty_booking_id_fkey;
+ALTER TABLE penalty ADD CONSTRAINT penalty_booking_member_fk
+  FOREIGN KEY (booking_id, member_id) REFERENCES booking (id, member_id)
+  ON DELETE RESTRICT;</code></pre>
+        <p class="snippet-caption">
+          The unique constraint is redundant as a uniqueness claim, since <code>id</code> is already
+          the primary key. PostgreSQL requires it before it will accept the composite foreign key,
+          and that one index is the entire cost of the fix.
+        </p>
+        <p>
+          Manually assessed fines have no booking, and they stay legal without special handling:
+          the default matching semantics skip the check when any referencing column is null. The
+          constraint applies to exactly the rows the dependency holds on.
+        </p>
+        <p>
+          What that is worth stating honestly is that <code>penalty</code> was not decomposed and
+          strictly remains in 2NF. Its attributes are unchanged. What changed is that the anomaly
+          3NF exists to prevent has become unstorable, which was the actual goal. Before this, four
+          separate places in the repository compensated for the dependency in prose and procedure:
+          the ER model, the decision log, a column comment, and a self-check in the seed script.
+          None of them stopped a bad write.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== What the data caught ===================== -->
+    <section id="degeneracy" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Three Defects Only the Rows Could Show</h2>
+        <p>
+          The obvious way to write a dependency analysis is to read the schema. I derived them from
+          the seeded instance instead and checked each one with a query, which is slower and caught
+          three defects that the schema could not have shown. All three are the same class: data
+          that looked populated but was degenerate, so independent columns were indistinguishable
+          from dependent ones.
+        </p>
+        <ol class="learnings" role="list">
+          <li><b>A generator that made two columns constant per member.</b> Heavy users were picked with <code>k % 20</code> and their checkouts decided by <code>k % 10</code>. Because 10 divides 20, both predicates were constant within a member: each heavy user had a checkout on every booking or on none, and returned everything late or nothing late. The totals still looked healthy. It was visible only in the activity view, where every top member showed zero no-shows and zero late returns, which is worse than an empty column because it survives a glance.</li>
+          <li><b>Timestamps that were equal in every single row.</b> Every maintenance event had its report time exactly equal to its downtime start, and every closed event its completion exactly equal to its downtime end. Derive dependencies from that data and you conclude the table violates 3NF through two mutual dependencies that do not exist. The fix was to make the seed tell three truer stories: a fault found during scheduled servicing starts downtime before the report, one left in service until triage starts after, and paperwork can close after the machine is already back.</li>
+          <li><b>A twenty-way tie produced by the Chinese remainder theorem.</b> The "members above the site average" report returned rows that were byte-identical for most of its length, all showing the same booking count. Heavy users were assigned <code>k % 20</code> under the selection predicate <code>k % 43 &lt; 20</code>, and since 43 and 20 are coprime, those pairs are uniform: every heavy user received exactly the same number of bookings. A screenshot of that reads as fabricated data, and the query's real question, who are the heavy users, is not answered by a list that cannot rank them. Drawing the index from a weighted array instead fixed the distribution; the report now returns six rows with six distinct counts and no ties at all.</li>
+        </ol>
+        <p>
+          The third one is the one I would not have found any other way. The arithmetic was
+          plausible, the row counts were right, the shape of the distribution was the shape the
+          seed comments argued for, and the defect was that the heavy mode had zero internal
+          variance. The schema cannot tell you that your data is accidentally consistent.
+        </p>
+        <p>
+          It also changed how I read the seed script. Seed data written to fill tables produces
+          reports that look full; seed data written backwards from the queries produces reports
+          with both branches of every conditional exercised, and it is the second kind that makes a
+          degeneracy findable at all.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== What was kept ===================== -->
+    <section id="kept" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">The Redundancies I Kept, and the Constraint I Left Out</h2>
+        <p>
+          Four redundancies survive in the schema, and presenting it as redundancy-free would have
+          been false. Three of them are across tables, which 3NF has nothing to say about, since it
+          is defined over the attributes of one relation.
+        </p>
+        <p>
+          Two of those three are snapshots that exist precisely so history cannot be rewritten. A
+          certification grant stores its own expiry rather than deriving it from the certification's
+          validity period, because deriving it would let an edit to that period retroactively expire
+          grants issued years ago. A checkout stores its own due-back time rather than reading the
+          booking's, because the due time is fixed at the moment of handover and a derived one would
+          silently re-date a loan already in progress. Enforcing either dependency would leave the
+          schema in the same normal form and make it strictly worse, which is a harder thing to
+          argue than a clean decomposition.
+        </p>
+        <p>
+          The constraint I did not add is the one that looks most obviously right. Renewing a
+          certification creates a new grant that supersedes the old one, and the natural way to
+          enforce "supersedes" is an exclusion constraint forbidding two overlapping validity
+          windows for the same member and certification. It would also make it impossible to renew
+          <em>before</em> expiry, which is the normal case and exactly what the thirty-day warning
+          on the dashboard exists to encourage. Its absence is a decision, not an oversight, and it
+          is written down as one.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Limits ===================== -->
+    <section id="limits" class="section">
+      <div class="container prose">
+        <h2 class="section-title">What It Does Not Do</h2>
+        <p>
+          Sessions are bearer tokens held in a map inside the API process. They do not survive a
+          restart, and they would be wrong for anything but a single-node project like this one. A
+          signed token or a shared session store is the fix, and it is not written.
+        </p>
+        <p>
+          The performance target is stated, not measured. The specification asks for availability
+          searches under half a second at the seeded volume, and the indexes were chosen to serve
+          that query, but I never captured a plan and timed it. Until I do, that number is a design
+          target I have described as a result.
+        </p>
+        <p>
+          The containerized database path is written and unverified: Docker was not installed on the
+          machine this was built on, so the compose file and its init scripts have never once been
+          executed. The local PostgreSQL path is the one that actually runs. That is in the README
+          in those words, because a setup step nobody has run is not a setup step.
+        </p>
+        <p>
+          And extending a booking, the one feature that breaks the system's own convention, ships as
+          an in-place update to the end time. Every other state change here is append-only. This one
+          destroys the original window and keeps no record of what it was, which is the version I
+          would replace first, with an extension entity rather than a quieter <code>UPDATE</code>.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">Key Engineering Learnings</h2>
+        <ol class="learnings" role="list">
+          <li><b>Pick the tool for the constraint you cannot afford to lose.</b> One rule decided the database, and the constraint that enforces it also builds the index the main query needs. Turning a race condition into a schema-level impossibility is worth choosing a stack over.</li>
+          <li><b>A rule that cannot be declared should still live in exactly one place.</b> Three rules here span more tables than a constraint can reach. What kept them honest was not cleverness but location: one transaction, one file, and a written reason for why the database is not holding them.</li>
+          <li><b>Documenting a dependency is not enforcing it.</b> Four places in the repository described the same redundancy correctly. A single wrong <code>UPDATE</code> would have gone through all four. The composite foreign key that replaced them is one line and cannot be argued with.</li>
+          <li><b>Derive dependencies from the data, not from the schema.</b> Reading the DDL alone would have reported two relations as violating 3NF when they do not, and sent a twenty-row tie into a report as a finding. Data can be accidentally consistent, and a schema has no way to tell you so.</li>
+          <li><b>Say which parts you did not run.</b> An unexecuted Docker path, an unmeasured latency budget and a feature that breaks the model's own convention are all more useful written down than quietly implied to work. It costs a paragraph and it is the difference between a limitation and a surprise.</li>
+        </ol>
+        <p class="entry-more"><a href="/#projects">← Back to portfolio</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong · Built with plain HTML &amp; CSS, hosted on GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="/assets/js/main.js?v=d674b144"></script>
+</body>
+</html>

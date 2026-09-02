@@ -178,6 +178,7 @@ ZH_PAGES = sorted(p.name for p in ROOT.glob("zh/*.html"))
 SLUG = {
     "index.html": "home", "case-study-ai-products.html": "ai",
     "case-study-capstone.html": "capstone", "case-study-lmad.html": "lmad",
+    "case-study-makerspace.html": "makerspace",
     "case-study-microprocessors.html": "micro",
     "case-study-sky-scraper-escape.html": "sky",
     "case-study-test-automation.html": "ta",

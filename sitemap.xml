@@ -20,6 +20,12 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-lmad"/>
   </url>
   <url>
+    <loc>https://zocke07.github.io/case-study-makerspace</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-makerspace"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-makerspace"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-makerspace"/>
+  </url>
+  <url>
     <loc>https://zocke07.github.io/case-study-microprocessors</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-microprocessors"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-microprocessors"/>
@@ -66,6 +72,12 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-lmad"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-lmad"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-lmad"/>
+  </url>
+  <url>
+    <loc>https://zocke07.github.io/zh/case-study-makerspace</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-makerspace"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-makerspace"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-makerspace"/>
   </url>
   <url>
     <loc>https://zocke07.github.io/zh/case-study-microprocessors</loc>

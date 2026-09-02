@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>資料庫可以說不的地方 · 黃家輝</title>
+  <meta name="description" content="以 PostgreSQL 打造的校園創客空間借用系統：一條 schema 能直接擋下的規則、四條它碰不到的規則，以及三個只有真實資料才看得出來的缺陷。" />
+  <meta property="og:title" content="資料庫可以說不的地方" />
+  <meta property="og:description" content="整個系統圍繞一個問題打造：哪些規則 schema 能自己擋下來，碰不到的那些又該怎麼辦？" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/zh/case-study-makerspace" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og/makerspace-zh.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="資料庫案例研究：以 PostgreSQL 打造的校園創客空間設備借用系統。" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <link rel="canonical" href="https://zocke07.github.io/zh/case-study-makerspace" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-makerspace" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-makerspace" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-makerspace" />
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="主要導覽">
+      <a class="nav-brand" href="/zh/">黃家輝</a>
+      <div class="nav-right">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="切換導覽選單">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
+          <li><a href="/zh/#about">關於我</a></li>
+          <li><a href="/zh/#education">學歷</a></li>
+          <li><a href="/zh/#experience">工作經歷</a></li>
+          <li><a href="/zh/#projects">作品與研究</a></li>
+          <li><a href="/zh/#skills">技能</a></li>
+          <li><a href="/zh/#contact">聯絡方式</a></li>
+        </ul>
+        <a class="lang-toggle" href="/case-study-makerspace" hreflang="en" lang="en"
+           aria-label="Switch to English">EN</a>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="深色主題">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- ===================== Case study hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">個人專案 · 資料庫系統 · PostgreSQL</p>
+        <h1>資料庫可以說不的地方</h1>
+        <p class="hero-blurb">
+          校園創客空間把 3D 印表機、雷射切割機和 CNC 銑床借出去，靠的是牆上一張紙本登記表。那張表擋不住兩個人搶同一個時段，看不出來他們有沒有受過那台機器的訓練，東西晚還或壞了也留不下任何紀錄。我用一套三層式網頁應用程式和一個 PostgreSQL schema 取代了它，而整個專案最後收斂成一個問題：真正重要的那些規則裡，哪些資料庫可以自己擋下來，碰不到的那些又該怎麼辦？
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>我的角色：</strong>這是一個人做完的專案，沒有團隊。需求、ER 模型、四份 migration、REST API 和 React 前端都是我寫的；文末那三個缺陷也是我的，它們之所以被抓到，是因為我把分析拿去跑真實的資料，而不是只讀 schema。
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>14 個關聯</strong>、5 個 view、21 個外鍵</li>
+          <li>schema 中宣告 <strong>28 條約束</strong></li>
+          <li><strong>4 份 migration</strong>，從空資料庫依序套用</li>
+          <li>對 <strong>13 個關聯</strong>做函數相依分析</li>
+          <li><strong>19 個畫面</strong>，涵蓋 19 個使用者故事</li>
+          <li>種入 <strong>687 筆預約</strong>，分布在 85 位成員</li>
+        </ul>
+        <aside class="source-note">
+          <strong>範圍與說明：</strong>這個創客空間是虛構的，裡面每一個人也是。三個房間借用了北科大一棟真實建築的名字，只是為了讓場景有個可辨識的落點；除此之外，那棟建築、它的設備，以及任何真實的校園運作，都沒有被寫進這裡。種入的成員、罰款與證照資料都是為了打到特定的查詢分支而編出來的，這正是它們存在的目的。
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== The three rules ===================== -->
+    <section id="rules" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">紙本登記表守不住的三條規則</h2>
+        <p>
+          那張紙有三種失效方式，而每一種都是一條等著被寫下來的規則。兩位成員在同一個時段填上自己的名字，然後兩個人都出現了。沒有人記錄登記的人有沒有受過那台機器的訓練，所以工作人員只能憑印象確認，或者根本不確認。機器晚了兩天才還回來，然後什麼事都沒發生，因為沒有留下任何可以據以收費的紀錄。
+        </p>
+        <p>
+          所以這套系統存在的目的，就是守住三件事：一台機器的一個時段只能有一筆預約、沒有有效證照就不能預約，以及逾時或損壞要留下一筆可以收費的紀錄。schema 裡其他所有東西，都是為了服務其中之一而存在的。
+        </p>
+        <p>
+          有意思的地方在於，這三條規則的性質並不一樣。第一條是資料庫可以自己守住的區間排除約束。第二條橫跨五張表、而且取決於預約的時間區間，這是 <code>CHECK</code> 看不到的範圍。第三條是一段算術，但要有人點頭它才會變成一筆欠款。一條 schema 直接拒絕、一條它碰不到、一條它不應該替人決定。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The one constraint ===================== -->
+    <section id="constraint" class="section">
+      <div class="container prose">
+        <h2 class="section-title">為了一條約束而選這個資料庫</h2>
+        <p>
+          「同一台機器的兩筆預約不能重疊」這條規則，多數系統都寫在應用層：先讀出既有預約、判斷、再寫入。這中間讀和寫之間有一段競爭窗口，而當兩個人同時按下確認，你就是在那段窗口裡把機器弄丟的。PostgreSQL 可以把這條規則寫成資料表層級的約束，這也是它被選上的原因。
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼範例，可捲動"><code><span class="cm">-- 001_create_schema.sql: 唯一一條資料庫自己守住的關鍵規則</span>
+CREATE EXTENSION IF NOT EXISTS btree_gist;
+
+ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
+  EXCLUDE USING gist (
+    equipment_id                  WITH =,
+    tstzrange(starts_at, ends_at) WITH &amp;&amp;
+  ) WHERE (status &lt;&gt; 'cancelled');</code></pre>
+        <p class="snippet-caption">
+          同一個時段的兩筆並行寫入不可能同時成功，不管應用層做了什麼、或忘了做什麼。
+        </p>
+        <p>
+          這六行裡有三個細節，每一個都是實機示範時一定會被問到的。用的是 <code>tstzrange</code> 而不是 <code>tsrange</code>，因為後者吃的是不帶時區的時間戳記，會把欄位型別拖到錯誤的方向。<code>WHERE</code> 子句則是讓已取消的預約把時段釋放出來的關鍵：少了它，那個時段會被永久卡住，而放棄預約的人自己也再也訂不回來。<code>tstzrange</code> 預設是半開區間，所以 14:00 結束的預約和 14:00 開始的預約並不衝突，而這也正是系統其他地方採用的定義。
+        </p>
+        <p>
+          這條約束還一次付出、兩次回收。為了執行它，資料庫會在 <code>(equipment_id, tstzrange(starts_at, ends_at))</code> 上建一個 GiST 索引，而那正好就是可用時段查詢想要的索引。完整性的保證和查詢計畫是同一個東西。
+        </p>
+        <figure class="figure">
+          <div class="figure-doc is-wide" tabindex="0" role="group" aria-label="螢幕截圖，可捲動">
+            <a href="/assets/img/makerspace/equipment-detail.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/makerspace/equipment-detail.webp" width="1440" height="730" loading="lazy" decoding="async"
+                   alt="雷射切割機的設備詳細頁。上方十四天的時間軸分成兩條獨立的軌道，一條是預約、一條是維修停機；下方是設備資訊面板，列出類別、製造商、位置、單次預約上限、是否需要證照與目前狀態，右側則是可用時段列表，顯示一筆已確認的預約。" />
+              <span class="sr-only">在新分頁開啟原尺寸</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            設備頁把預約和停機畫成兩條分開的軌道，理由就是上面那條約束：停機可以和預約重疊，兩筆預約則永遠不行。畫在同一條軌道上，等於暗示了一條資料庫並沒有守的規則。
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== BR-1 ===================== -->
+    <section id="certification" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">那條沒有地方可以宣告的規則</h2>
+        <p>
+          整個專案真正吃重的是第二條規則：成員必須持有涵蓋該機器類別的有效證照，才能預約它。這條規則橫跨五張表、而且取決於預約的時間區間，所以在 <code>CHECK</code> 裡沒有容身之處；它又太重要，不能散落在剛好會執行到的那幾條程式路徑上。
+        </p>
+        <p>
+          在那之前還有一個解釋要先定下來：有效是指「什麼時候」有效？我採用嚴格的讀法：整段預約區間都必須有效，而不只是送出預約的那一天有效。證照週五到期的成員不能預約週六，也不能預約一段從週四開始、到週六結束的區間。寬鬆的讀法會讓人預約到一台他走進來時已經沒有資格操作的機器，那就違背了這條規則存在的意義。
+        </p>
+        <p>
+          資料庫這邊的貢獻是一個 view，而不是 trigger。它把那串走訪攤平成一個「成員、類別、有效區間」的關聯：
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼範例，可捲動"><code><span class="cm">-- 把整串走訪攤平成 (成員, 類別, 有效區間)</span>
+CREATE VIEW v_member_category_authorisation AS
+SELECT g.member_id, ca.category_id, g.certification_id,
+       g.granted_at AS valid_from, g.expires_at AS valid_to
+FROM certification_grant AS g
+JOIN category_authorisation AS ca ON ca.certification_id = g.certification_id;</code></pre>
+        <p class="snippet-caption">
+          預約交易於是只要一句查詢就能滿足這條規則：必須存在一列，類別對得上這台機器，而且有效區間涵蓋整段預約，也就是 <code>valid_from &lt;= starts_at AND valid_to &gt;= ends_at</code>。
+        </p>
+        <p>
+          用 trigger 會執行得更強硬，但文件價值更差。這個 view 用讀得懂的形式把規則寫在 schema 裡，預約交易是唯一套用它的地方，設備目錄也重用同一個 view 來算「我有沒有這台機器的資格？」那一欄，所以成員看到的答案和伺服器實際執行的判斷，出自同一份定義。
+        </p>
+        <p>
+          同樣的讀法還帶出兩個結果。證照會在領取設備時重新檢查一次，因為三月合法成立的預約，主人的訓練可能四月就過期了：櫃檯會拒絕交機，但預約本身不會被刪掉。而過期永遠不追溯，所以已完成的預約在其背後的證照到期之後，仍然是有效的歷史紀錄。歷史不會因為時間流逝而被改寫。
+        </p>
+        <figure class="figure">
+          <div class="figure-doc is-wide" tabindex="0" role="group" aria-label="螢幕截圖，可捲動">
+            <a href="/assets/img/makerspace/booking-refused.webp" target="_blank" rel="noopener">
+              <img src="/assets/img/makerspace/booking-refused.webp" width="1440" height="580" loading="lazy" decoding="async"
+                   alt="CNC 雕刻機的新增預約畫面，預約遭到拒絕。表單下方的紅色訊息說明該成員的 CNC 雕刻機操作或機械工廠通用安全證照無法涵蓋整段區間，因為證照將於 2026-07-22 到期，並建議在該時段之前先預約換證，訊息後面接著錯誤代碼 CERTIFICATION_EXPIRED。" />
+              <span class="sr-only">在新分頁開啟原尺寸</span>
+            </a>
+          </div>
+          <figcaption class="figure-caption">
+            有五種原因可以擋下一筆預約，而畫面會說清楚是哪一種。訊息點名了是哪張證照、哪一天到期、該怎麼處理，後面還帶一個固定的錯誤代碼。只丟一句「預約失敗」工作量只有一半，用處則是零。
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== Where rules live ===================== -->
+    <section id="enforcement" class="section">
+      <div class="container prose">
+        <h2 class="section-title">十四條規則，各自住在哪裡</h2>
+        <p>
+          schema 裡宣告了 28 條 <code>CHECK</code> 與 <code>EXCLUDE</code> 約束，以及 21 個外鍵，每個外鍵都寫明了 <code>ON DELETE</code> 行為。我給自己定的規矩是：只要能用宣告式表達的，就一定宣告出來，因為忘了檢查的那條程式路徑繞不過資料庫的約束。以下是這個分工，以及每條規則為什麼住在那裡。
+        </p>
+        <div class="blocks" tabindex="0" role="group" aria-label="表格，可捲動">
+          <table>
+            <caption class="sr-only">商業規則、各自的內容，以及執行的位置</caption>
+            <thead>
+              <tr>
+                <th scope="col">規則</th>
+                <th scope="col">內容</th>
+                <th scope="col">由誰執行</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">不得重疊</th>
+                <td>同一台機器的兩筆未取消預約，時間不得重疊</td>
+                <td>資料庫 <span class="v">EXCLUDE USING gist</span></td>
+              </tr>
+              <tr>
+                <th scope="row">只交機一次</th>
+                <td>一筆預約最多一次領取，一次領取最多一次歸還</td>
+                <td>資料庫 <span class="v">UNIQUE (booking_id)</span></td>
+              </tr>
+              <tr>
+                <th scope="row">不得自己發照</th>
+                <td>沒有人可以把證照發給自己</td>
+                <td>資料庫 <span class="v">CHECK granted_by &lt;&gt; member</span></td>
+              </tr>
+              <tr>
+                <th scope="row">除役而非刪除</th>
+                <td>有預約或維修紀錄的機器，只能改狀態除役</td>
+                <td>資料庫 <span class="v">ON DELETE RESTRICT</span></td>
+              </tr>
+              <tr>
+                <th scope="row">豁免要有理由</th>
+                <td>被豁免的罰款必須記下理由和經手的工作人員</td>
+                <td>資料庫 <span class="v">CHECK penalty_waiver</span></td>
+              </tr>
+              <tr>
+                <th scope="row">證照</th>
+                <td>沒有涵蓋整段區間的有效證照就不能預約</td>
+                <td>應用層 <span class="v">橫跨五張表</span></td>
+              </tr>
+              <tr>
+                <th scope="row">停機</th>
+                <td>不能預約與排定維修時間重疊的區間</td>
+                <td>應用層 <span class="v">跨表的區間比較</span></td>
+              </tr>
+              <tr>
+                <th scope="row">未繳罰款</th>
+                <td>未繳金額達到門檻就不能建立新預約</td>
+                <td>應用層 <span class="v">對 penalty 做彙總</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="blocks-caption">
+          十四條裡的八條。上面五條繞不過去，下面三條則取決於包住它們的那個交易寫得好不好，所以每一條都只住在一個檔案裡。
+        </p>
+        <p>
+          下面那三條之所以在應用層，不是因為我偏好放在那裡。每一條都寫明了自己的理由：一條要查別的資料表、一條要跨表比較區間、一條需要彙總。這三件事 <code>CHECK</code> 都做不到。把理由寫在規則旁邊，後來證明比這個分工本身更重要，因為那是「一個寫明白的限制」和「一個習慣」之間的差別。
+        </p>
+        <p>
+          有一條規則是刻意不自動化的。歸還逾時的時候，系統會算出超時時數、依時費率提出一筆罰款建議，然後就停在那裡：由工作人員確認、調整或是不收。算術是機器的工作，收不收錢是人的。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Normalization ===================== -->
+    <section id="normalization" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">讀資料而不是讀 schema 的正規化</h2>
+        <p>
+          十三個關聯都做過一次函數相依分析：候選鍵、相依關係，接著是 2NF 和 3NF，而且被排除的候選相依也一併寫出來，而不是直接斷言「已經符合」。其中十一個本來就在 BCNF。這不是運氣，而是關於前面設計的一項主張：全面使用代理鍵、把自然鍵保留成 <code>UNIQUE</code>、多值屬性在轉換成關聯之前就先拆成實體，這些做法讓遞移相依沒什麼地方好躲。
+        </p>
+        <p>
+          需要處理的那兩個，需要的處理方式並不一樣。在 <code>equipment</code> 裡，一台機器的產品型號決定了它屬於哪一類機器，所以 <code>(manufacturer, model)</code> 決定 <code>category_id</code>，但它完全不是鍵：二十台機器只帶了十五種不同的型號與類別組合，而兩台 Prusa MK4S 印表機各自存了一份「MK4S 是 FDM 印表機」這個事實。這允許的異常是一次單列更新，把其中一台印表機改歸到「雷射切割機」類別而沒有任何東西會反對；在那之後，證照規則會要求這台機器需要雷射證照，而旁邊那台一模一樣的機器需要的卻是 FDM 證照。這一段被分解成一個 <code>equipment_model</code> 關聯，而 migration 會在自己的交易裡重新驗證無損失連接，失敗就整個回滾。
+        </p>
+        <h3>另一個分解出來的表，本來就已經存在</h3>
+        <p>
+          第二個有意思得多。由預約衍生的罰款，一定是開給做那筆預約的人，所以在 <code>penalty</code> 裡 <code>booking_id</code> 決定 <code>member_id</code>。教科書上的 3NF 說：把這個相依抽成獨立的關聯。真的照做，你會得到 <code>(booking_id, member_id)</code>，而那是 <code>booking</code> 的一個投影：決定端和被決定端本來就住在同一張表裡，而且決定端就是那張表的主鍵。把它實體化出來，只是替 schema 已經握有的東西再複製一份。
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼範例，可捲動"><code><span class="cm">-- 004_normalize.sql: 把相依交給本來就握有它的那張表來執行</span>
+ALTER TABLE booking ADD CONSTRAINT booking_id_member_unique UNIQUE (id, member_id);
+
+ALTER TABLE penalty DROP CONSTRAINT penalty_booking_id_fkey;
+ALTER TABLE penalty ADD CONSTRAINT penalty_booking_member_fk
+  FOREIGN KEY (booking_id, member_id) REFERENCES booking (id, member_id)
+  ON DELETE RESTRICT;</code></pre>
+        <p class="snippet-caption">
+          就唯一性而言，那條 unique 約束是多餘的，因為 <code>id</code> 本來就是主鍵。但 PostgreSQL 要求先有它才肯接受複合外鍵，而那一個索引就是這次修正的全部代價。
+        </p>
+        <p>
+          由工作人員直接開立、沒有對應預約的罰款依然合法，而且不需要任何特別處理：只要有任何一個參照欄位是 null，預設的比對語意就會跳過檢查。這條約束剛好只作用在相依真的成立的那些列上。
+        </p>
+        <p>
+          誠實地說，<code>penalty</code> 並沒有被分解，嚴格來講它仍然停在 2NF，屬性也完全沒變。真正改變的是：3NF 想要防止的那個異常已經寫不進去了，而那本來就是目的。在這之前，這個相依在專案裡有四個地方用文字和流程去補：ER 模型、決策紀錄、一段欄位註解，以及種子腳本裡的自我檢查。它們沒有一個擋得住一次錯誤的寫入。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== What the data caught ===================== -->
+    <section id="degeneracy" class="section">
+      <div class="container prose">
+        <h2 class="section-title">三個只有資料看得出來的缺陷</h2>
+        <p>
+          寫函數相依分析最直覺的做法，是讀 schema。我改成從種入的資料反推，而且每一條都用查詢驗過一次；這樣比較慢，但抓到了三個 schema 不可能顯示出來的缺陷。三個都屬於同一類：資料看起來是滿的，實際上卻是退化的，於是獨立的欄位和相依的欄位長得一模一樣。
+        </p>
+        <ol class="learnings" role="list">
+          <li><b>一個讓兩個欄位在成員內部變成常數的產生器。</b>重度使用者用 <code>k % 20</code> 挑出來，領取與否則用 <code>k % 10</code> 決定。因為 10 整除 20，這兩個判斷在同一位成員內部都是常數：每個重度使用者不是每筆預約都有領取、就是一筆都沒有，逾時歸還也是全有或全無。彙總欄位的總數看起來還是很健康。只有在活動總覽 view 裡才看得出來，那裡排名最前面的成員全都是零缺席、零逾時，而這比一個空欄位更糟，因為它經得起隨手一瞥。</li>
+          <li><b>每一列都相等的時間戳記。</b>每一筆維修事件的通報時間都剛好等於停機開始時間，每一筆已結案事件的完成時間也都剛好等於停機結束時間。從這種資料推導相依關係，你會得出兩個根本不存在的互相決定關係，並且判定這張表違反 3NF。修正的方式是讓種子資料講三個更接近真實的故事：定期保養時發現的故障，停機比通報更早開始；先留在線上等待初判的故障，停機比通報更晚開始；而文書作業則可以在機器已經歸隊之後才結案。</li>
+          <li><b>由中國剩餘定理製造出來的二十列並列。</b>「預約量高於全站平均的成員」這份報表回傳的資料，有很長一段是逐位元組完全相同的，預約數全都一樣。重度使用者用 <code>k % 20</code> 指派，篩選條件則是 <code>k % 43 &lt; 20</code>，而 43 與 20 互質，於是這組配對是均勻的：每個重度使用者拿到的預約數完全相同。這種畫面截圖出來只會像是捏造的資料，而這個查詢真正要問的「誰是重度使用者」，一份排不出名次的名單也回答不了。改用加權陣列來取索引之後分布就正常了，這份報表現在回傳六列、六個不同的數字，一個並列都沒有。</li>
+        </ol>
+        <p>
+          第三個是我用別的方法絕對找不到的。算術本身合理、列數是對的、分布的形狀也正是種子註解所主張的那個形狀，缺陷在於重度那一端內部的變異數是零。schema 沒辦法告訴你，你的資料是碰巧一致的。
+        </p>
+        <p>
+          這也改變了我讀種子腳本的方式。為了把表填滿而寫的種子資料，產出的報表看起來很滿；從查詢反推著寫的種子資料，產出的報表會讓每個條件判斷的兩個分支都被走到，而只有後面這種，才讓一個退化有機會被發現。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== What was kept ===================== -->
+    <section id="kept" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">我留下的冗餘，以及我沒有加的那條約束</h2>
+        <p>
+          schema 裡有四個冗餘活了下來，而把它講成毫無冗餘會是假的。其中三個是跨資料表的，這是 3NF 說不上話的範圍，因為 3NF 是定義在單一關聯的屬性之上。
+        </p>
+        <p>
+          那三個裡有兩個是快照，存在的理由正是為了讓歷史不能被改寫。證照核發紀錄自己存一份到期日，而不是從證照定義的有效月數推算，因為推算會讓一次對有效期的修改，回溯地把好幾年前發出去的證照全部作廢。領取紀錄自己存一份應還時間，而不是去讀預約的結束時間，因為應還時間是在交機那一刻定下來的，推算出來的版本會悄悄改掉一筆正在進行中的借用。把這兩個相依強制起來，schema 的正規化程度不會改變，但會變得更糟，而這比一次乾淨的分解更難寫進報告裡。
+        </p>
+        <p>
+          我沒有加的那條約束，反而是看起來最理所當然的一條。換證會產生一筆新的核發紀錄，取代舊的那一筆，而執行「取代」最自然的方式，就是用一條排除約束禁止同一位成員、同一張證照有兩段重疊的有效區間。但它同時也會讓人無法在到期<em>之前</em>換證，而那正是最常見的情況，也正是儀表板上那個三十天到期提醒想鼓勵的行為。它的缺席是一個決定，不是疏漏，而且是有寫下來的決定。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Limits ===================== -->
+    <section id="limits" class="section">
+      <div class="container prose">
+        <h2 class="section-title">它做不到的事</h2>
+        <p>
+          session 是存在 API 行程內一個 map 裡的 bearer token。它撐不過一次重啟，而且除了像這樣的單節點專案之外，用在任何地方都是錯的。正確的做法是簽章 token 或共用的 session 儲存，而那還沒寫。
+        </p>
+        <p>
+          效能目標是寫下來的，不是量出來的。規格書要求在種入的資料量下，可用時段查詢要在半秒內完成，索引也是照著這個查詢挑的，但我從來沒有真的抓一次執行計畫並計時。在我做這件事之前，那個數字是一個被我當成結果來描述的設計目標。
+        </p>
+        <p>
+          容器化的資料庫路徑寫了但沒有驗證過：開發用的那台機器沒有安裝 Docker，所以 compose 檔和它的初始化腳本一次都沒有真的跑起來過。真正跑得起來的是本機 PostgreSQL 那條路。README 裡就是這樣寫的，因為一個沒有人執行過的安裝步驟，不算是安裝步驟。
+        </p>
+        <p>
+          還有延長預約：這是唯一一個違背系統自身慣例的功能，它的實作是直接就地更新結束時間。這裡其他每一次狀態變更都是只增不改的。只有這一個會毀掉原本的區間，而且不留下它原本是什麼的紀錄，這也是我會最先重做的部分，用一個延長紀錄的實體來取代一次比較安靜的 <code>UPDATE</code>。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">主要的工程收穫</h2>
+        <ol class="learnings" role="list">
+          <li><b>依你輸不起的那條約束來挑工具。</b>一條規則決定了要用哪個資料庫，而執行這條規則的約束，順手也建出了主要查詢需要的索引。把一個競爭條件變成 schema 層級的不可能，值得為它選一整套技術。</li>
+          <li><b>無法宣告的規則，仍然只能住在一個地方。</b>這裡有三條規則橫跨的資料表比任何約束搆得到的都多。讓它們沒有走鐘的不是什麼巧思，而是位置：一個交易、一個檔案，以及一段寫明資料庫為什麼守不住它的理由。</li>
+          <li><b>把相依寫成文件，不等於把它執行起來。</b>專案裡有四個地方都正確地描述了同一個冗餘。一次寫錯的 <code>UPDATE</code> 可以從這四個地方中間直接穿過去。取代它們的那條複合外鍵只有一行，而且沒得商量。</li>
+          <li><b>從資料推導相依，而不是從 schema。</b>只讀 DDL 的話，會把兩個並沒有違反 3NF 的關聯報成違反，還會把一個二十列並列的結果當成發現寫進報告。資料是可以碰巧一致的，而 schema 沒有辦法告訴你這件事。</li>
+          <li><b>講清楚哪些部分你沒有跑過。</b>沒執行過的 Docker 路徑、沒量測過的延遲預算、一個違背模型自身慣例的功能，這些寫下來都比默默假裝它們能動更有用。代價是一段文字，而它是「一個限制」和「一個意外」之間的差別。</li>
+        </ol>
+        <p class="entry-more"><a href="/zh/#projects">← 回到作品集</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> 黃家輝 · 以純 HTML 與 CSS 打造，部署於 GitHub Pages。</p>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="回到頁首">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="/assets/js/main.js?v=d674b144"></script>
+</body>
+</html>

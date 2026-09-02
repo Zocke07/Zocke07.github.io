@@ -26,6 +26,15 @@
     "title": "The Defense That Says Where It Breaks",
     "who": "Rivan Wong"
   },
+  "case-study-makerspace.html": {
+    "cjk": "",
+    "desc": "A booking system built around one question: which rules can a schema refuse by itself, and what do you do about the ones it cannot?",
+    "kicker": "Self-Directed Project · Database Systems · PostgreSQL",
+    "lang": "en",
+    "long": "",
+    "title": "Where the Database Can Say No",
+    "who": "Rivan Wong"
+  },
   "case-study-microprocessors.html": {
     "cjk": "",
     "desc": "Notes from two semesters under the abstraction: nine VHDL exercises up to a four-stage CPU, then down a Jetson TX2 to a character device.",
@@ -96,6 +105,15 @@
     "lang": "zh-Hant-TW",
     "long": "",
     "title": "說得出自己何時失效的防禦",
+    "who": "黃家輝"
+  },
+  "zh/case-study-makerspace.html": {
+    "cjk": "cjk",
+    "desc": "整個系統圍繞一個問題打造：哪些規則 schema 能自己擋下來，碰不到的那些又該怎麼辦？",
+    "kicker": "個人專案 · 資料庫系統 · PostgreSQL",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "資料庫可以說不的地方",
     "who": "黃家輝"
   },
   "zh/case-study-microprocessors.html": {
