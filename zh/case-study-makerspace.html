@@ -106,6 +106,73 @@
         <p>
           有意思的地方在於，這三條規則的性質並不一樣。第一條是資料庫可以自己守住的區間排除約束。第二條橫跨五張表、而且取決於預約的時間區間，這是 <code>CHECK</code> 看不到的範圍。第三條是一段算術，但要有人點頭它才會變成一筆欠款。一條 schema 直接拒絕、一條它碰不到、一條它不應該替人決定。
         </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="示意圖，可捲動">
+            <svg class="fig-svg" viewBox="0 0 700 700" role="img" aria-labelledby="ms-er-title ms-er-desc">
+              <title id="ms-er-title">實體關聯模型：十四個關聯，以及畫出來的十一組關係</title>
+              <desc id="ms-er-desc">十四個實體分成三欄。左欄由 certification 往下經過 certification_grant 到 member。中欄的 category_authorisation 位於 certification 與 equipment_category 之間，下方依序是 location、booking、checkout 與 penalty。右欄由 equipment_category 往下經過 equipment_model 到 equipment，接著是 maintenance_log，下方是 penalty_type 與獨立的 system_setting。每組關係的一端以短線標示「一」，另一端以鳥足標示「多」。從 member 拉出的一條虛線指向一段說明，列出另外七個沒有畫出來、指向 member 的外鍵。</desc>
+              <defs>
+                <marker id="ms-er-one" viewBox="0 0 10 10" refX="8" refY="5"
+                        markerWidth="10" markerHeight="10" orient="auto">
+                  <path d="M6 1.5 L6 8.5" stroke="var(--text-muted)" stroke-width="1.6" fill="none" />
+                </marker>
+                <marker id="ms-er-many" viewBox="0 0 10 10" refX="1" refY="5"
+                        markerWidth="10" markerHeight="10" orient="auto">
+                  <path d="M1 5 L9 1.5 M1 5 L9 5 M1 5 L9 8.5" stroke="var(--text-muted)" stroke-width="1.4" fill="none" />
+                </marker>
+              </defs>
+              <rect class="fig-box" x="14" y="24" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="252" y="24" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="490" y="24" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="14" y="119" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="490" y="119" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="252" y="214" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="490" y="214" width="196" height="52" rx="6" />
+              <rect class="fig-box-accent" x="14" y="309" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="252" y="309" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="490" y="309" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="252" y="404" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="490" y="404" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="252" y="499" width="196" height="52" rx="6" />
+              <rect class="fig-box-muted" x="490" y="499" width="196" height="52" rx="6" />
+              <line class="fig-line" x1="210" y1="50" x2="250" y2="50" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="490" y1="50" x2="450" y2="50" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="112" y1="76" x2="112" y2="117" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="112" y1="309" x2="112" y2="173" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="588" y1="76" x2="588" y2="117" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="588" y1="171" x2="588" y2="212" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="448" y1="240" x2="488" y2="240" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="210" y1="335" x2="250" y2="335" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="540" y1="266" x2="432" y2="307" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="588" y1="266" x2="588" y2="307" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="532" y1="456" x2="452" y2="508" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="350" y1="361" x2="350" y2="402" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-one)" />
+              <path class="fig-line" d="M420 361 C 468 400, 468 462, 420 499" fill="none" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <path class="fig-line" d="M152 361 C 152 452, 198 515, 250 515" fill="none" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <text x="112" y="56" text-anchor="middle" class="fig-label">certification</text>
+              <text x="350" y="48" text-anchor="middle" class="fig-label">category</text>
+              <text x="350" y="66" text-anchor="middle" class="fig-label">_authorisation</text>
+              <text x="588" y="56" text-anchor="middle" class="fig-label">equipment_category</text>
+              <text x="112" y="151" text-anchor="middle" class="fig-label">certification_grant</text>
+              <text x="588" y="151" text-anchor="middle" class="fig-label">equipment_model</text>
+              <text x="350" y="246" text-anchor="middle" class="fig-label">location</text>
+              <text x="588" y="246" text-anchor="middle" class="fig-label">equipment</text>
+              <text x="112" y="341" text-anchor="middle" class="fig-label">member</text>
+              <text x="350" y="341" text-anchor="middle" class="fig-label">booking</text>
+              <text x="588" y="341" text-anchor="middle" class="fig-label">maintenance_log</text>
+              <text x="350" y="436" text-anchor="middle" class="fig-label">checkout</text>
+              <text x="588" y="436" text-anchor="middle" class="fig-label">penalty_type</text>
+              <text x="350" y="531" text-anchor="middle" class="fig-label">penalty</text>
+              <text x="588" y="531" text-anchor="middle" class="fig-label">system_setting</text>
+              <path class="fig-line-accent" d="M60 361 L60 580" stroke-dasharray="5 4" fill="none" />
+              <text x="76" y="606" class="fig-tick">member 還是另外七個外鍵指向的對象，而這七個記錄的都是「誰做的」，</text>
+              <text x="76" y="628" class="fig-tick">而不是「這筆資料是關於誰的」：發照者、交機者、收機者、開單者、</text>
+              <text x="76" y="650" class="fig-tick">豁免者、通報者、指派對象。真的畫出來，它們會橫跨這張圖的大半。</text>
+              <text x="76" y="672" class="fig-tick"></text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">十四個關聯，以及它們之間十八組關係裡的十一組。短線是「一」的一端，鳥足是「多」的一端，而 <code>booking</code> 到 <code>checkout</code> 是這裡唯一的一對一，所以兩端都是短線。有三件事是外鍵清單看不出來、這張圖看得出來的：<code>category_authorisation</code> 存在的唯一理由，是把證照與類別之間的多對多解開；<code>system_setting</code> 獨立懸在一旁，因為一張鍵值表沒有東西可以指；而 <code>member</code> 是整張圖最擁擠的地方，那也正是角落那段說明的內容。參與限制留給模型本身，這裡沒有畫。</figcaption>
+        </figure>
       </div>
     </section>
 

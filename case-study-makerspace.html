@@ -130,6 +130,73 @@
           that a person has to approve before it becomes money owed. One rule the schema refuses
           outright, one it cannot reach, one it should not decide.
         </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
+            <svg class="fig-svg" viewBox="0 0 700 700" role="img" aria-labelledby="ms-er-title ms-er-desc">
+              <title id="ms-er-title">The entity-relationship model: fourteen relations and the eleven relationships drawn between them</title>
+              <desc id="ms-er-desc">Fourteen entities in three columns. On the left, certification leads down through certification_grant to member. In the middle, category_authorisation sits between certification and equipment_category, and below it location, booking, checkout and penalty. On the right, equipment_category leads down through equipment_model to equipment, then maintenance_log, with penalty_type and a detached system_setting below. A bar marks the one end of each relationship and a crow's foot the many end. A dashed line from member leads to a note naming seven further foreign keys into member that are not drawn.</desc>
+              <defs>
+                <marker id="ms-er-one" viewBox="0 0 10 10" refX="8" refY="5"
+                        markerWidth="10" markerHeight="10" orient="auto">
+                  <path d="M6 1.5 L6 8.5" stroke="var(--text-muted)" stroke-width="1.6" fill="none" />
+                </marker>
+                <marker id="ms-er-many" viewBox="0 0 10 10" refX="1" refY="5"
+                        markerWidth="10" markerHeight="10" orient="auto">
+                  <path d="M1 5 L9 1.5 M1 5 L9 5 M1 5 L9 8.5" stroke="var(--text-muted)" stroke-width="1.4" fill="none" />
+                </marker>
+              </defs>
+              <rect class="fig-box" x="14" y="24" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="252" y="24" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="490" y="24" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="14" y="119" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="490" y="119" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="252" y="214" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="490" y="214" width="196" height="52" rx="6" />
+              <rect class="fig-box-accent" x="14" y="309" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="252" y="309" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="490" y="309" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="252" y="404" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="490" y="404" width="196" height="52" rx="6" />
+              <rect class="fig-box" x="252" y="499" width="196" height="52" rx="6" />
+              <rect class="fig-box-muted" x="490" y="499" width="196" height="52" rx="6" />
+              <line class="fig-line" x1="210" y1="50" x2="250" y2="50" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="490" y1="50" x2="450" y2="50" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="112" y1="76" x2="112" y2="117" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="112" y1="309" x2="112" y2="173" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="588" y1="76" x2="588" y2="117" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="588" y1="171" x2="588" y2="212" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="448" y1="240" x2="488" y2="240" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="210" y1="335" x2="250" y2="335" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="540" y1="266" x2="432" y2="307" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="588" y1="266" x2="588" y2="307" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="532" y1="456" x2="452" y2="508" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <line class="fig-line" x1="350" y1="361" x2="350" y2="402" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-one)" />
+              <path class="fig-line" d="M420 361 C 468 400, 468 462, 420 499" fill="none" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <path class="fig-line" d="M152 361 C 152 452, 198 515, 250 515" fill="none" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
+              <text x="112" y="56" text-anchor="middle" class="fig-label">certification</text>
+              <text x="350" y="48" text-anchor="middle" class="fig-label">category</text>
+              <text x="350" y="66" text-anchor="middle" class="fig-label">_authorisation</text>
+              <text x="588" y="56" text-anchor="middle" class="fig-label">equipment_category</text>
+              <text x="112" y="151" text-anchor="middle" class="fig-label">certification_grant</text>
+              <text x="588" y="151" text-anchor="middle" class="fig-label">equipment_model</text>
+              <text x="350" y="246" text-anchor="middle" class="fig-label">location</text>
+              <text x="588" y="246" text-anchor="middle" class="fig-label">equipment</text>
+              <text x="112" y="341" text-anchor="middle" class="fig-label">member</text>
+              <text x="350" y="341" text-anchor="middle" class="fig-label">booking</text>
+              <text x="588" y="341" text-anchor="middle" class="fig-label">maintenance_log</text>
+              <text x="350" y="436" text-anchor="middle" class="fig-label">checkout</text>
+              <text x="588" y="436" text-anchor="middle" class="fig-label">penalty_type</text>
+              <text x="350" y="531" text-anchor="middle" class="fig-label">penalty</text>
+              <text x="588" y="531" text-anchor="middle" class="fig-label">system_setting</text>
+              <path class="fig-line-accent" d="M60 361 L60 580" stroke-dasharray="5 4" fill="none" />
+              <text x="76" y="606" class="fig-tick">member is the target of seven more foreign keys, every one of them</text>
+              <text x="76" y="628" class="fig-tick">recording who acted rather than who it is about: awarded by, issued by,</text>
+              <text x="76" y="650" class="fig-tick">received by, assessed by, waived by, reported by, assigned to. Drawn,</text>
+              <text x="76" y="672" class="fig-tick">they would cross most of this diagram.</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">Fourteen relations, and eleven of the eighteen relationships between them. A bar is the one end, a crow's foot the many end, and <code>booking</code> to <code>checkout</code> is the one 1:1 here, so it carries a bar at both. Three things this shows that a table of foreign keys does not: <code>category_authorisation</code> exists only to resolve a many-to-many between certifications and categories; <code>system_setting</code> hangs detached, because a key-value table has nothing to point at; and <code>member</code> is where the diagram gets crowded, which is the note in the corner. Participation constraints are left to the model itself rather than drawn here.</figcaption>
+        </figure>
       </div>
     </section>
 
