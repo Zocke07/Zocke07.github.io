@@ -110,7 +110,7 @@
           <div class="figure-scroll" tabindex="0" role="group" aria-label="示意圖，可捲動">
             <svg class="fig-svg" viewBox="0 0 700 700" role="img" aria-labelledby="ms-er-title ms-er-desc">
               <title id="ms-er-title">實體關聯模型：十四個關聯，以及畫出來的十一組關係</title>
-              <desc id="ms-er-desc">十四個實體分成三欄。左欄由 certification 往下經過 certification_grant 到 member。中欄的 category_authorisation 位於 certification 與 equipment_category 之間，下方依序是 location、booking、checkout 與 penalty。右欄由 equipment_category 往下經過 equipment_model 到 equipment，接著是 maintenance_log，下方是 penalty_type 與獨立的 system_setting。每組關係的一端以短線標示「一」，另一端以鳥足標示「多」。從 member 拉出的一條虛線指向一段說明，列出另外七個沒有畫出來、指向 member 的外鍵。</desc>
+              <desc id="ms-er-desc">十四個實體分成三欄。左欄由 certification 往下經過 certification_grant 到 member。中欄的 category_authorization 位於 certification 與 equipment_category 之間，下方依序是 location、booking、checkout 與 penalty。右欄由 equipment_category 往下經過 equipment_model 到 equipment，接著是 maintenance_log，下方是 penalty_type 與獨立的 system_setting。每組關係的一端以短線標示「一」，另一端以鳥足標示「多」。從 member 拉出的一條虛線指向一段說明，列出另外七個沒有畫出來、指向 member 的外鍵。</desc>
               <defs>
                 <marker id="ms-er-one" viewBox="0 0 10 10" refX="8" refY="5"
                         markerWidth="10" markerHeight="10" orient="auto">
@@ -151,7 +151,7 @@
               <path class="fig-line" d="M152 361 C 152 452, 198 515, 250 515" fill="none" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
               <text x="112" y="56" text-anchor="middle" class="fig-label">certification</text>
               <text x="350" y="48" text-anchor="middle" class="fig-label">category</text>
-              <text x="350" y="66" text-anchor="middle" class="fig-label">_authorisation</text>
+              <text x="350" y="66" text-anchor="middle" class="fig-label">_authorization</text>
               <text x="588" y="56" text-anchor="middle" class="fig-label">equipment_category</text>
               <text x="112" y="151" text-anchor="middle" class="fig-label">certification_grant</text>
               <text x="588" y="151" text-anchor="middle" class="fig-label">equipment_model</text>
@@ -171,7 +171,7 @@
               <text x="76" y="672" class="fig-tick"></text>
             </svg>
           </div>
-          <figcaption class="figure-caption">十四個關聯，以及它們之間十八組關係裡的十一組。短線是「一」的一端，鳥足是「多」的一端，而 <code>booking</code> 到 <code>checkout</code> 是這裡唯一的一對一，所以兩端都是短線。有三件事是外鍵清單看不出來、這張圖看得出來的：<code>category_authorisation</code> 存在的唯一理由，是把證照與類別之間的多對多解開；<code>system_setting</code> 獨立懸在一旁，因為一張鍵值表沒有東西可以指；而 <code>member</code> 是整張圖最擁擠的地方，那也正是角落那段說明的內容。參與限制留給模型本身，這裡沒有畫。</figcaption>
+          <figcaption class="figure-caption">十四個關聯，以及它們之間十八組關係裡的十一組。短線是「一」的一端，鳥足是「多」的一端，而 <code>booking</code> 到 <code>checkout</code> 是這裡唯一的一對一，所以兩端都是短線。有三件事是外鍵清單看不出來、這張圖看得出來的：<code>category_authorization</code> 存在的唯一理由，是把證照與類別之間的多對多解開；<code>system_setting</code> 獨立懸在一旁，因為一張鍵值表沒有東西可以指；而 <code>member</code> 是整張圖最擁擠的地方，那也正是角落那段說明的內容。參與限制留給模型本身，這裡沒有畫。</figcaption>
         </figure>
       </div>
     </section>
@@ -226,7 +226,7 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
           <div class="figure-scroll" tabindex="0" role="group" aria-label="示意圖，可捲動">
             <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="ms-path-title ms-path-desc">
               <title id="ms-path-title">一筆預約要證明成員持有證照，必須走過的關聯鏈</title>
-              <desc id="ms-path-desc">八個關聯分成兩列。上排從 booking 走到 equipment、equipment_model 與 equipment_category，接著往下接到下排；下排從 category_authorisation 經過 certification 與 certification_grant 回到 member。一條虛線弧把 certification_grant 直接連到 category_authorisation，跳過中間的 certification，那正是攤平用的 view 所做的連接。</desc>
+              <desc id="ms-path-desc">八個關聯分成兩列。上排從 booking 走到 equipment、equipment_model 與 equipment_category，接著往下接到下排；下排從 category_authorization 經過 certification 與 certification_grant 回到 member。一條虛線弧把 certification_grant 直接連到 category_authorization，跳過中間的 certification，那正是攤平用的 view 所做的連接。</desc>
               <defs>
                 <marker id="ms-path-arrow" viewBox="0 0 10 10" refX="9" refY="5"
                         markerWidth="6" markerHeight="6" orient="auto">
@@ -251,7 +251,7 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
               <text x="439" y="208" text-anchor="middle" class="fig-label">certification</text>
               <rect class="fig-box-accent" x="541" y="176" width="150" height="52" rx="6" />
               <text x="616" y="200" text-anchor="middle" class="fig-label">category</text>
-              <text x="616" y="218" text-anchor="middle" class="fig-label">_authorisation</text>
+              <text x="616" y="218" text-anchor="middle" class="fig-label">_authorization</text>
               <line class="fig-line-accent" x1="162" y1="70" x2="185" y2="70" marker-end="url(#ms-path-arrow)" />
               <line class="fig-line-accent" x1="339" y1="70" x2="362" y2="70" marker-end="url(#ms-path-arrow)" />
               <line class="fig-line-accent" x1="516" y1="70" x2="539" y2="70" marker-end="url(#ms-path-arrow)" />
@@ -260,7 +260,7 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
               <line class="fig-line-accent" x1="362" y1="202" x2="339" y2="202" marker-end="url(#ms-path-arrow)" />
               <line class="fig-line-accent" x1="185" y1="202" x2="162" y2="202" marker-end="url(#ms-path-arrow)" />
               <path class="fig-line-accent" d="M262 232 C 262 272, 616 272, 616 232" stroke-dasharray="5 4" fill="none" />
-              <text x="439" y="292" text-anchor="middle" class="fig-note">v_member_category_authorisation</text>
+              <text x="439" y="292" text-anchor="middle" class="fig-note">v_member_category_authorization</text>
             </svg>
           </div>
           <figcaption class="figure-caption">七個跳躍，每一個都是宣告出來的外鍵，而且沒有一個是 <code>CHECK</code> 約束搆得到的，因為它不能去查另一張表。虛線弧就是那個 view：它用 <code>certification_id</code> 把兩個標示出來的關聯直接接起來，於是預約交易只要問一個問題，不必自己走完整條鏈。</figcaption>
@@ -272,11 +272,11 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
           資料庫這邊的貢獻是一個 view，而不是 trigger。它把那串走訪攤平成一個「成員、類別、有效區間」的關聯：
         </p>
         <pre class="snippet" tabindex="0" role="group" aria-label="程式碼範例，可捲動"><code><span class="cm">-- 把整串走訪攤平成 (成員, 類別, 有效區間)</span>
-CREATE VIEW v_member_category_authorisation AS
+CREATE VIEW v_member_category_authorization AS
 SELECT g.member_id, ca.category_id, g.certification_id,
        g.granted_at AS valid_from, g.expires_at AS valid_to
 FROM certification_grant AS g
-JOIN category_authorisation AS ca ON ca.certification_id = g.certification_id;</code></pre>
+JOIN category_authorization AS ca ON ca.certification_id = g.certification_id;</code></pre>
         <p class="snippet-caption">
           預約交易於是只要一句查詢就能滿足這條規則：必須存在一列，類別對得上這台機器，而且有效區間涵蓋整段預約，也就是 <code>valid_from &lt;= starts_at AND valid_to &gt;= ends_at</code>。
         </p>

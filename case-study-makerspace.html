@@ -134,7 +134,7 @@
           <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <svg class="fig-svg" viewBox="0 0 700 700" role="img" aria-labelledby="ms-er-title ms-er-desc">
               <title id="ms-er-title">The entity-relationship model: fourteen relations and the eleven relationships drawn between them</title>
-              <desc id="ms-er-desc">Fourteen entities in three columns. On the left, certification leads down through certification_grant to member. In the middle, category_authorisation sits between certification and equipment_category, and below it location, booking, checkout and penalty. On the right, equipment_category leads down through equipment_model to equipment, then maintenance_log, with penalty_type and a detached system_setting below. A bar marks the one end of each relationship and a crow's foot the many end. A dashed line from member leads to a note naming seven further foreign keys into member that are not drawn.</desc>
+              <desc id="ms-er-desc">Fourteen entities in three columns. On the left, certification leads down through certification_grant to member. In the middle, category_authorization sits between certification and equipment_category, and below it location, booking, checkout and penalty. On the right, equipment_category leads down through equipment_model to equipment, then maintenance_log, with penalty_type and a detached system_setting below. A bar marks the one end of each relationship and a crow's foot the many end. A dashed line from member leads to a note naming seven further foreign keys into member that are not drawn.</desc>
               <defs>
                 <marker id="ms-er-one" viewBox="0 0 10 10" refX="8" refY="5"
                         markerWidth="10" markerHeight="10" orient="auto">
@@ -175,7 +175,7 @@
               <path class="fig-line" d="M152 361 C 152 452, 198 515, 250 515" fill="none" marker-start="url(#ms-er-one)" marker-end="url(#ms-er-many)" />
               <text x="112" y="56" text-anchor="middle" class="fig-label">certification</text>
               <text x="350" y="48" text-anchor="middle" class="fig-label">category</text>
-              <text x="350" y="66" text-anchor="middle" class="fig-label">_authorisation</text>
+              <text x="350" y="66" text-anchor="middle" class="fig-label">_authorization</text>
               <text x="588" y="56" text-anchor="middle" class="fig-label">equipment_category</text>
               <text x="112" y="151" text-anchor="middle" class="fig-label">certification_grant</text>
               <text x="588" y="151" text-anchor="middle" class="fig-label">equipment_model</text>
@@ -195,7 +195,7 @@
               <text x="76" y="672" class="fig-tick">they would cross most of this diagram.</text>
             </svg>
           </div>
-          <figcaption class="figure-caption">Fourteen relations, and eleven of the eighteen relationships between them. A bar is the one end, a crow's foot the many end, and <code>booking</code> to <code>checkout</code> is the one 1:1 here, so it carries a bar at both. Three things this shows that a table of foreign keys does not: <code>category_authorisation</code> exists only to resolve a many-to-many between certifications and categories; <code>system_setting</code> hangs detached, because a key-value table has nothing to point at; and <code>member</code> is where the diagram gets crowded, which is the note in the corner. Participation constraints are left to the model itself rather than drawn here.</figcaption>
+          <figcaption class="figure-caption">Fourteen relations, and eleven of the eighteen relationships between them. A bar is the one end, a crow's foot the many end, and <code>booking</code> to <code>checkout</code> is the one 1:1 here, so it carries a bar at both. Three things this shows that a table of foreign keys does not: <code>category_authorization</code> exists only to resolve a many-to-many between certifications and categories; <code>system_setting</code> hangs detached, because a key-value table has nothing to point at; and <code>member</code> is where the diagram gets crowded, which is the note in the corner. Participation constraints are left to the model itself rather than drawn here.</figcaption>
         </figure>
       </div>
     </section>
@@ -271,7 +271,7 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
           <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="ms-path-title ms-path-desc">
               <title id="ms-path-title">The chain of relations a booking has to walk to prove a member is certified</title>
-              <desc id="ms-path-desc">Eight relations in two rows. The top row runs from booking to equipment, equipment_model and equipment_category. A link then drops to the bottom row, which runs back from category_authorisation through certification and certification_grant to member. A dashed curve joins certification_grant directly to category_authorisation, skipping certification, which is the join the flattening view makes.</desc>
+              <desc id="ms-path-desc">Eight relations in two rows. The top row runs from booking to equipment, equipment_model and equipment_category. A link then drops to the bottom row, which runs back from category_authorization through certification and certification_grant to member. A dashed curve joins certification_grant directly to category_authorization, skipping certification, which is the join the flattening view makes.</desc>
               <defs>
                 <marker id="ms-path-arrow" viewBox="0 0 10 10" refX="9" refY="5"
                         markerWidth="6" markerHeight="6" orient="auto">
@@ -296,7 +296,7 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
               <text x="439" y="208" text-anchor="middle" class="fig-label">certification</text>
               <rect class="fig-box-accent" x="541" y="176" width="150" height="52" rx="6" />
               <text x="616" y="200" text-anchor="middle" class="fig-label">category</text>
-              <text x="616" y="218" text-anchor="middle" class="fig-label">_authorisation</text>
+              <text x="616" y="218" text-anchor="middle" class="fig-label">_authorization</text>
               <line class="fig-line-accent" x1="162" y1="70" x2="185" y2="70" marker-end="url(#ms-path-arrow)" />
               <line class="fig-line-accent" x1="339" y1="70" x2="362" y2="70" marker-end="url(#ms-path-arrow)" />
               <line class="fig-line-accent" x1="516" y1="70" x2="539" y2="70" marker-end="url(#ms-path-arrow)" />
@@ -305,7 +305,7 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
               <line class="fig-line-accent" x1="362" y1="202" x2="339" y2="202" marker-end="url(#ms-path-arrow)" />
               <line class="fig-line-accent" x1="185" y1="202" x2="162" y2="202" marker-end="url(#ms-path-arrow)" />
               <path class="fig-line-accent" d="M262 232 C 262 272, 616 272, 616 232" stroke-dasharray="5 4" fill="none" />
-              <text x="439" y="292" text-anchor="middle" class="fig-note">v_member_category_authorisation</text>
+              <text x="439" y="292" text-anchor="middle" class="fig-note">v_member_category_authorization</text>
             </svg>
           </div>
           <figcaption class="figure-caption">Seven hops, every one of them a declared foreign key, and not one of them reachable from a <code>CHECK</code> constraint, which may not query another table. The dashed curve is the view: it joins the two accented relations directly on <code>certification_id</code>, so the booking transaction asks one question instead of walking the chain.</figcaption>
@@ -323,11 +323,11 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
           into one relation of member, category and validity window:
         </p>
         <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">-- the whole traversal, flattened into (member, category, window)</span>
-CREATE VIEW v_member_category_authorisation AS
+CREATE VIEW v_member_category_authorization AS
 SELECT g.member_id, ca.category_id, g.certification_id,
        g.granted_at AS valid_from, g.expires_at AS valid_to
 FROM certification_grant AS g
-JOIN category_authorisation AS ca ON ca.certification_id = g.certification_id;</code></pre>
+JOIN category_authorization AS ca ON ca.certification_id = g.certification_id;</code></pre>
         <p class="snippet-caption">
           The booking transaction then satisfies the rule with one query: a row must exist whose
           category matches the machine's and whose window covers the whole booking, that is
