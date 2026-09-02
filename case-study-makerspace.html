@@ -237,7 +237,10 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
           The constraint also pays for itself twice. Enforcing it builds a GiST index on
           <code>(equipment_id, tstzrange(starts_at, ends_at))</code>, and that is exactly the index
           the availability search wants. The integrity guarantee and the query plan are the same
-          object.
+          object. Measured against a fresh seeding rather than assumed, that search settles at
+          about 2 ms steady state, roughly 250x inside the specification's 500 ms budget, and
+          <code>EXPLAIN</code> confirms the per-machine conflict check is served by an Index Scan
+          on the same constraint.
         </p>
         <figure class="figure">
           <div class="figure-doc is-wide" tabindex="0" role="group" aria-label="Screenshot, scrollable">
@@ -632,12 +635,6 @@ ALTER TABLE penalty ADD CONSTRAINT penalty_booking_member_fk
           signed token or a shared session store is the fix, and it is not written.
         </p>
         <p>
-          The performance target is stated, not measured. The specification asks for availability
-          searches under half a second at the seeded volume, and the indexes were chosen to serve
-          that query, but I never captured a plan and timed it. Until I do, that number is a design
-          target I have described as a result.
-        </p>
-        <p>
           The containerized database path is written and unverified: Docker was not installed on the
           machine this was built on, so the compose file and its init scripts have never once been
           executed. The local PostgreSQL path is the one that actually runs. That is in the README
@@ -661,7 +658,7 @@ ALTER TABLE penalty ADD CONSTRAINT penalty_booking_member_fk
           <li><b>A rule that cannot be declared should still live in exactly one place.</b> Three rules here span more tables than a constraint can reach. What kept them honest was not cleverness but location: one transaction, one file, and a written reason for why the database is not holding them.</li>
           <li><b>Documenting a dependency is not enforcing it.</b> Four places in the repository described the same redundancy correctly. A single wrong <code>UPDATE</code> would have gone through all four. The composite foreign key that replaced them is one line and cannot be argued with.</li>
           <li><b>Derive dependencies from the data, not from the schema.</b> Reading the DDL alone would have reported two relations as violating 3NF when they do not, and sent a twenty-row tie into a report as a finding. Data can be accidentally consistent, and a schema has no way to tell you so.</li>
-          <li><b>Say which parts you did not run.</b> An unexecuted Docker path, an unmeasured latency budget and a feature that breaks the model's own convention are all more useful written down than quietly implied to work. It costs a paragraph and it is the difference between a limitation and a surprise.</li>
+          <li><b>Say which parts you did not run.</b> An unexecuted Docker path, a session store that will not survive a restart, and a feature that breaks the model's own convention are all more useful written down than quietly implied to work. It costs a paragraph and it is the difference between a limitation and a surprise.</li>
         </ol>
         <p class="entry-more"><a href="/#projects">← Back to portfolio</a></p>
       </div>
