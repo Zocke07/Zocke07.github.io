@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>一個短連結，兩次寫入 · 黃家輝</title>
+  <meta name="description" content="以 Spring Boot 與 MySQL 打造的短網址服務：短碼是那一列自身 id 的 Base62 編碼，所以建立一個連結要寫兩次，而一個欄位預設值被驅動程式悄悄蓋掉。" />
+  <meta property="og:title" content="一個短連結，兩次寫入" />
+  <meta property="og:description" content="短碼衍生自資料庫發出的 id，所以一個連結沒辦法用一句 SQL 建立。這件事的代價，以及它換到的東西。" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/zh/case-study-url-shortener" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og/url-shortener-zh.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="後端案例研究：以 Spring Boot 與 MySQL 打造的短網址服務，以及一個短連結背後的兩次寫入。" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <link rel="canonical" href="https://zocke07.github.io/zh/case-study-url-shortener" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-url-shortener" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-url-shortener" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-url-shortener" />
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="主要導覽">
+      <a class="nav-brand" href="/zh/">黃家輝</a>
+      <div class="nav-right">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="切換導覽選單">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
+          <li><a href="/zh/#about">關於我</a></li>
+          <li><a href="/zh/#education">學歷</a></li>
+          <li><a href="/zh/#experience">工作經歷</a></li>
+          <li><a href="/zh/#projects">作品與研究</a></li>
+          <li><a href="/zh/#skills">技能</a></li>
+          <li><a href="/zh/#contact">聯絡方式</a></li>
+        </ul>
+        <a class="lang-toggle" href="/case-study-url-shortener" hreflang="en" lang="en"
+           aria-label="Switch to English">EN</a>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="深色主題">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- ===================== Case study hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">個人專案 · Spring Boot · MySQL</p>
+        <h1>一個短連結，兩次寫入</h1>
+        <p class="hero-blurb">
+          短網址服務是最小的、卻仍然得回答一個真實設計問題的服務：短碼從哪裡來？把網址拿去雜湊，就等於自己請來了碰撞，以及一整套解決碰撞的機制。這一套的做法是拿 MySQL 為那一列發出的 id，把它編成 Base62，於是碰撞在結構上就不可能發生，而建立一個連結變成兩句 SQL 的事，因為衍生自那一列的短碼，在那一列存在之前算不出來。
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>我的角色：</strong>一個沒有團隊、也沒有人出題的個人專案，而這件事是雙面的：沒有東西是別人交到我手上的，也沒有東西經過別人審查。這個服務小到每一個決定都得拿出理由，而不是從框架的預設值裡順手收下，這正是這一頁在談的事。最值得讀的一段，是 Spring 的一個便利功能悄悄蓋掉了 schema 早就宣告好的欄位預設值。
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>2 個端點</strong>，一個建立、一個跳轉</li>
+          <li><strong>6 個類別</strong>，分成四層</li>
+          <li><strong>1 張表</strong>、4 個欄位、1 個索引</li>
+          <li>建立一個連結要 <strong>2 句 SQL</strong></li>
+          <li><strong>4 個測試</strong>，3 個單元、1 個整合</li>
+          <li>短碼字母表共 <strong>62 個字元</strong></li>
+        </ul>
+        <aside class="source-note">
+          <strong>範圍，以及數字的來源：</strong>這個服務刻意做得很小。兩個端點、一張表，而一個正式上線的短網址服務接下來需要的東西，像是擋在跳轉前的快取、離開請求路徑的點擊分析、流量限制、多台主機，都放在最後當作取捨來談，而不是做出來。這一頁引用的每一個狀態碼，都是對著跑起來的服務、連著本機 MySQL 量到的，而不是抄自 README；而這兩者唯一對不上的地方，下面寫成了它本來的樣子：一個缺陷。<a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">原始碼是公開的</a>。
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== The contract ===================== -->
+    <section id="contract" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">整份契約，就兩個端點</h2>
+        <p>
+          一個端點替網址建立短碼，一個端點把短碼帶回原網址。沒有帳號、沒有後台、也沒有刪除，而這個介面刻意維持在這麼小：這兩個之後的每一個功能，能買到的都比替這兩個辯護所花的時間還少。
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="終端機操作，可捲動"><code><span class="cm">$ curl -s -X POST localhost:8080/api/v1/urls \
+    -H 'Content-Type: application/json' \
+    -d '{"url": "https://spring.io/projects/spring-boot"}'</span>
+{"code":"5"}
+
+<span class="cm">$ curl -sI localhost:8080/5</span>
+HTTP/1.1 302
+Location: https://spring.io/projects/spring-boot</code></pre>
+        <p class="snippet-caption">
+          不存在的短碼得到 404。其他什麼都沒有定義，而這正是先把契約寫下來、再寫 schema 的用意。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Two writes ===================== -->
+    <section id="two-writes" class="section">
+      <div class="container prose">
+        <h2 class="section-title">短碼來自它所指向的那一列</h2>
+        <p>
+          最直覺的產生方式，是把網址雜湊之後截短到可以打得出來的長度。它只要一句 SQL、不需要保存狀態，而它錯在一個要很久以後才會現形的地方：雜湊值截得夠短，兩個不同的網址遲早會產生同一個短碼。那不是一個你可以選擇不要有的錯誤，而是一條你得寫出來、測出來，然後在每一次寫入都付出代價的分支。
+        </p>
+        <p>
+          另一條路，是去編碼一個本來就唯一的東西。MySQL 會替每一列發一個唯一的 <code>AUTO_INCREMENT</code> id，所以短碼可以就是那個數字寫成 62 進位，用上數字、小寫字母和大寫字母。一個唯一數字的 Base62 之所以唯一，是因為這個編碼是一對一的映射，不是因為誰去檢查過。沒有碰撞處理要寫，因為根本沒有碰撞要處理。
+        </p>
+        <p>
+          代價立刻就來。如果短碼是 id 的函數，而 id 是那句 INSERT 發出來的，那短碼就不可能是同一句 INSERT 的一部分。於是建立一個短連結是兩句 SQL，不是一句。
+        </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
+            <svg class="fig-svg" viewBox="0 0 700 320" role="img" aria-labelledby="us-flow-title us-flow-desc">
+              <title id="us-flow-title">為什麼建立一個短連結需要兩句 SQL，而不是一句</title>
+              <desc id="us-flow-desc">分成兩列。上面一列是單獨一句 INSERT，同時寫入 long_url 與 short_code，短碼的位置留著問號，旁邊註明短碼是某個 id 的 Base62，而那個 id 正是這句 INSERT 還沒發出來的。下面一列依序是三個步驟：只寫入 long_url 的 INSERT，之後 MySQL 發出 id 7；把 7 編成短碼「7」；以及把短碼寫回那一列的 UPDATE。</desc>
+              <defs>
+                <marker id="us-flow-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              <text x="10" y="24" class="fig-panel-title">行不通的那一句</text>
+              <rect class="fig-box-muted" x="10" y="36" width="420" height="62" rx="6" />
+              <text x="26" y="60" class="fig-label">INSERT INTO urls (long_url, short_code)</text>
+              <text x="26" y="82" class="fig-tick">VALUES ('https://spring.io/...', ???)</text>
+              <text x="448" y="60" class="fig-tick">短碼是那一列 id 的 Base62，</text>
+              <text x="448" y="82" class="fig-tick">而 id 正是這句 INSERT 發出來的</text>
+              <text x="10" y="146" class="fig-panel-title">實際跑的那兩句</text>
+              <rect class="fig-box" x="10" y="158" width="196" height="66" rx="6" />
+              <text x="26" y="182" class="fig-label">1. INSERT long_url</text>
+              <text x="26" y="204" class="fig-tick">MySQL 發出 id = 7</text>
+              <line class="fig-line-accent" x1="208" y1="191" x2="242" y2="191" marker-end="url(#us-flow-arrow)" />
+              <rect class="fig-box-accent" x="244" y="158" width="186" height="66" rx="6" />
+              <text x="260" y="182" class="fig-label">2. Base62(7)</text>
+              <text x="260" y="204" class="fig-tick">短碼 = "7"</text>
+              <line class="fig-line-accent" x1="432" y1="191" x2="466" y2="191" marker-end="url(#us-flow-arrow)" />
+              <rect class="fig-box" x="468" y="158" width="222" height="66" rx="6" />
+              <text x="484" y="182" class="fig-label">3. UPDATE short_code</text>
+              <text x="484" y="204" class="fig-tick">WHERE id = 7</text>
+              <path class="fig-line" d="M108 226 L108 258 L579 258 L579 226" stroke-dasharray="5 4" fill="none" />
+              <text x="10" y="284" class="fig-tick">在第一句和第三句之間，那一列是沒有短碼的，這就是 short_code 允許為 null 的原因。</text>
+              <text x="10" y="306" class="fig-tick">建立一個連結要兩次來回；跳轉一次仍然只花一次讀取。</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">產生器的輸入，是由它本該參與的那次寫入產生的，所以那次寫入裂成了兩半。schema 裡其他每一件事都是從這張圖長出來的，包括那個唯一允許為 null 的欄位。</figcaption>
+        </figure>
+        <p>
+          編碼本身是一個迴圈，裡面有兩件很容易被混在一起的工作：餘數負責挑字元，除法負責把數字縮小到下一輪。它是從最低位往上把字串疊出來的，所以每個字元是插在最前面，而不是接在後面。
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code><span class="cm">// 0 -&gt; "0", 61 -&gt; "Z", 62 -&gt; "10", 63 -&gt; "11"</span>
+StringBuilder code = new StringBuilder();
+while (counter &gt; 0) {
+    code.insert(0, ALPHABET.charAt((int) (counter % BASE)));
+    counter /= BASE;
+}</code></pre>
+        <p class="snippet-caption">
+          62 個字元用六位就有四十億種短碼，遠比這個服務用得到的還多，也比一個 UUID 短得多。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The table ===================== -->
+    <section id="schema" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">一張表，以及每個欄位得自己掙來的位置</h2>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code>CREATE TABLE urls (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    short_code  VARCHAR(10)   UNIQUE,
+    long_url    VARCHAR(2048) NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+        <p>
+          主鍵是 <code>id</code> 而不是 <code>short_code</code>，即使對外界來說短碼才是那個會被用到的東西。鍵應該是一個沒有意義、但穩定的把手，而不是某個之後的決定就能改掉的業務資料：換掉產生器，每一個短碼都會變，而任何指著短碼的表就會指向空的地方。實務上它同時也是編碼器需要的那個數字，所以這個代理鍵一次賺回兩份。
+        </p>
+        <p>
+          <code>short_code</code> 是 <code>UNIQUE</code>，而在 MySQL 裡這也順手建出了跳轉查詢會用到的索引，所以一個關鍵字同時買到保證和查詢計畫。它沒有的是 <code>NOT NULL</code>，而這個「沒有」就是上面那張圖在 schema 裡現身的樣子：在 INSERT 的那一刻，短碼真的還不存在。MySQL 允許唯一約束底下有多個 null，所以對已經有短碼的那些列，什麼保證都沒有被削弱。
+        </p>
+        <p>
+          這個約束到底是為了什麼，值得說清楚。它不是唯一性的機制，因為自增 id 的 Base62 編碼本來就產生不出重複值。它是留給未來應用程式錯誤的一張安全網：如果哪天有人把產生器換成一個會重複的東西，資料庫會直接拒絕這次寫入，而不是安靜地讓一個連結指向兩個目的地。
+        </p>
+        <p>
+          <code>long_url</code> 完全沒有索引，這是最容易被質疑、也最好辯護的一個決定：這個服務裡沒有任何地方會查 <code>WHERE long_url = ?</code>。索引不是白拿的。它在每一次寫入都要付出寫入速度和磁碟空間，而只有在真的有查詢用到它的地方才賺得回來。重複的網址在這裡也沒關係。兩個人縮同一個網址會拿到兩個短碼，而把它們合起來只對這個服務沒有的功能有意義。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The NULL bug ===================== -->
+    <section id="defaults" class="section">
+      <div class="container prose">
+        <h2 class="section-title">明寫的 NULL，不等於沒寫的欄位</h2>
+        <p>
+          <code>created_at</code> 宣告成 <code>DEFAULT CURRENT_TIMESTAMP</code>，而每一列讀回來都是 null。schema 是對的，那句 INSERT 也沒有提到這個欄位，資料卻還是錯的，而這正是讓一個錯誤難以被看見的組合：沒有任何一段可以讀的東西看起來是錯的。
+        </p>
+        <p>
+          原因是一個便利功能。Spring 的 <code>SimpleJdbcInsert</code> 只拿到一張表、其他什麼都沒給的時候，會去檢查那張表所有的欄位，然後替每一個沒有拿到值的欄位明寫一個 <code>NULL</code>。SQL 是在語句「省略」某個欄位時才套用預設值，而不是在語句寫出那個欄位、並把它設成 null 的時候。嚴格說，預設值從來沒有被跳過：它是被一個應用程式自己都不知道送出去的值推翻的。
+        </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
+            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="us-null-title us-null-desc">
+              <title id="us-null-title">同一次寫入，在把欄位釘成一個之前與之後</title>
+              <desc id="us-null-desc">分成兩列。上面是驅動程式產生的語句，寫出四個欄位，並且把 id、short_code 與 created_at 都傳成 NULL，結果 created_at 是 null。下面是只寫出 long_url 的語句，結果 created_at 拿到欄位預設值給的時間戳記。</desc>
+              <defs>
+                <marker id="us-null-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              <text x="10" y="24" class="fig-panel-title">之前：驅動程式寫出了它找到的每一個欄位</text>
+              <rect class="fig-box-muted" x="10" y="36" width="502" height="72" rx="6" />
+              <text x="26" y="62" class="fig-tick">INSERT INTO urls (id, short_code, long_url, created_at)</text>
+              <text x="26" y="88" class="fig-tick">VALUES (NULL, NULL, 'https://spring.io/...', NULL)</text>
+              <line class="fig-line-accent" x1="516" y1="72" x2="550" y2="72" marker-end="url(#us-null-arrow)" />
+              <rect class="fig-box-muted" x="552" y="44" width="138" height="56" rx="6" />
+              <text x="621" y="68" text-anchor="middle" class="fig-tick">created_at</text>
+              <text x="621" y="88" text-anchor="middle" class="fig-label">NULL</text>
+              <text x="10" y="164" class="fig-panel-title">之後：usingColumns("long_url")</text>
+              <rect class="fig-box" x="10" y="176" width="502" height="72" rx="6" />
+              <text x="26" y="202" class="fig-tick">INSERT INTO urls (long_url)</text>
+              <text x="26" y="228" class="fig-tick">VALUES ('https://spring.io/...')</text>
+              <line class="fig-line-accent" x1="516" y1="212" x2="550" y2="212" marker-end="url(#us-null-arrow)" />
+              <rect class="fig-box-accent" x="552" y="184" width="138" height="56" rx="6" />
+              <text x="621" y="208" text-anchor="middle" class="fig-tick">created_at</text>
+              <text x="621" y="228" text-anchor="middle" class="fig-label">09:04:08</text>
+              <text x="10" y="278" class="fig-tick">預設值從來沒有被跳過，是被一個應用程式不知道自己送出去的值推翻的。</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">這兩句的差別不在值，真正重要的每一個欄位裡的值都一樣。差別在於哪些欄位被寫出來了，而那正是欄位預設值真正依附的東西。</figcaption>
+        </figure>
+        <p>
+          要找到它，得放棄讀應用程式，改成去讀資料庫。MySQL 的 <code>general_log</code> 會記下一條連線送出去的原始 SQL，這把「這段程式大概做了什麼」的爭論，換成了一行寫著它到底送了什麼的文字。修正只有一個呼叫，把那次寫入釘在它唯一有值的那個欄位上：
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code>this.insertUrl = new SimpleJdbcInsert(jdbcTemplate)
+        .withTableName("urls")
+        .usingColumns("long_url")          <span class="cm">// 整個修正就是這一行</span>
+        .usingGeneratedKeyColumns("id");</code></pre>
+        <p class="snippet-caption">
+          在這之後寫入的每一列，都帶著 schema 一直說它們會有的那個時間戳記。
+        </p>
+        <p>
+          比修正本身更值得帶走的是那條通則。預設值是語句的性質，不是表的性質；而任何一層替你產生 SQL 的東西，都在替你決定那句語句的形狀。只要它產生的正好是你自己會寫的，那沒問題。它不再沒問題的那一刻，是它比你更周到的時候。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The redirect ===================== -->
+    <section id="redirect" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">用 302，因為 301 是一個只能做一次的決定</h2>
+        <p>
+          跳轉要挑一個狀態碼，而 301 是那個聽起來對的：目的地確實是永久的。它同時也是瀏覽器有權快取的那一個，也就是說，同一個短連結的第二次點擊，根本不會再回到這個服務。每一次計數、每一個來源、每一份「這個連結正在被用」的證據，都沒了，而且是安靜地沒了，因為一個被快取的跳轉看起來和一個正常運作的跳轉一模一樣。
+        </p>
+        <p>
+          302 放棄了那個好處，換來一次來回。每一次點擊都會回到伺服器，代價是每次點擊多一點延遲，換到的是「將來還有機會知道這些點擊的任何事」這個選項。這裡值得誠實說出這筆交易的大小：今天這個服務並沒有在計算任何點擊。這個狀態碼買的不是一個功能，而是不把一個功能提早關掉；如果分析這件事被永久排除，那 301 才是比較好的答案。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Tests ===================== -->
+    <section id="tests" class="section">
+      <div class="container prose">
+        <h2 class="section-title">測試證明了什麼，又只是看起來證明了什麼</h2>
+        <p>
+          三個單元測試跑在一個被替換掉的 repository 上，所以完全沒有資料庫參與：建立一個短碼並解回原網址、拒絕空白網址，以及對不存在的短碼回傳 null。那個假物件只換掉資料庫這個邊界，其他什麼都沒換，而這個細節正是第一個測試值得跑的原因。Base62 編碼器並沒有被替換，所以斷言 id 62 會產生短碼 <code>"10"</code>，跑的是真正的邏輯，不是一個事先塞好的答案。
+        </p>
+        <p>
+          空白網址那個測試是我最想替它辯護的一個，因為它的第二個斷言。
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code>assertThrows(IllegalArgumentException.class, () -&gt; service.createShortUrl("   "));
+
+<span class="cm">// assertThrows 只證明了某個地方丟出了例外。
+// 這一行證明的是：它發生在守衛條款真正的工作，也就是
+// 把垃圾擋在表外面，還來得及被繞過去之前。</span>
+verifyNoInteractions(repository);</code></pre>
+        <p class="snippet-caption">
+          把第二行刪掉，這個測試在一個「先寫入那一列、之後才失敗」的服務上照樣會通過。
+        </p>
+        <p>
+          第四個測試是披著同一個註解的另一種生物。產生器生出來的 <code>contextLoads</code> 會把整個 Spring context 啟動起來，也就是說它會開一條真的連線，並且在 MySQL 容器沒跑的時候失敗。它是一個整合測試，而有用的不是「四個」這個數字，是能講清楚這四個裡哪一個需要資料庫、以及為什麼。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Limits ===================== -->
+    <section id="limits" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">它沒有做到的事</h2>
+        <p>
+          空白或缺少的網址會在 service 層被擋下來，在任何東西碰到資料庫之前，而這個守衛是有效的：一次被拒絕的請求之後，表沒有任何變化。少的是最後一步。沒有任何東西把 <code>IllegalArgumentException</code> 翻譯成狀態碼，所以呼叫端拿到的是 500，而誠實的答案是 400。修正是一個 <code>@ControllerAdvice</code> 處理器，而它沒有被寫出來。
+        </p>
+        <p>
+          在寫這一頁之前，README 宣稱的是那個 400。拿它去對跑起來的服務量一次，才把一份寫好的契約變回一個缺陷，而這也是這一頁每一個狀態碼都來自一次請求、而不是來自文字的原因。
+        </p>
+        <p>
+          它也完全沒有檢查那個字串是不是一個網址。<code>"definitely not a url"</code> 會被接受、被存起來，並且拿到 200 和一個可以用的短碼。失敗被延後給了點下去的那個人，他會從一個當初收下這個值時毫無異議的服務手上拿到 500。修正是在邊界做驗證，而有意思的是錯誤浮現的位置：送出壞請求的人，不是付出代價的那個人。
+        </p>
+        <p>
+          短碼在結構上也是猜得到的。編碼一個計數器，意味著 <code>/1</code>、<code>/2</code>、<code>/3</code> 就能照順序走完整張表，所以這裡的短連結並不是私密連結。這是「讓碰撞不可能發生」而不是「讓碰撞不太可能發生」所付出的價錢，而只有在這些連結後面沒有任何東西需要不被列出來的時候，這筆交易才划算。
+        </p>
+        <p>
+          除此之外：跳轉前面沒有快取，所以每一次點擊都是一次資料庫讀取；沒有點擊分析，而那正是 302 存在要保留的可能性；沒有流量限制；只有一台主機；還有開發用的密碼就放在 <code>application.properties</code> 裡，這對一個用完就丟的本機容器沒問題，放在任何真正該放秘密的地方都不對。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section">
+      <div class="container prose">
+        <h2 class="section-title">關鍵工程收穫</h2>
+        <ol class="learnings" role="list">
+          <li><b>寧可選一個沒有失效模式的設計，也不要選一個有好處理器的設計。</b>截短的雜湊需要碰撞偵測、重試路徑，還有兩者的測試。編碼一個本來就唯一的數字則一個都不需要，而代價付在一個顯眼得多的地方：那次寫入裂成了兩半。</li>
+          <li><b>預設值是語句的性質，不是表的性質。</b>欄位預設值填的是語句沒有寫出來的欄位。把那個欄位寫出來、設成 null，預設值就被推翻了，而這正是一個熱心的驅動程式替我做的事，直到我去讀它真正送出去的 SQL 為止。</li>
+          <li><b>當程式和資料說法不一致，就去讀線路上的東西。</b>應用程式說它只寫了一個欄位，資料說不是這樣。MySQL 自己的日誌一分鐘就把這件事定案了，而再怎麼重讀那些 Java 都不會。</li>
+          <li><b>守衛條款的價值，等於它擋下了什麼。</b>斷言例外被丟出來，對「什麼時候」一個字都沒說。斷言 repository 從來沒有被碰過，才把這個檢查釘在邊界上真正有保護到東西的那一側。</li>
+          <li><b>連 README 也要測。</b>它寫著一個這個服務從來沒有回傳過的 400。文件恰恰是在沒有人重跑的地方漂走的，而端點契約是最不該讓它漂走的地方。</li>
+        </ol>
+        <p class="entry-more">
+          <a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">在 GitHub 上查看原始碼 →</a>
+        </p>
+        <p class="entry-more"><a href="/zh/#projects">← 回到作品集</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> 黃家輝 · 以純 HTML 與 CSS 打造，部署於 GitHub Pages。</p>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="回到頁首">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="/assets/js/main.js?v=d674b144"></script>
+</body>
+</html>

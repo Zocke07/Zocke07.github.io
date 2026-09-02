@@ -182,6 +182,7 @@ SLUG = {
     "case-study-microprocessors.html": "micro",
     "case-study-sky-scraper-escape.html": "sky",
     "case-study-test-automation.html": "ta",
+    "case-study-url-shortener.html": "url-shortener",
     "project-mobile-testing.html": "mobile",
 }
 

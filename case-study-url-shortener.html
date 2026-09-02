@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Two Writes for One Short Link &#183; Rivan Wong</title>
+  <meta name="description" content="A Spring Boot and MySQL URL shortener whose short code is Base62 of the row's own id, so creating a link takes two statements, and a column default the driver quietly overrode." />
+  <meta property="og:title" content="Two Writes for One Short Link" />
+  <meta property="og:description" content="The short code is derived from the id the database issues, so a link cannot be created in one statement. What that costs, and what it buys." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/case-study-url-shortener" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og/url-shortener.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Backend case study: a Spring Boot and MySQL URL shortener, and the two writes behind one short link." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <link rel="canonical" href="https://zocke07.github.io/case-study-url-shortener" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-url-shortener" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-url-shortener" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-url-shortener" />
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="Primary">
+      <a class="nav-brand" href="/">Rivan Wong</a>
+      <div class="nav-right">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#education">Education</a></li>
+          <li><a href="/#experience">Experience</a></li>
+          <li><a href="/#projects">Work &amp; Research</a></li>
+          <li><a href="/#skills">Skills</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <a class="lang-toggle" href="/zh/case-study-url-shortener" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+           aria-label="切換至繁體中文">中文</a>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Dark theme">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- ===================== Case study hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">Self-Directed Project · Spring Boot · MySQL</p>
+        <h1>Two Writes for One Short Link</h1>
+        <p class="hero-blurb">
+          A URL shortener is the smallest service that still has to answer a real design
+          question: where does the short code come from? Hash the URL and you have invited
+          collisions, plus all the machinery for resolving them. This one takes the id MySQL
+          issues for the row and encodes it in Base62, which makes a collision structurally
+          impossible and creating a link a two-statement operation, because a code derived from
+          the row cannot be computed until the row exists.
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>My role:</strong> self-directed, with no team and no brief. That cuts both
+          ways: nothing here was handed to me and nothing here was reviewed by anyone else
+          either. The service is small enough that every decision in it had to be argued rather
+          than absorbed from a framework default, which is what the page is about. The section
+          worth reading is the one where a Spring convenience silently overrode a column default
+          the schema had already declared.
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>2 endpoints</strong>, one to create, one to follow</li>
+          <li><strong>6 classes</strong> across four layers</li>
+          <li><strong>1 table</strong>, 4 columns, 1 index</li>
+          <li><strong>2 statements</strong> to create one link</li>
+          <li><strong>4 tests</strong>, 3 unit and 1 integration</li>
+          <li><strong>62 characters</strong> in the code alphabet</li>
+        </ul>
+        <aside class="source-note">
+          <strong>Scope, and where the numbers come from:</strong> the service is deliberately
+          small. Two endpoints and one table, with everything a production shortener needs next,
+          a cache in front of the redirect, click analytics off the request path, rate limiting,
+          more than one host, argued about at the end rather than built. Every status code quoted
+          here was taken from the running service against a local MySQL rather than from the
+          README, and the one place those two disagreed is written up below as the defect it is.
+          <a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">The repository is public</a>.
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== The contract ===================== -->
+    <section id="contract" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">The Whole Contract, in Two Endpoints</h2>
+        <p>
+          One endpoint creates a code for a URL and one follows a code back to it. There is no
+          account, no dashboard and no delete, and the surface stays this small on purpose: every
+          feature past these two would have bought less than the time it cost to defend the two.
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Terminal session, scrollable"><code><span class="cm">$ curl -s -X POST localhost:8080/api/v1/urls \
+    -H 'Content-Type: application/json' \
+    -d '{"url": "https://spring.io/projects/spring-boot"}'</span>
+{"code":"5"}
+
+<span class="cm">$ curl -sI localhost:8080/5</span>
+HTTP/1.1 302
+Location: https://spring.io/projects/spring-boot</code></pre>
+        <p class="snippet-caption">
+          A code that does not exist gets a 404. Nothing else is defined, which is the point of
+          writing the contract down before the schema.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Two writes ===================== -->
+    <section id="two-writes" class="section">
+      <div class="container prose">
+        <h2 class="section-title">The Code Comes From the Row It Names</h2>
+        <p>
+          The obvious generator is a hash of the URL, truncated to something short. It is one
+          statement, it is stateless, and it is wrong for a reason that only shows up later:
+          truncate a hash far enough to be typeable and two different URLs will eventually
+          produce the same code. That is not a bug you can decline to have. It is a branch you
+          have to write, test, and pay for on every insert, forever.
+        </p>
+        <p>
+          The alternative is to encode something already unique. MySQL issues a unique
+          <code>AUTO_INCREMENT</code> id for every row, so the code can be that number written in
+          base 62, using the digits, the lowercase letters and the uppercase letters. Base62 of a
+          unique number is unique because the encoding is a bijection, not because anyone checked.
+          There is no collision path to write, because there are no collisions to resolve.
+        </p>
+        <p>
+          The cost arrives immediately. If the code is a function of the id, and the id is issued
+          by the insert, then the code cannot be part of that insert. Creating one short link is
+          therefore two statements and not one.
+        </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
+            <svg class="fig-svg" viewBox="0 0 700 320" role="img" aria-labelledby="us-flow-title us-flow-desc">
+              <title id="us-flow-title">Why creating a short link takes two statements instead of one</title>
+              <desc id="us-flow-desc">Two rows. The top row shows a single insert naming both long_url and short_code, with the short code left as a question mark, and a note that the code is Base62 of an id this very insert has not issued yet. The bottom row shows three steps in sequence: an insert of long_url alone, after which MySQL issues id 7; the Base62 encoding of 7 into the code "7"; and an update that writes the code onto the row.</desc>
+              <defs>
+                <marker id="us-flow-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              <text x="10" y="24" class="fig-panel-title">The one statement that cannot work</text>
+              <rect class="fig-box-muted" x="10" y="36" width="420" height="62" rx="6" />
+              <text x="26" y="60" class="fig-label">INSERT INTO urls (long_url, short_code)</text>
+              <text x="26" y="82" class="fig-tick">VALUES ('https://spring.io/...', ???)</text>
+              <text x="448" y="60" class="fig-tick">the code is Base62 of the row's id,</text>
+              <text x="448" y="82" class="fig-tick">and this insert is what issues it</text>
+              <text x="10" y="146" class="fig-panel-title">The two statements that do</text>
+              <rect class="fig-box" x="10" y="158" width="196" height="66" rx="6" />
+              <text x="26" y="182" class="fig-label">1. INSERT long_url</text>
+              <text x="26" y="204" class="fig-tick">MySQL issues id = 7</text>
+              <line class="fig-line-accent" x1="208" y1="191" x2="242" y2="191" marker-end="url(#us-flow-arrow)" />
+              <rect class="fig-box-accent" x="244" y="158" width="186" height="66" rx="6" />
+              <text x="260" y="182" class="fig-label">2. Base62(7)</text>
+              <text x="260" y="204" class="fig-tick">code = "7"</text>
+              <line class="fig-line-accent" x1="432" y1="191" x2="466" y2="191" marker-end="url(#us-flow-arrow)" />
+              <rect class="fig-box" x="468" y="158" width="222" height="66" rx="6" />
+              <text x="484" y="182" class="fig-label">3. UPDATE short_code</text>
+              <text x="484" y="204" class="fig-tick">WHERE id = 7</text>
+              <path class="fig-line" d="M108 226 L108 258 L579 258 L579 226" stroke-dasharray="5 4" fill="none" />
+              <text x="10" y="284" class="fig-tick">Between the first statement and the third, the row exists with no code, which is why</text>
+              <text x="10" y="306" class="fig-tick">short_code is nullable. Two round trips to create a link; following one still costs a single read.</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">The generator's input is produced by the write it is supposed to be part of, so the write splits in two. Everything else in the schema follows from this picture, including the one column that is allowed to be null.</figcaption>
+        </figure>
+        <p>
+          The encoding itself is a loop of two jobs that are easy to blur together. The remainder
+          picks a character, and the division shrinks the number for the next round. It builds the
+          string from the least significant digit up, which is why each character is inserted at
+          the front rather than appended.
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">// 0 -&gt; "0", 61 -&gt; "Z", 62 -&gt; "10", 63 -&gt; "11"</span>
+StringBuilder code = new StringBuilder();
+while (counter &gt; 0) {
+    code.insert(0, ALPHABET.charAt((int) (counter % BASE)));
+    counter /= BASE;
+}</code></pre>
+        <p class="snippet-caption">
+          Sixty-two characters give four billion codes in six of them, which is more room than
+          this service will ever need and a great deal shorter than a UUID.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The table ===================== -->
+    <section id="schema" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">One Table, and What Each Column Had to Earn</h2>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code>CREATE TABLE urls (
+    id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    short_code  VARCHAR(10)   UNIQUE,
+    long_url    VARCHAR(2048) NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</code></pre>
+        <p>
+          The primary key is <code>id</code> and not <code>short_code</code>, even though the code
+          is what the outside world uses. A key should be a meaningless, stable handle rather than
+          business data that a later decision could change: swap the generator and every short
+          code changes, and any table that had pointed at one would be pointing at nothing.
+          Practically, it is also the number the encoder needs, so the surrogate key pays for
+          itself twice.
+        </p>
+        <p>
+          <code>short_code</code> is <code>UNIQUE</code>, which in MySQL also builds the index that
+          the redirect lookup uses, so one keyword buys the guarantee and the query plan together.
+          What it is not is <code>NOT NULL</code>, and that omission is the diagram above showing
+          up in the schema: at the moment of the insert the code genuinely does not exist yet.
+          MySQL permits several nulls under a unique constraint, so nothing is weakened for the
+          rows that do have a code.
+        </p>
+        <p>
+          Worth being precise about what that constraint is for. It is not the uniqueness
+          mechanism, because Base62 over an auto-increment id cannot produce a duplicate. It is a
+          safety net against a future application bug: if someone later replaces the generator
+          with something that can repeat, the database refuses the write instead of quietly
+          serving two destinations from one link.
+        </p>
+        <p>
+          <code>long_url</code> has no index at all, which is the decision most likely to be
+          challenged and the easiest to defend: nothing in the service ever queries
+          <code>WHERE long_url = ?</code>. An index is not a free win. It costs write speed and
+          disk on every insert, and it earns that back only where a lookup actually uses it.
+          Duplicates are fine here too. Two people shortening the same URL get two codes, and
+          collapsing them would only matter to a feature this service does not have.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The NULL bug ===================== -->
+    <section id="defaults" class="section">
+      <div class="container prose">
+        <h2 class="section-title">An Explicit NULL Is Not a Missing Column</h2>
+        <p>
+          <code>created_at</code> was declared <code>DEFAULT CURRENT_TIMESTAMP</code> and came back
+          null on every row. The schema was right, the insert named no such column, and the data
+          was still wrong, which is the combination that makes a bug hard to see: there is nothing
+          to read that looks incorrect.
+        </p>
+        <p>
+          The cause was a convenience. Spring's <code>SimpleJdbcInsert</code>, given a table and
+          nothing else, inspects every column that table has and writes an explicit
+          <code>NULL</code> for each one it was not handed a value for. SQL applies a column
+          default when the statement <em>omits</em> the column, not when the statement names it and
+          sets it to null. The default was never skipped, exactly: it was overruled by a value the
+          application did not know it was sending.
+        </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
+            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="us-null-title us-null-desc">
+              <title id="us-null-title">The same insert before and after pinning it to one column</title>
+              <desc id="us-null-desc">Two rows. Above, the statement the driver generated names all four columns and passes NULL for id, short_code and created_at, and the resulting created_at is null. Below, the statement names long_url only, and the resulting created_at holds a timestamp supplied by the column default.</desc>
+              <defs>
+                <marker id="us-null-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              <text x="10" y="24" class="fig-panel-title">Before: the driver named every column it found</text>
+              <rect class="fig-box-muted" x="10" y="36" width="502" height="72" rx="6" />
+              <text x="26" y="62" class="fig-tick">INSERT INTO urls (id, short_code, long_url, created_at)</text>
+              <text x="26" y="88" class="fig-tick">VALUES (NULL, NULL, 'https://spring.io/...', NULL)</text>
+              <line class="fig-line-accent" x1="516" y1="72" x2="550" y2="72" marker-end="url(#us-null-arrow)" />
+              <rect class="fig-box-muted" x="552" y="44" width="138" height="56" rx="6" />
+              <text x="621" y="68" text-anchor="middle" class="fig-tick">created_at</text>
+              <text x="621" y="88" text-anchor="middle" class="fig-label">NULL</text>
+              <text x="10" y="164" class="fig-panel-title">After: usingColumns("long_url")</text>
+              <rect class="fig-box" x="10" y="176" width="502" height="72" rx="6" />
+              <text x="26" y="202" class="fig-tick">INSERT INTO urls (long_url)</text>
+              <text x="26" y="228" class="fig-tick">VALUES ('https://spring.io/...')</text>
+              <line class="fig-line-accent" x1="516" y1="212" x2="550" y2="212" marker-end="url(#us-null-arrow)" />
+              <rect class="fig-box-accent" x="552" y="184" width="138" height="56" rx="6" />
+              <text x="621" y="208" text-anchor="middle" class="fig-tick">created_at</text>
+              <text x="621" y="228" text-anchor="middle" class="fig-label">09:04:08</text>
+              <text x="10" y="278" class="fig-tick">The default was never skipped. It was overruled by a value the application did not know it sent.</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">The difference between the two statements is not the values, which are the same in every column that matters. It is which columns are named at all, and that is the thing a column default is a property of.</figcaption>
+        </figure>
+        <p>
+          Finding it meant giving up on reading the application and reading the database instead.
+          MySQL's <code>general_log</code> records the literal SQL a connection sends, which turned
+          an argument about what the code probably did into a line of text about what it actually
+          sent. The fix was one call, pinning the insert to the single column it has a value for:
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code>this.insertUrl = new SimpleJdbcInsert(jdbcTemplate)
+        .withTableName("urls")
+        .usingColumns("long_url")          <span class="cm">// the whole fix</span>
+        .usingGeneratedKeyColumns("id");</code></pre>
+        <p class="snippet-caption">
+          Rows written after this carry the timestamp the schema always said they would.
+        </p>
+        <p>
+          The general lesson is worth more than the fix. A default is a property of the statement,
+          not of the table, and any layer that generates SQL on your behalf is deciding the shape
+          of that statement for you. That is fine while what it generates is what you would have
+          written. It stops being fine the moment it is more thorough than you were.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The redirect ===================== -->
+    <section id="redirect" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">302, Because 301 Is a Decision You Only Make Once</h2>
+        <p>
+          A redirect wants a status code, and 301 is the one that sounds right: the destination
+          really is permanent. It is also the one the browser is entitled to cache, which means
+          the second click on a short link never reaches this service at all. Every count, every
+          referrer, every piece of evidence that the link is being used, gone, and gone silently,
+          because a cached redirect looks exactly like a working one.
+        </p>
+        <p>
+          302 gives that up and buys a round trip. Every click comes back to the server, which
+          costs a little latency per click and keeps the option of ever knowing anything about
+          those clicks. It is worth being honest about the size of that trade here: nothing in
+          this service counts a click today. The status code is not paying for a feature, it is
+          declining to foreclose one, and if analytics were ruled out for good then 301 would be
+          the better answer.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Tests ===================== -->
+    <section id="tests" class="section">
+      <div class="container prose">
+        <h2 class="section-title">What the Tests Prove, and What They Only Appear To</h2>
+        <p>
+          Three unit tests run against a mocked repository, so no database is involved: creating a
+          code and resolving it back, rejecting a blank URL, and returning null for a code that
+          does not exist. The mock replaces the database boundary and nothing else, which is the
+          detail that makes the first test worth running. The Base62 encoder is not stubbed, so
+          asserting that id 62 produces the code <code>"10"</code> exercises the real logic and
+          not a canned answer.
+        </p>
+        <p>
+          The blank-URL test is the one I would defend hardest, because of its second assertion.
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code>assertThrows(IllegalArgumentException.class, () -&gt; service.createShortUrl("   "));
+
+<span class="cm">// assertThrows only proves an exception happened somewhere.
+// This proves it happened before the guard's whole job, keeping
+// junk out of the table, could have been bypassed.</span>
+verifyNoInteractions(repository);</code></pre>
+        <p class="snippet-caption">
+          Delete the second line and the test still passes against a service that inserts the row
+          first and fails afterwards.
+        </p>
+        <p>
+          The fourth test is a different animal wearing the same annotation. The generated
+          <code>contextLoads</code> boots the entire Spring context, which means it opens a real
+          connection and fails when the MySQL container is not running. It is an integration test,
+          and the useful thing is not the count of four but being able to say which of the four
+          needs a database and why.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Limits ===================== -->
+    <section id="limits" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">What It Does Not Do</h2>
+        <p>
+          A blank or missing URL is rejected in the service, before anything reaches the database,
+          and the guard works: the table is unchanged after a rejected request. What is missing is
+          the last step. Nothing translates the <code>IllegalArgumentException</code> into a status
+          code, so the caller gets a 500 where the honest answer is 400. A
+          <code>@ControllerAdvice</code> handler is the fix and it is not written.
+        </p>
+        <p>
+          The README claimed the 400 until this page was written. Checking it against the running
+          service is what turned a documented contract back into a defect, and it is the reason
+          every status code quoted here came from a request rather than from prose.
+        </p>
+        <p>
+          Nothing checks that the string is a URL at all. <code>"definitely not a url"</code> is
+          accepted, stored, and answered with a 200 and a working code. The failure is deferred
+          to whoever follows the link, who gets a 500 from a service that was perfectly happy
+          when the value went in. Validation at the boundary is the fix, and the interesting part
+          is where the error surfaces: the person who made the bad request is not the person who
+          pays for it.
+        </p>
+        <p>
+          The codes are also, by construction, guessable. Encoding a counter means
+          <code>/1</code>, <code>/2</code> and <code>/3</code> walk the table in order, so a short
+          link here is not a private one. That is the price of making collisions impossible rather
+          than merely unlikely, and it is a fair trade only while nothing behind these links is
+          meant to be unlisted.
+        </p>
+        <p>
+          Beyond that: no cache in front of the redirect, so every click is a database read; no
+          click analytics, which the 302 exists to keep possible; no rate limiting; one host; and
+          the development password sits in <code>application.properties</code>, which is fine for a
+          throwaway local container and wrong anywhere a real secret belongs.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Key Engineering Learnings</h2>
+        <ol class="learnings" role="list">
+          <li><b>Prefer the design with no failure mode over the one with a good handler.</b> A truncated hash needs collision detection, a retry path, and a test for both. Encoding a number that is already unique needs none of them, and the cost is paid somewhere far more visible: the write splits in two.</li>
+          <li><b>A default is a property of the statement, not of the table.</b> A column default fills a column the statement leaves out. Name that column and set it to null and the default is overruled, which is exactly what a helpful driver did on my behalf until I read the SQL it was really sending.</li>
+          <li><b>When the code and the data disagree, read the wire.</b> The application said it inserted one column and the rows said otherwise. MySQL's own log settled it in a minute, and no amount of rereading the Java would have.</li>
+          <li><b>A guard clause is only worth what it stops.</b> Asserting that an exception was thrown says nothing about when. Asserting that the repository was never touched is what pins the check to the side of the boundary where it protects something.</li>
+          <li><b>Test the README.</b> It documented a 400 that the service has never once returned. Documentation drifts in exactly the places nobody re-runs, and the endpoint contract is the worst possible place to let it.</li>
+        </ol>
+        <p class="entry-more">
+          <a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">View the source on GitHub →</a>
+        </p>
+        <p class="entry-more"><a href="/#projects">← Back to portfolio</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong · Built with plain HTML &amp; CSS, hosted on GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="/assets/js/main.js?v=d674b144"></script>
+</body>
+</html>

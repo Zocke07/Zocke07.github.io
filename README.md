@@ -14,6 +14,7 @@ case-study-lmad.html
 case-study-makerspace.html
 case-study-microprocessors.html
 case-study-sky-scraper-escape.html
+case-study-url-shortener.html
 project-mobile-testing.html      # project notes, same layout as a case study
 404.html                         # served for every bad URL, in both languages
 sitemap.xml                      # generated; see tools/sitemap.py
@@ -146,7 +147,7 @@ the top of section 11; a new panel joins that list rather than restating it.
 
 `style.css` and `main.js` are linked as `?v=<hash>`, where the hash comes from
 the file itself. Run `python3 tools/bump.py` after changing either one; it
-rewrites all 19 pages, and `tools/check.py` fails if a stamp is stale. It used
+rewrites all 21 pages, and `tools/check.py` fails if a stamp is stale. It used
 to be a counter bumped by hand in 32 places.
 
 ## Social cards
@@ -319,7 +320,7 @@ slash. Without it the pattern also matched `assets/cv/`, because macOS sets
 
 ## When to move to a framework
 
-Deliberately none today. The site is 18 pages on one stylesheet and one script,
+Deliberately none today. The site is 20 pages on one stylesheet and one script,
 with no dependencies and no build step: `git push` deploys it, the first visit
 costs 24 to 35 KB gzipped of HTML, CSS and JS over zero external requests, plus
 one 71 KB portrait on the home page, and it will still build untouched in five
@@ -327,10 +328,10 @@ years. (`style.css` and `main.js` are 17 KB gzipped of that and are shared, so
 every page after the first costs only its own HTML.)
 
 What that costs is real and worth naming: the head, header, footer and
-back-to-top blocks are repeated on every page. Measured, 52 distinct lines
-appear on 18 or more of the 19 pages, for 2,693 line-instances, about 32% of all
+back-to-top blocks are repeated on every page. Measured, 56 distinct lines
+appear on 20 or more of the 21 pages, for 2,853 line-instances, about 30% of all
 HTML in the repo. `404.html` carries the full nav too, so adding a nav item is
-nineteen edits.
+twenty-one edits.
 
 If that stops being worth it, the answer is **Astro**, not React or Vue. It
 ships zero JavaScript by default and outputs static HTML to the same GitHub
@@ -344,6 +345,6 @@ prose, and would be slower on the phone a recruiter actually reads this on.
 Migrate when any one of these is true:
 
 1. A third language is added.
-2. Unique page count passes about 12 (it is 9 now).
+2. Unique page count passes about 12 (it is 10 now).
 3. Case studies would be better authored in Markdown than in hand-written HTML.
 4. You catch yourself avoiding a change because of how many files it touches.

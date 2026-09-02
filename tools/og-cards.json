@@ -62,6 +62,15 @@
     "title": "How 730+ Tests Run at Once Without Stepping on Each Other",
     "who": "Rivan Wong"
   },
+  "case-study-url-shortener.html": {
+    "cjk": "",
+    "desc": "The short code is derived from the id the database issues, so a link cannot be created in one statement. What that costs, and what it buys.",
+    "kicker": "Self-Directed Project · Spring Boot · MySQL",
+    "lang": "en",
+    "long": "",
+    "title": "Two Writes for One Short Link",
+    "who": "Rivan Wong"
+  },
   "index.html": {
     "cjk": "",
     "desc": "Computer Science M.S. QA, test automation, and AI product verification in Taipei.",
@@ -141,6 +150,15 @@
     "lang": "zh-Hant-TW",
     "long": " long",
     "title": "730+ 項測試如何同時執行而互不干擾",
+    "who": "黃家輝"
+  },
+  "zh/case-study-url-shortener.html": {
+    "cjk": "cjk",
+    "desc": "短碼衍生自資料庫發出的 id，所以一個連結沒辦法用一句 SQL 建立。這件事的代價，以及它換到的東西。",
+    "kicker": "個人專案 · Spring Boot · MySQL",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "一個短連結，兩次寫入",
     "who": "黃家輝"
   },
   "zh/index.html": {

@@ -44,6 +44,12 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-test-automation"/>
   </url>
   <url>
+    <loc>https://zocke07.github.io/case-study-url-shortener</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-url-shortener"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-url-shortener"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-url-shortener"/>
+  </url>
+  <url>
     <loc>https://zocke07.github.io/</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/"/>
@@ -96,6 +102,12 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-test-automation"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-test-automation"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-test-automation"/>
+  </url>
+  <url>
+    <loc>https://zocke07.github.io/zh/case-study-url-shortener</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-url-shortener"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-url-shortener"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-url-shortener"/>
   </url>
   <url>
     <loc>https://zocke07.github.io/zh/</loc>
