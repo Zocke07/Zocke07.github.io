@@ -29,6 +29,7 @@ assets/
 tools/serve.py                   # local preview, resolves URLs like GitHub Pages
 tools/check.py                   # sixteen regression checks; run before every commit
 tools/bump.py                    # stamps ?v= from a hash of the asset
+tools/diff.py                    # git diff with the ?v= stamp churn filtered out
 tools/cv.py                      # refreshes the CV copy from CV/build
 tools/og.py                      # renders a page's social card from its own metadata
 tools/sitemap.py                 # rebuilds sitemap.xml from the pages' own canonicals
@@ -162,6 +163,11 @@ the top of section 11; a new panel joins that list rather than restating it.
 the file itself. Run `python3 tools/bump.py` after changing either one; it
 rewrites all 21 pages, and `tools/check.py` fails if a stamp is stale. It used
 to be a counter bumped by hand in 32 places.
+
+That restamp touches every page whether or not it changed anything else,
+which buries a real edit in noise. `python3 tools/diff.py` is `git diff` with
+those stamp-only hunks dropped; it takes the same arguments (`--stat`,
+`HEAD~1 HEAD`, a path). A page with a genuine edit still shows in full.
 
 ## Social cards
 
