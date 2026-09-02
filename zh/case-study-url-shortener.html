@@ -111,6 +111,59 @@ Location: https://spring.io/projects/spring-boot</code></pre>
         <p class="snippet-caption">
           不存在的短碼得到 404。其他什麼都沒有定義，而這正是先把契約寫下來、再寫 schema 的用意。
         </p>
+        <p>
+          這兩個呼叫的背後是四層，而把它們分開的理由是：這樣每一層就只需要知道一件事。controller 知道 HTTP，service 知道規則，repository 知道 SQL，而整個設計所倚賴的那個 id，在資料庫說出來之前只有它自己知道。
+        </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
+            <svg class="fig-svg" viewBox="0 0 700 550" role="img" aria-labelledby="us-seq-title us-seq-desc">
+              <title id="us-seq-title">一個建立請求穿過 controller、service、repository 與資料庫的路徑</title>
+              <desc id="us-seq-desc">四條垂直的泳道，由左至右是 UrlController、UrlService、UrlRepository 與 MySQL。請求從 controller 進來後交給 service，一段註記寫著空白輸入在任何 SQL 執行之前就被擋下。service 呼叫 repository，由它把長網址寫進 MySQL；MySQL 回傳它發出的 id。第二段註記記下那個 id 的 Base62 編碼。接著 service 再次呼叫 repository 寫入短碼，repository 送出 UPDATE。總共有兩次來回抵達資料庫。</desc>
+              <defs>
+                <marker id="us-seq-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              <text x="10" y="22" class="fig-panel-title">POST /api/v1/urls，穿過四層</text>
+              <rect class="fig-box" x="8" y="38" width="156" height="52" rx="6" />
+              <text x="86" y="62" text-anchor="middle" class="fig-label">UrlController</text>
+              <text x="86" y="80" text-anchor="middle" class="fig-tick">@RestController</text>
+              <rect class="fig-box" x="180" y="38" width="156" height="52" rx="6" />
+              <text x="258" y="62" text-anchor="middle" class="fig-label">UrlService</text>
+              <text x="258" y="80" text-anchor="middle" class="fig-tick">@Service</text>
+              <rect class="fig-box" x="352" y="38" width="156" height="52" rx="6" />
+              <text x="430" y="62" text-anchor="middle" class="fig-label">UrlRepository</text>
+              <text x="430" y="80" text-anchor="middle" class="fig-tick">@Repository</text>
+              <rect class="fig-box" x="524" y="38" width="168" height="52" rx="6" />
+              <text x="608" y="62" text-anchor="middle" class="fig-label">MySQL</text>
+              <text x="608" y="80" text-anchor="middle" class="fig-tick">urls 資料表</text>
+              <line class="fig-line" x1="86" y1="90" x2="86" y2="470" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="258" y1="90" x2="258" y2="470" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="430" y1="90" x2="430" y2="470" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="608" y1="90" x2="608" y2="470" stroke-dasharray="3 5" />
+              <text x="172" y="112" text-anchor="middle" class="fig-tick">createShortUrl(url)</text>
+              <line class="fig-line-accent" x1="86" y1="122" x2="256" y2="122" marker-end="url(#us-seq-arrow)" />
+              <rect class="fig-box-muted" x="108" y="150" width="300" height="30" rx="5" />
+              <text x="258" y="170" text-anchor="middle" class="fig-tick">空白輸入在任何 SQL 之前被擋下</text>
+              <text x="344" y="208" text-anchor="middle" class="fig-tick">insertAndGetId(url)</text>
+              <line class="fig-line-accent" x1="258" y1="218" x2="428" y2="218" marker-end="url(#us-seq-arrow)" />
+              <text x="519" y="256" text-anchor="middle" class="fig-tick">INSERT (long_url)</text>
+              <line class="fig-line-accent" x1="430" y1="266" x2="606" y2="266" marker-end="url(#us-seq-arrow)" />
+              <text x="519" y="304" text-anchor="middle" class="fig-tick">id = 7</text>
+              <line class="fig-line-accent" x1="608" y1="314" x2="432" y2="314" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
+              <rect class="fig-box-accent" x="108" y="342" width="300" height="30" rx="5" />
+              <text x="258" y="362" text-anchor="middle" class="fig-tick">Base62(7) 得到短碼 "7"</text>
+              <text x="344" y="400" text-anchor="middle" class="fig-tick">setShortCode(7, "7")</text>
+              <line class="fig-line-accent" x1="258" y1="410" x2="428" y2="410" marker-end="url(#us-seq-arrow)" />
+              <text x="519" y="448" text-anchor="middle" class="fig-tick">UPDATE short_code</text>
+              <line class="fig-line-accent" x1="430" y1="458" x2="606" y2="458" marker-end="url(#us-seq-arrow)" />
+              <text x="10" y="506" class="fig-tick">回應沿著來的路徑折返，呼叫端拿到的是 {"code":"7"}。</text>
+              <text x="10" y="530" class="fig-tick">Spring 在啟動時各建一個，並把它們交進彼此的建構子。</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">寫入路徑，以及每一步屬於哪一層。<code>GET /{code}</code> 走的是同樣四條泳道，而且一步就到：對 <code>short_code</code> 做一次 <code>SELECT</code>，然後回 302 加上 <code>Location</code> 標頭，查不到就回 404。這張圖真正的用途是知道改動該放在哪裡：新的規則屬於中間，新的查詢屬於右邊，狀態碼屬於左邊。</figcaption>
+        </figure>
       </div>
     </section>
 
