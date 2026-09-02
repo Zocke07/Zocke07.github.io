@@ -531,15 +531,55 @@ a:hover { text-decoration: underline; }
   box-shadow: var(--shadow-lift);
 }
 
-/* Same span, for a card that does have a page but lands alone on the last row.
-   An odd card count otherwise ends the grid on a hole. The chrome stays, since
-   this one is still a doorway; only the body keeps the site's measure so the
-   text is not twice the length of every other card's. Move the class if the
-   number of cards changes parity. */
-.card.is-wide { grid-column: 1 / -1; }
-.card.is-wide .card-body { max-width: var(--measure); }
+.card h4 { margin-bottom: 0.25rem; }
 
-.card h3 { margin-bottom: 0.25rem; }
+/* Tiers inside Work & Research. Nine cards at one weight made a thesis and an
+   OOP lab game the same object on screen, and an odd count needed a full-width
+   card to stop the grid ending on a hole. Groups of two remove both problems:
+   the grid always fills its rows, and the section reads as a ranked shortlist.
+   Subordinate to the accented .section-title above, so the same treatment as
+   .skill-group h3 rather than a second accent bar. */
+.group-title {
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.9rem;
+}
+/* Only the groups after the first: the one below .section-title inherits that
+   heading's own 2rem, and collapsing margins would make the gap unpredictable. */
+.card-grid + .group-title { margin-top: 2.5rem; }
+
+/* Coursework: the same doorways at a lower weight. No card surface, no tags,
+   one sentence instead of eighty words, and a muted meta line where a card's is
+   accented. The rule down the left is the only chrome, so these read as the
+   tail of the section rather than three more peers of the thesis. */
+.brief-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1.25rem;
+}
+.brief {
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+  transition: border-color 0.25s ease;
+}
+.brief:hover { border-left-color: var(--accent); }
+.brief h4 { font-size: 1rem; margin-bottom: 0.2rem; }
+
+.brief-meta {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
+}
+.brief-body {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: var(--measure);
+}
 
 .card-meta {
   color: var(--accent);
@@ -1255,7 +1295,7 @@ a:hover { text-decoration: underline; }
 
   /* Keep an exhibit with its caption, and a heading with what follows it. */
   figure, .snippet, .blocks, .table-scroll, tr, li { break-inside: avoid; }
-  h1, h2, h3 { break-after: avoid; }
+  h1, h2, h3, h4 { break-after: avoid; }
   .section-title { border-bottom-width: 1px; }
 
   /* Scroll containers cannot scroll on paper; let them shrink instead so the

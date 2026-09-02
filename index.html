@@ -93,7 +93,7 @@
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=c3f33986" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=a9096038" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -280,9 +280,11 @@
     <section id="projects" class="section section-alt">
       <div class="container">
         <h2 class="section-title">Work &amp; Research</h2>
+
+        <h3 class="group-title">Research</h3>
         <div class="card-grid">
           <article class="card">
-            <h3>The Defense That Says Where It Breaks</h3>
+            <h4>The Defense That Says Where It Breaks</h4>
             <p class="card-meta">Master's Thesis · Federated Learning Security</p>
             <p class="card-body">
               Federated learning keeps raw data on the device, so the server cannot tell a
@@ -299,7 +301,7 @@
           </article>
 
           <article class="card">
-            <h3>Test Automation Best Practices: A Case Study Analysis</h3>
+            <h4>Test Automation Best Practices: A Case Study Analysis</h4>
             <p class="card-meta">Capstone Project · Industry-Academia Research</p>
             <p class="card-body">
               My graduation capstone, written with two teammates from inside the Sunbird
@@ -315,8 +317,12 @@
             </ul>
             <p class="entry-more"><a href="/case-study-capstone">The process was fine, the output still fell: a case study →</a></p>
           </article>
+        </div>
+
+        <h3 class="group-title">From Industry Work</h3>
+        <div class="card-grid">
           <article class="card">
-            <h3>How 730+ Tests Run at Once Without Stepping on Each Other</h3>
+            <h4>How 730+ Tests Run at Once Without Stepping on Each Other</h4>
             <p class="card-meta">Case Study · Test Infrastructure</p>
             <p class="card-body">
               Hundreds of browser tests run against one live server at the same time, and
@@ -332,7 +338,7 @@
             <p class="entry-more"><a href="/case-study-test-automation">How 730+ tests run at once: a case study →</a></p>
           </article>
           <article class="card">
-            <h3>Shipping Two AI Products With Six Interns</h3>
+            <h4>Shipping Two AI Products With Six Interns</h4>
             <p class="card-meta">Case Study · Program Management &amp; QA</p>
             <p class="card-body">
               Two AI products, an intern team spread across two countries, and nobody
@@ -348,9 +354,13 @@
             </ul>
             <p class="entry-more"><a href="/case-study-ai-products">Shipping two AI products with six interns: a case study →</a></p>
           </article>
+        </div>
+
+        <h3 class="group-title">Self-Directed Projects</h3>
+        <div class="card-grid">
           <article class="card">
-            <h3>Where the Database Can Say No</h3>
-            <p class="card-meta">Self-Directed Project · PostgreSQL · Database Design</p>
+            <h4>Where the Database Can Say No</h4>
+            <p class="card-meta">PostgreSQL · Database Design</p>
             <p class="card-body">
               A campus makerspace lends out 3D printers and laser cutters on a paper sign-up
               sheet that cannot stop a double booking, cannot tell whether either person is
@@ -366,8 +376,8 @@
             <p class="entry-more"><a href="/case-study-makerspace">Where the database can say no: a case study →</a></p>
           </article>
           <article class="card">
-            <h3>Two Writes for One Short Link</h3>
-            <p class="card-meta">Self-Directed Project · Spring Boot · MySQL</p>
+            <h4>Two Writes for One Short Link</h4>
+            <p class="card-meta">Spring Boot · MySQL</p>
             <p class="card-body">
               A URL shortener is the smallest service that still has to answer a real design
               question: where does the short code come from? Hashing the URL invites collisions
@@ -381,56 +391,39 @@
             </ul>
             <p class="entry-more"><a href="/case-study-url-shortener">Two writes for one short link: a case study →</a></p>
           </article>
-          <article class="card">
-            <h3>Mobile Test Automation for a Health Tracking App</h3>
-            <p class="card-meta">Course Project · Appium · Robot Framework</p>
-            <p class="card-body">
-              Five of us wrote 103 automated test cases against Health2Sync, a diabetes
-              management app already shipping on Android, for a software testing and
-              verification course. I owned the settings area end to end: 15 test cases and
-              most of the 78-keyword page library behind them, designed before I wrote any
-              code. The hard part was that the app keeps state and has no reset hook, so
-              every test has to pay for its own cleanup.
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>Robot Framework</li><li>Appium</li><li>Android</li><li>Test Design</li>
-            </ul>
-            <p class="entry-more"><a href="/project-mobile-testing">Project notes: no reset button →</a></p>
-          </article>
-          <article class="card">
-            <h3>Sky Scraper Escape</h3>
-            <p class="card-meta">C++ · MFC · Object-Oriented Design</p>
-            <p class="card-body">
-              Fly a plane through a city skyline across seven levels, and each one adds a
-              twist: vision narrows, obstacles flicker, gravity inverts. We built it for an
-              OOP lab course, on a teaching framework that allows exactly three states. So I
-              mirrored the framework's state interface onto a level base class, which made
-              every level and the menu interchangeable objects behind one pointer. I wrote
-              most of the team's game code.
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>C++</li><li>OOP</li><li>MFC</li><li>DirectDraw</li><li>Git</li>
-            </ul>
-            <p class="entry-more"><a href="/case-study-sky-scraper-escape">The menu is just another level: a case study →</a></p>
-          </article>
-          <article class="card is-wide">
-            <h3>From a Truth Table to a Pipelined CPU</h3>
-            <p class="card-meta">Undergraduate Coursework · VHDL / FPGA · Embedded Linux</p>
-            <p class="card-body">
-              Two semesters of hardware labs, pointed in opposite directions. The first
-              built upward in VHDL: a seven-segment decoder read off a truth table, then a
-              four-stage pipelined CPU that forwards a result rather than stalling on it.
-              The second worked down an NVIDIA Jetson TX2, starting at a cross-compiled
-              binary and ending at a kernel module that registers a character device, with a
-              Qt GUI and a browser-driven server in between. These are notes on coursework,
-              not a claim on it: what the code does, why it works, and where it does not.
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>VHDL</li><li>FPGA</li><li>Computer Architecture</li><li>Embedded Linux</li><li>Kernel Modules</li>
-            </ul>
-            <p class="entry-more"><a href="/case-study-microprocessors">The pipeline is a statement order: coursework notes →</a></p>
-          </article>
         </div>
+
+        <h3 class="group-title">Coursework</h3>
+        <ul class="brief-list" role="list">
+          <li class="brief">
+            <h4><a href="/project-mobile-testing">Mobile Test Automation for a Health Tracking App →</a></h4>
+            <p class="brief-meta">Course Project · Appium · Robot Framework</p>
+            <p class="brief-body">
+              Five of us wrote 103 automated test cases against a diabetes app already
+              shipping on Android. I owned the settings area end to end; the app keeps state
+              with no reset hook, so every test has to pay for its own cleanup.
+            </p>
+          </li>
+          <li class="brief">
+            <h4><a href="/case-study-sky-scraper-escape">Sky Scraper Escape →</a></h4>
+            <p class="brief-meta">Course Project · C++ · MFC · Object-Oriented Design</p>
+            <p class="brief-body">
+              A plane flown through a city skyline across seven levels, built for an OOP lab
+              on a teaching framework that allows exactly three states. I mirrored that state
+              interface onto a level base class, which made every level and the menu
+              interchangeable objects behind one pointer.
+            </p>
+          </li>
+          <li class="brief">
+            <h4><a href="/case-study-microprocessors">From a Truth Table to a Pipelined CPU →</a></h4>
+            <p class="brief-meta">Undergraduate Coursework · VHDL / FPGA · Embedded Linux</p>
+            <p class="brief-body">
+              Two semesters of hardware labs pointed in opposite directions: VHDL building up
+              from a seven-segment decoder to a four-stage pipelined CPU, then an NVIDIA
+              Jetson TX2 worked down from a cross-compiled binary to a kernel module.
+            </p>
+          </li>
+        </ul>
       </div>
     </section>
 
@@ -495,6 +488,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=d674b144"></script>
+  <script src="/assets/js/main.js?v=6fbcfca2"></script>
 </body>
 </html>

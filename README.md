@@ -111,6 +111,19 @@ an entry, copy an existing `<article class="entry">` (experience/education) or
 `<article class="card">` (projects) block and edit the text. Mirror the same edit
 into `zh/index.html`.
 
+Work & Research is tiered rather than flat. Nine cards at one visual weight made
+a master's thesis and an OOP lab game the same object on screen, and a reader
+scanning the grid had only the small `.card-meta` line to tell them apart. It is
+now four groups under `.group-title` headings, in descending weight: Research,
+From Industry Work, Built on My Own, then Coursework. The first three keep the
+full card. Coursework drops to `<li class="brief">`: linked title, muted meta,
+one sentence, no card surface and no tags.
+
+So a new project goes into the group that matches how it was made, and cards go
+in pairs. Two per group is what fills the two-column grid exactly, which is why
+`.card.is-wide` is gone: it existed only to stop an odd count from ending the
+grid on a hole. A group with an odd number of cards brings that problem back.
+
 A skill tag in the Skills section is a link when a case study demonstrates it
 and plain text when none does, and the hover lift belongs to the linked ones
 only. It used to sit on every tag and promise a click that none could honor.
