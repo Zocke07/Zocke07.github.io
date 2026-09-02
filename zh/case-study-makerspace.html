@@ -77,7 +77,7 @@
           校園創客空間把 3D 印表機、雷射切割機和 CNC 銑床借出去，靠的是牆上一張紙本登記表。那張表擋不住兩個人搶同一個時段，看不出來他們有沒有受過那台機器的訓練，東西晚還或壞了也留不下任何紀錄。我用一套三層式網頁應用程式和一個 PostgreSQL schema 取代了它，而整個專案最後收斂成一個問題：真正重要的那些規則裡，哪些資料庫可以自己擋下來，碰不到的那些又該怎麼辦？
         </p>
         <p class="hero-blurb role-line">
-          <strong>我的角色：</strong>這是一個人做完的專案，沒有團隊。需求、ER 模型、四份 migration、REST API 和 React 前端都是我寫的；文末那三個缺陷也是我的，它們之所以被抓到，是因為我把分析拿去跑真實的資料，而不是只讀 schema。
+          <strong>我的角色：</strong>一個沒有團隊、也沒有人出題的個人專案，而這件事是雙面的：沒有東西是別人交到我手上的，也沒有東西經過別人審查。方法本身都是教科書上的。真正值得讀的是我原本沒有規劃的那部分：三個缺陷之所以浮出來，只因為分析跑的是真實的資料，而不是 schema。
         </p>
         <ul class="facts" role="list">
           <li><strong>14 個關聯</strong>、5 個 view、21 個外鍵</li>
@@ -155,6 +155,49 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
         <p>
           整個專案真正吃重的是第二條規則：成員必須持有涵蓋該機器類別的有效證照，才能預約它。這條規則橫跨五張表、而且取決於預約的時間區間，所以在 <code>CHECK</code> 裡沒有容身之處；它又太重要，不能散落在剛好會執行到的那幾條程式路徑上。
         </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="示意圖，可捲動">
+            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="ms-path-title ms-path-desc">
+              <title id="ms-path-title">一筆預約要證明成員持有證照，必須走過的關聯鏈</title>
+              <desc id="ms-path-desc">八個關聯分成兩列。上排從 booking 走到 equipment、equipment_model 與 equipment_category，接著往下接到下排；下排從 category_authorisation 經過 certification 與 certification_grant 回到 member。一條虛線弧把 certification_grant 直接連到 category_authorisation，跳過中間的 certification，那正是攤平用的 view 所做的連接。</desc>
+              <defs>
+                <marker id="ms-path-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              <rect class="fig-box" x="10" y="44" width="150" height="52" rx="6" />
+              <text x="85" y="76" text-anchor="middle" class="fig-label">booking</text>
+              <rect class="fig-box" x="187" y="44" width="150" height="52" rx="6" />
+              <text x="262" y="76" text-anchor="middle" class="fig-label">equipment</text>
+              <rect class="fig-box" x="364" y="44" width="150" height="52" rx="6" />
+              <text x="439" y="76" text-anchor="middle" class="fig-label">equipment_model</text>
+              <rect class="fig-box" x="541" y="44" width="150" height="52" rx="6" />
+              <text x="616" y="68" text-anchor="middle" class="fig-label">equipment</text>
+              <text x="616" y="86" text-anchor="middle" class="fig-label">_category</text>
+              <rect class="fig-box" x="10" y="176" width="150" height="52" rx="6" />
+              <text x="85" y="208" text-anchor="middle" class="fig-label">member</text>
+              <rect class="fig-box-accent" x="187" y="176" width="150" height="52" rx="6" />
+              <text x="262" y="200" text-anchor="middle" class="fig-label">certification</text>
+              <text x="262" y="218" text-anchor="middle" class="fig-label">_grant</text>
+              <rect class="fig-box" x="364" y="176" width="150" height="52" rx="6" />
+              <text x="439" y="208" text-anchor="middle" class="fig-label">certification</text>
+              <rect class="fig-box-accent" x="541" y="176" width="150" height="52" rx="6" />
+              <text x="616" y="200" text-anchor="middle" class="fig-label">category</text>
+              <text x="616" y="218" text-anchor="middle" class="fig-label">_authorisation</text>
+              <line class="fig-line-accent" x1="162" y1="70" x2="185" y2="70" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="339" y1="70" x2="362" y2="70" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="516" y1="70" x2="539" y2="70" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="616" y1="98" x2="616" y2="172" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="539" y1="202" x2="516" y2="202" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="362" y1="202" x2="339" y2="202" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="185" y1="202" x2="162" y2="202" marker-end="url(#ms-path-arrow)" />
+              <path class="fig-line-accent" d="M262 232 C 262 272, 616 272, 616 232" stroke-dasharray="5 4" fill="none" />
+              <text x="439" y="292" text-anchor="middle" class="fig-note">v_member_category_authorisation</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">七個跳躍，每一個都是宣告出來的外鍵，而且沒有一個是 <code>CHECK</code> 約束搆得到的，因為它不能去查另一張表。虛線弧就是那個 view：它用 <code>certification_id</code> 把兩個標示出來的關聯直接接起來，於是預約交易只要問一個問題，不必自己走完整條鏈。</figcaption>
+        </figure>
         <p>
           在那之前還有一個解釋要先定下來：有效是指「什麼時候」有效？我採用嚴格的讀法：整段預約區間都必須有效，而不只是送出預約的那一天有效。證照週五到期的成員不能預約週六，也不能預約一段從週四開始、到週六結束的區間。寬鬆的讀法會讓人預約到一台他走進來時已經沒有資格操作的機器，那就違背了這條規則存在的意義。
         </p>
@@ -272,8 +315,56 @@ JOIN category_authorisation AS ca ON ca.certification_id = g.certification_id;</
           十三個關聯都做過一次函數相依分析：候選鍵、相依關係，接著是 2NF 和 3NF，而且被排除的候選相依也一併寫出來，而不是直接斷言「已經符合」。其中十一個本來就在 BCNF。這不是運氣，而是關於前面設計的一項主張：全面使用代理鍵、把自然鍵保留成 <code>UNIQUE</code>、多值屬性在轉換成關聯之前就先拆成實體，這些做法讓遞移相依沒什麼地方好躲。
         </p>
         <p>
-          需要處理的那兩個，需要的處理方式並不一樣。在 <code>equipment</code> 裡，一台機器的產品型號決定了它屬於哪一類機器，所以 <code>(manufacturer, model)</code> 決定 <code>category_id</code>，但它完全不是鍵：二十台機器只帶了十五種不同的型號與類別組合，而兩台 Prusa MK4S 印表機各自存了一份「MK4S 是 FDM 印表機」這個事實。這允許的異常是一次單列更新，把其中一台印表機改歸到「雷射切割機」類別而沒有任何東西會反對；在那之後，證照規則會要求這台機器需要雷射證照，而旁邊那台一模一樣的機器需要的卻是 FDM 證照。這一段被分解成一個 <code>equipment_model</code> 關聯，而 migration 會在自己的交易裡重新驗證無損失連接，失敗就整個回滾。
+          需要處理的那兩個，需要的處理方式並不一樣。在 <code>equipment</code> 裡，一台機器的產品型號決定了它屬於哪一類機器，所以 <code>(manufacturer, model)</code> 決定 <code>category_id</code>，但它完全不是鍵：二十台機器只帶了十五種不同的型號與類別組合，而四台 Prusa MK4S 印表機各自存了一份「MK4S 是 FDM 印表機」這個事實。這允許的異常是一次單列更新，把其中一台印表機改歸到「雷射切割機」類別而沒有任何東西會反對；在那之後，證照規則會要求這台機器需要雷射證照，而旁邊那三台一模一樣的機器需要的卻是 FDM 證照。這一段被分解成一個 <code>equipment_model</code> 關聯，而 migration 會在自己的交易裡重新驗證無損失連接，失敗就整個回滾。
         </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="示意圖，可捲動">
+            <svg class="fig-svg" viewBox="0 0 700 310" role="img" aria-labelledby="ms-norm-title ms-norm-desc">
+              <title id="ms-norm-title">以四台 Prusa MK4S 為例的 equipment 分解</title>
+              <desc id="ms-norm-desc">左側是四列 equipment，每一列都存了相同的型號與類別。中間一個標示 004 的箭頭指向右方。右側同樣的四列現在只帶一個 model_id，四列都指向同一列 equipment_model，型號與類別只存了一次。</desc>
+              <defs>
+                <marker id="ms-norm-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              <text x="10" y="30" class="fig-panel-title">equipment，分解前</text>
+              <rect class="fig-box" x="10" y="46" width="330" height="38" rx="5" />
+              <text x="24" y="70" class="fig-label">MK-3DP-001</text>
+              <text x="140" y="70" class="fig-tick">MK4S · FDM 3D Printer</text>
+              <rect class="fig-box" x="10" y="90" width="330" height="38" rx="5" />
+              <text x="24" y="114" class="fig-label">MK-3DP-002</text>
+              <text x="140" y="114" class="fig-tick">MK4S · FDM 3D Printer</text>
+              <rect class="fig-box" x="10" y="134" width="330" height="38" rx="5" />
+              <text x="24" y="158" class="fig-label">MK-3DP-101</text>
+              <text x="140" y="158" class="fig-tick">MK4S · FDM 3D Printer</text>
+              <rect class="fig-box" x="10" y="178" width="330" height="38" rx="5" />
+              <text x="24" y="202" class="fig-label">MK-3DP-102</text>
+              <text x="140" y="202" class="fig-tick">MK4S · FDM 3D Printer</text>
+              <line class="fig-line-accent" x1="352" y1="140" x2="400" y2="140" marker-end="url(#ms-norm-arrow)" />
+              <text x="376" y="128" text-anchor="middle" class="fig-note">004</text>
+              <text x="412" y="30" class="fig-panel-title">equipment，分解後</text>
+              <rect class="fig-box" x="412" y="46" width="278" height="38" rx="5" />
+              <text x="426" y="70" class="fig-label">MK-3DP-001</text>
+              <text x="580" y="70" class="fig-tick">model_id 1</text>
+              <rect class="fig-box" x="412" y="90" width="278" height="38" rx="5" />
+              <text x="426" y="114" class="fig-label">MK-3DP-002</text>
+              <text x="580" y="114" class="fig-tick">model_id 1</text>
+              <rect class="fig-box" x="412" y="134" width="278" height="38" rx="5" />
+              <text x="426" y="158" class="fig-label">MK-3DP-101</text>
+              <text x="580" y="158" class="fig-tick">model_id 1</text>
+              <rect class="fig-box" x="412" y="178" width="278" height="38" rx="5" />
+              <text x="426" y="202" class="fig-label">MK-3DP-102</text>
+              <text x="580" y="202" class="fig-tick">model_id 1</text>
+              <line class="fig-line-accent" x1="551" y1="218" x2="551" y2="234" marker-end="url(#ms-norm-arrow)" />
+              <rect class="fig-box-accent" x="412" y="240" width="278" height="56" rx="5" />
+              <text x="551" y="262" text-anchor="middle" class="fig-tick">equipment_model</text>
+              <text x="551" y="284" text-anchor="middle" class="fig-label">1 · MK4S · FDM 3D Printer</text>
+              <text x="10" y="268" class="fig-tick">存了 4 次，然後只存 1 次</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">這個創客空間有四台 Prusa MK4S，而在 migration 之前，每一列都自己存了一份「MK4S 是 FDM 印表機」這個事實。把其中一台改歸到別的類別，只是一次沒有任何東西會拒絕的單列更新。分解之後，這個事實只有一個落點，四台機器都指向它。</figcaption>
+        </figure>
         <h3>另一個分解出來的表，本來就已經存在</h3>
         <p>
           第二個有意思得多。由預約衍生的罰款，一定是開給做那筆預約的人，所以在 <code>penalty</code> 裡 <code>booking_id</code> 決定 <code>member_id</code>。教科書上的 3NF 說：把這個相依抽成獨立的關聯。真的照做，你會得到 <code>(booking_id, member_id)</code>，而那是 <code>booking</code> 的一個投影：決定端和被決定端本來就住在同一張表裡，而且決定端就是那張表的主鍵。把它實體化出來，只是替 schema 已經握有的東西再複製一份。

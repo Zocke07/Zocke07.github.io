@@ -83,10 +83,11 @@
           ones it cannot reach?
         </p>
         <p class="hero-blurb role-line">
-          <strong>My role:</strong> a self-directed project with no team. The requirements, the
-          ER model, the four migrations, the REST API and the React client are all mine, and so
-          are the three defects at the end that only showed up because I ran the analysis against
-          real rows instead of reading the schema.
+          <strong>My role:</strong> self-directed, with no team and no brief, which cuts both
+          ways: nothing here was handed to me and nothing here was reviewed by anyone else
+          either. The method is textbook. The parts worth reading are the ones I did not plan,
+          three defects that surfaced only because the analysis ran against real rows instead of
+          the schema.
         </p>
         <ul class="facts" role="list">
           <li><strong>14 relations</strong>, 5 views, 21 foreign keys</li>
@@ -199,6 +200,49 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
           tables and depends on the booking window, so it has no home in a <code>CHECK</code>, and
           it is too important to leave scattered across whichever code path happens to run.
         </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
+            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="ms-path-title ms-path-desc">
+              <title id="ms-path-title">The chain of relations a booking has to walk to prove a member is certified</title>
+              <desc id="ms-path-desc">Eight relations in two rows. The top row runs from booking to equipment, equipment_model and equipment_category. A link then drops to the bottom row, which runs back from category_authorisation through certification and certification_grant to member. A dashed curve joins certification_grant directly to category_authorisation, skipping certification, which is the join the flattening view makes.</desc>
+              <defs>
+                <marker id="ms-path-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              <rect class="fig-box" x="10" y="44" width="150" height="52" rx="6" />
+              <text x="85" y="76" text-anchor="middle" class="fig-label">booking</text>
+              <rect class="fig-box" x="187" y="44" width="150" height="52" rx="6" />
+              <text x="262" y="76" text-anchor="middle" class="fig-label">equipment</text>
+              <rect class="fig-box" x="364" y="44" width="150" height="52" rx="6" />
+              <text x="439" y="76" text-anchor="middle" class="fig-label">equipment_model</text>
+              <rect class="fig-box" x="541" y="44" width="150" height="52" rx="6" />
+              <text x="616" y="68" text-anchor="middle" class="fig-label">equipment</text>
+              <text x="616" y="86" text-anchor="middle" class="fig-label">_category</text>
+              <rect class="fig-box" x="10" y="176" width="150" height="52" rx="6" />
+              <text x="85" y="208" text-anchor="middle" class="fig-label">member</text>
+              <rect class="fig-box-accent" x="187" y="176" width="150" height="52" rx="6" />
+              <text x="262" y="200" text-anchor="middle" class="fig-label">certification</text>
+              <text x="262" y="218" text-anchor="middle" class="fig-label">_grant</text>
+              <rect class="fig-box" x="364" y="176" width="150" height="52" rx="6" />
+              <text x="439" y="208" text-anchor="middle" class="fig-label">certification</text>
+              <rect class="fig-box-accent" x="541" y="176" width="150" height="52" rx="6" />
+              <text x="616" y="200" text-anchor="middle" class="fig-label">category</text>
+              <text x="616" y="218" text-anchor="middle" class="fig-label">_authorisation</text>
+              <line class="fig-line-accent" x1="162" y1="70" x2="185" y2="70" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="339" y1="70" x2="362" y2="70" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="516" y1="70" x2="539" y2="70" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="616" y1="98" x2="616" y2="172" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="539" y1="202" x2="516" y2="202" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="362" y1="202" x2="339" y2="202" marker-end="url(#ms-path-arrow)" />
+              <line class="fig-line-accent" x1="185" y1="202" x2="162" y2="202" marker-end="url(#ms-path-arrow)" />
+              <path class="fig-line-accent" d="M262 232 C 262 272, 616 272, 616 232" stroke-dasharray="5 4" fill="none" />
+              <text x="439" y="292" text-anchor="middle" class="fig-note">v_member_category_authorisation</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">Seven hops, every one of them a declared foreign key, and not one of them reachable from a <code>CHECK</code> constraint, which may not query another table. The dashed curve is the view: it joins the two accented relations directly on <code>certification_id</code>, so the booking transaction asks one question instead of walking the chain.</figcaption>
+        </figure>
         <p>
           It also has an interpretation to settle before any of that. Valid <em>when</em>? I took
           the strict reading: valid across the entire window, not merely on the day the booking is
@@ -355,14 +399,62 @@ JOIN category_authorisation AS ca ON ca.certification_id = g.certification_id;</
           product model determines what class of machine it is, so
           <code>(manufacturer, model)</code> determines <code>category_id</code> while being
           nothing like a key: twenty machines carried only fifteen distinct model-and-category
-          combinations, and the two Prusa MK4S printers each stored their own copy of the fact that
+          combinations, and the four Prusa MK4S printers each stored their own copy of the fact that
           an MK4S is an FDM printer. The anomaly that permits is a one-row update that re-files one
           printer under "laser cutter" with nothing to object, after which the certification rule
-          would demand a laser certification for that machine and an FDM one for the identical
-          machine beside it. That decomposes into an <code>equipment_model</code> relation, with
+          would demand a laser certification for that machine and an FDM one for the three
+          identical machines beside it. That decomposes into an <code>equipment_model</code> relation, with
           the migration re-checking the lossless join inside its own transaction and rolling back
           if it fails.
         </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
+            <svg class="fig-svg" viewBox="0 0 700 310" role="img" aria-labelledby="ms-norm-title ms-norm-desc">
+              <title id="ms-norm-title">The equipment decomposition, shown on the four Prusa MK4S machines</title>
+              <desc id="ms-norm-desc">On the left, four equipment rows each storing the same model and category. An arrow labeled 004 points right. On the right, the same four rows now carry only a model_id, all four pointing at a single equipment_model row holding the model and category once.</desc>
+              <defs>
+                <marker id="ms-norm-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+                        markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
+                </marker>
+              </defs>
+              <text x="10" y="30" class="fig-panel-title">equipment, before</text>
+              <rect class="fig-box" x="10" y="46" width="330" height="38" rx="5" />
+              <text x="24" y="70" class="fig-label">MK-3DP-001</text>
+              <text x="140" y="70" class="fig-tick">MK4S · FDM 3D Printer</text>
+              <rect class="fig-box" x="10" y="90" width="330" height="38" rx="5" />
+              <text x="24" y="114" class="fig-label">MK-3DP-002</text>
+              <text x="140" y="114" class="fig-tick">MK4S · FDM 3D Printer</text>
+              <rect class="fig-box" x="10" y="134" width="330" height="38" rx="5" />
+              <text x="24" y="158" class="fig-label">MK-3DP-101</text>
+              <text x="140" y="158" class="fig-tick">MK4S · FDM 3D Printer</text>
+              <rect class="fig-box" x="10" y="178" width="330" height="38" rx="5" />
+              <text x="24" y="202" class="fig-label">MK-3DP-102</text>
+              <text x="140" y="202" class="fig-tick">MK4S · FDM 3D Printer</text>
+              <line class="fig-line-accent" x1="352" y1="140" x2="400" y2="140" marker-end="url(#ms-norm-arrow)" />
+              <text x="376" y="128" text-anchor="middle" class="fig-note">004</text>
+              <text x="412" y="30" class="fig-panel-title">equipment, after</text>
+              <rect class="fig-box" x="412" y="46" width="278" height="38" rx="5" />
+              <text x="426" y="70" class="fig-label">MK-3DP-001</text>
+              <text x="580" y="70" class="fig-tick">model_id 1</text>
+              <rect class="fig-box" x="412" y="90" width="278" height="38" rx="5" />
+              <text x="426" y="114" class="fig-label">MK-3DP-002</text>
+              <text x="580" y="114" class="fig-tick">model_id 1</text>
+              <rect class="fig-box" x="412" y="134" width="278" height="38" rx="5" />
+              <text x="426" y="158" class="fig-label">MK-3DP-101</text>
+              <text x="580" y="158" class="fig-tick">model_id 1</text>
+              <rect class="fig-box" x="412" y="178" width="278" height="38" rx="5" />
+              <text x="426" y="202" class="fig-label">MK-3DP-102</text>
+              <text x="580" y="202" class="fig-tick">model_id 1</text>
+              <line class="fig-line-accent" x1="551" y1="218" x2="551" y2="234" marker-end="url(#ms-norm-arrow)" />
+              <rect class="fig-box-accent" x="412" y="240" width="278" height="56" rx="5" />
+              <text x="551" y="262" text-anchor="middle" class="fig-tick">equipment_model</text>
+              <text x="551" y="284" text-anchor="middle" class="fig-label">1 · MK4S · FDM 3D Printer</text>
+              <text x="10" y="268" class="fig-tick">stored 4 times, then once</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">The makerspace owns four Prusa MK4S machines, and before the migration each row carried its own copy of the fact that an MK4S is an FDM printer. Re-filing one of them under a different category was a single-row update that nothing would have rejected. Afterwards the fact has one home, and the four machines point at it.</figcaption>
+        </figure>
         <h3>The one that decomposed into a table that already existed</h3>
         <p>
           The second is more interesting. A fine raised from a booking is assessed against the
