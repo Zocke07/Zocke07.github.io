@@ -138,53 +138,64 @@ Location: https://spring.io/projects/spring-boot</code></pre>
         </p>
         <figure class="figure">
           <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 700 550" role="img" aria-labelledby="us-seq-title us-seq-desc">
-              <title id="us-seq-title">The path a create request takes through the controller, service, repository and database</title>
-              <desc id="us-seq-desc">Four vertical lanes, left to right: UrlController, UrlService, UrlRepository and MySQL. A request enters at the controller and is passed to the service, where a note records that blank input is rejected before any SQL runs. The service calls the repository, which inserts the long URL into MySQL; MySQL returns the id it issued. A second note records the Base62 encoding of that id. The service then calls the repository again to set the short code, and the repository issues the update. Two separate round trips reach the database.</desc>
+            <svg class="fig-svg" viewBox="0 0 900 548" role="img" aria-labelledby="us-seq-title us-seq-desc">
+              <title id="us-seq-title">The path a create request takes from the client through the controller, service, repository and database</title>
+              <desc id="us-seq-desc">Five vertical lanes, left to right: Client, UrlController, UrlService, UrlRepository and MySQL. The client posts to the controller, which calls the service, where a note records that blank input is rejected before any SQL runs. The service calls the repository, which inserts the long URL into MySQL. MySQL hands the generated key, 100, back to the repository, and the repository returns it to the service. A second note records the Base62 encoding of that id into the code 1C. The service calls the repository again to set the short code, the repository issues the update, and the code returns through the controller to the client. Two separate round trips reach the database.</desc>
               <defs>
                 <marker id="us-seq-arrow" viewBox="0 0 10 10" refX="9" refY="5"
                         markerWidth="6" markerHeight="6" orient="auto">
                   <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
                 </marker>
               </defs>
-              <text x="10" y="22" class="fig-panel-title">POST /api/v1/urls, through four layers</text>
-              <rect class="fig-box" x="8" y="38" width="156" height="52" rx="6" />
-              <text x="86" y="62" text-anchor="middle" class="fig-label">UrlController</text>
-              <text x="86" y="80" text-anchor="middle" class="fig-tick">@RestController</text>
-              <rect class="fig-box" x="180" y="38" width="156" height="52" rx="6" />
-              <text x="258" y="62" text-anchor="middle" class="fig-label">UrlService</text>
-              <text x="258" y="80" text-anchor="middle" class="fig-tick">@Service</text>
-              <rect class="fig-box" x="352" y="38" width="156" height="52" rx="6" />
-              <text x="430" y="62" text-anchor="middle" class="fig-label">UrlRepository</text>
-              <text x="430" y="80" text-anchor="middle" class="fig-tick">@Repository</text>
-              <rect class="fig-box" x="524" y="38" width="168" height="52" rx="6" />
-              <text x="608" y="62" text-anchor="middle" class="fig-label">MySQL</text>
-              <text x="608" y="80" text-anchor="middle" class="fig-tick">urls table</text>
-              <line class="fig-line" x1="86" y1="90" x2="86" y2="470" stroke-dasharray="3 5" />
-              <line class="fig-line" x1="258" y1="90" x2="258" y2="470" stroke-dasharray="3 5" />
-              <line class="fig-line" x1="430" y1="90" x2="430" y2="470" stroke-dasharray="3 5" />
-              <line class="fig-line" x1="608" y1="90" x2="608" y2="470" stroke-dasharray="3 5" />
-              <text x="172" y="112" text-anchor="middle" class="fig-tick">createShortUrl(url)</text>
-              <line class="fig-line-accent" x1="86" y1="122" x2="256" y2="122" marker-end="url(#us-seq-arrow)" />
-              <rect class="fig-box-muted" x="108" y="150" width="300" height="30" rx="5" />
-              <text x="258" y="170" text-anchor="middle" class="fig-tick">blank input rejected before any SQL</text>
-              <text x="344" y="208" text-anchor="middle" class="fig-tick">insertAndGetId(url)</text>
-              <line class="fig-line-accent" x1="258" y1="218" x2="428" y2="218" marker-end="url(#us-seq-arrow)" />
-              <text x="519" y="256" text-anchor="middle" class="fig-tick">INSERT (long_url)</text>
-              <line class="fig-line-accent" x1="430" y1="266" x2="606" y2="266" marker-end="url(#us-seq-arrow)" />
-              <text x="519" y="304" text-anchor="middle" class="fig-tick">id = 7</text>
-              <line class="fig-line-accent" x1="608" y1="314" x2="432" y2="314" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
-              <rect class="fig-box-accent" x="108" y="342" width="300" height="30" rx="5" />
-              <text x="258" y="362" text-anchor="middle" class="fig-tick">Base62(7) gives the code "7"</text>
-              <text x="344" y="400" text-anchor="middle" class="fig-tick">setShortCode(7, "7")</text>
-              <line class="fig-line-accent" x1="258" y1="410" x2="428" y2="410" marker-end="url(#us-seq-arrow)" />
-              <text x="519" y="448" text-anchor="middle" class="fig-tick">UPDATE short_code</text>
-              <line class="fig-line-accent" x1="430" y1="458" x2="606" y2="458" marker-end="url(#us-seq-arrow)" />
-              <text x="10" y="506" class="fig-tick">The response unwinds the way it came, and the caller is handed {"code":"7"}.</text>
-              <text x="10" y="530" class="fig-tick">Spring builds one of each at startup and passes them into each other's constructors.</text>
+              <text x="12" y="20" class="fig-panel-title">POST /api/v1/urls, through four layers</text>
+              <rect class="fig-box" x="7" y="32" width="166" height="46" rx="6" />
+              <text x="90" y="52" text-anchor="middle" class="fig-label">Client</text>
+              <text x="90" y="70" text-anchor="middle" class="fig-tick">curl, browser</text>
+              <rect class="fig-box" x="187" y="32" width="166" height="46" rx="6" />
+              <text x="270" y="52" text-anchor="middle" class="fig-label">UrlController</text>
+              <text x="270" y="70" text-anchor="middle" class="fig-tick">@RestController</text>
+              <rect class="fig-box" x="367" y="32" width="166" height="46" rx="6" />
+              <text x="450" y="52" text-anchor="middle" class="fig-label">UrlService</text>
+              <text x="450" y="70" text-anchor="middle" class="fig-tick">@Service</text>
+              <rect class="fig-box" x="547" y="32" width="166" height="46" rx="6" />
+              <text x="630" y="52" text-anchor="middle" class="fig-label">UrlRepository</text>
+              <text x="630" y="70" text-anchor="middle" class="fig-tick">@Repository</text>
+              <rect class="fig-box" x="727" y="32" width="166" height="46" rx="6" />
+              <text x="810" y="52" text-anchor="middle" class="fig-label">MySQL</text>
+              <text x="810" y="70" text-anchor="middle" class="fig-tick">urls table</text>
+              <line class="fig-line" x1="90" y1="78" x2="90" y2="502" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="270" y1="78" x2="270" y2="502" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="450" y1="78" x2="450" y2="502" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="630" y1="78" x2="630" y2="502" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="810" y1="78" x2="810" y2="502" stroke-dasharray="3 5" />
+              <text x="180" y="96" text-anchor="middle" class="fig-tick">POST /api/v1/urls</text>
+              <line class="fig-line-accent" x1="90" y1="106" x2="268" y2="106" marker-end="url(#us-seq-arrow)" />
+              <text x="360" y="130" text-anchor="middle" class="fig-tick">createShortUrl(url)</text>
+              <line class="fig-line-accent" x1="270" y1="140" x2="448" y2="140" marker-end="url(#us-seq-arrow)" />
+              <rect class="fig-box-muted" x="291" y="158" width="318" height="28" rx="5" />
+              <text x="400" y="177" text-anchor="middle" class="fig-tick">blank input rejected before any SQL</text>
+              <text x="540" y="204" text-anchor="middle" class="fig-tick">insertAndGetId(url)</text>
+              <line class="fig-line-accent" x1="450" y1="214" x2="628" y2="214" marker-end="url(#us-seq-arrow)" />
+              <text x="720" y="238" text-anchor="middle" class="fig-tick">INSERT (long_url)</text>
+              <line class="fig-line-accent" x1="630" y1="248" x2="808" y2="248" marker-end="url(#us-seq-arrow)" />
+              <text x="720" y="272" text-anchor="middle" class="fig-tick">generated key = 100</text>
+              <line class="fig-line-accent" x1="810" y1="282" x2="632" y2="282" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
+              <text x="540" y="306" text-anchor="middle" class="fig-tick">returns 100</text>
+              <line class="fig-line-accent" x1="630" y1="316" x2="452" y2="316" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
+              <rect class="fig-box-accent" x="291" y="334" width="318" height="28" rx="5" />
+              <text x="400" y="353" text-anchor="middle" class="fig-tick">Base62(100) gives the code "1C"</text>
+              <text x="540" y="380" text-anchor="middle" class="fig-tick">setShortCode(100, "1C")</text>
+              <line class="fig-line-accent" x1="450" y1="390" x2="628" y2="390" marker-end="url(#us-seq-arrow)" />
+              <text x="720" y="414" text-anchor="middle" class="fig-tick">UPDATE short_code</text>
+              <line class="fig-line-accent" x1="630" y1="424" x2="808" y2="424" marker-end="url(#us-seq-arrow)" />
+              <text x="360" y="448" text-anchor="middle" class="fig-tick">the code</text>
+              <line class="fig-line-accent" x1="450" y1="458" x2="272" y2="458" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
+              <text x="180" y="482" text-anchor="middle" class="fig-tick">200 {"code":"1C"}</text>
+              <line class="fig-line-accent" x1="270" y1="492" x2="92" y2="492" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
+              <text x="12" y="534" class="fig-tick">Spring builds one of each at startup and passes them into each other's constructors.</text>
             </svg>
           </div>
-          <figcaption class="figure-caption">The write path, and the layer each step belongs to. <code>GET /{code}</code> uses the same four lanes and gets there in one hop: a single <code>SELECT</code> on <code>short_code</code>, then a 302 with a <code>Location</code> header, or a 404 when the query comes back empty. What the picture is really for is knowing where a change goes. A new rule belongs in the middle, a new query on the right, and a status code on the left.</figcaption>
+          <figcaption class="figure-caption">The write path, and the layer each step belongs to. The id makes two hops on the way back, because MySQL hands the generated key to the repository and the repository is what returns it to the service. <code>GET /{code}</code> uses the same lanes and gets there in one hop: a single <code>SELECT</code> on <code>short_code</code>, then a 302 with a <code>Location</code> header, or a 404 when the query comes back empty. What the picture is really for is knowing where a change goes. A new rule belongs in the middle, a new query on the right, and a status code on the left.</figcaption>
         </figure>
       </div>
     </section>
@@ -214,36 +225,36 @@ Location: https://spring.io/projects/spring-boot</code></pre>
         </p>
         <figure class="figure">
           <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 700 320" role="img" aria-labelledby="us-flow-title us-flow-desc">
+            <svg class="fig-svg" viewBox="0 0 800 276" role="img" aria-labelledby="us-flow-title us-flow-desc">
               <title id="us-flow-title">Why creating a short link takes two statements instead of one</title>
-              <desc id="us-flow-desc">Two rows. The top row shows a single insert naming both long_url and short_code, with the short code left as a question mark, and a note that the code is Base62 of an id this very insert has not issued yet. The bottom row shows three steps in sequence: an insert of long_url alone, after which MySQL issues id 7; the Base62 encoding of 7 into the code "7"; and an update that writes the code onto the row.</desc>
+              <desc id="us-flow-desc">Two rows. The top row shows a single insert naming both long_url and short_code, with the short code left as a question mark, and a note that the code is Base62 of an id this very insert has not issued yet. The bottom row shows three steps in sequence: an insert of long_url alone, after which MySQL issues id 100; the Base62 encoding of 100 into the code 1C; and an update that writes the code onto the row.</desc>
               <defs>
                 <marker id="us-flow-arrow" viewBox="0 0 10 10" refX="9" refY="5"
                         markerWidth="6" markerHeight="6" orient="auto">
                   <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
                 </marker>
               </defs>
-              <text x="10" y="24" class="fig-panel-title">The one statement that cannot work</text>
-              <rect class="fig-box-muted" x="10" y="36" width="420" height="62" rx="6" />
-              <text x="26" y="60" class="fig-label">INSERT INTO urls (long_url, short_code)</text>
-              <text x="26" y="82" class="fig-tick">VALUES ('https://spring.io/...', ???)</text>
-              <text x="448" y="60" class="fig-tick">the code is Base62 of the row's id,</text>
-              <text x="448" y="82" class="fig-tick">and this insert is what issues it</text>
-              <text x="10" y="146" class="fig-panel-title">The two statements that do</text>
-              <rect class="fig-box" x="10" y="158" width="196" height="66" rx="6" />
-              <text x="26" y="182" class="fig-label">1. INSERT long_url</text>
-              <text x="26" y="204" class="fig-tick">MySQL issues id = 7</text>
-              <line class="fig-line-accent" x1="208" y1="191" x2="242" y2="191" marker-end="url(#us-flow-arrow)" />
-              <rect class="fig-box-accent" x="244" y="158" width="186" height="66" rx="6" />
-              <text x="260" y="182" class="fig-label">2. Base62(7)</text>
-              <text x="260" y="204" class="fig-tick">code = "7"</text>
-              <line class="fig-line-accent" x1="432" y1="191" x2="466" y2="191" marker-end="url(#us-flow-arrow)" />
-              <rect class="fig-box" x="468" y="158" width="222" height="66" rx="6" />
-              <text x="484" y="182" class="fig-label">3. UPDATE short_code</text>
-              <text x="484" y="204" class="fig-tick">WHERE id = 7</text>
-              <path class="fig-line" d="M108 226 L108 258 L579 258 L579 226" stroke-dasharray="5 4" fill="none" />
-              <text x="10" y="284" class="fig-tick">Between the first statement and the third, the row exists with no code, which is why</text>
-              <text x="10" y="306" class="fig-tick">short_code is nullable. Two round trips to create a link; following one still costs a single read.</text>
+              <text x="12" y="20" class="fig-panel-title">The one statement that cannot work</text>
+              <rect class="fig-box-muted" x="12" y="32" width="452" height="56" rx="6" />
+              <text x="28" y="54" class="fig-label">INSERT INTO urls (long_url, short_code)</text>
+              <text x="28" y="76" class="fig-tick">VALUES ('https://spring.io/...', ???)</text>
+              <text x="482" y="54" class="fig-tick">the code is Base62 of the row's id,</text>
+              <text x="482" y="76" class="fig-tick">and this insert is what issues it</text>
+              <text x="12" y="126" class="fig-panel-title">The two statements that do</text>
+              <rect class="fig-box" x="12" y="138" width="228" height="60" rx="6" />
+              <text x="28" y="160" class="fig-label">1. INSERT long_url</text>
+              <text x="28" y="182" class="fig-tick">MySQL issues id = 100</text>
+              <line class="fig-line-accent" x1="242" y1="168" x2="272" y2="168" marker-end="url(#us-flow-arrow)" />
+              <rect class="fig-box-accent" x="274" y="138" width="216" height="60" rx="6" />
+              <text x="290" y="160" class="fig-label">2. Base62(100)</text>
+              <text x="290" y="182" class="fig-tick">code = "1C"</text>
+              <line class="fig-line-accent" x1="492" y1="168" x2="522" y2="168" marker-end="url(#us-flow-arrow)" />
+              <rect class="fig-box" x="524" y="138" width="264" height="60" rx="6" />
+              <text x="540" y="160" class="fig-label">3. UPDATE short_code</text>
+              <text x="540" y="182" class="fig-tick">WHERE id = 100</text>
+              <path class="fig-line" d="M126 200 L126 226 L656 226 L656 200" stroke-dasharray="5 4" fill="none" />
+              <text x="12" y="250" class="fig-tick">Between the first statement and the third, the row exists with no code, which is why short_code</text>
+              <text x="12" y="270" class="fig-tick">is nullable. Two round trips to create a link; following one still costs a single read.</text>
             </svg>
           </div>
           <figcaption class="figure-caption">The generator's input is produced by the write it is supposed to be part of, so the write splits in two. Everything else in the schema follows from this picture, including the one column that is allowed to be null.</figcaption>
@@ -331,7 +342,7 @@ while (counter &gt; 0) {
         </p>
         <figure class="figure">
           <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="us-null-title us-null-desc">
+            <svg class="fig-svg" viewBox="0 0 800 258" role="img" aria-labelledby="us-null-title us-null-desc">
               <title id="us-null-title">The same insert before and after pinning it to one column</title>
               <desc id="us-null-desc">Two rows. Above, the statement the driver generated names all four columns and passes NULL for id, short_code and created_at, and the resulting created_at is null. Below, the statement names long_url only, and the resulting created_at holds a timestamp supplied by the column default.</desc>
               <defs>
@@ -340,23 +351,23 @@ while (counter &gt; 0) {
                   <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
                 </marker>
               </defs>
-              <text x="10" y="24" class="fig-panel-title">Before: the driver named every column it found</text>
-              <rect class="fig-box-muted" x="10" y="36" width="502" height="72" rx="6" />
-              <text x="26" y="62" class="fig-tick">INSERT INTO urls (id, short_code, long_url, created_at)</text>
-              <text x="26" y="88" class="fig-tick">VALUES (NULL, NULL, 'https://spring.io/...', NULL)</text>
-              <line class="fig-line-accent" x1="516" y1="72" x2="550" y2="72" marker-end="url(#us-null-arrow)" />
-              <rect class="fig-box-muted" x="552" y="44" width="138" height="56" rx="6" />
-              <text x="621" y="68" text-anchor="middle" class="fig-tick">created_at</text>
-              <text x="621" y="88" text-anchor="middle" class="fig-label">NULL</text>
-              <text x="10" y="164" class="fig-panel-title">After: usingColumns("long_url")</text>
-              <rect class="fig-box" x="10" y="176" width="502" height="72" rx="6" />
-              <text x="26" y="202" class="fig-tick">INSERT INTO urls (long_url)</text>
-              <text x="26" y="228" class="fig-tick">VALUES ('https://spring.io/...')</text>
-              <line class="fig-line-accent" x1="516" y1="212" x2="550" y2="212" marker-end="url(#us-null-arrow)" />
-              <rect class="fig-box-accent" x="552" y="184" width="138" height="56" rx="6" />
-              <text x="621" y="208" text-anchor="middle" class="fig-tick">created_at</text>
-              <text x="621" y="228" text-anchor="middle" class="fig-label">09:04:08</text>
-              <text x="10" y="278" class="fig-tick">The default was never skipped. It was overruled by a value the application did not know it sent.</text>
+              <text x="12" y="20" class="fig-panel-title">Before: the driver named every column it found</text>
+              <rect class="fig-box-muted" x="12" y="32" width="562" height="62" rx="6" />
+              <text x="28" y="55" class="fig-tick">INSERT INTO urls (id, short_code, long_url, created_at)</text>
+              <text x="28" y="79" class="fig-tick">VALUES (NULL, NULL, 'https://spring.io/...', NULL)</text>
+              <line class="fig-line-accent" x1="578" y1="63" x2="606" y2="63" marker-end="url(#us-null-arrow)" />
+              <rect class="fig-box-muted" x="608" y="38" width="180" height="50" rx="6" />
+              <text x="698" y="59" text-anchor="middle" class="fig-tick">created_at</text>
+              <text x="698" y="79" text-anchor="middle" class="fig-label">NULL</text>
+              <text x="12" y="140" class="fig-panel-title">After: usingColumns("long_url")</text>
+              <rect class="fig-box" x="12" y="152" width="562" height="62" rx="6" />
+              <text x="28" y="175" class="fig-tick">INSERT INTO urls (long_url)</text>
+              <text x="28" y="199" class="fig-tick">VALUES ('https://spring.io/...')</text>
+              <line class="fig-line-accent" x1="578" y1="183" x2="606" y2="183" marker-end="url(#us-null-arrow)" />
+              <rect class="fig-box-accent" x="608" y="158" width="180" height="50" rx="6" />
+              <text x="698" y="179" text-anchor="middle" class="fig-tick">created_at</text>
+              <text x="698" y="199" text-anchor="middle" class="fig-label">09:04:08</text>
+              <text x="12" y="240" class="fig-tick">The default was never skipped. It was overruled by a value the application did not know it sent.</text>
             </svg>
           </div>
           <figcaption class="figure-caption">The difference between the two statements is not the values, which are the same in every column that matters. It is which columns are named at all, and that is the thing a column default is a property of.</figcaption>

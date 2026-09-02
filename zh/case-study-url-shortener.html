@@ -116,53 +116,64 @@ Location: https://spring.io/projects/spring-boot</code></pre>
         </p>
         <figure class="figure">
           <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 700 550" role="img" aria-labelledby="us-seq-title us-seq-desc">
-              <title id="us-seq-title">一個建立請求穿過 controller、service、repository 與資料庫的路徑</title>
-              <desc id="us-seq-desc">四條垂直的泳道，由左至右是 UrlController、UrlService、UrlRepository 與 MySQL。請求從 controller 進來後交給 service，一段註記寫著空白輸入在任何 SQL 執行之前就被擋下。service 呼叫 repository，由它把長網址寫進 MySQL；MySQL 回傳它發出的 id。第二段註記記下那個 id 的 Base62 編碼。接著 service 再次呼叫 repository 寫入短碼，repository 送出 UPDATE。總共有兩次來回抵達資料庫。</desc>
+            <svg class="fig-svg" viewBox="0 0 900 548" role="img" aria-labelledby="us-seq-title us-seq-desc">
+              <title id="us-seq-title">一個建立請求從客戶端穿過 controller、service、repository 與資料庫的路徑</title>
+              <desc id="us-seq-desc">五條垂直的泳道，由左至右是客戶端、UrlController、UrlService、UrlRepository 與 MySQL。客戶端向 controller 發出 POST，controller 呼叫 service，一段註記寫著空白輸入在任何 SQL 執行之前就被擋下。service 呼叫 repository，由它把長網址寫進 MySQL。MySQL 把產生的鍵值 100 交回 repository，repository 再把它回傳給 service。第二段註記記下那個 id 的 Base62 編碼結果 1C。接著 service 再次呼叫 repository 寫入短碼，repository 送出 UPDATE，短碼再經由 controller 回到客戶端。總共有兩次來回抵達資料庫。</desc>
               <defs>
                 <marker id="us-seq-arrow" viewBox="0 0 10 10" refX="9" refY="5"
                         markerWidth="6" markerHeight="6" orient="auto">
                   <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
                 </marker>
               </defs>
-              <text x="10" y="22" class="fig-panel-title">POST /api/v1/urls，穿過四層</text>
-              <rect class="fig-box" x="8" y="38" width="156" height="52" rx="6" />
-              <text x="86" y="62" text-anchor="middle" class="fig-label">UrlController</text>
-              <text x="86" y="80" text-anchor="middle" class="fig-tick">@RestController</text>
-              <rect class="fig-box" x="180" y="38" width="156" height="52" rx="6" />
-              <text x="258" y="62" text-anchor="middle" class="fig-label">UrlService</text>
-              <text x="258" y="80" text-anchor="middle" class="fig-tick">@Service</text>
-              <rect class="fig-box" x="352" y="38" width="156" height="52" rx="6" />
-              <text x="430" y="62" text-anchor="middle" class="fig-label">UrlRepository</text>
-              <text x="430" y="80" text-anchor="middle" class="fig-tick">@Repository</text>
-              <rect class="fig-box" x="524" y="38" width="168" height="52" rx="6" />
-              <text x="608" y="62" text-anchor="middle" class="fig-label">MySQL</text>
-              <text x="608" y="80" text-anchor="middle" class="fig-tick">urls 資料表</text>
-              <line class="fig-line" x1="86" y1="90" x2="86" y2="470" stroke-dasharray="3 5" />
-              <line class="fig-line" x1="258" y1="90" x2="258" y2="470" stroke-dasharray="3 5" />
-              <line class="fig-line" x1="430" y1="90" x2="430" y2="470" stroke-dasharray="3 5" />
-              <line class="fig-line" x1="608" y1="90" x2="608" y2="470" stroke-dasharray="3 5" />
-              <text x="172" y="112" text-anchor="middle" class="fig-tick">createShortUrl(url)</text>
-              <line class="fig-line-accent" x1="86" y1="122" x2="256" y2="122" marker-end="url(#us-seq-arrow)" />
-              <rect class="fig-box-muted" x="108" y="150" width="300" height="30" rx="5" />
-              <text x="258" y="170" text-anchor="middle" class="fig-tick">空白輸入在任何 SQL 之前被擋下</text>
-              <text x="344" y="208" text-anchor="middle" class="fig-tick">insertAndGetId(url)</text>
-              <line class="fig-line-accent" x1="258" y1="218" x2="428" y2="218" marker-end="url(#us-seq-arrow)" />
-              <text x="519" y="256" text-anchor="middle" class="fig-tick">INSERT (long_url)</text>
-              <line class="fig-line-accent" x1="430" y1="266" x2="606" y2="266" marker-end="url(#us-seq-arrow)" />
-              <text x="519" y="304" text-anchor="middle" class="fig-tick">id = 7</text>
-              <line class="fig-line-accent" x1="608" y1="314" x2="432" y2="314" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
-              <rect class="fig-box-accent" x="108" y="342" width="300" height="30" rx="5" />
-              <text x="258" y="362" text-anchor="middle" class="fig-tick">Base62(7) 得到短碼 "7"</text>
-              <text x="344" y="400" text-anchor="middle" class="fig-tick">setShortCode(7, "7")</text>
-              <line class="fig-line-accent" x1="258" y1="410" x2="428" y2="410" marker-end="url(#us-seq-arrow)" />
-              <text x="519" y="448" text-anchor="middle" class="fig-tick">UPDATE short_code</text>
-              <line class="fig-line-accent" x1="430" y1="458" x2="606" y2="458" marker-end="url(#us-seq-arrow)" />
-              <text x="10" y="506" class="fig-tick">回應沿著來的路徑折返，呼叫端拿到的是 {"code":"7"}。</text>
-              <text x="10" y="530" class="fig-tick">Spring 在啟動時各建一個，並把它們交進彼此的建構子。</text>
+              <text x="12" y="20" class="fig-panel-title">POST /api/v1/urls，穿過四層</text>
+              <rect class="fig-box" x="7" y="32" width="166" height="46" rx="6" />
+              <text x="90" y="52" text-anchor="middle" class="fig-label">客戶端</text>
+              <text x="90" y="70" text-anchor="middle" class="fig-tick">curl、瀏覽器</text>
+              <rect class="fig-box" x="187" y="32" width="166" height="46" rx="6" />
+              <text x="270" y="52" text-anchor="middle" class="fig-label">UrlController</text>
+              <text x="270" y="70" text-anchor="middle" class="fig-tick">@RestController</text>
+              <rect class="fig-box" x="367" y="32" width="166" height="46" rx="6" />
+              <text x="450" y="52" text-anchor="middle" class="fig-label">UrlService</text>
+              <text x="450" y="70" text-anchor="middle" class="fig-tick">@Service</text>
+              <rect class="fig-box" x="547" y="32" width="166" height="46" rx="6" />
+              <text x="630" y="52" text-anchor="middle" class="fig-label">UrlRepository</text>
+              <text x="630" y="70" text-anchor="middle" class="fig-tick">@Repository</text>
+              <rect class="fig-box" x="727" y="32" width="166" height="46" rx="6" />
+              <text x="810" y="52" text-anchor="middle" class="fig-label">MySQL</text>
+              <text x="810" y="70" text-anchor="middle" class="fig-tick">urls 資料表</text>
+              <line class="fig-line" x1="90" y1="78" x2="90" y2="502" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="270" y1="78" x2="270" y2="502" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="450" y1="78" x2="450" y2="502" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="630" y1="78" x2="630" y2="502" stroke-dasharray="3 5" />
+              <line class="fig-line" x1="810" y1="78" x2="810" y2="502" stroke-dasharray="3 5" />
+              <text x="180" y="96" text-anchor="middle" class="fig-tick">POST /api/v1/urls</text>
+              <line class="fig-line-accent" x1="90" y1="106" x2="268" y2="106" marker-end="url(#us-seq-arrow)" />
+              <text x="360" y="130" text-anchor="middle" class="fig-tick">createShortUrl(url)</text>
+              <line class="fig-line-accent" x1="270" y1="140" x2="448" y2="140" marker-end="url(#us-seq-arrow)" />
+              <rect class="fig-box-muted" x="291" y="158" width="318" height="28" rx="5" />
+              <text x="400" y="177" text-anchor="middle" class="fig-tick">空白輸入在任何 SQL 之前被擋下</text>
+              <text x="540" y="204" text-anchor="middle" class="fig-tick">insertAndGetId(url)</text>
+              <line class="fig-line-accent" x1="450" y1="214" x2="628" y2="214" marker-end="url(#us-seq-arrow)" />
+              <text x="720" y="238" text-anchor="middle" class="fig-tick">INSERT (long_url)</text>
+              <line class="fig-line-accent" x1="630" y1="248" x2="808" y2="248" marker-end="url(#us-seq-arrow)" />
+              <text x="720" y="272" text-anchor="middle" class="fig-tick">產生的鍵值 = 100</text>
+              <line class="fig-line-accent" x1="810" y1="282" x2="632" y2="282" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
+              <text x="540" y="306" text-anchor="middle" class="fig-tick">回傳 100</text>
+              <line class="fig-line-accent" x1="630" y1="316" x2="452" y2="316" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
+              <rect class="fig-box-accent" x="291" y="334" width="318" height="28" rx="5" />
+              <text x="400" y="353" text-anchor="middle" class="fig-tick">Base62(100) 得到短碼 "1C"</text>
+              <text x="540" y="380" text-anchor="middle" class="fig-tick">setShortCode(100, "1C")</text>
+              <line class="fig-line-accent" x1="450" y1="390" x2="628" y2="390" marker-end="url(#us-seq-arrow)" />
+              <text x="720" y="414" text-anchor="middle" class="fig-tick">UPDATE short_code</text>
+              <line class="fig-line-accent" x1="630" y1="424" x2="808" y2="424" marker-end="url(#us-seq-arrow)" />
+              <text x="360" y="448" text-anchor="middle" class="fig-tick">短碼</text>
+              <line class="fig-line-accent" x1="450" y1="458" x2="272" y2="458" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
+              <text x="180" y="482" text-anchor="middle" class="fig-tick">200 {"code":"1C"}</text>
+              <line class="fig-line-accent" x1="270" y1="492" x2="92" y2="492" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
+              <text x="12" y="534" class="fig-tick">Spring 在啟動時各建一個，並把它們交進彼此的建構子。</text>
             </svg>
           </div>
-          <figcaption class="figure-caption">寫入路徑，以及每一步屬於哪一層。<code>GET /{code}</code> 走的是同樣四條泳道，而且一步就到：對 <code>short_code</code> 做一次 <code>SELECT</code>，然後回 302 加上 <code>Location</code> 標頭，查不到就回 404。這張圖真正的用途是知道改動該放在哪裡：新的規則屬於中間，新的查詢屬於右邊，狀態碼屬於左邊。</figcaption>
+          <figcaption class="figure-caption">寫入路徑，以及每一步屬於哪一層。id 回來的路上走了兩段，因為 MySQL 是把產生的鍵值交給 repository，再由 repository 回傳給 service。<code>GET /{code}</code> 走的是同樣幾條泳道，而且一步就到：對 <code>short_code</code> 做一次 <code>SELECT</code>，然後回 302 加上 <code>Location</code> 標頭，查不到就回 404。這張圖真正的用途是知道改動該放在哪裡：新的規則屬於中間，新的查詢屬於右邊，狀態碼屬於左邊。</figcaption>
         </figure>
       </div>
     </section>
@@ -182,36 +193,36 @@ Location: https://spring.io/projects/spring-boot</code></pre>
         </p>
         <figure class="figure">
           <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 700 320" role="img" aria-labelledby="us-flow-title us-flow-desc">
+            <svg class="fig-svg" viewBox="0 0 800 276" role="img" aria-labelledby="us-flow-title us-flow-desc">
               <title id="us-flow-title">為什麼建立一個短連結需要兩句 SQL，而不是一句</title>
-              <desc id="us-flow-desc">分成兩列。上面一列是單獨一句 INSERT，同時寫入 long_url 與 short_code，短碼的位置留著問號，旁邊註明短碼是某個 id 的 Base62，而那個 id 正是這句 INSERT 還沒發出來的。下面一列依序是三個步驟：只寫入 long_url 的 INSERT，之後 MySQL 發出 id 7；把 7 編成短碼「7」；以及把短碼寫回那一列的 UPDATE。</desc>
+              <desc id="us-flow-desc">分成兩列。上面一列是單獨一句 INSERT，同時寫入 long_url 與 short_code，短碼的位置留著問號，旁邊註明短碼是某個 id 的 Base62，而那個 id 正是這句 INSERT 還沒發出來的。下面一列依序是三個步驟：只寫入 long_url 的 INSERT，之後 MySQL 發出 id 100；把 100 編成短碼 1C；以及把短碼寫回那一列的 UPDATE。</desc>
               <defs>
                 <marker id="us-flow-arrow" viewBox="0 0 10 10" refX="9" refY="5"
                         markerWidth="6" markerHeight="6" orient="auto">
                   <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
                 </marker>
               </defs>
-              <text x="10" y="24" class="fig-panel-title">行不通的那一句</text>
-              <rect class="fig-box-muted" x="10" y="36" width="420" height="62" rx="6" />
-              <text x="26" y="60" class="fig-label">INSERT INTO urls (long_url, short_code)</text>
-              <text x="26" y="82" class="fig-tick">VALUES ('https://spring.io/...', ???)</text>
-              <text x="448" y="60" class="fig-tick">短碼是那一列 id 的 Base62，</text>
-              <text x="448" y="82" class="fig-tick">而 id 正是這句 INSERT 發出來的</text>
-              <text x="10" y="146" class="fig-panel-title">實際跑的那兩句</text>
-              <rect class="fig-box" x="10" y="158" width="196" height="66" rx="6" />
-              <text x="26" y="182" class="fig-label">1. INSERT long_url</text>
-              <text x="26" y="204" class="fig-tick">MySQL 發出 id = 7</text>
-              <line class="fig-line-accent" x1="208" y1="191" x2="242" y2="191" marker-end="url(#us-flow-arrow)" />
-              <rect class="fig-box-accent" x="244" y="158" width="186" height="66" rx="6" />
-              <text x="260" y="182" class="fig-label">2. Base62(7)</text>
-              <text x="260" y="204" class="fig-tick">短碼 = "7"</text>
-              <line class="fig-line-accent" x1="432" y1="191" x2="466" y2="191" marker-end="url(#us-flow-arrow)" />
-              <rect class="fig-box" x="468" y="158" width="222" height="66" rx="6" />
-              <text x="484" y="182" class="fig-label">3. UPDATE short_code</text>
-              <text x="484" y="204" class="fig-tick">WHERE id = 7</text>
-              <path class="fig-line" d="M108 226 L108 258 L579 258 L579 226" stroke-dasharray="5 4" fill="none" />
-              <text x="10" y="284" class="fig-tick">在第一句和第三句之間，那一列是沒有短碼的，這就是 short_code 允許為 null 的原因。</text>
-              <text x="10" y="306" class="fig-tick">建立一個連結要兩次來回；跳轉一次仍然只花一次讀取。</text>
+              <text x="12" y="20" class="fig-panel-title">行不通的那一句</text>
+              <rect class="fig-box-muted" x="12" y="32" width="452" height="56" rx="6" />
+              <text x="28" y="54" class="fig-label">INSERT INTO urls (long_url, short_code)</text>
+              <text x="28" y="76" class="fig-tick">VALUES ('https://spring.io/...', ???)</text>
+              <text x="482" y="54" class="fig-tick">短碼是那一列 id 的 Base62，</text>
+              <text x="482" y="76" class="fig-tick">而 id 正是這句 INSERT 發出來的</text>
+              <text x="12" y="126" class="fig-panel-title">實際跑的那兩句</text>
+              <rect class="fig-box" x="12" y="138" width="228" height="60" rx="6" />
+              <text x="28" y="160" class="fig-label">1. INSERT long_url</text>
+              <text x="28" y="182" class="fig-tick">MySQL 發出 id = 100</text>
+              <line class="fig-line-accent" x1="242" y1="168" x2="272" y2="168" marker-end="url(#us-flow-arrow)" />
+              <rect class="fig-box-accent" x="274" y="138" width="216" height="60" rx="6" />
+              <text x="290" y="160" class="fig-label">2. Base62(100)</text>
+              <text x="290" y="182" class="fig-tick">短碼 = "1C"</text>
+              <line class="fig-line-accent" x1="492" y1="168" x2="522" y2="168" marker-end="url(#us-flow-arrow)" />
+              <rect class="fig-box" x="524" y="138" width="264" height="60" rx="6" />
+              <text x="540" y="160" class="fig-label">3. UPDATE short_code</text>
+              <text x="540" y="182" class="fig-tick">WHERE id = 100</text>
+              <path class="fig-line" d="M126 200 L126 226 L656 226 L656 200" stroke-dasharray="5 4" fill="none" />
+              <text x="12" y="250" class="fig-tick">在第一句和第三句之間，那一列是沒有短碼的，這就是 short_code 允許為 null 的原因。</text>
+              <text x="12" y="270" class="fig-tick">建立一個連結要兩次來回；跳轉一次仍然只花一次讀取。</text>
             </svg>
           </div>
           <figcaption class="figure-caption">產生器的輸入，是由它本該參與的那次寫入產生的，所以那次寫入裂成了兩半。schema 裡其他每一件事都是從這張圖長出來的，包括那個唯一允許為 null 的欄位。</figcaption>
@@ -268,7 +279,7 @@ while (counter &gt; 0) {
         </p>
         <figure class="figure">
           <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="us-null-title us-null-desc">
+            <svg class="fig-svg" viewBox="0 0 800 258" role="img" aria-labelledby="us-null-title us-null-desc">
               <title id="us-null-title">同一次寫入，在把欄位釘成一個之前與之後</title>
               <desc id="us-null-desc">分成兩列。上面是驅動程式產生的語句，寫出四個欄位，並且把 id、short_code 與 created_at 都傳成 NULL，結果 created_at 是 null。下面是只寫出 long_url 的語句，結果 created_at 拿到欄位預設值給的時間戳記。</desc>
               <defs>
@@ -277,23 +288,23 @@ while (counter &gt; 0) {
                   <path d="M0 0 L10 5 L0 10 z" fill="var(--accent)" />
                 </marker>
               </defs>
-              <text x="10" y="24" class="fig-panel-title">之前：驅動程式寫出了它找到的每一個欄位</text>
-              <rect class="fig-box-muted" x="10" y="36" width="502" height="72" rx="6" />
-              <text x="26" y="62" class="fig-tick">INSERT INTO urls (id, short_code, long_url, created_at)</text>
-              <text x="26" y="88" class="fig-tick">VALUES (NULL, NULL, 'https://spring.io/...', NULL)</text>
-              <line class="fig-line-accent" x1="516" y1="72" x2="550" y2="72" marker-end="url(#us-null-arrow)" />
-              <rect class="fig-box-muted" x="552" y="44" width="138" height="56" rx="6" />
-              <text x="621" y="68" text-anchor="middle" class="fig-tick">created_at</text>
-              <text x="621" y="88" text-anchor="middle" class="fig-label">NULL</text>
-              <text x="10" y="164" class="fig-panel-title">之後：usingColumns("long_url")</text>
-              <rect class="fig-box" x="10" y="176" width="502" height="72" rx="6" />
-              <text x="26" y="202" class="fig-tick">INSERT INTO urls (long_url)</text>
-              <text x="26" y="228" class="fig-tick">VALUES ('https://spring.io/...')</text>
-              <line class="fig-line-accent" x1="516" y1="212" x2="550" y2="212" marker-end="url(#us-null-arrow)" />
-              <rect class="fig-box-accent" x="552" y="184" width="138" height="56" rx="6" />
-              <text x="621" y="208" text-anchor="middle" class="fig-tick">created_at</text>
-              <text x="621" y="228" text-anchor="middle" class="fig-label">09:04:08</text>
-              <text x="10" y="278" class="fig-tick">預設值從來沒有被跳過，是被一個應用程式不知道自己送出去的值推翻的。</text>
+              <text x="12" y="20" class="fig-panel-title">之前：驅動程式寫出了它找到的每一個欄位</text>
+              <rect class="fig-box-muted" x="12" y="32" width="562" height="62" rx="6" />
+              <text x="28" y="55" class="fig-tick">INSERT INTO urls (id, short_code, long_url, created_at)</text>
+              <text x="28" y="79" class="fig-tick">VALUES (NULL, NULL, 'https://spring.io/...', NULL)</text>
+              <line class="fig-line-accent" x1="578" y1="63" x2="606" y2="63" marker-end="url(#us-null-arrow)" />
+              <rect class="fig-box-muted" x="608" y="38" width="180" height="50" rx="6" />
+              <text x="698" y="59" text-anchor="middle" class="fig-tick">created_at</text>
+              <text x="698" y="79" text-anchor="middle" class="fig-label">NULL</text>
+              <text x="12" y="140" class="fig-panel-title">之後：usingColumns("long_url")</text>
+              <rect class="fig-box" x="12" y="152" width="562" height="62" rx="6" />
+              <text x="28" y="175" class="fig-tick">INSERT INTO urls (long_url)</text>
+              <text x="28" y="199" class="fig-tick">VALUES ('https://spring.io/...')</text>
+              <line class="fig-line-accent" x1="578" y1="183" x2="606" y2="183" marker-end="url(#us-null-arrow)" />
+              <rect class="fig-box-accent" x="608" y="158" width="180" height="50" rx="6" />
+              <text x="698" y="179" text-anchor="middle" class="fig-tick">created_at</text>
+              <text x="698" y="199" text-anchor="middle" class="fig-label">09:04:08</text>
+              <text x="12" y="240" class="fig-tick">預設值從來沒有被跳過，是被一個應用程式不知道自己送出去的值推翻的。</text>
             </svg>
           </div>
           <figcaption class="figure-caption">這兩句的差別不在值，真正重要的每一個欄位裡的值都一樣。差別在於哪些欄位被寫出來了，而那正是欄位預設值真正依附的東西。</figcaption>
