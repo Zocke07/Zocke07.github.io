@@ -221,17 +221,18 @@
             <p class="entry-date"><time datetime="2025-07">Jul 2025</time> – <time datetime="2026-06">Jun 2026</time></p>
           </div>
           <p class="entry-intro">
-            My job had two halves. I wrote the automation for two internal projects, a PyTest
-            suite in Python and a reconciliation job in Java. Alongside that I was part technical
-            project manager for a six-person remote team, part the person who tested the thing
-            before anyone else had to trust it. The team built two internal AI tools: a VS Code
-            extension that turns the company's development standards into an in-editor AI
-            reviewer, and a browser extension that translates content beside an internal
-            authoring portal.
+            My job had two halves. I wrote the automation for two internal projects: a PyTest
+            suite built from scratch against a service I had only the API documentation for,
+            and a reconciliation job refactored from a colleague's Java API. Alongside that I
+            was part technical project manager for a six-person remote team, part the person
+            who tested the thing before anyone else had to trust it. The team built two
+            internal AI tools: a VS Code extension that turns the company's development
+            standards into an in-editor AI reviewer, and a browser extension that translates
+            content beside an internal authoring portal.
           </p>
           <ul class="entry-points" role="list">
-            <li>Built a Python test suite with PyTest for one internal project, covering critical API endpoints so regressions surface before deployment rather than after it.</li>
-            <li>Refactored a colleague's Java API into an automated check that runs on Jenkins before a monthly rewards distribution, reconciling recipient counts and both funding contributions against the totals the system expects, in place of a reconciliation done by hand.</li>
+            <li>Built a PyTest suite from scratch over the critical API endpoints of an internal service, working only from its API documentation, including the payload encoding and decoding layer the suite runs on, so regressions surface before deployment rather than after it.</li>
+            <li>Closed a correctness gap in a colleague's Java API behind an existing Jenkins reconciliation job, which took filenames as request parameters and could be pointed at the wrong month; refactored it to read from an agreed location, implemented the query behind the total against an existing legacy formula, and built a pipeline, adapted from an existing one, that runs the check and files a ticket with the result automatically.</li>
             <li>Owned pre-release verification for both, running end-to-end testing that caught defects that compiled cleanly and looked correct in the diff: hyperlinks silently dropped from translated text, and model output truncated partway.</li>
             <li>Coordinated delivery across two locations as the technical link between on-site engineers and remote interns, managing sprint tasks in Jira so both sides worked from one view of state.</li>
             <li>Held changes to a written gate: proposal and design agreed before code, explicit acceptance criteria, then hands-on sign-off before release.</li>

@@ -345,19 +345,31 @@
           The other half of the job was making sure that was not the whole story.
         </p>
         <p>
-          I wrote the automation for two other internal projects. One is a Python suite, using
-          PyTest against critical API endpoints so a regression surfaces before deployment
-          rather than after it.
+          I wrote the automation for two other internal projects. One is a Python suite, built
+          from scratch with PyTest against the critical endpoints of an internal service, from
+          the API documentation alone: the endpoints, what each one takes and returns, the
+          error codes, and a handful of example calls. That document was the entire
+          specification, so every assertion in the suite is a promise it made — when a test
+          goes red, either the service is wrong or the documentation is, and only a person can
+          say which.
         </p>
         <p>
-          The other is Java, and it is not a test suite. A monthly rewards distribution is
-          funded from two sides, ours and an outside partner's, and before it goes out somebody
-          has to prove the numbers agree: that the recipients in the partner's monthly file
-          match the final distribution list, and that the two contributions sum to the total the
-          system expects. That was a reconciliation done by hand. I refactored a colleague's API
-          into a job that does it, reading the month's files straight from a server folder
-          instead of taking filenames as request parameters, and ran it on Jenkins against the
-          test environment.
+          The first thing the suite needed was not a test. The payloads are encoded, so no
+          assertion could reach a response body until something decoded it; I wrote that layer
+          first, and every test since runs against decoded fields rather than a wire format.
+        </p>
+        <p>
+          The other is Java, and it grew from a fix into three pieces of the same job. A
+          monthly rewards distribution is funded from two sides, ours and an outside partner's,
+          and a Jenkins job already reconciled it every month by calling a colleague's API.
+          That API took the month's filenames as request parameters, so a caller could point it
+          at the wrong month and still get a clean report; I refactored it to read the files
+          from an agreed location instead. The total itself has to match an existing legacy
+          formula exactly, with one category the business rules require leaving out, so I wrote
+          the query that implements it explicitly. And the verification needed to run and be
+          seen on its own: I built a Jenkins pipeline, adapted from an existing one for a
+          related check, that triggers it, runs several checks in parallel, and files a ticket
+          in the team's issue tracker automatically with the result.
         </p>
         <p>
           Neither is glamorous, and that is roughly the point. A written gate needs a person
