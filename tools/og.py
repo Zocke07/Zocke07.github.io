@@ -145,7 +145,7 @@ def card_for(page):
         title = "黃家輝" if zh else "Rivan Wong"
         desc = ("國立臺北科技大學資訊工程碩士，專注於軟體工程、"
                 "自動化測試與聯邦式學習安全。") if zh else \
-               "Computer Science M.S. QA, test automation, and AI product verification in Taipei."
+               "Computer Science M.S. graduate. Software Engineer, Security, Test Automation, in Taipei."
     return dict(
         lang="zh-Hant-TW" if zh else "en",
         cjk="cjk" if zh else "",
