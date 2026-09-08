@@ -17,6 +17,15 @@
     "title": "The Process Was Fine. The Output Still Fell.",
     "who": "Rivan Wong"
   },
+  "case-study-kitaliturgi.html": {
+    "cjk": "",
+    "desc": "Ordinary Time is a 34-week count split around a feast that moves. Counting forward through the gap drifts. Anchoring to the fixed point at the end does not.",
+    "kicker": "Self-Directed Project · JavaScript · Date Arithmetic",
+    "lang": "en",
+    "long": "",
+    "title": "Count Backwards From the Fixed Point",
+    "who": "Rivan Wong"
+  },
   "case-study-lmad.html": {
     "cjk": "",
     "desc": "A Byzantine-robust aggregation rule for federated edge learning, and the twenty-seed study that says exactly when it fails.",
@@ -105,6 +114,15 @@
     "lang": "zh-Hant-TW",
     "long": "",
     "title": "流程沒有問題，產出還是掉了",
+    "who": "黃家輝"
+  },
+  "zh/case-study-kitaliturgi.html": {
+    "cjk": "cjk",
+    "desc": "常年期是一段共 34 週的計數，被一個會移動的節期切成兩半。往前累加一定會漂移，錨在固定點上則不會。",
+    "kicker": "個人專案 · JavaScript · 日期運算",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "從固定的那一端往回數",
     "who": "黃家輝"
   },
   "zh/case-study-lmad.html": {

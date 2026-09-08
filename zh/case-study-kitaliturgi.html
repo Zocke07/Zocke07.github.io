@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>從固定的那一端往回數 · 黃家輝</title>
+  <meta name="description" content="一份用 JavaScript 從單一日期推導出來的禮儀年曆：常年期的週數用往前累加的方式計算，在 154 個主日裡錯了 102 個，而修法是把計數錨在年末那個不會動的點上。" />
+  <meta property="og:title" content="從固定的那一端往回數" />
+  <meta property="og:description" content="常年期是一段共 34 週的計數，被一個會移動的節期切成兩半。往前累加一定會漂移，錨在固定點上則不會。" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/zh/case-study-kitaliturgi" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og/kitaliturgi-zh.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="前端案例研究：一份自行計算的禮儀年曆，以及往前累加躲不掉的差一錯誤。" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <link rel="canonical" href="https://zocke07.github.io/zh/case-study-kitaliturgi" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-kitaliturgi" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-kitaliturgi" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-kitaliturgi" />
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=7ef7e7da" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="主要導覽">
+      <a class="nav-brand" href="/zh/">黃家輝</a>
+      <div class="nav-right">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="切換導覽選單">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
+          <li><a href="/zh/#about">關於我</a></li>
+          <li><a href="/zh/#education">學歷</a></li>
+          <li><a href="/zh/#experience">工作經歷</a></li>
+          <li><a href="/zh/#projects">作品與研究</a></li>
+          <li><a href="/zh/#skills">技能</a></li>
+          <li><a href="/zh/#contact">聯絡方式</a></li>
+        </ul>
+        <a class="lang-toggle" href="/case-study-kitaliturgi" hreflang="en" lang="en"
+           aria-label="Switch to English">EN</a>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="深色主題">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- ===================== Case study hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">個人專案 · JavaScript · 日期運算</p>
+        <h1>從固定的那一端往回數</h1>
+        <p class="hero-blurb">
+          KITA Liturgi 是一個天主教團體在台灣為輔祭與讀經員做的指引網站。它大部分的內容是靜態的：各職務的流程、主保聖人、一份彌撒經書總論的副本。有一頁不是。不管你在哪一天打開它，它都得回答：今天是禮儀年的第幾個主日、屬於哪個節期、禮儀顏色是什麼、三年讀經循環走到哪一年。那一頁背後沒有資料檔，也沒有任何 API 呼叫。所有答案都是從一個算出來的日期推導出來的，而這套推導有八個月的時間，在它被問到的主日裡錯了三分之二。
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>我的角色：</strong>個人專案，做給一個真的在用這個網站的服務團體。沒有團隊、沒有審查者，也沒有測試接得住我。這個錯誤一月就上線，我到九月才發現，而這一點值得誠實講：週數是一種沒有人能用眼睛檢查的輸出。「常年期第二十二主日」看起來，和第二十三主日一樣合理，所以錯的答案和對的答案長得一模一樣，除非你真的自己重新推導一次。
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>10 個頁面</strong>，靜態、無建置流程</li>
+          <li><strong>544 行</strong>年曆邏輯</li>
+          <li><strong>0 個外部</strong>年曆資料來源</li>
+          <li>五旬節後查核 <strong>154 個主日</strong></li>
+          <li>其中 <strong>102 個</strong>名稱是錯的</li>
+          <li>重新驗證 <strong>15 年</strong>，2026 到 2040</li>
+        </ul>
+        <aside class="source-note">
+          <strong>範圍，以及數字的來源：</strong>這是一個手寫 HTML、CSS 與三個 JavaScript 檔案的靜態網站，部署在 Vercel 上。這一頁的數字不是抄自提交訊息。我在 Node 裡把 DOM 補成假的，將修正前與修正後的兩份模組並排載入，對 2026 到 2040 之間的每一個主日各跑一次再比對差異；查核腳本與它印出來的數字，下面照原樣引用。<a href="https://kitaliturgi.vercel.app" target="_blank" rel="noopener">網站是上線的</a>，<a href="https://github.com/Zocke07/kitaliturgi" target="_blank" rel="noopener">原始碼也是公開的</a>。兩者都是印尼文，因為那是它的讀者在用的語言。
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== The contract ===================== -->
+    <section id="contract" class="section">
+      <div class="container prose">
+        <h2 class="section-title">這一頁得回答什麼</h2>
+        <p>
+          打開年曆頁，它會告訴你關於下一個主日的四件事：它的正式名稱、所屬節期、禮儀顏色，以及三年讀經循環中的哪一年。網站主題會跟著那個顏色重新上色，所以將臨期與四旬期是紫色、常年期一路是綠色、聖誕期與復活期是白色、五旬節是紅色。最後這件事，正是為什麼答錯不只是版面問題：它會改變這一頁告訴一個十九歲讀經員該穿什麼、該預期什麼。
+        </p>
+        <p>
+          這些都不是查表查來的。專案裡沒有任何年曆 JSON，執行時也不抓任何東西。整個模組是從一個數字（年份）推導出來的，而它之所以做得到，是因為西方禮儀年曆裡只有兩種日期。固定日期永遠不動：聖誕節是 12 月 25 日，主顯節是 1 月 6 日。可動日期則全部掛在復活節上，而復活節本身是算出來的。
+        </p>
+        <p class="snippet-caption">復活節演算法，從第一次提交起沒有改過，也是唯一從來沒錯過的部分。</p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼，可捲動"><code>function calculateEaster(year) {
+    const a = year % 19;
+    const b = Math.floor(year / 100);
+    const c = year % 100;
+    <span class="cm">// ... Meeus/Jones/Butcher，再十二行整數運算</span>
+    const month = Math.floor((h + l - 7 * m + 114) / 31);
+    const day = ((h + l - 7 * m + 114) % 31) + 1;
+    return new Date(year, month - 1, day);
+}</code></pre>
+        <p>
+          所有可動的日期，接著都是這個回傳值的偏移量。聖灰禮儀日是復活節減 46 天，聖枝主日是減 7 天，五旬節是加 49 天。將臨期則是另一種錨定：聖誕節前四個主日；基督君王節是將臨期開始前的那個主日。兩個各自獨立的錨，一個在年初、一個在年末，中間夾著一個會滑動的節期。整個故事就在這個幾何裡。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The interruption ===================== -->
+    <section id="interruption" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">常年期不是連續的一段</h2>
+        <p>
+          常年期就是綠色的那個節期，而且它有編號：常年期第二主日、第三主日，依此類推。它難算的地方在於，它並不是連著跑完的。它在一月主受洗節之後開始，到聖灰禮儀日戛然而止，一直要到五旬節後的星期一才恢復，而那時已經過了三個月。但編號會直接跨過這個缺口繼續往下走，好像中間什麼都沒發生。
+        </p>
+        <p>
+          所以最直覺的寫法，就是從頭開始數主日，然後一直數下去。我當初寫的就是這個。它是錯的，而看懂為什麼錯，最快的方式是看圖。
+        </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="示意圖，可捲動">
+            <svg class="fig-svg" viewBox="0 0 900 390" role="img" aria-labelledby="kl-year-title kl-year-desc">
+              <title id="kl-year-title">兩個禮儀年的對照，顯示四旬期與復活期的區塊會滑動，而基督君王節始終固定在第 34 週</title>
+              <desc id="kl-year-desc">兩條以相同比例尺畫出的年度時間軸，上面是 2035 年，下面是 2038 年。每一條都切成五段：一月初短短的聖誕期、常年期的第一段、固定 91 天的四旬期與復活期區塊、常年期的第二段，以及年末短短的將臨期。2035 年復活節落在 3 月 24 日，所以常年期第一段很短、只有 4 個主日，第二段很長，從第 7 週恢復。2038 年復活節落在 4 月 24 日，第一段長到 8 個主日，第二段因此縮短，從第 12 週恢復。兩列中間的四旬期與復活期區塊寬度一模一樣，因為它永遠是 91 天，只是整個往右滑了。儘管兩列的第二段長度不同，虛線在兩列上標出的基督君王節都落在第 34 週，因為這個節日的定義就是將臨期前的最後一個主日。計數被固定在年末，而不是年初。</desc>
+
+              <text x="12" y="24" class="fig-panel-title">共 34 週的一段計數，被一個會移動的節期切開</text>
+              <text x="12" y="48" class="fig-axis">一月</text>
+              <text x="800" y="48" class="fig-axis">十二月</text>
+
+              <!-- ---------- 2035 ---------- -->
+              <text x="12" y="110" class="fig-label fig-label-hero">2035</text>
+              <text x="12" y="132" class="fig-tick">復活節 3/24</text>
+
+              <rect x="175" y="88" width="12"  height="30" class="fig-box-muted" />
+              <rect x="187" y="88" width="61"  height="30" class="fig-bar" />
+              <rect x="248" y="88" width="193" height="30" class="fig-box" />
+              <rect x="441" y="88" width="398" height="30" class="fig-bar" />
+              <rect x="839" y="88" width="14"  height="30" class="fig-box-muted" />
+
+              <text x="217" y="80" class="fig-tick" text-anchor="middle">4 個主日</text>
+              <text x="344" y="80" class="fig-tick" text-anchor="middle">四旬期 + 復活期，91 天</text>
+              <text x="470" y="138" class="fig-note">從第 7 週恢復</text>
+
+              <!-- ---------- 2038 ---------- -->
+              <text x="12" y="222" class="fig-label fig-label-hero">2038</text>
+              <text x="12" y="244" class="fig-tick">復活節 4/24</text>
+
+              <rect x="175" y="200" width="16"  height="30" class="fig-box-muted" />
+              <rect x="191" y="200" width="120" height="30" class="fig-bar" />
+              <rect x="311" y="200" width="193" height="30" class="fig-box" />
+              <rect x="504" y="200" width="327" height="30" class="fig-bar" />
+              <rect x="831" y="200" width="14"  height="30" class="fig-box-muted" />
+
+              <text x="251" y="192" class="fig-tick" text-anchor="middle">8 個主日</text>
+              <text x="407" y="192" class="fig-tick" text-anchor="middle">四旬期 + 復活期，91 天</text>
+              <text x="533" y="250" class="fig-note">從第 12 週恢復</text>
+
+              <!-- ---------- the fixed point ---------- -->
+              <path d="M839 118 L839 300" class="fig-line-accent" stroke-dasharray="4 4" />
+              <path d="M831 230 L831 300" class="fig-line-accent" stroke-dasharray="4 4" />
+              <path d="M831 300 L839 300" class="fig-line-accent" />
+
+              <circle cx="839" cy="88"  r="4" class="fig-bar-accent" />
+              <circle cx="831" cy="200" r="4" class="fig-bar-accent" />
+
+              <text x="835" y="326" class="fig-label fig-label-hero" text-anchor="middle">第 34 週</text>
+              <text x="835" y="348" class="fig-tick" text-anchor="middle">基督君王節</text>
+              <text x="835" y="368" class="fig-tick" text-anchor="middle">兩年皆是</text>
+
+              <text x="175" y="326" class="fig-note">填滿的長條是常年期。中間那一塊永遠是 91 天，</text>
+              <text x="175" y="348" class="fig-note">而且只會滑動；兩側的長條伸縮去配合它，</text>
+              <text x="175" y="368" class="fig-note">而右邊那一端從來沒有離開過 34。</text>
+            </svg>
+          </div>
+          <figcaption class="figure-caption">
+            2035 與 2038 是我驗證的十五年裡最早與最晚的復活節，剛好框住最壞的情況。各段寬度按實際天數等比例繪製。
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== The drift ===================== -->
+    <section id="drift" class="section">
+      <div class="container prose">
+        <h2 class="section-title">為什麼往前累加行不通</h2>
+        <p>
+          原本的程式做的事，比單純數日曆週要聰明一點，這也正是它能通過我自己那關的原因。它先數出四旬期之前的常年期主日數，再數五旬節之後過了幾個主日，然後把兩者加起來。
+        </p>
+        <p class="snippet-caption">舊的恢復計算，來自第一次提交。它讀起來像是不可能錯。</p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼，可捲動"><code><span class="cm">// Ordinary Time: split before Lent and after Pentecost</span>
+const weeksBeforeLent = Math.floor((sundayBeforeAshWed - startOrdinary) / msWeek) + 1;
+const weekAfterPentecost = Math.floor((sundayDate - firstSundayAfterPentecost) / msWeek) + 1;
+const weekNumber = weeksBeforeLent + weekAfterPentecost + 1;</code></pre>
+        <p>
+          埋在最後那一行裡的假設是：兩段接起來剛好等於一整年。並不會。原因是常年期的定義就是 34 週、永遠是 34 週，而要塞進去的那個日曆年，主日數卻不是固定的。有些年份塞得下 34 週，有些年份塞不下。塞不下的時候，教會不會去改年末的編號，而是在恢復的地方少算一週，好讓基督君王節仍然落在第三十四個主日。
+        </p>
+        <p>
+          那正是加法沒辦法表達的事實。從頭往前數，知道已經過了幾個主日，卻沒有辦法知道還剩幾個，而少算的那一週是由「還剩幾個」決定的。在圖上，兩年的兩段綠色長度不同，卻都收在 34。計數被釘在另一端。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The audit ===================== -->
+    <section id="audit" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">154 個裡錯了 102 個</h2>
+        <p>
+          在動手改之前，我想先知道到底有多糟，而那意味著把兩個版本都跑起來，而不是坐在那裡推理。要在 Node 裡載入一個瀏覽器模組，得先補一個假的 <code>document</code>；補完之後，兩份實作就可以對著任意一段日期並排呼叫。
+        </p>
+        <p class="snippet-caption">查核範圍取訪客實際上可能會看的那六年。</p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="終端機輸出，可捲動"><code><span class="cm">$ node verify.js</span>
+Post-Pentecost Ordinary Time Sundays 2026-2031: 102 of 154 differ
+
+<span class="cm">$ node verify.js --sample</span>
+2026-05-30  old=Minggu Biasa 8   new=Minggu Biasa 9
+2026-06-06  old=Minggu Biasa 9   new=Minggu Biasa 10
+2026-06-13  old=Minggu Biasa 10  new=Minggu Biasa 11
+2026-09-06  old=Minggu Biasa 22  new=Minggu Biasa 23</code></pre>
+        <p>
+          三分之二，而且這些錯誤不是零星的雜訊。一個年份一旦漂掉，那一年剩下的時間就一直是漂的，所以九月來看的讀者，拿到的是一個從五月起每一週都錯的數字。最後那一行就是這件事的起點：2026 年 9 月 6 日是常年期第二十三主日，而首頁把它叫成第二十二主日。
+        </p>
+        <p>
+          那些剛好對的年份，是碰運氣對的。2035 年剛好是兩種算法會得到相同答案的年份，而這正是讓一個錯誤活下來的那種巧合：抽查到錯的年份，實作看起來就沒問題。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The fix ===================== -->
+    <section id="fix" class="section">
+      <div class="container prose">
+        <h2 class="section-title">把計數錨在年末</h2>
+        <p>
+          基督君王節並不像復活節那樣是可動節日。它的定義是將臨期前的最後一個主日，將臨期的定義是聖誕節前四個主日，而聖誕節不會動。所以它的位置完全不需要參照復活節就能決定，而且依定義，它就是常年期的第三十四個主日。那是一個固定點，而固定點正是一段計數該綁上去的東西。
+        </p>
+        <p class="snippet-caption">替換後的版本。一行，而且它永遠不需要知道今年稍早發生過什麼。</p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼，可捲動"><code><span class="cm">// Ordinary Time after Pentecost: Lent and Easter consume a variable number of
+// weeks, so counting forward is guaranteed to drift. Christ the King is always
+// the 34th Sunday in Ordinary Time, so count backwards from there.</span>
+if (day &gt; pentecost &amp;&amp; day &lt; adventStart) {
+    return `Minggu Biasa ${34 - weeksBetween(day, getChristTheKing(year))}`;
+}</code></pre>
+        <p>
+          減法取代了加法，中間那些量也跟著一起消失。<code>weeksBeforeLent</code> 不再被計算，因為答案已經不依賴它了。這通常就是一個修正找對形狀、而不是打了一塊補丁的徵兆：改好的版本比壞掉的版本零件更少，而不是更多。
+        </p>
+        <p>
+          <code>weeksBetween</code> 用的是四捨五入而不是無條件捨去，這件事比看起來重要。這些運算是在訪客自己的時鐘上、以當地時間做的，而跨過日光節約時間的邊界時，相差 21 天的兩個日期，換算成毫秒只有 20 天又 23 小時。捨去會把它變成兩週，少掉一個主日。讀者所在的台灣與印尼都不實施日光節約時間，所以在這個網站真正被使用的地方，這個問題永遠不會浮現。
+        </p>
+        <p>
+          驗證用的就是那個錨本身：對 2026 到 2040 的每一年，獨立算出基督君王節的日期，再問這個函式它會把那天叫成什麼。十五年，十五次第 34 週。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The rest of the function ===================== -->
+    <section id="neighbors" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">同一個函式裡的另外四個</h2>
+        <p>
+          查核一個分支，意味著把所有分支都讀過一遍，而隔壁那幾個沒能撐過這次閱讀。這些都不精妙。它們是那種會留在檔案裡的東西，因為在它看起來能動之後，就再也沒有人打開過那個檔案。
+        </p>
+        <ol class="learnings" role="list">
+          <li><b>聖誕期的分支永遠不可能成立。</b>它拿一個十二月的日期去比對主受洗節，卻用同一個日曆年份去算主受洗節，而那是同年一月的事。每一個十二月的主日，都在一個結構上不可能通過的判斷裡失敗。</li>
+          <li><b>五旬節被標成復活期第八主日。</b>復活期只有七個主日；五旬節收尾，而且有自己的名字。範圍判斷寫成 <code>&lt;= pentecost</code>，就讓它掉了進去。</li>
+          <li><b>聖枝主日比對的是時間戳。</b>它用 <code>getTime()</code> 去跟一個午夜建構出來的日期比相等，所以任何帶著時分秒的日期，也就是每一個從 <code>new Date()</code> 衍生出來的日期，都會差上當天已經過掉的那幾個小時。</li>
+          <li><b>一年的第一個主日會變成「常年期 0」。</b>落在常年期開始之前的主日算出來是零，然後被印到頁面上，成為一個從來沒有人慶祝過的節期。</li>
+        </ol>
+        <p>
+          還有一個地方，是兩個各自寫得正確的函式彼此矛盾。<code>getLiturgicalSeason</code> 用的是固定的 1 月 6 日主顯節，而節日清單用的是多數教區實際遵行的、移到主日的日期。這兩套規則在多數年份一致，在 2029 年不一致，所以節期橫幅與節日清單會在同一頁上、在那一年、四年之後彼此打架。現在兩者呼叫同一個輔助函式。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The rest of the pass ===================== -->
+    <section id="pass" class="section">
+      <div class="container prose">
+        <h2 class="section-title">同一次閱讀還翻出了什麼</h2>
+        <p>
+          年曆是我打開這個專案的理由，但八個月來第一次認真把它讀過一遍，翻出了不少跟日期無關的東西。
+        </p>
+        <p>
+          <strong>首頁一次送出大約 38 MB。</strong>相簿直接把單眼相機的原始檔送出去，最大 6000 乘 4000 像素、每張 7.6 MB，而它們在畫面上只是高度 250 像素的縮圖，同時也是全站唯一沒有加 <code>loading="lazy"</code> 的圖片。把每張圖縮到它實際顯示的尺寸、補上 lazy 屬性與寬高讓瀏覽器先留好版位，接著全部轉成 WebP，再拿掉一個為了畫一個 Instagram 圖示而載入的 106 KB 圖示字型，抵達時的重量降到 510 KB，整頁捲完是 957 KB。
+        </p>
+        <p>
+          <strong>十頁裡有九頁，每一次捲動都會拋錯。</strong>捲動處理函式無條件取用回到頁首的按鈕，而那個元素只存在於首頁。<strong>導覽的子選單只認 hover</strong>，所以在手機上根本沒辦法從導覽列走到流程頁，而手機正是大多數的讀者。<strong>漢堡按鈕是一個 <code>&lt;div&gt;</code></strong>，鍵盤到不了，而收起來的行動選單雖然在畫面外，卻仍然留在焦點順序裡。<strong>捲動指示拿一個純片段去比對完整路徑</strong>，於是它把 active 類別移掉之後，再也沒有放回去。
+        </p>
+        <p>
+          <strong>主題會閃一下紫色。</strong><code>:root</code> 裡的預設顏色是將臨期的紫，而真正的禮儀顏色是在 <code>DOMContentLoaded</code> 時才套上去的，所以每個訪客都會先看到一格紫色，然後畫面才重繪成當季實際的顏色。把年曆模組放進 head 載入、並在解析階段就呼叫上色函式，第一格畫面就是對的顏色。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Limits ===================== -->
+    <section id="limits" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">它仍然做不到的事</h2>
+        <p>
+          這份年曆算的是時序週期，也就是節期與主日。它沒有實作聖人週期，所以一個等級高於主日的聖人紀念日不會把主日擠掉；它也不知道印尼的全國性年曆，那裡有些節日會由當地主教團移到最近的主日。就這一頁宣稱要告訴你的那四件事而言，它是正確的；想要一份完整禮儀指南的人，頁面會把他們指出去，這也是為什麼那一頁連到 GCatholic，而不是假裝可以取代它。
+        </p>
+        <p>
+          專案裡仍然沒有測試。這裡描述的驗證，是一個把兩個版本並排載入的用完即丟 Node 腳本，它活在我的 shell 歷史紀錄裡，而不在專案裡。把它提交成測試才是對的做法，而我沒有做，這表示下一個碰這個函式的人（包括我自己）拿到的，正是當初讓那個錯誤溜過去的、同樣的沒有安全網。
+        </p>
+        <p>
+          WebP 轉檔沒有留 JPEG 後備，所以圖片需要 2020 年的 Safari 14 或更新的版本。另外有兩張職務卡的照片仍然沒有放進專案裡，透過 <code>onerror</code> 退回 Unsplash 的圖庫照片，那是一個待得太久的暫代品。
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section">
+      <div class="container prose">
+        <h2 class="section-title">關鍵工程收穫</h2>
+        <ol class="learnings" role="list">
+          <li><b>把計數錨在固定的那一端。</b>常年期的起點會變、終點有定義，所以裡面每一段計數都該從終點往回跑。往前的版本需要兩個中間量，還算錯了；往回的版本一個都不需要，而且不可能算錯。</li>
+          <li><b>看起來合理的輸出最難檢查。</b>當機會自己現形，空白頁也會自己現形。「常年期第二十二主日」什麼都不會現形，於是它在首頁上待了八個月。讀者沒辦法用眼睛驗證的輸出，正是最需要測試的輸出，也正是最不可能拿到測試的輸出。</li>
+          <li><b>抽查一條規則，確認的是你挑的那一年，不是那條規則。</b>2035 年兩種算法答案相同。要是我當初查的是那一年，我會很滿意地把分頁關掉。這次查核之所以有意義，只因為它跑遍了十五年區間裡的每一個主日，而不是我會挑的那一個。</li>
+          <li><b>兩個正確的函式，仍然可能互相矛盾。</b>固定的主顯節與移到主日的主顯節都是站得住腳的讀法，每個函式就它自己而言都是對的。缺陷是它們之間的不一致，而它會在 2029 年、在同一頁上浮出來。共用的規則該放在同一個輔助函式裡，即使複製一份看起來人畜無害。</li>
+          <li><b>讀自己的舊程式，和寫它是兩件不同的事。</b>那個在九個頁面上拋錯的捲動處理函式、那個把所有手機擋在門外的 hover 選單、那個第一格畫面的紫色閃爍，全都已經上線並且被將就著用了。找出它們一個都不需要技巧，需要的是有人坐下來真的把檔案讀一遍，而那和當初寫過它並不是同一件事。</li>
+        </ol>
+        <p class="entry-more">
+          <a href="https://kitaliturgi.vercel.app" target="_blank" rel="noopener">查看線上網站 →</a>
+        </p>
+        <p class="entry-more">
+          <a href="https://github.com/Zocke07/kitaliturgi" target="_blank" rel="noopener">在 GitHub 上查看原始碼 →</a>
+        </p>
+        <p class="entry-more"><a href="/zh/#projects">← 回到作品集</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> 黃家輝 · 以純 HTML 與 CSS 打造，部署於 GitHub Pages。</p>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="回到頁首">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="/assets/js/main.js?v=6fbcfca2"></script>
+</body>
+</html>

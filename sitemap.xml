@@ -14,6 +14,12 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-capstone"/>
   </url>
   <url>
+    <loc>https://zocke07.github.io/case-study-kitaliturgi</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-kitaliturgi"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-kitaliturgi"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-kitaliturgi"/>
+  </url>
+  <url>
     <loc>https://zocke07.github.io/case-study-lmad</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-lmad"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-lmad"/>
@@ -72,6 +78,12 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-capstone"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-capstone"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-capstone"/>
+  </url>
+  <url>
+    <loc>https://zocke07.github.io/zh/case-study-kitaliturgi</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-kitaliturgi"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-kitaliturgi"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-kitaliturgi"/>
   </url>
   <url>
     <loc>https://zocke07.github.io/zh/case-study-lmad</loc>

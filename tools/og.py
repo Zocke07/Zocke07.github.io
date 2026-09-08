@@ -177,7 +177,9 @@ def render(page, out_png):
 ZH_PAGES = sorted(p.name for p in ROOT.glob("zh/*.html"))
 SLUG = {
     "index.html": "home", "case-study-ai-products.html": "ai",
-    "case-study-capstone.html": "capstone", "case-study-lmad.html": "lmad",
+    "case-study-capstone.html": "capstone",
+    "case-study-kitaliturgi.html": "kitaliturgi",
+    "case-study-lmad.html": "lmad",
     "case-study-makerspace.html": "makerspace",
     "case-study-microprocessors.html": "micro",
     "case-study-sky-scraper-escape.html": "sky",
