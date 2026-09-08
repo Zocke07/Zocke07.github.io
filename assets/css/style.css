@@ -515,6 +515,24 @@ a:hover { text-decoration: underline; }
   gap: 1.5rem;
 }
 
+/* An odd count leaves the last card alone on its row, pinned left with an empty
+   column beside it. It spans the row instead and centres, but keeps one
+   column's width: a card's size is what says how much the work matters, and
+   being last in an odd list says nothing. calc(50% - half the gap) resolves to
+   one column at any container width, so there is no second number to keep in
+   sync with the track above.
+   Scoped to the two-column range. Two 22rem tracks plus the 1.5rem gap need
+   45.5rem of content, and .container adds 1.25rem of padding either side, so
+   the second column appears at 48rem. Below that every card is already alone on
+   its row, where full width is right. */
+@media (min-width: 48rem) {
+  .card-grid > .card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc(50% - 0.75rem);
+  }
+}
+
 .card {
   /* Column layout so the tail can be pinned to the bottom: the grid stretches
      every card in a row to the tallest, and without this the slack lands as
@@ -534,9 +552,9 @@ a:hover { text-decoration: underline; }
 .card h4 { margin-bottom: 0.25rem; }
 
 /* Tiers inside Work & Research. Nine cards at one weight made a thesis and an
-   OOP lab game the same object on screen, and an odd count needed a full-width
-   card to stop the grid ending on a hole. Groups of two remove both problems:
-   the grid always fills its rows, and the section reads as a ranked shortlist.
+   OOP lab game the same object on screen; sorting them into a ranked shortlist
+   is what tells them apart. Group size is free, because the rule above centres
+   a lone last card rather than leaving the grid to end on a hole.
    Subordinate to the accented .section-title above, so the same treatment as
    .skill-group h3 rather than a second accent bar. */
 .group-title {
