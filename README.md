@@ -121,7 +121,7 @@ full card. Coursework drops to `<li class="brief">`: linked title, muted meta,
 one sentence, no card surface and no tags.
 
 So a new project goes into the group that matches how it was made. Group size
-is free. A group with an odd number of cards centres its last card across the
+is free. A group with an odd number of cards centers its last card across the
 row at one column's width, so the grid never ends on a hole. That rule replaced
 `.card.is-wide`, which fixed the same hole by making one card twice the size of
 its neighbours, and so let parity rather than the work decide which card looked
