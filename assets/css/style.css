@@ -1352,6 +1352,79 @@ a:hover { text-decoration: underline; }
   /* At this width a listing is mostly off-screen, and a horizontal scroll per
      listing is worse than a wrapped line. */
   .snippet code { white-space: pre-wrap; overflow-wrap: anywhere; }
+
+  /* The clips are portrait phone recordings at 566/1244, so in one column they
+     are taller than they are wide by a factor of two and a fifth: 736px of
+     video for 335px of column on a small phone, against a 667px viewport. The
+     recording was therefore never visible all at once on the device the whole
+     section is about, and four of them ran past 3,000px of scrolling.
+
+     Three quarters of the screen for the video leaves the caption room to sit
+     under it, so a clip and what it says arrive together. The cap is on the
+     frame's width because the height follows from it: capping the height
+     instead would letterbox, since the video is object-fit: contain.
+
+     svh, so the measure is the viewport the reader has while the browser chrome
+     is showing rather than the taller one they get after it scrolls away; the
+     vh line above is the fallback where svh is not understood. The frame keeps
+     its left edge rather than centring, so it still lines up with the caption's
+     rule.
+
+     Phone only. The tablet and desktop layouts put two clips on a row and both
+     already fit, and shrinking them there would cost detail in the app UI the
+     recording exists to show. */
+  .clip-frame {
+    max-width: calc(75vh * 566 / 1244);
+    max-width: calc(75svh * 566 / 1244);
+  }
+}
+
+/* ---------- 12b. Touch ---------- */
+/* Both blocks answer the pointer rather than the viewport width, so a touch
+   laptop gets them and a narrow desktop window does not. Neither changes
+   anything a mouse user sees. */
+
+/* A finger is not a cursor. These links measure 18 and 25 CSS pixels tall,
+   which is comfortable under a mouse and tight under a thumb; WCAG 2.2 SC 2.5.8
+   asks for 24. Padding rather than line-height or font-size, because the target
+   has to grow without the type growing with it.
+
+   Every rule here grows the box, never just the hit area. Padding on an inline
+   anchor is hit-tested but does not move anything, so two stacked links quietly
+   grew into each other: on the case-study pages the three tail links sit
+   0.6rem apart and overlapped by 8.9px, which is worse than the small target it
+   was fixing, because the wrong link answers the tap. */
+@media (pointer: coarse) {
+  /* Flex items already, so padding is layout and the row gap keeps them apart. */
+  .hero-cv a,
+  .card-actions a { padding-block: 0.5rem; }
+
+  /* A paragraph or a heading whose entire content is one link is a button in
+     all but name, so it can be blockified and take the padding as layout.
+     :only-child is the whole point: it leaves out a link inside a sentence,
+     which WCAG exempts anyway, and which on the microprocessors page would
+     have grown into the line above it by 50px. */
+  .entry-more:not(.card-actions) > a:only-child,
+  .brief h4 > a:only-child {
+    display: inline-block;
+    padding-block: 0.5rem;
+  }
+}
+
+/* Nothing here can be hovered, but a tap still latches :hover until the next
+   one lands somewhere else. The colour changes are left latched, because they
+   read as a tap flash and settle on their own. What is undone is everything
+   that moves or raises: a card left sitting 4px above its neighbours after a
+   tap reads as a layout bug rather than as feedback, and the theme toggle
+   stayed rotated 20 degrees. */
+@media (hover: none) {
+  .btn:hover,
+  .card:hover,
+  .tags li:has(a):hover,
+  .theme-toggle:hover { transform: none; }
+  .btn:hover { box-shadow: none; }
+  .card:hover { box-shadow: var(--shadow); }
+  .to-top:hover { box-shadow: var(--shadow); }
 }
 
 /* ---------- 13. Reduced motion ---------- */
