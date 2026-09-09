@@ -88,7 +88,7 @@
           <li>重新驗證 <strong>15 年</strong>，2026 到 2040</li>
         </ul>
         <aside class="source-note">
-          <strong>範圍，以及數字的來源：</strong>這是一個手寫 HTML、CSS 與三個 JavaScript 檔案的靜態網站，部署在 Vercel 上。這一頁的數字不是抄自提交訊息。我在 Node 裡把 DOM 補成假的，將修正前與修正後的兩份模組並排載入，對 2026 到 2040 之間的每一個主日各跑一次再比對差異；查核腳本與它印出來的數字，下面照原樣引用。<a href="https://kitaliturgi.vercel.app" target="_blank" rel="noopener">網站是上線的</a>，<a href="https://github.com/Zocke07/kitaliturgi" target="_blank" rel="noopener">原始碼也是公開的</a>。兩者都是印尼文，因為那是它的讀者在用的語言。這一頁引用的程式碼註解，為了方便閱讀而翻成英文；程式碼本身，包括程式實際輸出的每一個字串，都維持原樣。
+          <strong>範圍，以及數字的來源：</strong>這是一個手寫 HTML、CSS 與三個 JavaScript 檔案的靜態網站，部署在 Vercel 上。這一頁的數字不是抄自提交訊息。我在 Node 裡把 DOM 補成假的，將修正前與修正後的兩份模組並排載入，對 2026 到 2040 之間的每一個主日各跑一次再比對差異；查核腳本與它印出來的數字，下面照原樣引用。<a href="https://kitaliturgi.vercel.app" target="_blank" rel="noopener">網站是上線的</a>，<a href="https://github.com/Zocke07/kitaliturgi" target="_blank" rel="noopener">原始碼也是公開的</a>。兩者都是印尼文，因為那是它的讀者在用的語言。程式碼註解，以及查核腳本印出來的節期名稱，為了方便閱讀而翻譯過；照原樣引用的原始碼，包括裡面的字串常值，則沒有動，讀起來跟連結那份檔案一模一樣，「Minggu Biasa」也照樣留著。
         </aside>
       </div>
     </section>
@@ -219,15 +219,15 @@ const weekNumber = weeksBeforeLent + weekAfterPentecost + 1;</code></pre>
         <p>
           在動手改之前，我想先知道到底有多糟，而那意味著把兩個版本都跑起來，而不是坐在那裡推理。要在 Node 裡載入一個瀏覽器模組，得先補一個假的 <code>document</code>；補完之後，兩份實作就可以對著任意一段日期並排呼叫。
         </p>
-        <p class="snippet-caption">查核範圍取訪客實際上可能會看的那六年。</p>
+        <p class="snippet-caption">查核範圍取訪客實際上可能會看的那六年。函式回傳的是印尼文「Minggu Biasa」，也就是常年期；下面已經換成中文，讓這段輸出不用先懂印尼文才看得懂。</p>
         <pre class="snippet" tabindex="0" role="group" aria-label="終端機輸出，可捲動"><code><span class="cm">$ node verify.js</span>
 Post-Pentecost Ordinary Time Sundays 2026-2031: 102 of 154 differ
 
 <span class="cm">$ node verify.js --sample</span>
-2026-05-30  old=Minggu Biasa 8   new=Minggu Biasa 9
-2026-06-06  old=Minggu Biasa 9   new=Minggu Biasa 10
-2026-06-13  old=Minggu Biasa 10  new=Minggu Biasa 11
-2026-09-06  old=Minggu Biasa 22  new=Minggu Biasa 23</code></pre>
+2026-05-30  old=常年期第 8 主日   new=常年期第 9 主日
+2026-06-06  old=常年期第 9 主日   new=常年期第 10 主日
+2026-06-13  old=常年期第 10 主日  new=常年期第 11 主日
+2026-09-06  old=常年期第 22 主日  new=常年期第 23 主日</code></pre>
         <p>
           三分之二，而且這些錯誤不是零星的雜訊。一個年份一旦漂掉，那一年剩下的時間就一直是漂的，所以九月來看的讀者，拿到的是一個從五月起每一週都錯的數字。最後那一行就是這件事的起點：2026 年 9 月 6 日是常年期第二十三主日，而首頁把它叫成第二十二主日。
         </p>
@@ -244,7 +244,7 @@ Post-Pentecost Ordinary Time Sundays 2026-2031: 102 of 154 differ
         <p>
           基督君王節並不像復活節那樣是可動節日。它的定義是將臨期前的最後一個主日，將臨期的定義是聖誕節前四個主日，而聖誕節不會動。所以它的位置完全不需要參照復活節就能決定，而且依定義，它就是常年期的第三十四個主日。那是一個固定點，而固定點正是一段計數該綁上去的東西。
         </p>
-        <p class="snippet-caption">替換後的版本。一行，而且它永遠不需要知道今年稍早發生過什麼。</p>
+        <p class="snippet-caption">替換後的版本。一行，而且它永遠不需要知道今年稍早發生過什麼。照原樣引用，所以它組出來的字串仍然是「Minggu Biasa」，也就是印尼文的常年期。</p>
         <pre class="snippet" tabindex="0" role="group" aria-label="程式碼，可捲動"><code><span class="cm">// Ordinary Time after Pentecost: Lent and Easter consume a variable number of
 // weeks, so counting forward is guaranteed to drift. Christ the King is always
 // the 34th Sunday in Ordinary Time, so count backwards from there.</span>
