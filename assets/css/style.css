@@ -319,6 +319,22 @@ a:hover { text-decoration: underline; }
   margin-bottom: 1.75rem;
 }
 
+/* The hero's evidence row. It borrows .facts from the case-study heroes so a
+   number is drawn the same way wherever it appears, and changes only the track
+   width: .facts sits in a full 46rem prose column, this one shares its row with
+   the portrait, and at 14rem the three facts wrap to two lines with one orphan.
+   Doubled specificity because .facts is declared later, in section 11, and
+   would otherwise win on source order. */
+.hero .hero-facts {
+  grid-template-columns: repeat(auto-fit, minmax(min(11.5rem, 100%), 1fr));
+  gap: 0.5rem 1.5rem;
+  /* Grid items, so this does not collapse into the blurb's own 1.75rem below
+     it; the two add up and 0.75rem is what leaves the band the same air the
+     CV link had when it followed the blurb directly. */
+  margin-top: 0.75rem;
+  max-width: 42rem;
+}
+
 /* The contact action row. The <address> holds only the ways to reach me, so the
    CV sits beside it rather than inside it: a document is not contact
    information. The group keeps both halves on one wrapping line and cancels the
@@ -326,12 +342,20 @@ a:hover { text-decoration: underline; }
 .action-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; }
 .action-group { display: flex; gap: 0.75rem; flex-wrap: wrap; font-style: normal; }
 
-/* The CV in the hero. A filled button here would be the loudest thing on a page
-   whose voice is deliberately quiet, and it had nothing to pair with, so it sat
-   stranded under the blurb. A link reads as part of the prose instead. This one
-   opens the PDF rather than saving it, so a reader can look at the CV without
+/* The two hero actions. Filled buttons here would be the loudest thing on a
+   page whose voice is deliberately quiet, so both stay links and read as part
+   of the prose. The first opens the work, which is what the fold is for: before
+   it existed the CV sat alone under the blurb and a reader who wanted to see
+   something built had to scroll past four sections to find it. The second opens
+   the PDF rather than saving it, so a reader can look at the CV without
    committing a file to disk; the contact section carries the download. */
-.hero-cv { margin-top: 1.5rem; font-size: 0.95rem; }
+.hero-cv {
+  margin-top: 1.5rem;
+  font-size: 0.95rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+}
 .hero-cv a {
   display: inline-flex;
   align-items: center;
@@ -481,8 +505,9 @@ a:hover { text-decoration: underline; }
 }
 
 .entry-tags { margin-top: 0.85rem; }
-/* auto absorbs the stretch; the padding keeps the gap when there is none to absorb. */
-.card .entry-tags { margin-top: auto; padding-top: 0.85rem; }
+/* The cards no longer stretch to their row (see .card-grid), so there is no
+   slack for `margin-top: auto` to absorb and the padding alone sets the gap. */
+.card .entry-tags { padding-top: 0.85rem; }
 .entry-tags li {
   font-size: 0.8rem;
   padding: 0.2rem 0.7rem;
@@ -506,6 +531,11 @@ a:hover { text-decoration: underline; }
   font-weight: 600;
 }
 
+/* A card's tail: the case study first, then the source where the source is
+   public. Both sit on one wrapping row rather than two stacked lines, so a card
+   with a repository is not visibly taller than one held back by an NDA. */
+.card-actions { display: flex; flex-wrap: wrap; gap: 0.3rem 1.1rem; }
+
 /* ---------- 7. Cards (projects) ---------- */
 .card-grid {
   display: grid;
@@ -513,6 +543,11 @@ a:hover { text-decoration: underline; }
      forcing horizontal scroll. */
   grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
   gap: 1.5rem;
+  /* Each card is as tall as what is in it. Stretching every card in a row to
+     the tallest put the whole difference between two bodies into one hole above
+     the shorter card's tags, which measured 99px on the research pair and read
+     as a missing paragraph rather than as spacing. */
+  align-items: start;
 }
 
 /* An odd count leaves the last card alone on its row, pinned left with an empty
@@ -1192,6 +1227,74 @@ a:hover { text-decoration: underline; }
 .figure-doc:focus-visible,
 .figure.is-scroll:focus-visible { outline-offset: -2px; }
 
+/* ---------- 11c. Case-study contents ---------- */
+/* main.js builds this from the sections of the page it is on; the note there
+   says why it is not markup. Hidden by default and drawn only where there is
+   room for it, so the rules below are the whole component and the default is
+   one line rather than a media query that has to undo four properties. */
+.case-toc { display: none; }
+
+@media (min-width: 75rem) {
+  .case-toc {
+    display: block;
+    position: fixed;
+    /* Clear of the sticky header, which is 3.5rem plus its border. */
+    top: 7rem;
+    /* 18.5rem + 11.5rem is exactly the container's half-width, so the panel's
+       right edge lands on the container's right edge at every viewport, and the
+       gap to the prose column is the remainder: that column ends at
+       50% - 30rem + 1.25rem + 46rem, which leaves 1.25rem of gutter. The 75rem
+       gate above is what guarantees the strip is there at all. */
+    left: calc(50% + 18.5rem);
+    width: 11.5rem;
+    /* A nine-section page still fits; anything taller scrolls in place rather
+       than running off the bottom of the viewport. */
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
+    /* Under the header and the back-to-top button, both of which it sits
+       clear of anyway. */
+    z-index: 30;
+  }
+
+  .case-toc-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 0.6rem;
+  }
+
+  /* The same rule down the left that .brief and .limits hang off, so the
+     contents read as one more quiet list rather than a control panel. */
+  .case-toc ul {
+    list-style: none;
+    display: grid;
+    gap: 0.1rem;
+    padding: 0;
+    border-left: 2px solid var(--border);
+  }
+
+  /* The negative margin lets each entry's own border sit exactly on the rule
+     above, so the accent on the current section replaces that segment instead
+     of drawing a second line beside it. */
+  .case-toc a {
+    display: block;
+    padding: 0.3rem 0 0.3rem 0.75rem;
+    margin-left: -2px;
+    border-left: 2px solid transparent;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .case-toc a:hover { color: var(--accent); text-decoration: none; }
+  .case-toc a.active {
+    color: var(--accent);
+    border-left-color: var(--accent);
+    font-weight: 600;
+  }
+}
+
 /* ---------- 12. Responsive ---------- */
 /* The nav collapses on its own breakpoint, wider than the layout one below:
    six items plus the brand and the two toggles need about 765px, and the row
@@ -1290,6 +1393,7 @@ a:hover { text-decoration: underline; }
   .clips-toggle,
   .lang-toggle,
   .theme-toggle,
+  .case-toc,
   .nav-toggle { display: none !important; }
 
   /* Nothing animates, and nothing stays hidden waiting for a scroll that will

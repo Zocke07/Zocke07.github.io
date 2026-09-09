@@ -93,7 +93,7 @@
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=7ef7e7da" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=91333f43" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -136,7 +136,13 @@
         <p class="hero-blurb">
           國立臺北科技大學資訊工程碩士，碩士階段研究聯邦式學習在對抗情境下的安全性，並曾在台灣大哥大與 Sunbird Software 累積自動化測試、API 測試與技術專案管理的第一線實務經驗。
         </p>
+        <ul class="facts hero-facts" role="list">
+          <li><strong>97.5%</strong> 30% 毒化攻擊下的 DDoS 類別 F&#8321;</li>
+          <li><strong>730+</strong> 組端對端測試同時對著一台伺服器執行</li>
+          <li><strong>2.5 年</strong> 橫跨兩個團隊的業界工程經驗</li>
+        </ul>
         <p class="hero-cv">
+          <a href="#projects">閱讀案例研究 →</a>
           <a href="/assets/cv/rivan-wong-cv.pdf" target="_blank" rel="noopener"><svg class="cv-glyph" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>檢視履歷</a>
         </p>
         <img class="hero-portrait" src="/assets/img/portrait-2026.jpg" width="560" height="560" fetchpriority="high"
@@ -265,24 +271,29 @@
             <h4>說得出自己何時失效的防禦</h4>
             <p class="card-meta">碩士論文 · 聯邦式學習安全</p>
             <p class="card-body">
-              聯邦式學習把原始資料留在裝置上，所以伺服器分不出一筆模型更新是遭到毒化，還是誠實的。我的論文就是 L-MAD，一套兩階段的防禦機制：一層一層地拒斥被汙染的層，而不是丟掉整個用戶端。在 30% 毒化攻擊下，它的 DDoS 類別 F&#8321; 維持在 97.5%，領先六個我自己重新實作的基準方法 25 個百分點以上。最後一章則是我試著推翻自己最弱的主張。
+              聯邦式學習把原始資料留在裝置上，所以伺服器分不出一筆模型更新是遭到毒化，還是誠實的。L-MAD 一層一層地拒斥被汙染的層，而不是丟掉整個用戶端：在 30% 毒化攻擊下，DDoS 類別 F&#8321; 維持在 97.5%，領先六個我自己重新實作的基準方法 25 個百分點。
             </p>
             <ul class="tags entry-tags" role="list">
               <li>PyTorch</li><li>Flower</li><li>聯邦式學習</li><li>對抗式機器學習</li><li>Python</li>
             </ul>
-            <p class="entry-more"><a href="/zh/case-study-lmad">會指出自己何處失效的防禦：案例研究 →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/zh/case-study-lmad" aria-label="閱讀案例研究：會指出自己何處失效的防禦">閱讀案例研究 →</a>
+            </p>
           </article>
 
           <article class="card">
             <h4 lang="en">Test Automation Best Practices: A Case Study Analysis</h4>
             <p class="card-meta">畢業專題 · 產學合作研究</p>
             <p class="card-body">
-              我的畢業專題，和兩位隊友在 Sunbird 產學合作的第一線寫成。它記錄了一個商業自動化測試團隊實際的運作方式：動手寫程式前先與產品經理確認測試步驟，然後是 CI 關卡的十次正常網速加五次慢速節流。它也拿團隊四年份的測試案例統計，解釋產出為什麼下滑。實際程式碼受保密協議保護，所以展示品是我在一個可以公開的標的上從零打造的。
+              我的畢業專題，和兩位隊友在 Sunbird 產學合作的第一線寫成：一個商業自動化測試團隊實際的運作方式，從動手寫程式前先與產品經理確認測試步驟，到 CI 關卡的十次正常網速加五次慢速節流。它也拿團隊四年份的測試案例統計，解釋產出為什麼下滑。
             </p>
             <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>研究</li>
             </ul>
-            <p class="entry-more"><a href="/zh/case-study-capstone">流程沒有問題，產出還是掉了：案例研究 →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/zh/case-study-capstone" aria-label="閱讀案例研究：流程沒有問題，產出還是掉了">閱讀案例研究 →</a>
+              <a href="https://github.com/Zocke07/Automation-Demonstration" target="_blank" rel="noopener" aria-label="畢業專題公開展示品的原始碼（GitHub）">程式碼 →</a>
+            </p>
           </article>
         </div>
 
@@ -292,23 +303,27 @@
             <h4>730 組以上的測試如何同時執行而不互相干擾</h4>
             <p class="card-meta">案例研究 · 測試基礎架構</p>
             <p class="card-body">
-              數百個瀏覽器測試同時對著同一台線上伺服器執行，而且彼此不能互相干擾。這就是我在 Sunbird 工作背後的品質平台。在那裡，測試不穩定是工程問題而不是運氣問題：每一次「隨機」失敗都有它的成因，所以沒有人需要爭論一次紅燈是不是真的。每一次合併都要通過同一道關卡：lint 零警告、連續十次乾淨執行，再加上五次限制網路頻寬的執行。
+              數百個瀏覽器測試同時對著同一台線上伺服器執行，而且彼此不能互相干擾。在那裡，測試不穩定是工程問題而不是運氣問題：每一次「隨機」失敗都有它的成因，所以沒有人需要爭論一次紅燈是不是真的。
             </p>
             <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Selenium</li><li>平行測試</li><li>CI</li>
             </ul>
-            <p class="entry-more"><a href="/zh/case-study-test-automation">730 多個測試如何同時執行：案例研究 →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/zh/case-study-test-automation" aria-label="閱讀案例研究：730 多個測試如何同時執行">閱讀案例研究 →</a>
+            </p>
           </article>
           <article class="card">
             <h4>與六位實習生一起交付兩項 AI 產品</h4>
             <p class="card-meta">案例研究 · 專案管理與 QA</p>
             <p class="card-body">
-              兩項 AI 產品、一個分散在兩個國家的實習生團隊，而且沒有配置專職 QA 工程師。我們建立了剛好足夠的流程讓大家朝同一個方向前進，也建立了剛好足夠的驗證，來分辨真正完成的程式碼和只是看起來完成的程式碼。真正值得攔下來的缺陷，都是那些能順利編譯、在 diff 中看起來也正確的問題：被默默丟掉的排版格式，以及被截斷的模型輸出。每一項變更最後都要通過一道可以說不的簽核，而每一次我們決定接受缺口，也都會寫下來。
+              兩項 AI 產品、一個分散在兩個國家的實習生團隊，而且沒有配置專職 QA 工程師。真正值得攔下來的缺陷，都是那些能順利編譯、在 diff 中看起來也正確的問題：被默默丟掉的排版格式，以及被截斷的模型輸出。
             </p>
             <ul class="tags entry-tags" role="list">
               <li>TypeScript</li><li>LLM API</li><li>UAT</li><li>Jira</li>
             </ul>
-            <p class="entry-more"><a href="/zh/case-study-ai-products">與六位實習生交付兩項 AI 產品：案例研究 →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/zh/case-study-ai-products" aria-label="閱讀案例研究：與六位實習生交付兩項 AI 產品">閱讀案例研究 →</a>
+            </p>
           </article>
         </div>
 
@@ -318,34 +333,43 @@
             <h4>資料庫可以說不的地方</h4>
             <p class="card-meta">PostgreSQL · 資料庫設計</p>
             <p class="card-body">
-              校園創客空間靠一張紙本登記表把 3D 印表機和雷射切割機借出去，而那張表擋不住重複預約、看不出借用的人有沒有受過訓練，機器晚還了也留不下紀錄。我用一個 PostgreSQL schema、一組 REST API 和一個 React 前端取代了它，而整個專案收斂成一個問題：哪些規則資料庫可以自己擋下來，碰不到的那些又該怎麼辦？把函數相依從真實資料反推、而不是從 schema 讀出來，抓到了三個 schema 不可能顯示的缺陷。
+              校園創客空間靠一張紙本登記表把 3D 印表機和雷射切割機借出去，而那張表擋不住重複預約。我用一個 PostgreSQL schema、一組 REST API 和一個 React 前端取代了它，而整個專案收斂成一個問題：哪些規則資料庫可以自己擋下來，碰不到的那些又該怎麼辦？
             </p>
             <ul class="tags entry-tags" role="list">
               <li>PostgreSQL</li><li>SQL</li><li>資料庫設計</li><li>Node.js</li><li>React</li>
             </ul>
-            <p class="entry-more"><a href="/zh/case-study-makerspace">資料庫可以說不的地方：案例研究 →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/zh/case-study-makerspace" aria-label="閱讀案例研究：資料庫可以說不的地方">閱讀案例研究 →</a>
+            </p>
           </article>
           <article class="card">
             <h4>一個短連結，兩次寫入</h4>
             <p class="card-meta">Spring Boot · MySQL</p>
             <p class="card-body">
-              短網址服務是最小的、卻仍然得回答一個真實設計問題的服務：短碼從哪裡來？把網址拿去雜湊，等於自己請來了碰撞和一整套解決碰撞的機制，所以這一套改成編碼 MySQL 為那一列發出的 id，於是碰撞在結構上不可能發生，而建立一個連結變成兩句 SQL 的事。最值得讀的一段，是 Spring 的一個便利功能悄悄蓋掉了 schema 早就宣告好的欄位預設值。
+              短網址服務是最小的、卻仍然得回答一個真實設計問題的服務：短碼從哪裡來？把網址拿去雜湊等於自己請來了碰撞，所以這一套改成編碼 MySQL 為那一列發出的 id，於是碰撞在結構上不可能發生，而建立一個連結變成兩句 SQL 的事。
             </p>
             <ul class="tags entry-tags" role="list">
               <li>Java</li><li>Spring Boot</li><li>MySQL</li><li>SQL</li><li>JUnit</li>
             </ul>
-            <p class="entry-more"><a href="/zh/case-study-url-shortener">一個短連結，兩次寫入：案例研究 →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/zh/case-study-url-shortener" aria-label="閱讀案例研究：一個短連結，兩次寫入">閱讀案例研究 →</a>
+              <a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener" aria-label="短網址服務的原始碼（GitHub）">程式碼 →</a>
+            </p>
           </article>
           <article class="card">
             <h4>從固定的那一端往回數</h4>
             <p class="card-meta">JavaScript · 日期運算</p>
             <p class="card-body">
-              一個印尼裔天主教團體在台灣為輔祭與讀經員做的指引網站，它的年曆頁從單一個算出來的日期，推導出節期、禮儀顏色與主日的正式名稱，背後沒有資料檔，也沒有 API。常年期的週數用往前累加的方式算，看起來明顯是對的，卻會漂移，因為四旬期與復活期佔掉的週數並不固定：154 個主日裡有 102 個算錯了。基督君王節永遠是第 34 週，所以計數該錨在年末，而不是年初。
+              一個印尼裔天主教團體在台灣為輔祭與讀經員做的指引網站，它的年曆頁從單一個算出來的日期，推導出節期、禮儀顏色與主日的正式名稱，背後沒有資料檔，也沒有 API。常年期的週數用往前累加的方式算會漂移，因為四旬期與復活期佔掉的週數並不固定：154 個主日裡有 102 個算錯了。
             </p>
             <ul class="tags entry-tags" role="list">
               <li>JavaScript</li><li>HTML</li><li>CSS</li><li>網頁效能</li><li>無障礙</li>
             </ul>
-            <p class="entry-more"><a href="/zh/case-study-kitaliturgi">從固定的那一端往回數：案例研究 →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/zh/case-study-kitaliturgi" aria-label="閱讀案例研究：從固定的那一端往回數">閱讀案例研究 →</a>
+              <a href="https://kitaliturgi.vercel.app" target="_blank" rel="noopener" aria-label="禮儀指引網站，線上版">線上網站 →</a>
+              <a href="https://github.com/Zocke07/kitaliturgi" target="_blank" rel="noopener" aria-label="禮儀指引網站的原始碼（GitHub）">程式碼 →</a>
+            </p>
           </article>
         </div>
 
@@ -437,6 +461,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=6fbcfca2"></script>
+  <script src="/assets/js/main.js?v=8d271850"></script>
 </body>
 </html>

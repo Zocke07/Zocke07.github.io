@@ -93,7 +93,7 @@
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=7ef7e7da" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=91333f43" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -139,7 +139,13 @@
           automation, API testing, and technical project management at Taiwan Mobile and
           Sunbird Software.
         </p>
+        <ul class="facts hero-facts" role="list">
+          <li><strong>97.5%</strong> DDoS-class F&#8321; held under a 30% poisoning attack</li>
+          <li><strong>730+</strong> end-to-end tests running at once against one server</li>
+          <li><strong>2.5 years</strong> of industry engineering across two teams</li>
+        </ul>
         <p class="hero-cv">
+          <a href="#projects">Read the case studies →</a>
           <a href="/assets/cv/rivan-wong-cv.pdf" target="_blank" rel="noopener"><svg class="cv-glyph" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>View CV</a>
         </p>
         <img class="hero-portrait" src="/assets/img/portrait-2026.jpg" width="560" height="560" fetchpriority="high"
@@ -289,16 +295,16 @@
             <p class="card-meta">Master's Thesis · Federated Learning Security</p>
             <p class="card-body">
               Federated learning keeps raw data on the device, so the server cannot tell a
-              poisoned model update from an honest one. My thesis is L-MAD, a two-stage
-              defense that rejects corrupted layers one at a time instead of discarding the
-              whole client. It holds 97.5% DDoS-class F&#8321; under a 30% poisoning attack,
-              more than 25 points clear of six baselines I reimplemented. The last chapter
-              is where I try to prove my own weakest claim wrong.
+              poisoned update from an honest one. L-MAD rejects corrupted layers one at a
+              time instead of discarding the whole client: 97.5% DDoS-class F&#8321; under a
+              30% poisoning attack, 25 points clear of six baselines I reimplemented.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>PyTorch</li><li>Flower</li><li>Federated Learning</li><li>Adversarial ML</li><li>Python</li>
             </ul>
-            <p class="entry-more"><a href="/case-study-lmad">The defense that says where it breaks: a case study →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/case-study-lmad" aria-label="Read the case study: the defense that says where it breaks">Read the case study →</a>
+            </p>
           </article>
 
           <article class="card">
@@ -306,17 +312,18 @@
             <p class="card-meta">Capstone Project · Industry-Academia Research</p>
             <p class="card-body">
               My graduation capstone, written with two teammates from inside the Sunbird
-              co-op. It documents how a commercial test automation team actually works: test
-              steps confirmed with the product manager before anyone writes code, then a CI
-              gate of ten runs plus five with the network throttled. It also takes four
-              years of the team's statistics and explains why output declined. The real code
-              stays behind the NDA, so I built the exhibit from scratch on a target I could
-              publish.
+              co-op: how a commercial test automation team actually works, from test steps
+              confirmed with the product manager before anyone writes code to a CI gate of
+              ten runs plus five with the network throttled. It also takes four years of the
+              team's statistics and explains why output declined.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>Research</li>
             </ul>
-            <p class="entry-more"><a href="/case-study-capstone">The process was fine, the output still fell: a case study →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/case-study-capstone" aria-label="Read the case study: the process was fine, the output still fell">Read the case study →</a>
+              <a href="https://github.com/Zocke07/Automation-Demonstration" target="_blank" rel="noopener" aria-label="Source for the capstone's published exhibit on GitHub">Code →</a>
+            </p>
           </article>
         </div>
 
@@ -327,33 +334,32 @@
             <p class="card-meta">Case Study · Test Infrastructure</p>
             <p class="card-body">
               Hundreds of browser tests run against one live server at the same time, and
-              they have to stay out of each other's way. That is the quality platform behind
-              my work at Sunbird. Flakiness there is an engineering problem rather than bad
-              luck: every random failure has a mechanism, which is why nobody argues about
-              whether a red build is real. Every merge cleared the same gate: zero lint
-              warnings, ten clean runs, then five more with the network throttled.
+              they have to stay out of each other's way. Flakiness there is an engineering
+              problem rather than bad luck: every random failure has a mechanism, which is
+              why nobody argues about whether a red build is real.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>Robot Framework</li><li>Selenium</li><li>Parallel Testing</li><li>CI</li>
             </ul>
-            <p class="entry-more"><a href="/case-study-test-automation">How 730+ tests run at once: a case study →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/case-study-test-automation" aria-label="Read the case study: how 730+ tests run at once">Read the case study →</a>
+            </p>
           </article>
           <article class="card">
             <h4>Shipping Two AI Products With Six Interns</h4>
             <p class="card-meta">Case Study · Program Management &amp; QA</p>
             <p class="card-body">
               Two AI products, an intern team spread across two countries, and nobody
-              assigned to QA. We built enough process to keep everyone moving in the same
-              direction, and enough verification to tell finished code from code that only
-              looked finished. The defects worth catching were the ones that compiled
-              cleanly and looked right in the diff: silently dropped formatting, truncated
-              model output. Each change ended at a sign-off allowed to say no, with every
-              accepted gap written down.
+              assigned to QA. The defects worth catching were the ones that compiled cleanly
+              and looked right in the diff: silently dropped formatting, truncated model
+              output.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>TypeScript</li><li>LLM APIs</li><li>UAT</li><li>Jira</li>
             </ul>
-            <p class="entry-more"><a href="/case-study-ai-products">Shipping two AI products with six interns: a case study →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/case-study-ai-products" aria-label="Read the case study: shipping two AI products with six interns">Read the case study →</a>
+            </p>
           </article>
         </div>
 
@@ -364,50 +370,54 @@
             <p class="card-meta">PostgreSQL · Database Design</p>
             <p class="card-body">
               A campus makerspace lends out 3D printers and laser cutters on a paper sign-up
-              sheet that cannot stop a double booking, cannot tell whether either person is
-              trained, and records nothing when a machine comes back late. I replaced it with a
-              PostgreSQL schema, a REST API and a React client, and the project became one
-              question: which rules can the database refuse by itself, and what do you do about
-              the ones it cannot reach? Deriving the dependencies from real rows rather than the
-              schema caught three defects the schema could not have shown.
+              sheet that cannot stop a double booking. I replaced it with a PostgreSQL
+              schema, a REST API and a React client, and the project became one question:
+              which rules can the database refuse by itself, and what do you do about the
+              ones it cannot reach?
             </p>
             <ul class="tags entry-tags" role="list">
               <li>PostgreSQL</li><li>SQL</li><li>Database Design</li><li>Node.js</li><li>React</li>
             </ul>
-            <p class="entry-more"><a href="/case-study-makerspace">Where the database can say no: a case study →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/case-study-makerspace" aria-label="Read the case study: where the database can say no">Read the case study →</a>
+            </p>
           </article>
           <article class="card">
             <h4>Two Writes for One Short Link</h4>
             <p class="card-meta">Spring Boot · MySQL</p>
             <p class="card-body">
               A URL shortener is the smallest service that still has to answer a real design
-              question: where does the short code come from? Hashing the URL invites collisions
-              and all the machinery for resolving them, so this one encodes the id MySQL issues
-              for the row instead, which makes a collision structurally impossible and creating
-              a link a two-statement operation. The part worth reading is where a Spring
-              convenience silently overrode a column default the schema had already declared.
+              question: where does the short code come from? Hashing the URL invites
+              collisions, so this one encodes the id MySQL issues for the row instead, which
+              makes a collision structurally impossible and creating a link a two-statement
+              operation.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>Java</li><li>Spring Boot</li><li>MySQL</li><li>SQL</li><li>JUnit</li>
             </ul>
-            <p class="entry-more"><a href="/case-study-url-shortener">Two writes for one short link: a case study →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/case-study-url-shortener" aria-label="Read the case study: two writes for one short link">Read the case study →</a>
+              <a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener" aria-label="Source for the URL shortener on GitHub">Code →</a>
+            </p>
           </article>
           <article class="card">
             <h4>Count Backwards From the Fixed Point</h4>
             <p class="card-meta">JavaScript · Date Arithmetic</p>
             <p class="card-body">
-              A guide for the altar servers and lectors of an Indonesian Catholic community in
-              Taiwan, whose calendar page derives the season, the liturgical color and the
-              Sunday's proper name from one computed date, with no data file and no API behind
-              it. Numbering Ordinary Time by counting forward looks obviously right and drifts,
-              because Lent and Easter consume a variable number of weeks: 102 of 154 Sundays
-              came out wrong. Christ the King is always week 34, so the count belongs at the end
-              of the year, not the start.
+              A guide for the altar servers and lectors of an Indonesian Catholic community
+              in Taiwan, whose calendar page derives the season, the liturgical color and the
+              Sunday's proper name from one computed date, with no data file and no API
+              behind it. Numbering Ordinary Time by counting forward drifts, because Lent and
+              Easter consume a variable number of weeks: 102 of 154 Sundays came out wrong.
             </p>
             <ul class="tags entry-tags" role="list">
               <li>JavaScript</li><li>HTML</li><li>CSS</li><li>Web Performance</li><li>Accessibility</li>
             </ul>
-            <p class="entry-more"><a href="/case-study-kitaliturgi">Count backwards from the fixed point: a case study →</a></p>
+            <p class="entry-more card-actions">
+              <a href="/case-study-kitaliturgi" aria-label="Read the case study: count backwards from the fixed point">Read the case study →</a>
+              <a href="https://kitaliturgi.vercel.app" target="_blank" rel="noopener" aria-label="The liturgical guide, live">Live site →</a>
+              <a href="https://github.com/Zocke07/kitaliturgi" target="_blank" rel="noopener" aria-label="Source for the liturgical guide on GitHub">Code →</a>
+            </p>
           </article>
         </div>
 
@@ -506,6 +516,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=6fbcfca2"></script>
+  <script src="/assets/js/main.js?v=8d271850"></script>
 </body>
 </html>
