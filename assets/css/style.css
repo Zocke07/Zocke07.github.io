@@ -348,13 +348,20 @@ a:hover { text-decoration: underline; }
    it existed the CV sat alone under the blurb and a reader who wanted to see
    something built had to scroll past four sections to find it. The second opens
    the PDF rather than saving it, so a reader can look at the CV without
-   committing a file to disk; the contact section carries the download. */
+   committing a file to disk; the contact section carries the download.
+
+   Stacked rather than side by side, so the reader lands on one next step
+   ("read the case studies") before the second, quieter one below it, rather
+   than choosing between two equal-weight links on arrival. Column flex rather
+   than a <br>: a hard break inside display: flex is inconsistently boxed
+   across browsers, where a second flex item is not. */
 .hero-cv {
   margin-top: 1.5rem;
   font-size: 0.95rem;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.5rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
 }
 .hero-cv a {
   display: inline-flex;
@@ -842,6 +849,15 @@ a:hover { text-decoration: underline; }
   background: var(--accent);
 }
 .facts strong { color: var(--text); }
+/* Two of the hero's three facts link to the case study that backs the number;
+   the third has no single page to point at and stays plain, the same
+   distinction the skills-note draws below for tags. Without this, the number
+   would stay --text-coloured even inside the link, so only the words after it
+   read as blue and the bullet looked like a rendering bug rather than a link.
+   Higher specificity than .facts strong above, so it wins regardless of
+   source order; inherit rather than a second var(--accent) so hover, focus
+   and dark mode all follow the enclosing <a>. */
+.facts a strong { color: inherit; }
 
 /* Cap line length for readability without narrowing the container,
    so body text lines up with the hero and the home page. */
