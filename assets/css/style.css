@@ -1243,74 +1243,6 @@ a:hover { text-decoration: underline; }
 .figure-doc:focus-visible,
 .figure.is-scroll:focus-visible { outline-offset: -2px; }
 
-/* ---------- 11c. Case-study contents ---------- */
-/* main.js builds this from the sections of the page it is on; the note there
-   says why it is not markup. Hidden by default and drawn only where there is
-   room for it, so the rules below are the whole component and the default is
-   one line rather than a media query that has to undo four properties. */
-.case-toc { display: none; }
-
-@media (min-width: 75rem) {
-  .case-toc {
-    display: block;
-    position: fixed;
-    /* Clear of the sticky header, which is 3.5rem plus its border. */
-    top: 7rem;
-    /* 18.5rem + 11.5rem is exactly the container's half-width, so the panel's
-       right edge lands on the container's right edge at every viewport, and the
-       gap to the prose column is the remainder: that column ends at
-       50% - 30rem + 1.25rem + 46rem, which leaves 1.25rem of gutter. The 75rem
-       gate above is what guarantees the strip is there at all. */
-    left: calc(50% + 18.5rem);
-    width: 11.5rem;
-    /* A nine-section page still fits; anything taller scrolls in place rather
-       than running off the bottom of the viewport. */
-    max-height: calc(100vh - 10rem);
-    overflow-y: auto;
-    /* Under the header and the back-to-top button, both of which it sits
-       clear of anyway. */
-    z-index: 30;
-  }
-
-  .case-toc-title {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-muted);
-    margin-bottom: 0.6rem;
-  }
-
-  /* The same rule down the left that .brief and .limits hang off, so the
-     contents read as one more quiet list rather than a control panel. */
-  .case-toc ul {
-    list-style: none;
-    display: grid;
-    gap: 0.1rem;
-    padding: 0;
-    border-left: 2px solid var(--border);
-  }
-
-  /* The negative margin lets each entry's own border sit exactly on the rule
-     above, so the accent on the current section replaces that segment instead
-     of drawing a second line beside it. */
-  .case-toc a {
-    display: block;
-    padding: 0.3rem 0 0.3rem 0.75rem;
-    margin-left: -2px;
-    border-left: 2px solid transparent;
-    font-size: 0.82rem;
-    line-height: 1.4;
-    color: var(--text-muted);
-    transition: color 0.2s ease, border-color 0.2s ease;
-  }
-  .case-toc a:hover { color: var(--accent); text-decoration: none; }
-  .case-toc a.active {
-    color: var(--accent);
-    border-left-color: var(--accent);
-    font-weight: 600;
-  }
-}
-
 /* ---------- 12. Responsive ---------- */
 /* The nav collapses on its own breakpoint, wider than the layout one below:
    six items plus the brand and the two toggles need about 765px, and the row
@@ -1482,7 +1414,6 @@ a:hover { text-decoration: underline; }
   .clips-toggle,
   .lang-toggle,
   .theme-toggle,
-  .case-toc,
   .nav-toggle { display: none !important; }
 
   /* Nothing animates, and nothing stays hidden waiting for a scroll that will
