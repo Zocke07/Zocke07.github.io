@@ -116,7 +116,7 @@ Work & Research is tiered rather than flat. Nine cards at one visual weight made
 a master's thesis and an OOP lab game the same object on screen, and a reader
 scanning the grid had only the small `.card-meta` line to tell them apart. It is
 now four groups under `.group-title` headings, in descending weight: Research,
-From Industry Work, Built on My Own, then Coursework. The first three keep the
+From Industry Work, Self-Directed Projects, then Coursework. The first three keep the
 full card. Coursework drops to `<li class="brief">`: linked title, muted meta,
 one sentence, no card surface and no tags.
 
@@ -126,6 +126,16 @@ row at one column's width, so the grid never ends on a hole. That rule replaced
 `.card.is-wide`, which fixed the same hole by making one card twice the size of
 its neighbours, and so let parity rather than the work decide which card looked
 important.
+
+A card's title says what the project is, and the page it opens is free to lead
+with a headline instead: "KITA Liturgi: A Guide for Altar Servers and Lectors"
+on the card, "Count Backwards From the Fixed Point" on the page. Four cards used
+to repeat their page's headline, which told a reader scanning the grid how the
+story went before telling them what the project was. The obligation runs the
+other way: the page must name what its card promised in its first lines (the
+kicker, the opening paragraph or the role line), so a click lands where it said
+it would. Where a headline already says what the thing is, as "How 730+ Tests
+Run at Once Without Stepping on Each Other" does, card and page share it.
 
 A skill tag in the Skills section is a link when a case study demonstrates it
 and plain text when none does, and the hover lift belongs to the linked ones

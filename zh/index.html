@@ -268,7 +268,7 @@
         <h3 class="group-title">研究</h3>
         <div class="card-grid">
           <article class="card">
-            <h4>說得出自己何時失效的防禦</h4>
+            <h4>L-MAD：抵禦聯邦式學習中的毒化更新</h4>
             <p class="card-meta">碩士論文 · 聯邦式學習安全</p>
             <p class="card-body">
               聯邦式學習把原始資料留在裝置上，所以伺服器分不出一筆模型更新是遭到毒化，還是誠實的。L-MAD 一層一層地拒斥被汙染的層，而不是丟掉整個用戶端：在 30% 毒化攻擊下，DDoS 類別 F&#8321; 維持在 97.5%，領先六個我自己重新實作的基準方法 25 個百分點。
@@ -300,7 +300,7 @@
         <h3 class="group-title">業界工作</h3>
         <div class="card-grid">
           <article class="card">
-            <h4>730 組以上的測試如何同時執行而不互相干擾</h4>
+            <h4>730+ 項測試如何同時執行而互不干擾</h4>
             <p class="card-meta">案例研究 · 測試基礎架構</p>
             <p class="card-body">
               數百個瀏覽器測試同時對著同一台線上伺服器執行，而且彼此不能互相干擾。在那裡，測試不穩定是工程問題而不是運氣問題：每一次「隨機」失敗都有它的成因，所以沒有人需要爭論一次紅燈是不是真的。
@@ -330,7 +330,7 @@
         <h3 class="group-title">個人專案</h3>
         <div class="card-grid">
           <article class="card">
-            <h4>資料庫可以說不的地方</h4>
+            <h4>校園創客空間的設備預約系統</h4>
             <p class="card-meta">PostgreSQL · 資料庫設計</p>
             <p class="card-body">
               校園創客空間靠一張紙本登記表把 3D 印表機和雷射切割機借出去，而那張表擋不住重複預約。我用一個 PostgreSQL schema、一組 REST API 和一個 React 前端取代了它，而整個專案收斂成一個問題：哪些規則資料庫可以自己擋下來，碰不到的那些又該怎麼辦？
@@ -343,7 +343,7 @@
             </p>
           </article>
           <article class="card">
-            <h4>一個短連結，兩次寫入</h4>
+            <h4>短碼不會碰撞的短網址服務</h4>
             <p class="card-meta">Spring Boot · MySQL</p>
             <p class="card-body">
               短網址服務是最小的、卻仍然得回答一個真實設計問題的服務：短碼從哪裡來？把網址拿去雜湊等於自己請來了碰撞，所以這一套改成編碼 MySQL 為那一列發出的 id，於是碰撞在結構上不可能發生，而建立一個連結變成兩句 SQL 的事。
@@ -357,7 +357,7 @@
             </p>
           </article>
           <article class="card">
-            <h4>從固定的那一端往回數</h4>
+            <h4>KITA Liturgi：輔祭與讀經員的指引網站</h4>
             <p class="card-meta">JavaScript · 日期運算</p>
             <p class="card-body">
               一個印尼裔天主教團體在台灣為輔祭與讀經員做的指引網站，它的年曆頁從單一個算出來的日期，推導出節期、禮儀顏色與主日的正式名稱，背後沒有資料檔，也沒有 API。常年期的週數用往前累加的方式算會漂移，因為四旬期與復活期佔掉的週數並不固定：154 個主日裡有 102 個算錯了。
