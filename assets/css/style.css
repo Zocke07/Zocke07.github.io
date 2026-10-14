@@ -463,12 +463,15 @@ a:hover { text-decoration: underline; }
 }
 .entry:last-child::after { display: none; }
 
+/* No flex-wrap: with it, an organization line too long to share a row pushed
+   the whole date onto a line of its own, so one entry carried its date below
+   while its neighbours kept theirs on the right. The text column wraps
+   instead; narrow screens stack every date (see the 640px rule). */
 .entry-head {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
   gap: 1rem;
-  flex-wrap: wrap;
   margin-bottom: 0.5rem;
 }
 
@@ -482,6 +485,7 @@ a:hover { text-decoration: underline; }
   font-style: italic;
   /* Holds the two <time> halves and the dash between them on one line. */
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .entry-points {
