@@ -17,6 +17,15 @@
     "title": "The Process Was Fine. The Output Still Fell.",
     "who": "Rivan Wong"
   },
+  "case-study-event-courier.html": {
+    "cjk": "",
+    "desc": "Four problems a one-week event app shipped with, found by reviewing it afterwards, and what fixing each one took.",
+    "kicker": "Self-Directed Project · Node.js · Express · Supabase",
+    "lang": "en",
+    "long": "",
+    "title": "Built in a Week, Audited After the Fact",
+    "who": "Rivan Wong"
+  },
   "case-study-kitaliturgi.html": {
     "cjk": "",
     "desc": "Ordinary Time is a 34-week count split around a feast that moves. Counting forward through the gap drifts. Anchoring to the fixed point at the end does not.",
@@ -114,6 +123,15 @@
     "lang": "zh-Hant-TW",
     "long": "",
     "title": "流程沒有問題，產出還是掉了",
+    "who": "黃家輝"
+  },
+  "zh/case-study-event-courier.html": {
+    "cjk": "cjk",
+    "desc": "一個一週內完成的活動網站上線時帶著的四個問題，事後審查才找出來，以及修正每一個問題花了什麼。",
+    "kicker": "個人專案 · Node.js · Express · Supabase",
+    "lang": "zh-Hant-TW",
+    "long": "",
+    "title": "一週寫成，事後審查",
     "who": "黃家輝"
   },
   "zh/case-study-kitaliturgi.html": {

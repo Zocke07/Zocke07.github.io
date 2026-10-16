@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Built in a Week, Audited After the Fact &#183; Rivan Wong</title>
+  <meta name="description" content="An Express and Supabase app for a 50-person event, reviewed after it ran: notes parsed as HTML, a four-digit login with no attempt limit, sessions lost between serverless instances, and inboxes matched by name." />
+  <meta property="og:title" content="Built in a Week, Audited After the Fact" />
+  <meta property="og:description" content="Four problems a one-week event app shipped with, found by reviewing it afterwards, and what fixing each one took." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/case-study-event-courier" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og/event-courier.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Backend case study: an Express and Supabase event app, and the four problems a later review found." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme.
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // outright where storage is blocked (Chrome set to deny all cookies, a
+    // sandboxed iframe). Inlined in the original expression the throw skipped
+    // the whole assignment, so data-theme was never set and the page stayed
+    // light while the reader had asked the OS for dark.
+    (function () {
+      var saved = null;
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      document.documentElement.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <link rel="canonical" href="https://zocke07.github.io/case-study-event-courier" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-event-courier" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-event-courier" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-event-courier" />
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=edff91c9" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="container nav" aria-label="Primary">
+      <a class="nav-brand" href="/">Rivan Wong</a>
+      <div class="nav-right">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-menu" class="nav-menu" role="list">
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#education">Education</a></li>
+          <li><a href="/#experience">Experience</a></li>
+          <li><a href="/#projects">Work &amp; Research</a></li>
+          <li><a href="/#skills">Skills</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <a class="lang-toggle" href="/zh/case-study-event-courier" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+           aria-label="切換至繁體中文">中文</a>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Dark theme">
+          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <!-- ===================== Case study hero ===================== -->
+    <section class="hero case-hero">
+      <div class="container">
+        <p class="hero-kicker">Self-Directed Project · Node.js · Express · Supabase</p>
+        <h1>Built in a Week, Audited After the Fact</h1>
+        <p class="hero-blurb">
+          For a fifty-person Advent retreat run by an Indonesian Catholic community in
+          Taiwan, participants needed somewhere to read the notes of encouragement
+          others left them, and anyone needed a way to leave one without signing it. I
+          built it in the week before the event: pick your name, type the last four
+          digits of your phone number, read your inbox; or skip the login and write to
+          someone anonymously. It did its job for the event. Reading it again
+          afterwards, the way I would review someone else's code, turned up four
+          problems. This page is those four, and what fixing them took.
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>My role:</strong> sole developer, on a one-week deadline, with nobody
+          reviewing the code. The fixes described here came after the event, on a
+          separate branch, and each one is pinned by a test.
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>50 participants</strong>, one event</li>
+          <li><strong>7 commits</strong> in one week</li>
+          <li><strong>6 API routes</strong> on Express</li>
+          <li><strong>4 problems</strong> found in review</li>
+          <li><strong>10 tests</strong>, no new dependencies</li>
+          <li><strong>0 phone numbers</strong> sent to the browser</li>
+        </ul>
+        <aside class="source-note">
+          <strong>Privacy, and where the numbers come from:</strong> no participant's
+          name, phone number or message appears on this page, and the screens are
+          described rather than shown. The code is not linked: the roster was committed
+          during the event week, and although new commits no longer carry it, it is
+          still in the history, so the repository stays private. Every figure here comes
+          from the code and its tests.
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== The brief ===================== -->
+    <section id="brief" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">What It Had to Do</h2>
+        <p>
+          The constraints came from the event, not from engineering. Nobody creates an
+          account for a weekend retreat, so there could be no sign-up. The organizers
+          already had a roster from their registration form, with a name and a phone
+          number for each participant, and that roster became the login: choose your
+          name from a list, then type the last four digits of your number. Leaving a
+          note needed no login at all, because the point was that the sender could stay
+          anonymous.
+        </p>
+        <p>
+          The server is Express on Node.js, serving five pages and six JSON routes.
+          Messages went to Supabase, a hosted PostgreSQL, because the hosting it ran on
+          wipes its disk on every restart, and a note that disappears overnight is worse
+          than no note. A migration script moved anything already written to the local
+          JSON log into the database in batches, with a dry run first, so nothing
+          written before the switch was lost.
+        </p>
+        <p>
+          One decision held up under review. The participant list the login page needs
+          comes from a route that returns each person's id and name and nothing else, so
+          the phone numbers the login checks against never leave the server.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The review ===================== -->
+    <section id="review" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Four Problems, Found After the Event</h2>
+        <h3>Notes were parsed as HTML</h3>
+        <p>
+          The inbox built each note with <code>innerHTML</code>, dropping the sender's
+          display name and the message straight into a template. Both came from whoever
+          wrote the note, signed in or not, so a note containing markup was parsed as
+          markup in the recipient's inbox.
+        </p>
+        <p>
+          The damage was smaller than it sounds, and the reason is worth knowing. The
+          server sends a Content-Security-Policy header that forbids inline scripts, so
+          a note carrying <code>&lt;img onerror=…&gt;</code> would not run when the
+          pages came through Express. A header is a backstop, though, not a fix: markup
+          could still restyle or fake parts of the page, and anywhere the header is
+          missing, the same note would run as script and could read the session token
+          the browser keeps.
+        </p>
+        <h3>Four digits guarded a name anyone could see</h3>
+        <p>
+          The secret was the last four digits of a phone number: 10,000 possibilities,
+          for a name the login page lists. Nothing limited the attempts, so a short loop
+          could try every combination for one person and read their notes.
+        </p>
+        <h3>Sessions lived in one instance's memory</h3>
+        <p>
+          A successful login stored a token in an in-memory map. That works on one
+          long-running server and fails on serverless hosting, where each instance has
+          its own memory: a login handled by one instance was unknown to the next, and
+          every cold start logged everyone out. The project included an entry point for
+          exactly that kind of host.
+        </p>
+        <h3>Inboxes were matched by name</h3>
+        <p>
+          A note was saved with its recipient's name, and an inbox was every note whose
+          recipient matched yours after lowercasing. The roster already gave each person
+          a unique id, but notes never used it, so two participants with the same name
+          would have read each other's notes.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The fixes ===================== -->
+    <section id="fixes" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">What Each Fix Does</h2>
+        <p>
+          Notes and names are now put on the page with <code>textContent</code>, so the
+          browser treats them as text. A note containing <code>&lt;img
+          onerror=…&gt;</code> now shows its recipient exactly those characters.
+        </p>
+        <p>
+          Login attempts are counted. Five wrong guesses lock a name for fifteen
+          minutes, even against the right digits, and one address gets twenty attempts
+          in the same window. A locked request gets a 429 with a
+          <code>Retry-After</code> header saying when to try again.
+        </p>
+        <p>
+          Sessions are now signed instead of stored. A token carries the participant's
+          id and an expiry, followed by an HMAC of both, computed with a secret only the
+          server holds. Any instance with the same secret can check a token another
+          instance issued, and changing one character of the claims breaks the
+          signature.
+        </p>
+        <pre class="snippet" tabindex="0" role="group" aria-label="Code, scrollable"><code><span class="cm">// Checking a token: recompute the signature, compare in constant time.</span>
+const expected = Buffer.from(this.#sign(payload));
+const given = Buffer.from(signature);
+if (given.length !== expected.length || !crypto.timingSafeEqual(given, expected)) {
+  return null;
+}</code></pre>
+        <p class="snippet-caption">
+          <code>timingSafeEqual</code> takes the same time however much of the signature
+          matches, so the check reveals nothing about how close a guess came.
+        </p>
+        <p>
+          Notes now store the recipient's id, and an inbox matches on it. The wrinkle
+          was the live database: its table has no column for the id, and code that
+          writes a column the table lacks makes every insert fail. So the column is
+          opt-in. Until it is added and switched on, notes work exactly as before;
+          after, new notes reach their recipient by id, and only notes written before
+          the change still match by name.
+        </p>
+        <p>
+          The roster, the registration responses and the message log are out of version
+          control, with an example roster of made-up people for local development. On
+          hosting with no disk, the roster can be supplied as configuration instead of a
+          file.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Tests ===================== -->
+    <section id="tests" class="section">
+      <div class="container prose">
+        <h2 class="section-title">What the Tests Pin Down</h2>
+        <p>
+          Ten tests run on Node's built-in test runner, with no new dependencies. Each
+          one starts the real app on a free port, with a temporary folder holding a
+          made-up roster, so nothing touches the event's data or the database.
+        </p>
+        <p>
+          Three of them check what the review found. Two people with the same name get
+          separate inboxes. Five wrong guesses for one name lock it, after which even
+          the right digits get a 429. A token whose claims were rewritten to someone
+          else's id, still carrying the original signature, is rejected.
+        </p>
+        <p>
+          One gap is worth naming: the rendering fix is checked by reading the code, not
+          by a test. The tests confirm a note comes back from the server exactly as it
+          was sent; whether the page then shows it as text depends on code that only
+          runs in a browser, and there is no browser in this suite.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Limits ===================== -->
+    <section id="limits" class="section section-alt">
+      <div class="container prose">
+        <h2 class="section-title">What It Still Does Not Do</h2>
+        <p>
+          The counters behind the login and message limits live in each instance's
+          memory, so on serverless hosting every instance keeps its own count and a
+          restart clears them. That turns an unlimited guessing loop into a slow one; a
+          shared limit needs a table in the database.
+        </p>
+        <p>
+          Logging out revokes a token only on the instance that handled the request.
+          Everywhere else it stays valid until it expires, twelve hours after login.
+        </p>
+        <p>
+          Four digits are still four digits. The limits make guessing slow; they do not
+          make the secret strong. The real fix is a code per participant, handed out at
+          registration, which needs the organizers rather than a commit.
+        </p>
+        <p>
+          And the roster is still in the repository's history. New commits no longer
+          carry it, but anyone with access to the history could read it, which is why
+          the code stays private and is not linked from this page.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Key Engineering Learnings</h2>
+        <ol class="learnings" role="list">
+          <li><b>Review your own code after the deadline is gone.</b> Every problem here was visible in the original diff. What the event week lacked was not skill but a second read, and the cheapest second reader is yourself, later.</li>
+          <li><b>A security header is a backstop, not a fix.</b> The Content-Security-Policy kept an injected script from running. It did nothing about why one could be injected, and it only protects the pages that actually carry it.</li>
+          <li><b>Serverless changes what in-memory state means.</b> A map in the process is shared state on one server and private state on many. Sessions and rate limits both had to be rethought for it, and only one of them could be fixed without a database.</li>
+          <li><b>A schema change cannot ride along with a code change.</b> Code that writes a column the live table lacks breaks every insert the moment it deploys. Making the column opt-in let the fix ship first and the migration follow when someone runs it.</li>
+          <li><b>Data you need to run is not data you need to commit.</b> The roster had to be on the server. It never had to be in git, and once it was, deleting the file was no longer enough to take it back.</li>
+        </ol>
+        <p class="entry-more"><a href="/#projects">← Back to portfolio</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong · Built with plain HTML &amp; CSS, hosted on GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="/assets/js/main.js?v=6fbcfca2"></script>
+</body>
+</html>

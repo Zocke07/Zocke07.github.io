@@ -10,6 +10,7 @@ index.html                       # landing page, one <section> per CV area
 case-study-test-automation.html  # long-form case studies, linked from Experience
 case-study-ai-products.html
 case-study-capstone.html
+case-study-event-courier.html
 case-study-lmad.html
 case-study-makerspace.html
 case-study-microprocessors.html
@@ -376,6 +377,6 @@ prose, and would be slower on the phone a recruiter actually reads this on.
 Migrate when any one of these is true:
 
 1. A third language is added.
-2. Unique page count passes about 12 (it is 10 now).
+2. Unique page count passes about 12 (it is 11 now).
 3. Case studies would be better authored in Markdown than in hand-written HTML.
 4. You catch yourself avoiding a change because of how many files it touches.
