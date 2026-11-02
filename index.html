@@ -16,18 +16,17 @@
   <meta property="og:image:height" content="630" />
   <meta property="og:image:alt" content="Rivan Wong, Computer Science M.S. graduate working in software engineering and test automation." />
   <meta name="twitter:card" content="summary_large_image" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%232456a6'/%3E%3Ctext x='32' y='42' font-family='Georgia, serif' font-size='28' fill='white' text-anchor='middle'%3ERW%3C/text%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23F2F4F0'/%3E%3Cpath d='M44 32H64' stroke='%23B84A0B' stroke-width='6'/%3E%3Ccircle cx='28' cy='32' r='14' fill='%23F2F4F0' stroke='%23B84A0B' stroke-width='7'/%3E%3C/svg%3E" />
   <script>
-    // Set the theme before styles load to avoid a flash of the wrong theme.
+    // Set the theme before styles load to avoid a flash of the wrong theme, and
+    // mark that scripts run, so the opening may hide what it is about to reveal.
     // Reading the stored choice is wrapped because touching localStorage throws
-    // outright where storage is blocked (Chrome set to deny all cookies, a
-    // sandboxed iframe). Inlined in the original expression the throw skipped
-    // the whole assignment, so data-theme was never set and the page stayed
-    // light while the reader had asked the OS for dark.
+    // where storage is blocked (cookies denied, a sandboxed iframe).
     (function () {
-      var saved = null;
+      var d = document.documentElement, saved = null;
+      d.classList.add("js");
       try { saved = localStorage.getItem("theme"); } catch (e) {}
-      document.documentElement.dataset.theme = saved ||
+      d.dataset.theme = saved ||
         (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     })();
   </script>
@@ -56,21 +55,9 @@
         "sameAs": "https://www.ntut.edu.tw/"
       },
       "knowsLanguage": [
-        {
-          "@type": "Language",
-          "name": "Indonesian",
-          "alternateName": "id"
-        },
-        {
-          "@type": "Language",
-          "name": "English",
-          "alternateName": "en"
-        },
-        {
-          "@type": "Language",
-          "name": "Chinese (Mandarin)",
-          "alternateName": "zh-Hant"
-        }
+        { "@type": "Language", "name": "Indonesian", "alternateName": "id" },
+        { "@type": "Language", "name": "English", "alternateName": "en" },
+        { "@type": "Language", "name": "Chinese (Mandarin)", "alternateName": "zh-Hant" }
       ],
       "knowsAbout": [
         "Test Automation",
@@ -84,7 +71,8 @@
         "Relational Database Design"
       ],
       "sameAs": [
-        "https://github.com/Zocke07"
+        "https://github.com/Zocke07",
+        "https://www.linkedin.com/in/rivan-wong-%E9%BB%83%E5%AE%B6%E8%BC%9D-31b960218/"
       ]
     }
   </script>
@@ -92,132 +80,293 @@
   <link rel="alternate" hreflang="en" href="https://zocke07.github.io/" />
   <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/" />
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/" />
+  <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=3a408558" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=6d0b25d2" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
 
   <!-- ===================== Header / Nav ===================== -->
   <header class="site-header">
-    <nav class="container nav" aria-label="Primary">
-      <a class="nav-brand" href="#top">Rivan Wong</a>
+    <nav class="nav" aria-label="Primary">
+      <a class="nav-brand" href="#top"><i aria-hidden="true"></i>Rivan Wong</a>
       <div class="nav-right">
-        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu" aria-label="Toggle navigation">
-          <span></span><span></span><span></span>
-        </button>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu"><span class="nav-toggle-icon" aria-hidden="true"><i></i><i></i></span>Menu</button>
         <ul id="nav-menu" class="nav-menu" role="list">
+          <li><a href="#work">Work</a></li>
+          <li><a href="#experience">Experience</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#education">Education</a></li>
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#projects">Work &amp; Research</a></li>
           <li><a href="#skills">Skills</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
         <a class="lang-toggle" href="/zh/" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
            aria-label="切換至繁體中文">中文</a>
-        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Dark theme">
-          <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
-          <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Dark theme"
+                data-label-dark="Dark theme" data-label-light="Light theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/></svg>
         </button>
       </div>
     </nav>
   </header>
 
   <main id="main" tabindex="-1">
-    <!-- ===================== Hero ===================== -->
-    <section id="top" class="hero">
-      <div class="container hero-inner">
-        <p class="hero-kicker">New Taipei, Taiwan</p>
-        <h1>Rivan Wong <span class="hero-cjk" lang="zh-Hant">黃家輝</span></h1>
-        <p class="hero-tagline">M.S. in Computer Science · <span id="rotator"
-          data-phrases='["Software Engineering","Test Automation &amp; QA","Federated Learning Security","Technical Project Management"]'
-        >Software Engineering</span></p>
-        <p class="hero-blurb">
-          M.S. in Computer Science from National Taipei University of Technology, where I
-          researched federated learning security, with hands-on industry experience in test
-          automation, API testing, and technical project management at Taiwan Mobile and
-          Sunbird Software.
-        </p>
-        <ul class="facts hero-facts" role="list">
-          <li><strong>2.5 years</strong> of industry engineering across two teams</li>
-          <li><a href="/case-study-lmad" aria-label="97.5% DDoS-class F1 held under a 30% poisoning attack, in the L-MAD thesis case study"><strong>97.5%</strong> DDoS-class F&#8321; held under a 30% poisoning attack</a></li>
-          <li><a href="/case-study-test-automation" aria-label="730+ end-to-end tests running at once against one server, in the test infrastructure case study"><strong>730+</strong> end-to-end tests running at once against one server</a></li>
-        </ul>
-        <p class="hero-cv">
-          <a href="#projects">Read the case studies →</a>
-          <a href="/assets/cv/rivan-wong-cv.pdf" target="_blank" rel="noopener"><svg class="cv-glyph" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>View CV</a>
-        </p>
-        <img class="hero-portrait" src="/assets/img/portrait-2026.jpg" width="560" height="560" fetchpriority="high"
+    <div class="backdrop" aria-hidden="true"></div>
+    <div class="rail" aria-hidden="true"><span class="rail-fill"></span><span class="rail-tip"></span></div>
+
+    <!-- ===================== Intro ===================== -->
+    <section id="top" class="intro container" aria-label="Introduction">
+      <h1 class="name"><span class="port-main" aria-hidden="true"></span>Rivan Wong</h1>
+      <p class="name-zh rise" lang="zh-Hant" style="--t:.95s">黃家輝</p>
+      <p class="lede rise" style="--t:.7s">
+        <strong>Software engineer in New Taipei, Taiwan.</strong> M.S. in Computer Science from
+        National Taipei University of Technology, where I researched federated learning security,
+        with hands-on industry experience in test automation, API testing, and technical project
+        management at Taiwan Mobile and Sunbird Software.
+      </p>
+      <div class="cta rise" style="--t:.84s">
+        <a class="btn btn-primary" href="#work">See the case studies</a>
+        <a class="btn" href="/assets/cv/rivan-wong-cv.pdf" target="_blank" rel="noopener">Open the CV (PDF)</a>
+      </div>
+      <figure class="profile rise" style="--t:.4s">
+        <img src="/assets/img/portrait-2026.jpg" width="560" height="560" fetchpriority="high"
              alt="Rivan Wong in graduation robes, holding a sheep" />
+        <figcaption>Graduation day, 2026</figcaption>
+      </figure>
+    </section>
+
+    <!-- ===================== Path ===================== -->
+    <!-- Each box is a button that opens its details; path.js draws the wires
+         between them and plays the opening. Without JavaScript the boxes and
+         their details are still all here, in reading order. -->
+    <section class="container" aria-labelledby="path-title">
+      <h2 id="path-title" class="sr-only">My path so far</h2>
+      <div class="path">
+        <div class="graph" role="group" aria-label="My path so far, from Indonesia to software engineering">
+          <svg class="graph-wires" aria-hidden="true"></svg>
+          <div class="span-mark" aria-hidden="true"><span>2.5 years in industry</span></div>
+
+          <div class="step-wrap" data-id="origin">
+            <button class="step-node" type="button" aria-expanded="false" aria-controls="step-origin">
+              <i class="port port-out" aria-hidden="true"></i>
+              <span class="step-meta"><span>Where it started</span><span>2021</span></span>
+              <b>Indonesia → Taipei</b>
+              <span class="step-sub">Studied in Chinese</span>
+            </button>
+            <div class="step-more" id="step-origin">I grew up in Indonesia and moved to Taipei for university in 2021, learning Chinese along the way. <a href="#about">More about me</a></div>
+          </div>
+
+          <div class="step-wrap" data-id="bachelor">
+            <button class="step-node" type="button" aria-expanded="false" aria-controls="step-bachelor">
+              <i class="port port-in" aria-hidden="true"></i><i class="port port-out" aria-hidden="true"></i>
+              <span class="step-meta"><span>Study</span><span>2021–25</span></span>
+              <b>Bachelor's degree</b>
+              <span class="step-sub">Computer science, Taipei Tech</span>
+            </button>
+            <div class="step-more" id="step-bachelor">GPA 3.5, in the Software Security Lab, where my co-op with Sunbird was based. Coursework included a pipelined CPU in VHDL and a Linux kernel module, as team labs. <a href="/case-study-microprocessors">Read the lab notebook</a></div>
+          </div>
+
+          <div class="step-wrap" data-id="sunbird">
+            <button class="step-node" type="button" aria-expanded="false" aria-controls="step-sunbird">
+              <i class="port port-in" aria-hidden="true"></i><i class="port port-out" aria-hidden="true"></i>
+              <span class="step-meta"><span>Work</span><span>2023–24</span></span>
+              <b>Sunbird Software</b>
+              <span class="step-sub">Automated testing</span>
+            </button>
+            <div class="step-more" id="step-sunbird">End-to-end tests for a platform where more than 730 of them run at once against one live server. <a href="/case-study-test-automation">Read the case study</a></div>
+          </div>
+
+          <div class="step-wrap" data-id="master">
+            <button class="step-node" type="button" aria-expanded="false" aria-controls="step-master">
+              <i class="port port-in" aria-hidden="true"></i><i class="port port-out" aria-hidden="true"></i>
+              <span class="step-meta"><span>Research</span><span>2025–26</span></span>
+              <b>Master's degree</b>
+              <span class="step-sub">Thesis on AI security</span>
+            </button>
+            <div class="step-more" id="step-master">GPA 4.0, finished in one year. My thesis, L-MAD, defends federated learning against poisoned updates: 97.5% DDoS-class F₁, a standard accuracy score, under a 30% poisoning attack. <a href="/case-study-lmad">Read the case study</a></div>
+          </div>
+
+          <div class="step-wrap" data-id="taiwanmobile">
+            <button class="step-node" type="button" aria-expanded="false" aria-controls="step-taiwanmobile">
+              <i class="port port-in" aria-hidden="true"></i><i class="port port-out" aria-hidden="true"></i>
+              <span class="step-meta"><span>Work</span><span>2025–26</span></span>
+              <b>Taiwan Mobile</b>
+              <span class="step-sub">Testing and project management</span>
+            </button>
+            <div class="step-more" id="step-taiwanmobile">Built a PyTest suite from scratch and tested two internal AI tools before release, for a team split across two countries. <a href="/case-study-ai-products">Read the case study</a></div>
+          </div>
+
+          <div class="step-wrap is-next" data-id="next">
+            <button class="step-node" type="button" aria-expanded="false" aria-controls="step-next">
+              <i class="port port-in" aria-hidden="true"></i>
+              <span class="step-meta"><span>Next</span><span>Now</span></span>
+              <b>Software engineer</b>
+              <span class="step-sub"><span class="live" aria-hidden="true"></span>Open to roles</span>
+            </button>
+            <div class="step-more" id="step-next">Based in New Taipei and open to software engineer roles. <a href="#contact">Get in touch</a></div>
+          </div>
+        </div>
+        <p class="path-hint">Select a step to see more.</p>
       </div>
     </section>
 
-    <!-- ===================== About ===================== -->
-    <section id="about" class="section">
-      <div class="container prose about">
-        <h2 class="section-title">About Me</h2>
-        <p class="about-lead">
-          I grew up in Indonesia and moved to Taipei in 2021 for university. The degree was
-          taught in Chinese. I picked the language up as I went, and I have studied and
-          worked in it ever since.
-        </p>
-        <p>
-          Before any of that I was a math kid, and the part I liked was that you could check
-          the answer. That is close to how I like to build software: I'd rather find out
-          early that I'm wrong, while being wrong is still cheap. At Sunbird that meant
-          <a href="/case-study-test-automation#solution">getting every test case confirmed by
-          the product manager</a> before I automated it, while a misunderstanding was still a
-          paragraph and not a test suite. My thesis ends with
-          <a href="/case-study-lmad#limits">a chapter on where my own defense breaks</a>.
-        </p>
-        <p>
-          I spent a good part of university outside class. For a year I was a helper for
-          overseas students at Taipei Tech's Office of International Affairs, working the front
-          desk: answering students' questions, walking Indonesian and other international
-          students through orientation and paperwork, and helping the staff with whatever
-          administrative work came up. In the International Student Association's public
-          relations department, I handled social media promotion and publicized campus events,
-          alongside volunteering and cultural exchange. Mostly that meant helping international
-          students settle into a place I had arrived at not long before myself.
-        </p>
-      </div>
-    </section>
-
-    <!-- ===================== Education ===================== -->
-    <section id="education" class="section section-alt">
+    <!-- ===================== Selected work ===================== -->
+    <!-- Six projects, each as the problem, the approach and the result. A new
+         one copies a .pipe article. Smaller work goes in the groups
+         below rather than here. -->
+    <section id="work" class="section">
       <div class="container">
-        <h2 class="section-title">Education</h2>
-
-        <article class="entry">
-          <div class="entry-head">
+        <h2 class="section-title">Selected work</h2>
+        <div class="work">
+          <article class="pipe">
             <div>
-              <h3>M.S. in Computer Science and Information Engineering</h3>
-              <p class="entry-org">National Taipei University of Technology <span lang="zh-Hant">(國立臺北科技大學)</span> · Taipei, Taiwan</p>
+              <h3 class="pipe-title">L-MAD: Defending Federated Learning Against Poisoned Updates</h3>
+              <p class="pipe-from">Master's thesis, 2025 to 2026</p>
+              <ul class="chips" role="list"><li>PyTorch</li><li>Flower</li><li>Python</li></ul>
+              <a class="text-link" href="/case-study-lmad">Read the case study</a>
             </div>
-            <p class="entry-date"><time datetime="2025">2025</time> – <time datetime="2026">2026</time></p>
-          </div>
-          <ul class="entry-points" role="list">
-            <li>GPA: 4.0 / 4.0</li>
-            <li>Completed in one year through the university's selective Bachelor's–Master's program <span lang="zh-Hant">(學碩一貫學程)</span>.</li>
-            <li>Thesis: <em>Trust-Aware Layer-Wise Median Absolute Deviation (L-MAD) for Byzantine-Robust Aggregation in Federated Edge Learning</em>, advised by Shiang-Jiun Chen, Ph.D., in the Software Security Lab. <a href="/case-study-lmad">The defense that says where it breaks: a case study →</a></li>
-          </ul>
-        </article>
+            <div class="chain">
+              <div class="chain-step"><small>Problem</small>The server never sees the data, so it cannot tell a poisoned update from an honest one.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Approach</small>Reject corrupted layers one at a time instead of discarding the whole client.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Result</small>97.5% DDoS-class F₁ under a 30% poisoning attack, 25 points clear of six baselines I reimplemented.</div>
+            </div>
+          </article>
 
-        <article class="entry">
-          <div class="entry-head">
+          <article class="pipe">
             <div>
-              <h3>B.S. in Computer Science and Information Engineering</h3>
-              <p class="entry-org">National Taipei University of Technology · Taipei, Taiwan</p>
+              <h3 class="pipe-title">How 730+ Tests Run at Once Without Stepping on Each Other</h3>
+              <p class="pipe-from">Industry work at Sunbird Software, 2023 to 2024</p>
+              <ul class="chips" role="list"><li>Robot Framework</li><li>Selenium</li><li>Python</li></ul>
+              <a class="text-link" href="/case-study-test-automation">Read the case study</a>
             </div>
-            <p class="entry-date"><time datetime="2021">2021</time> – <time datetime="2025">2025</time></p>
-          </div>
-          <ul class="entry-points" role="list">
-            <li>GPA: 3.5 / 4.0</li>
-            <li>Member of the Software Security Lab, working on test automation; my industry-academia co-op with Sunbird Software was based there.</li>
-          </ul>
-        </article>
+            <div class="chain">
+              <div class="chain-step"><small>Problem</small>Hundreds of browser tests share one live server overnight, and one flaky test can cost the team a morning.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Approach</small>Each suite declares, by tag, the shared subsystems it touches, so parallel runs stay out of each other's way.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Result</small>730+ end-to-end tests run at once against one server, behind a gate of ten clean runs plus five throttled.</div>
+            </div>
+          </article>
 
+          <article class="pipe">
+            <div>
+              <h3 class="pipe-title">Shipping Two AI Products With Six Interns</h3>
+              <p class="pipe-from">Industry work at Taiwan Mobile, 2025 to 2026</p>
+              <ul class="chips" role="list"><li>LLM APIs</li><li>UAT</li><li>Jira</li></ul>
+              <a class="text-link" href="/case-study-ai-products">Read the case study</a>
+            </div>
+            <div class="chain">
+              <div class="chain-step"><small>Problem</small>Two AI products, a team split across two countries, and nobody assigned to QA.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Approach</small>A written gate for every change: design agreed before code, explicit acceptance criteria, hands-on sign-off.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Result</small>About 40 changes and 300+ criteria in two months; dropped hyperlinks and truncated output caught before release.</div>
+            </div>
+          </article>
+
+          <article class="pipe">
+            <div>
+              <h3 class="pipe-title">AgentBase: AI Agents Behind an Approval Gate</h3>
+              <p class="pipe-from">Personal project, 2026. An AI agent wrote the code from my specification.</p>
+              <ul class="chips" role="list"><li>Python</li><li>FastAPI</li><li>Tauri</li></ul>
+              <a class="text-link" href="/case-study-agentbase">Read the case study</a>
+            </div>
+            <div class="chain">
+              <div class="chain-step"><small>Problem</small>AI agents that can touch files, the shell and the network need a person in the loop.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Approach</small>Write the specification first, with hard constraints and acceptance tests, and have an AI agent build to it.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Result</small>A working desktop app where every file, shell and network call waits for approval; fourteen releases in six weeks.</div>
+            </div>
+          </article>
+
+          <article class="pipe">
+            <div>
+              <h3 class="pipe-title">A URL Shortener With Collision-Free Codes</h3>
+              <p class="pipe-from">Personal project, 2026</p>
+              <ul class="chips" role="list"><li>Java</li><li>Spring Boot</li><li>MySQL</li></ul>
+              <p class="case-nav">
+                <a class="text-link" href="/case-study-url-shortener">Read the case study</a>
+                <a class="text-link" href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">See the code</a>
+              </p>
+            </div>
+            <div class="chain">
+              <div class="chain-step"><small>Problem</small>A short code has to come from somewhere, and hashing the URL invites collisions.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Approach</small>Encode the id MySQL issues for the row, in Base62, instead of hashing anything.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Result</small>A collision is structurally impossible, and creating a link takes two statements.</div>
+            </div>
+          </article>
+
+          <article class="pipe">
+            <div>
+              <h3 class="pipe-title">A Booking System for a Campus Makerspace</h3>
+              <p class="pipe-from">Personal project, 2026</p>
+              <ul class="chips" role="list"><li>PostgreSQL</li><li>Node.js</li><li>React</li></ul>
+              <a class="text-link" href="/case-study-makerspace">Read the case study</a>
+            </div>
+            <div class="chain">
+              <div class="chain-step"><small>Problem</small>A paper sign-up sheet cannot stop two people claiming the same machine at the same time.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Approach</small>Declare every rule the schema can hold: 28 CHECK and EXCLUDE constraints and 21 foreign keys.</div>
+              <i class="chain-link" aria-hidden="true"></i>
+              <div class="chain-step"><small>Result</small>The database itself refuses a double booking, even from two inserts at once.</div>
+            </div>
+          </article>
+        </div>
+
+        <!-- More projects: one line each, grouped by the reader they serve. -->
+        <div class="more-groups">
+          <div>
+            <h3 class="group-title">Testing and quality</h3>
+            <ul class="brief-list" role="list">
+              <li class="brief">
+                <h4><a href="/case-study-capstone">Test Automation Best Practices: A Case Study Analysis</a></h4>
+                <p class="brief-meta">Capstone with two teammates, 2023 to 2024</p>
+                <p class="brief-body">How a commercial test automation team takes a ticket to a merged pull request, and why its output fell while the process stayed the same.</p>
+              </li>
+              <li class="brief">
+                <h4><a href="/project-mobile-testing">Mobile Test Automation for a Health Tracking App</a></h4>
+                <p class="brief-meta">Course project in Appium and Robot Framework, 2025</p>
+                <p class="brief-body">Five of us wrote 103 automated test cases against a diabetes app already shipping on Android. I owned the settings area end to end.</p>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="group-title">Built for real users</h3>
+            <ul class="brief-list" role="list">
+              <li class="brief">
+                <h4><a href="/case-study-event-courier">An Anonymous-Note App for a 50-Person Event</a></h4>
+                <p class="brief-meta">Personal project in Node.js and Supabase, 2025</p>
+                <p class="brief-body">Built in a week for a church retreat, then audited after the event: four problems found and fixed, three of them pinned by a test.</p>
+              </li>
+              <li class="brief">
+                <h4><a href="/case-study-kitaliturgi">KITA Liturgi: A Guide for Altar Servers and Lectors</a></h4>
+                <p class="brief-meta">Personal project in JavaScript, 2026</p>
+                <p class="brief-body">A calendar that derives the season, the color and the Sunday's name from one computed date. Counting weeks forward got 102 of 154 Sundays wrong, so it counts backwards.</p>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="group-title">Closer to the hardware</h3>
+            <ul class="brief-list" role="list">
+              <li class="brief">
+                <h4><a href="/case-study-sky-scraper-escape">Sky Scraper Escape</a></h4>
+                <p class="brief-meta">Course project in C++ and MFC, 2024</p>
+                <p class="brief-body">Seven levels on a teaching framework that allows three states, made interchangeable behind one pointer. I wrote 76% of the C++.</p>
+              </li>
+              <li class="brief">
+                <h4><a href="/case-study-microprocessors">From a Truth Table to a Pipelined CPU</a></h4>
+                <p class="brief-meta">Team coursework in VHDL and embedded Linux, 2023 to 2024</p>
+                <p class="brief-body">Two semesters of labs, from a seven-segment decoder to a four-stage pipelined CPU, then a Jetson board down to a kernel module, written up as a lab notebook.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -225,256 +374,137 @@
     <section id="experience" class="section">
       <div class="container">
         <h2 class="section-title">Experience</h2>
-
-        <article class="entry">
-          <div class="entry-head">
+        <ol class="entries" role="list">
+          <li class="entry">
+            <p class="entry-date"><time datetime="2025-07">Jul 2025</time> – <time datetime="2026-06">Jun 2026</time></p>
             <div>
               <h3>Technical Project Management &amp; QA Intern</h3>
-              <p class="entry-org">Taiwan Mobile Co., Ltd. · Taipei, Taiwan</p>
+              <p class="entry-org">Taiwan Mobile Co., Ltd., Taipei, Taiwan</p>
+              <p class="entry-intro">
+                My job had two halves. I wrote the automation for two internal projects: a PyTest
+                suite built from scratch against a service I had only the API documentation for,
+                and a reconciliation job refactored from a colleague's Java API. Alongside that I
+                was part technical project manager for a six-person remote team, part the person
+                who tested the thing before anyone else had to trust it. The team built two
+                internal AI tools: a VS Code extension that turns the company's development
+                standards into an in-editor AI reviewer, and a browser extension that translates
+                content beside an internal authoring portal.
+              </p>
+              <ul class="entry-points" role="list">
+                <li>Built a PyTest suite from scratch over the critical API endpoints of an internal service, working only from its API documentation, including the payload encoding and decoding layer the suite runs on, so regressions surface before deployment rather than after it.</li>
+                <li>Closed a correctness gap in a colleague's Java API behind an existing Jenkins reconciliation job, which took filenames as request parameters and could be pointed at the wrong month; refactored it to read from an agreed location, implemented the query behind the total against an existing legacy formula, and built a pipeline, adapted from an existing one, that runs the check and files a ticket with the result automatically.</li>
+                <li>Owned pre-release verification for both, running end-to-end testing that caught defects that compiled cleanly and looked correct in the diff: hyperlinks silently dropped from translated text, and model output truncated partway.</li>
+                <li>Coordinated delivery across two locations as the technical link between on-site engineers and remote interns, managing sprint tasks in Jira so both sides worked from one view of state.</li>
+                <li>Held changes to a written gate: proposal and design agreed before code, explicit acceptance criteria, then hands-on sign-off before release.</li>
+              </ul>
+              <ul class="chips" role="list">
+                <li>Python</li><li>PyTest</li><li>Java</li><li>Jenkins</li><li>Jira</li><li>VS Code Extensions</li><li>LLM APIs</li><li>UAT</li><li>Agile</li>
+              </ul>
+              <p class="entry-more"><a class="text-link" href="/case-study-ai-products">Read the case study: shipping two AI products with six interns</a></p>
+              <p class="entry-note">Internal names, endpoints, and business logic are generalized; the scale figures describe team output.</p>
             </div>
-            <p class="entry-date"><time datetime="2025-07">Jul 2025</time> – <time datetime="2026-06">Jun 2026</time></p>
-          </div>
-          <p class="entry-intro">
-            My job had two halves. I wrote the automation for two internal projects: a PyTest
-            suite built from scratch against a service I had only the API documentation for,
-            and a reconciliation job refactored from a colleague's Java API. Alongside that I
-            was part technical project manager for a six-person remote team, part the person
-            who tested the thing before anyone else had to trust it. The team built two
-            internal AI tools: a VS Code extension that turns the company's development
-            standards into an in-editor AI reviewer, and a browser extension that translates
-            content beside an internal authoring portal.
-          </p>
-          <ul class="entry-points" role="list">
-            <li>Built a PyTest suite from scratch over the critical API endpoints of an internal service, working only from its API documentation, including the payload encoding and decoding layer the suite runs on, so regressions surface before deployment rather than after it.</li>
-            <li>Closed a correctness gap in a colleague's Java API behind an existing Jenkins reconciliation job, which took filenames as request parameters and could be pointed at the wrong month; refactored it to read from an agreed location, implemented the query behind the total against an existing legacy formula, and built a pipeline, adapted from an existing one, that runs the check and files a ticket with the result automatically.</li>
-            <li>Owned pre-release verification for both, running end-to-end testing that caught defects that compiled cleanly and looked correct in the diff: hyperlinks silently dropped from translated text, and model output truncated partway.</li>
-            <li>Coordinated delivery across two locations as the technical link between on-site engineers and remote interns, managing sprint tasks in Jira so both sides worked from one view of state.</li>
-            <li>Held changes to a written gate: proposal and design agreed before code, explicit acceptance criteria, then hands-on sign-off before release.</li>
-          </ul>
-          <ul class="tags entry-tags" role="list">
-            <li>Python</li><li>PyTest</li><li>Java</li><li>Jenkins</li><li>Jira</li><li>VS Code Extensions</li><li>LLM APIs</li><li>UAT</li><li>Agile</li>
-          </ul>
-          <p class="entry-more"><a href="/case-study-ai-products">Shipping two AI products with six interns: a case study →</a></p>
-
-          <p class="entry-note">Internal names, endpoints, and business logic are generalized; the scale figures describe team output.</p>
-        </article>
-
-        <article class="entry">
-          <div class="entry-head">
+          </li>
+          <li class="entry">
+            <p class="entry-date"><time datetime="2023-07">Jul 2023</time> – <time datetime="2024-12">Dec 2024</time></p>
             <div>
               <h3>Test Automation Intern (Industry-Academia Co-op)</h3>
-              <p class="entry-org">Sunbird Software Inc., Taiwan Branch · via the Software Security Lab, Taipei Tech</p>
+              <p class="entry-org">Sunbird Software Inc., Taiwan Branch, via the Software Security Lab, Taipei Tech</p>
+              <p class="entry-intro">
+                I wrote automated tests for an enterprise data-center infrastructure management
+                platform. It was the kind of place where hundreds of end-to-end suites run in parallel
+                against one live server overnight, and a single flaky test can cost the whole team a
+                morning. I worked it for a year and a half as an industry-academia co-op based in my
+                university's Software Security Lab, with the summer of 2024 spent embedded full-time
+                in the company's own office, and it is where I learned that a test suite is something
+                you maintain, not something you finish.
+              </p>
+              <ul class="entry-points" role="list">
+                <li>Turned ticket-level requirement specs into end-to-end suites, composing them from a shared library of several thousand reusable keywords and setting up test state through a REST API instead of slow UI flows.</li>
+                <li>Cleared the same merge gate every time: zero warnings from a custom lint rule set, ten clean runs back to back, then five more with the network deliberately throttled.</li>
+                <li>Wrote tests that stay safe under parallel execution, declaring the shared subsystems each suite touches so hundreds of suites can run against one live server without colliding.</li>
+                <li>Worked the team's real engineering cycle throughout, with Scrum ceremonies, code review, and release deadlines.</li>
+              </ul>
+              <ul class="chips" role="list">
+                <li>Robot Framework</li><li>Selenium</li><li>Python</li><li>REST API</li><li>Scrum</li>
+              </ul>
+              <p class="entry-more"><a class="text-link" href="/case-study-test-automation">Read the case study: how 730+ tests run at once</a></p>
+              <p class="entry-note">Product and client details are generalized under NDA; the scale figures describe the team-owned platform I worked inside.</p>
             </div>
-            <p class="entry-date"><time datetime="2023-07">Jul 2023</time> – <time datetime="2024-12">Dec 2024</time></p>
-          </div>
-          <p class="entry-intro">
-            I wrote automated tests for an enterprise data-center infrastructure management
-            platform. It was the kind of place where hundreds of end-to-end suites run in parallel
-            against one live server overnight, and a single flaky test can cost the whole team a
-            morning. I worked it for a year and a half as an industry-academia co-op based in my
-            university's Software Security Lab, with the summer of 2024 spent embedded full-time
-            in the company's own office, and it is where I learned that a test suite is something
-            you maintain, not something you finish.
-          </p>
-          <ul class="entry-points" role="list">
-            <li>Turned ticket-level requirement specs into end-to-end suites, composing them from a shared library of several thousand reusable keywords and setting up test state through a REST API instead of slow UI flows.</li>
-            <li>Cleared the same merge gate every time: zero warnings from a custom lint rule set, ten clean runs back to back, then five more with the network deliberately throttled.</li>
-            <li>Wrote tests that stay safe under parallel execution, declaring the shared subsystems each suite touches so hundreds of suites can run against one live server without colliding.</li>
-            <li>Worked the team's real engineering cycle throughout, with Scrum ceremonies, code review, and release deadlines.</li>
-          </ul>
-          <ul class="tags entry-tags" role="list">
-            <li>Robot Framework</li><li>Selenium</li><li>Python</li><li>REST API</li><li>Scrum</li>
-          </ul>
-          <p class="entry-more"><a href="/case-study-test-automation">How 730+ tests run at once: a case study →</a></p>
-          <p class="entry-note">Product and client details are generalized under NDA; the scale figures describe the team-owned platform I worked inside.</p>
-        </article>
+          </li>
+        </ol>
       </div>
     </section>
 
-    <!-- ===================== Projects ===================== -->
-    <section id="projects" class="section section-alt">
-      <div class="container">
-        <h2 class="section-title">Work &amp; Research</h2>
-
-        <h3 class="group-title">Research</h3>
-        <div class="card-grid">
-          <article class="card">
-            <h4>L-MAD: Defending Federated Learning Against Poisoned Updates</h4>
-            <p class="card-meta">Master's Thesis · Federated Learning Security</p>
-            <p class="card-body">
-              Federated learning keeps raw data on the device, so the server cannot tell a
-              poisoned update from an honest one. L-MAD rejects corrupted layers one at a
-              time instead of discarding the whole client: 97.5% DDoS-class F&#8321; under a
-              30% poisoning attack, 25 points clear of six baselines I reimplemented.
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>PyTorch</li><li>Flower</li><li>Federated Learning</li><li>Adversarial ML</li><li>Python</li>
-            </ul>
-            <p class="entry-more card-actions">
-              <a href="/case-study-lmad" aria-label="Read the case study: the defense that says where it breaks">Read the case study →</a>
-            </p>
-          </article>
-
-          <article class="card">
-            <h4>Test Automation Best Practices: A Case Study Analysis</h4>
-            <p class="card-meta">Capstone Project · Industry-Academia Research</p>
-            <p class="card-body">
-              My graduation capstone, written with two teammates from inside the Sunbird
-              co-op: how a commercial test automation team actually works, from test steps
-              confirmed with the product manager before anyone writes code to a CI gate of
-              ten runs plus five with the network throttled. It also takes four years of the
-              team's statistics and explains why output declined.
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>Robot Framework</li><li>Scrum</li><li>Mob Programming</li><li>Research</li>
-            </ul>
-            <p class="entry-more card-actions">
-              <a href="/case-study-capstone" aria-label="Read the case study: the process was fine, the output still fell">Read the case study →</a>
-              <a href="https://github.com/Zocke07/Automation-Demonstration" target="_blank" rel="noopener" aria-label="Source for the capstone's published exhibit on GitHub">Code →</a>
-            </p>
-          </article>
-        </div>
-
-        <h3 class="group-title">From Industry Work</h3>
-        <div class="card-grid">
-          <article class="card">
-            <h4>How 730+ Tests Run at Once Without Stepping on Each Other</h4>
-            <p class="card-meta">Case Study · Test Infrastructure</p>
-            <p class="card-body">
-              Hundreds of browser tests run against one live server at the same time, and
-              they have to stay out of each other's way. Flakiness there is an engineering
-              problem rather than bad luck: every random failure has a mechanism, which is
-              why nobody argues about whether a red build is real.
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>Robot Framework</li><li>Selenium</li><li>Parallel Testing</li><li>CI</li>
-            </ul>
-            <p class="entry-more card-actions">
-              <a href="/case-study-test-automation" aria-label="Read the case study: how 730+ tests run at once">Read the case study →</a>
-            </p>
-          </article>
-          <article class="card">
-            <h4>Shipping Two AI Products With Six Interns</h4>
-            <p class="card-meta">Case Study · Program Management &amp; QA</p>
-            <p class="card-body">
-              Two AI products, an intern team spread across two countries, and nobody
-              assigned to QA. The defects worth catching were the ones that compiled cleanly
-              and looked right in the diff: silently dropped formatting, truncated model
-              output.
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>TypeScript</li><li>LLM APIs</li><li>UAT</li><li>Jira</li>
-            </ul>
-            <p class="entry-more card-actions">
-              <a href="/case-study-ai-products" aria-label="Read the case study: shipping two AI products with six interns">Read the case study →</a>
-            </p>
-          </article>
-        </div>
-
-        <h3 class="group-title">Self-Directed Projects</h3>
-        <div class="card-grid">
-          <article class="card">
-            <h4>An Anonymous-Note App for a 50-Person Event</h4>
-            <p class="card-meta">Node.js · Express · Supabase</p>
-            <p class="card-body">
-              Participants signed in with their name and the last four digits of their phone
-              to read notes anyone could leave them anonymously. Built in a week for a church
-              retreat, then reviewed after the event: four problems, from notes parsed as HTML
-              to sessions that serverless hosting forgot, all fixed and three pinned by a test.
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>Node.js</li><li>Express</li><li>REST API</li><li>Supabase</li><li>Security</li>
-            </ul>
-            <p class="entry-more card-actions">
-              <a href="/case-study-event-courier" aria-label="Read the case study: built in a week, audited after the fact">Read the case study →</a>
-            </p>
-          </article>
-          <article class="card">
-            <h4>A Booking System for a Campus Makerspace</h4>
-            <p class="card-meta">PostgreSQL · Database Design</p>
-            <p class="card-body">
-              A campus makerspace lends out 3D printers and laser cutters on a paper sign-up
-              sheet that cannot stop a double booking. I replaced it with a PostgreSQL
-              schema, a REST API and a React client, and the project became one question:
-              which rules can the database refuse by itself, and what do you do about the
-              ones it cannot reach?
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>PostgreSQL</li><li>SQL</li><li>Database Design</li><li>Node.js</li><li>React</li>
-            </ul>
-            <p class="entry-more card-actions">
-              <a href="/case-study-makerspace" aria-label="Read the case study: where the database can say no">Read the case study →</a>
-            </p>
-          </article>
-          <article class="card">
-            <h4>A URL Shortener With Collision-Free Codes</h4>
-            <p class="card-meta">Spring Boot · MySQL</p>
-            <p class="card-body">
-              A URL shortener is the smallest service that still has to answer a real design
-              question: where does the short code come from? Hashing the URL invites
-              collisions, so this one encodes the id MySQL issues for the row instead, which
-              makes a collision structurally impossible and creating a link a two-statement
-              operation.
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>Java</li><li>Spring Boot</li><li>MySQL</li><li>SQL</li><li>JUnit</li>
-            </ul>
-            <p class="entry-more card-actions">
-              <a href="/case-study-url-shortener" aria-label="Read the case study: two writes for one short link">Read the case study →</a>
-              <a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener" aria-label="Source for the URL shortener on GitHub">Code →</a>
-            </p>
-          </article>
-          <article class="card">
-            <h4>KITA Liturgi: A Guide for Altar Servers and Lectors</h4>
-            <p class="card-meta">JavaScript · Date Arithmetic</p>
-            <p class="card-body">
-              A guide for the altar servers and lectors of an Indonesian Catholic community
-              in Taiwan, whose calendar page derives the season, the liturgical color and the
-              Sunday's proper name from one computed date, with no data file and no API
-              behind it. Numbering Ordinary Time by counting forward drifts, because Lent and
-              Easter consume a variable number of weeks: 102 of 154 Sundays came out wrong.
-            </p>
-            <ul class="tags entry-tags" role="list">
-              <li>JavaScript</li><li>HTML</li><li>CSS</li><li>Web Performance</li><li>Accessibility</li>
-            </ul>
-            <p class="entry-more card-actions">
-              <a href="/case-study-kitaliturgi" aria-label="Read the case study: count backwards from the fixed point">Read the case study →</a>
-              <a href="https://kitaliturgi.vercel.app" target="_blank" rel="noopener" aria-label="The liturgical guide, live">Live site →</a>
-            </p>
-          </article>
-        </div>
-
-        <h3 class="group-title">Coursework</h3>
-        <ul class="brief-list" role="list">
-          <li class="brief">
-            <h4><a href="/project-mobile-testing">Mobile Test Automation for a Health Tracking App →</a></h4>
-            <p class="brief-meta">Course Project · Appium · Robot Framework</p>
-            <p class="brief-body">
-              Five of us wrote 103 automated test cases against a diabetes app already
-              shipping on Android. I owned the settings area end to end; the app keeps state
-              with no reset hook, so every test has to pay for its own cleanup.
-            </p>
+    <!-- ===================== About ===================== -->
+    <section id="about" class="section">
+      <div class="container prose">
+        <h2 class="section-title">About me</h2>
+        <p class="about-lead">
+          I grew up in Indonesia and moved to Taipei in 2021 for university. The degree was
+          taught in Chinese. I picked the language up as I went, and I have studied and
+          worked in it ever since.
+        </p>
+        <p>
+          Before any of that I was a math kid, and the part I liked was that you could check
+          the answer. That is close to how I like to build software: I'd rather find out early
+          that I'm wrong, while being wrong is still cheap.
+        </p>
+        <ul class="how" role="list">
+          <li>
+            <b>Agree on the spec before the code</b>
+            <p>At Sunbird every test case was confirmed by the product manager before I automated it, while a misunderstanding was still a paragraph and not a test suite. <a href="/case-study-test-automation#solution">How that worked</a></p>
           </li>
-          <li class="brief">
-            <h4><a href="/case-study-sky-scraper-escape">Sky Scraper Escape →</a></h4>
-            <p class="brief-meta">Course Project · C++ · MFC · Object-Oriented Design</p>
-            <p class="brief-body">
-              A plane flown through a city skyline across seven levels, built for an OOP lab
-              on a teaching framework that allows exactly three states. I mirrored that state
-              interface onto a level base class, which made every level and the menu
-              interchangeable objects behind one pointer.
-            </p>
+          <li>
+            <b>Test it before anyone has to trust it</b>
+            <p>At Taiwan Mobile, pre-release testing caught defects that compiled cleanly and looked right in the diff: dropped hyperlinks, truncated model output. <a href="/case-study-ai-products">What we caught</a></p>
           </li>
-          <li class="brief">
-            <h4><a href="/case-study-microprocessors">From a Truth Table to a Pipelined CPU →</a></h4>
-            <p class="brief-meta">Undergraduate Coursework · VHDL / FPGA · Embedded Linux</p>
-            <p class="brief-body">
-              Two semesters of hardware labs pointed in opposite directions: VHDL building up
-              from a seven-segment decoder to a four-stage pipelined CPU, then an NVIDIA
-              Jetson TX2 worked down from a cross-compiled binary to a kernel module.
-            </p>
+          <li>
+            <b>Try to break my own work first</b>
+            <p>My thesis ran a sixteen-configuration sweep against its own method's weakest point, and reported what it found as a limitation. <a href="/case-study-lmad#limits">Where the defense breaks</a></p>
           </li>
         </ul>
+        <p>
+          I spent a good part of university outside class. For a year I was a helper for
+          overseas students at Taipei Tech's Office of International Affairs, working the front
+          desk and walking Indonesian and other international students through orientation and
+          paperwork. In the International Student Association's public relations department, I
+          handled social media and publicized campus events. Mostly that meant helping
+          international students settle into a place I had arrived at not long before myself.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Education ===================== -->
+    <section id="education" class="section">
+      <div class="container">
+        <h2 class="section-title">Education</h2>
+        <ol class="entries" role="list">
+          <li class="entry">
+            <p class="entry-date"><time datetime="2025">2025</time> – <time datetime="2026">2026</time></p>
+            <div>
+              <h3>M.S. in Computer Science and Information Engineering</h3>
+              <p class="entry-org">National Taipei University of Technology <span lang="zh-Hant">(國立臺北科技大學)</span>, Taipei, Taiwan</p>
+              <ul class="entry-points" role="list">
+                <li>GPA: 4.0 / 4.0</li>
+                <li>Completed in one year through the university's selective Bachelor's–Master's program <span lang="zh-Hant">(學碩一貫學程)</span>.</li>
+                <li>Thesis: <em>Trust-Aware Layer-Wise Median Absolute Deviation (L-MAD) for Byzantine-Robust Aggregation in Federated Edge Learning</em>, advised by Shiang-Jiun Chen, Ph.D., in the Software Security Lab.</li>
+              </ul>
+              <p class="entry-more"><a class="text-link" href="/case-study-lmad">Read the case study: the defense that says where it breaks</a></p>
+            </div>
+          </li>
+          <li class="entry">
+            <p class="entry-date"><time datetime="2021">2021</time> – <time datetime="2025">2025</time></p>
+            <div>
+              <h3>B.S. in Computer Science and Information Engineering</h3>
+              <p class="entry-org">National Taipei University of Technology, Taipei, Taiwan</p>
+              <ul class="entry-points" role="list">
+                <li>GPA: 3.5 / 4.0</li>
+                <li>Member of the Software Security Lab, working on test automation; my industry-academia co-op with Sunbird Software was based there.</li>
+                <li>Teaching assistant in spring 2025 for two courses taught by my thesis advisor: Probability, a required course of 79 students, and Introduction to Ethical Hacking, an elective of 43.</li>
+              </ul>
+            </div>
+          </li>
+        </ol>
       </div>
     </section>
 
@@ -485,21 +515,40 @@
         <p class="skills-note">Linked tags open the page where that work is described. The rest are things I have used with no page to point at.</p>
         <div class="skills-grid">
           <div class="skill-group">
-            <h3>Programming Languages</h3>
+            <h3>Programming languages</h3>
             <ul class="tags" role="list">
-              <li><a href="/case-study-test-automation" aria-label="Python, in the test infrastructure case study">Python</a></li><li><a href="/case-study-sky-scraper-escape" aria-label="C++, in the Sky Scraper Escape case study">C++</a></li><li><a href="/case-study-url-shortener" aria-label="Java, in the URL shortener case study">Java</a></li><li><a href="/case-study-url-shortener" aria-label="SQL, in the URL shortener case study">SQL</a></li><li>HTML</li><li>CSS</li>
+              <li><a href="/case-study-test-automation" aria-label="Python, in the test infrastructure case study">Python</a></li><li><a href="/case-study-url-shortener" aria-label="Java, in the URL shortener case study">Java</a></li><li><a href="/case-study-sky-scraper-escape" aria-label="C++, in the Sky Scraper Escape case study">C++</a></li><li><a href="/case-study-kitaliturgi" aria-label="JavaScript, in the KITA Liturgi case study">JavaScript</a></li><li><a href="/case-study-url-shortener" aria-label="SQL, in the URL shortener case study">SQL</a></li><li>HTML</li><li>CSS</li>
             </ul>
           </div>
           <div class="skill-group">
-            <h3>Tools &amp; Frameworks</h3>
+            <h3>Backend</h3>
             <ul class="tags" role="list">
-              <li>Git</li><li>GitHub</li><li><a href="/case-study-test-automation" aria-label="Jenkins, in the test infrastructure case study">Jenkins</a></li><li><a href="/case-study-ai-products" aria-label="Jira, in the AI products case study">Jira</a></li><li><a href="/case-study-makerspace" aria-label="PostgreSQL, in the makerspace database case study">PostgreSQL</a></li><li>Notion</li><li>VS Code</li><li><a href="/case-study-test-automation" aria-label="Selenium, in the test infrastructure case study">Selenium</a></li><li><a href="/project-mobile-testing" aria-label="Appium, in the mobile testing project notes">Appium</a></li><li><a href="/project-mobile-testing" aria-label="Robot Framework, in the mobile testing project notes">Robot Framework</a></li><li><a href="/case-study-lmad" aria-label="PyTest, in the L-MAD thesis case study">PyTest</a></li>
+              <li><a href="/case-study-url-shortener" aria-label="Spring Boot, in the URL shortener case study">Spring Boot</a></li><li><a href="/case-study-url-shortener" aria-label="MySQL, in the URL shortener case study">MySQL</a></li><li><a href="/case-study-makerspace" aria-label="PostgreSQL, in the makerspace database case study">PostgreSQL</a></li><li><a href="/case-study-event-courier" aria-label="Node.js, in the event app case study">Node.js</a></li><li><a href="/case-study-event-courier" aria-label="Express, in the event app case study">Express</a></li><li><a href="/case-study-makerspace" aria-label="Database design, in the makerspace database case study">Database design</a></li><li>REST APIs</li>
             </ul>
           </div>
           <div class="skill-group">
-            <h3>Methodologies &amp; Concepts</h3>
+            <h3>Testing and QA</h3>
             <ul class="tags" role="list">
-              <li><a href="/case-study-ai-products" aria-label="Agile (Scrum / Kanban), in the AI products case study">Agile (Scrum / Kanban)</a></li><li><a href="/case-study-sky-scraper-escape" aria-label="OOP, in the Sky Scraper Escape case study">OOP</a></li><li><a href="/case-study-makerspace" aria-label="Database Design, in the makerspace database case study">Database Design</a></li><li>SDLC</li><li><a href="/case-study-test-automation" aria-label="Test Automation, in the test infrastructure case study">Test Automation</a></li><li><a href="/case-study-lmad" aria-label="Machine Learning, in the L-MAD thesis case study">Machine Learning</a></li>
+              <li><a href="/case-study-test-automation" aria-label="Test automation, in the test infrastructure case study">Test automation</a></li><li><a href="/case-study-test-automation" aria-label="Selenium, in the test infrastructure case study">Selenium</a></li><li><a href="/project-mobile-testing" aria-label="Robot Framework, in the mobile testing project notes">Robot Framework</a></li><li><a href="/project-mobile-testing" aria-label="Appium, in the mobile testing project notes">Appium</a></li><li><a href="/case-study-lmad" aria-label="PyTest, in the L-MAD thesis case study">PyTest</a></li><li><a href="/case-study-url-shortener" aria-label="JUnit, in the URL shortener case study">JUnit</a></li><li><a href="/case-study-ai-products" aria-label="UAT, in the AI products case study">UAT</a></li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Machine learning</h3>
+            <ul class="tags" role="list">
+              <li><a href="/case-study-lmad" aria-label="PyTorch, in the L-MAD thesis case study">PyTorch</a></li><li><a href="/case-study-lmad" aria-label="Flower, in the L-MAD thesis case study">Flower</a></li><li><a href="/case-study-lmad" aria-label="Federated learning, in the L-MAD thesis case study">Federated learning</a></li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h3>Tools and practices</h3>
+            <ul class="tags" role="list">
+              <li>Git</li><li>GitHub</li><li><a href="/case-study-test-automation" aria-label="Jenkins, in the test infrastructure case study">Jenkins</a></li><li><a href="/case-study-ai-products" aria-label="Jira, in the AI products case study">Jira</a></li><li><a href="/case-study-ai-products" aria-label="Agile (Scrum / Kanban), in the AI products case study">Agile (Scrum / Kanban)</a></li><li><a href="/case-study-sky-scraper-escape" aria-label="OOP, in the Sky Scraper Escape case study">OOP</a></li><li>Linux</li><li>VS Code</li><li>Notion</li><li>SDLC</li>
+            </ul>
+          </div>
+          <div class="skill-group is-coursework">
+            <h3>From team coursework</h3>
+            <p>Studied in team labs rather than written alone, so these link to one write-up instead of each tag. <a href="/case-study-microprocessors">Read the lab notebook</a></p>
+            <ul class="tags" role="list">
+              <li>VHDL</li><li>FPGA</li><li>Embedded Linux</li><li>Linux kernel modules</li>
             </ul>
           </div>
         </div>
@@ -512,27 +561,33 @@
           <a href="https://courses.edx.org/certificates/d00365083bf24c79bb8e24d04f9df93d" target="_blank" rel="noopener">Cybersecurity Basics</a> and
           <a href="https://courses.edx.org/certificates/dd2ee7085dc349f3af52bb39f5e2f7ed" target="_blank" rel="noopener">AI for Everyone</a>; the Linux Foundation's
           <a href="https://courses.edx.org/certificates/c15bae28915d4640b6f23a14ec2ac198" target="_blank" rel="noopener">Introduction to Linux</a>.</p>
+      </div>
+    </section>
 
-        <h2 class="section-title languages-title">Languages</h2>
+    <!-- ===================== Languages ===================== -->
+    <section id="languages" class="section">
+      <div class="container">
+        <h2 class="section-title">Languages</h2>
         <ul class="languages" role="list">
           <li><strong>Indonesian</strong>: Native</li>
           <li><strong>English</strong>: Fluent (TOEIC 965)</li>
-          <li><strong>Chinese (Mandarin)</strong>: Working Proficiency (TOCFL B2)</li>
+          <li><strong>Chinese (Mandarin)</strong>: Working Proficiency (TOCFL B2); both degrees taught in Chinese</li>
         </ul>
       </div>
     </section>
 
     <!-- ===================== Contact ===================== -->
-    <section id="contact" class="section section-alt">
-      <div class="container contact">
+    <section id="contact" class="section contact">
+      <div class="container">
         <h2 class="section-title">Contact</h2>
-        <p class="contact-status">Open to Software Engineer roles. Based in New Taipei, Taiwan.</p>
+        <p class="contact-status">Open to software engineer roles. Based in New Taipei, Taiwan.</p>
         <div class="action-row">
           <address class="action-group">
-            <a class="btn btn-primary" href="mailto:rivanwong@gmail.com">rivanwong@gmail.com</a>
-            <a class="btn" href="https://github.com/Zocke07" target="_blank" rel="noopener">github.com/Zocke07</a>
+            <a class="btn btn-primary" href="mailto:rivanwong@gmail.com">Email me</a>
+            <a class="btn" href="https://www.linkedin.com/in/rivan-wong-%E9%BB%83%E5%AE%B6%E8%BC%9D-31b960218/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn" href="https://github.com/Zocke07" target="_blank" rel="noopener">GitHub</a>
           </address>
-          <a class="btn" href="/assets/cv/rivan-wong-cv.pdf" download="Rivan-Wong-CV.pdf">Download CV</a>
+          <a class="btn" href="/assets/cv/rivan-wong-cv.pdf" download="Rivan-Wong-CV.pdf">Download the CV (PDF)</a>
         </div>
       </div>
     </section>
@@ -540,7 +595,7 @@
 
   <footer class="site-footer">
     <div class="container">
-      <p>© <span id="year"></span> Rivan Wong · Built with plain HTML &amp; CSS, hosted on GitHub Pages.</p>
+      <p>© <span id="year"></span> Rivan Wong. Built with plain HTML and CSS, hosted on GitHub Pages.</p>
     </div>
   </footer>
 
@@ -548,6 +603,7 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=6fbcfca2"></script>
+  <script src="/assets/js/main.js?v=137a8ce7"></script>
+  <script src="/assets/js/path.js?v=8c71e852"></script>
 </body>
 </html>

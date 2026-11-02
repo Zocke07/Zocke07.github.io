@@ -338,9 +338,12 @@ def check_parity():
 # ---------- chrome consistency ----------
 CHROME_PATTERNS = {
     "skip-link": r'class="skip-link"[^>]*>([^<]*)<',
-    "nav-brand": r'class="nav-brand"[^>]*>([^<]*)<',
-    "nav-toggle aria-label": r'class="nav-toggle"[^>]*aria-label="([^"]*)"',
+    # The brand opens with its ring, an empty <i>, before the name.
+    "nav-brand": r'class="nav-brand"[^>]*>(?:<i[^>]*></i>)?([^<]*)<',
+    # The menu button carries a visible label after its icon, not an aria-label.
+    "nav-toggle label": r'class="nav-toggle"[^>]*>.*?</span>([^<]*)</button>',
     "theme-toggle aria-label": r'class="theme-toggle"[^>]*aria-label="([^"]*)"',
+    "theme-toggle light label": r'class="theme-toggle"[^>]*data-label-light="([^"]*)"',
     "to-top aria-label": r'class="to-top"[^>]*aria-label="([^"]*)"',
     "footer": r'<footer class="site-footer">.*?<p>(.*?)</p>',
 }
@@ -414,8 +417,20 @@ def js_classes():
       hooks    named in a selector, so the markup carries the class for the
                script to find even where no rule matches it
     """
-    js = read(JS)
-    runtime = set(re.findall(r'classList\.(?:add|remove|toggle)\(\s*"([\w-]+)"', js))
+    # Every script on the site: the files under assets/js and the inline one in
+    # each page's head, which is where the .js class is set.
+    js = "\n".join(read(f) for f in sorted(glob.glob("assets/js/*.js")))
+    for f in PAGES:
+        js += "\n".join(re.findall(r"<script>(.*?)</script>", read(f), re.S))
+    runtime = set()
+    # classList calls may name several classes; className and setAttribute
+    # ("class", ...) assign whole lists, conditionally or not.
+    for args in re.findall(r'classList\.(?:add|remove|toggle)\(([^)]*)\)', js):
+        for literal in re.findall(r'"([\w -]+)"', args):
+            runtime.update(literal.split())
+    for stmt in re.findall(r'(?:className\s*=|setAttribute\(\s*"class",)([^;\n]*)', js):
+        for literal in re.findall(r'"([\w -]+)"', stmt):
+            runtime.update(literal.split())
     hooks = set(runtime)
     for literal in re.findall(r'"([^"\n]*)"', js):
         if "." in literal:
@@ -424,7 +439,9 @@ def js_classes():
 
 
 def check_deadcss():
-    declared = set(re.findall(r"\.([a-zA-Z][\w-]*)", uncomment(read(CSS))))
+    # url() contents are paths, not selectors: ".woff2" is not a class.
+    css = re.sub(r"url\([^)]*\)", "", uncomment(read(CSS)))
+    declared = set(re.findall(r"\.([a-zA-Z][\w-]*)", css))
     used = set()
     for f in PAGES:
         for m in re.finditer(r'class="([^"]*)"', read(f)):
@@ -564,7 +581,7 @@ def check_cv():
 
 
 def check_stamps():
-    return run_tool("stamps", "bump.py", "style.css + main.js",
+    return run_tool("stamps", "bump.py", "style.css + main.js + path.js",
                     lambda l: l.split("stale:", 1)[1].strip() if "stale:" in l else None)
 
 

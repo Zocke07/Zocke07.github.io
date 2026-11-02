@@ -23,7 +23,11 @@ ROOT = Path(__file__).resolve().parent.parent
 ASSETS = {
     "/assets/css/style.css": ROOT / "assets/css/style.css",
     "/assets/js/main.js": ROOT / "assets/js/main.js",
+    "/assets/js/path.js": ROOT / "assets/js/path.js",
 }
+# Loaded only where a page needs it: the diagram script is on the two home
+# pages and nowhere else, so its absence elsewhere is not a stale stamp.
+OPTIONAL = {"/assets/js/path.js"}
 
 
 def short_hash(path):
@@ -41,7 +45,8 @@ def main(check_only=False):
             pattern = re.compile(re.escape(url) + r"\?v=[\w.]+")
             found = pattern.findall(text)
             if not found:
-                stale.append(f"{page.relative_to(ROOT)}: no reference to {url}")
+                if url not in OPTIONAL:
+                    stale.append(f"{page.relative_to(ROOT)}: no reference to {url}")
                 continue
             if any(f != f"{url}?v={h}" for f in found):
                 stale.append(f"{page.relative_to(ROOT)}: {url} stamped {found[0].split('=')[-1]}, want {h}")
