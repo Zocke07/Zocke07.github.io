@@ -8,6 +8,7 @@ and served directly from the repository root on GitHub Pages.
 ```
 index.html                       # landing page, one <section> per CV area
 case-study-test-automation.html  # long-form case studies, linked from Experience
+case-study-agentbase.html
 case-study-ai-products.html
 case-study-capstone.html
 case-study-event-courier.html
@@ -23,7 +24,9 @@ robots.txt
 zh/                              # Traditional Chinese twin of every page above
 assets/
   css/style.css                  # design tokens + numbered per-component sections
-  js/main.js                     # theme toggle, reveal-on-scroll, rotator, nav
+  fonts/recursive.woff2          # the one web font, subset; OFL.txt beside it
+  js/main.js                     # theme switch, menu, reading rail, clips, the opening
+  js/path.js                     # the home page's path diagram, home pages only
   img/                           # in-page figures and the portrait
   img/og/                        # 1200x630 social cards, <slug>.png and <slug>-zh.png
   cv/rivan-wong-cv.pdf           # copy of CV/build/cv.pdf, see below
@@ -88,9 +91,10 @@ The header, footer and back-to-top wording must also stay identical *within* a
 language. Seven of those strings had drifted into two spellings across the
 Chinese pages before `tools/check.py` started asserting it.
 
-The two files share `style.css` and `main.js`. Strings the JS needs come from
-`data-` attributes in the markup (the hero rotator reads `data-phrases`), so
-`main.js` holds no English or Chinese text and neither copy has its own script.
+The two files share `style.css`, `main.js` and `path.js`. Strings the JS needs
+come from the markup (the theme switch reads `data-label-dark` and
+`data-label-light`), so the scripts hold no English or Chinese text and neither
+copy has its own script.
 
 Language survives navigation: every link inside a Chinese page points at another
 Chinese page, and the toggle swaps to the same page in the other language rather
@@ -107,75 +111,105 @@ and a Latin one is fine: that space is wanted, and the pages already write it.
 
 ## Editing content
 
-All landing-page content lives in `index.html`, organized into clearly commented
-sections (Hero, About, Education, Experience, Projects, Skills, Contact). To add
-an entry, copy an existing `<article class="entry">` (experience/education) or
-`<article class="card">` (projects) block and edit the text. Mirror the same edit
-into `zh/index.html`.
+All landing-page content lives in `index.html`, in commented sections: Intro,
+Path, Selected work, Experience, About, Education, Skills, Languages and
+Contact. Mirror every edit into `zh/index.html`.
 
-Work & Research is tiered rather than flat. Nine cards at one visual weight made
-a master's thesis and an OOP lab game the same object on screen, and a reader
-scanning the grid had only the small `.card-meta` line to tell them apart. It is
-now four groups under `.group-title` headings, in descending weight: Research,
-From Industry Work, Self-Directed Projects, then Coursework. The first three keep the
-full card. Coursework drops to `<li class="brief">`: linked title, muted meta,
-one sentence, no card surface and no tags.
+**The path diagram** under the intro is six boxes, each a `<button
+class="step-node">` inside a `.step-wrap` with a `data-id`, followed by the
+`.step-more` panel it opens. `assets/js/path.js` draws the wires from wherever
+the boxes land, so moving a box is a CSS change (`grid-area` per `data-id`) and
+a new box needs its id added to `EDGES` and `TRACKS` there. The boxes use plain
+words; the technical detail, with a short gloss, goes in the panel.
 
-So a new project goes into the group that matches how it was made. Group size
-is free. A group with an odd number of cards centers its last card across the
-row at one column's width, so the grid never ends on a hole. That rule replaced
-`.card.is-wide`, which fixed the same hole by making one card twice the size of
-its neighbours, and so let parity rather than the work decide which card looked
-important.
+**Selected work** is six projects, each an `<article class="pipe">`: a title,
+an origin line in plain words, tool chips, a visible "Read the case study" link
+and a three-step chain (Problem, Approach, Result), one short sentence each,
+drawn from the case study itself. Everything else goes in the three groups
+under it, one line each, grouped by the reader they serve: Testing and
+quality, Built for real users, Closer to the hardware. A project joins the six
+only by displacing one.
+
+**Experience and Education** are `<li class="entry">` items in an
+`<ol class="entries">`: date first, then the role, the organization, an intro
+and bullets. Each entry is a branch off the reading rail.
 
 A card's title says what the project is, and the page it opens is free to lead
 with a headline instead: "KITA Liturgi: A Guide for Altar Servers and Lectors"
-on the card, "Count Backwards From the Fixed Point" on the page. Four cards used
-to repeat their page's headline, which told a reader scanning the grid how the
-story went before telling them what the project was. The obligation runs the
-other way: the page must name what its card promised in its first lines (the
-kicker, the opening paragraph or the role line), so a click lands where it said
-it would. Where a headline already says what the thing is, as "How 730+ Tests
-Run at Once Without Stepping on Each Other" does, card and page share it.
+on the home page, "Count Backwards From the Fixed Point" on the page. The
+obligation runs the other way: the page must name what its card promised in its
+first lines (the summary strip, the lead or the role line), so a click lands
+where it said it would.
 
 A skill tag in the Skills section is a link when a case study demonstrates it
-and plain text when none does, and the hover lift belongs to the linked ones
-only. It used to sit on every tag and promise a click that none could honor.
+and plain text when none does, and only the linked ones lift on hover. The bar
+for appearing at all is code he wrote, which is why VHDL, FPGA, embedded Linux
+and kernel modules sit in their own labeled group, "From team coursework",
+linking once to the lab notebook instead of each tag: the microprocessors page
+says in its own words that the labs were team work. AgentBase never backs a tag
+either: an AI agent wrote its code, and the page says so. Before adding a link,
+check the destination actually discusses the skill, and that the page
+attributes it to him.
 
-The bar for appearing at all is code he wrote. That is why there is no VHDL,
-FPGA, Embedded Linux or Digital Logic Design here: their only evidence is the
-microprocessors page, which says in its own words that nothing on it is offered
-as his own work. They stay on that project's card, where the page explains the
-group work around them. TypeScript went for the same reason, the AI products
-page calling the product "the team's build"; it stays on that project's card,
-where it names what the product was made of rather than what he wrote.
+**Copy conventions**, beyond US spelling and straight apostrophes: labels and
+buttons in sentence case, no ALL-CAPS eyebrow labels, no meta strings joined
+with middle dots (use a comma or a definition list), no arrows on links (a link
+says where it goes; `tools/check.py copy` enforces this in both languages), and
+no em dashes anywhere.
 
-Before adding a link, check the destination actually discusses the skill, and
-that the page attributes it to him.
+### Case-study pages: four formats, one summary strip
 
-Colors, fonts, and spacing are CSS custom properties at the top of
-`assets/css/style.css` (`:root` for light mode, `:root[data-theme="dark"]`
-for dark mode). A header toggle switches themes and remembers the choice.
-All animations are disabled automatically for visitors who set
-`prefers-reduced-motion`.
+Every case-study page opens with the same `<dl class="summary">`: format,
+project, tools, dates, and the code link or why there is none. Then the
+headline, the lead, the role line, the key numbers and the scope note. The body
+takes one of four shapes, chosen by the kind of project rather than by habit:
+
+| Format | Signature piece | Pages |
+| --- | --- | --- |
+| Case study | problem, what I did, result, what I would change | L-MAD, test infrastructure, AI products, AgentBase, capstone |
+| Design notes | a `table.decision`: the options weighed, the chosen row marked | URL shortener, makerspace, KITA Liturgi, Sky Scraper Escape |
+| Report | a `table.findings`: finding, exposure, fix, test (or a test summary) | event app, mobile testing |
+| Lab notebook | the labs as an `ol.timeline`, the milestone marked `is-key` | microprocessors |
+
+Every table is written from its page's own text. A finding has no severity
+column unless the page itself rates severity.
+
+### The design system
+
+Colors, type, spacing and motion are custom properties at the top of
+`assets/css/style.css`: `:root` for the light theme (drafting paper, graphite
+ink), `:root[data-theme="dark"]` for the dark one (warm charcoal), one orange
+(`--acc`) that means "live" in both. Every text color clears 4.5:1 and every
+wire and box edge 3:1; `prefers-contrast: more` and `forced-colors` are
+handled. Diagrams inside pages draw from the same tokens (`var(--acc)`,
+`var(--edge)`, `var(--mut)`), so they follow the theme.
+
+The only web font is Recursive (SIL Open Font License, `assets/fonts/OFL.txt`),
+self-hosted as one 68 KB subset with two axes: weight, and MONO, which the
+intro animates and code chips use. The casual axis is pinned at 0, which halved
+the file. Chinese uses the system faces, so the Chinese pages download no font
+beyond the Latin one.
+
+Motion follows one rule: one orchestrated moment, then only what answers the
+reader. On the home page the name morphs from code-style letters into the
+normal face and a signal runs the path diagram, each box lighting as it
+arrives. After that: a quiet pulse every 6.5 seconds while the diagram is on
+screen, a reading rail that fills as you scroll and lights each section's port,
+project chains that play once when they come into view, and a theme switch
+that spreads from the button. Arrivals spring (`--spring`, CSS `linear()` with a
+`cubic-bezier` fallback), flows run at a constant rate, exits are quicker than
+entrances. Nothing is hidden unless scripts run, never for more than two
+seconds (a CSS failsafe reveals everything), and `prefers-reduced-motion`
+removes all of it.
 
 Case-study pages reuse the same stylesheet, and no page carries a `<style>`
-block of its own. Section 11 holds every rule the long-form pages share,
-including the `.figure` / `.fig-*` classes and the `.figure-doc` exhibit panel;
-section 11b holds the components used by exactly one page and its Chinese twin
-(the capstone chart, the thesis results table, the mobile-testing partition
-table). Page-local CSS lived in the pages until the two copies of it drifted,
-which is why it is here instead: one definition serves both languages.
+block of its own. Prefer a modifier (`.figure.is-loose`, `.backdrop.is-short`)
+over redefining a shared class, so a class means one thing across the site.
 
-Prefer a modifier (`.figure.is-loose`, `.figure-doc.is-wide`) over redefining a
-shared class, so a class means one thing across the site. The raised-panel
-chrome (border, radius, ground, shadow) comes from one shared selector list at
-the top of section 11; a new panel joins that list rather than restating it.
-
-`style.css` and `main.js` are linked as `?v=<hash>`, where the hash comes from
-the file itself. Run `python3 tools/bump.py` after changing either one; it
-rewrites all 21 pages, and `tools/check.py` fails if a stamp is stale. It used
-to be a counter bumped by hand in 32 places.
+`style.css`, `main.js` and `path.js` are linked as `?v=<hash>`, where the hash
+comes from the file itself. Run `python3 tools/bump.py` after changing any of
+them; it rewrites every page, and `tools/check.py` fails if a stamp is stale.
+`path.js` is optional: only the two home pages load it.
 
 That restamp touches every page whether or not it changed anything else,
 which buries a real edit in noise. `python3 tools/diff.py` is `git diff` with
@@ -185,37 +219,27 @@ those stamp-only hunks dropped; it takes the same arguments (`--stat`,
 ## Social cards
 
 Each page points `og:image` at its own 1200x630 card in `assets/img/og/`:
-`<slug>.png` in English, `<slug>-zh.png` in Chinese. They share one template:
-dark background, blue kicker, title, rule, two-line description, and the `RW`
-badge with the name.
-
-The Chinese cards are generated:
+`<slug>.png` in English, `<slug>-zh.png` in Chinese. All of them are drawn by
+one script in the site's dark theme: warm charcoal, the dot grid, the orange
+format line, the title, a wire, the description, and the ring with the name.
 
 ```sh
-python3 tools/og.py                  # every Chinese page
+python3 tools/og.py --all            # every card, both languages
 python3 tools/og.py zh/index.html    # just one
 python3 tools/og.py --check          # used by tools/check.py
 ```
 
-The text comes out of the page itself, the hero kicker plus `og:title` and
-`og:description`, so a card cannot drift from what it illustrates. The home card
-is the exception and carries its own two lines, because its kicker is a location
-and its description is a tagline, neither of which is card copy.
-
-The English cards were drawn by hand before the generator existed and are close
-but not identical to what it produces, so `tools/og.py` leaves them alone unless
-`--all` is passed. Its palette and geometry were measured off `og/lmad.png`, so
-the two sets sit in the same family.
+The text comes out of the page itself: the summary strip's format and project,
+plus `og:title` and `og:description`, so a card cannot drift from what it
+illustrates. The home card is the exception and carries its own two lines,
+because the home page has no summary strip.
 
 A rendered PNG is not reproducible byte for byte, so the staleness check
 compares the text a card was drawn from instead, recorded in
-`tools/og-cards.json` when it was last rendered. That covers the hand-drawn
-English cards too: `--record` adopts what is already in the repo without
-re-rendering it, and after that an edit to an `og:title` fails the `cards`
-check until the card is redrawn.
+`tools/og-cards.json` when it was last rendered. An edit to an `og:title` or a
+summary strip fails the `cards` check until the card is redrawn.
 
-`tools/check.py` fails if a Chinese page points at an English card, which is
-what it did for all eight of them until now.
+`tools/check.py` fails if a Chinese page points at an English card.
 
 ## Search engines
 
@@ -282,16 +306,16 @@ python3 tools/check.py links      # or just one
 | `links` | every internal URL resolves on disk, absolute `og:image` and canonical forms included |
 | `alternates` | each pair's `canonical` and three `hreflang` values agree in both directions |
 | `parity` | each English page and its Chinese twin share an identical `id=` and `class=` sequence, in `<main>`, `<header>` and `<footer>` |
-| `chrome` | six shared strings are identical within each language, and present on every page |
+| `chrome` | seven shared strings are identical within each language, and present on every page |
 | `css` | `style.css` braces and comment markers balance |
 | `deadcss` | no class is declared in `style.css` without a user, or used in markup without `style.css` or `main.js` defining it |
 | `assets` | every tracked file under `assets/` is referenced by some page |
 | `tracked` | git tracks nothing outside the published site |
-| `stamps` | every `?v=` matches the hash of the file it points at |
+| `stamps` | every `?v=` matches the hash of the file it points at (`path.js` only where a page loads it) |
 | `cv` | `assets/cv/rivan-wong-cv.pdf` still matches `CV/build/cv.pdf` |
 | `og` | each page points at its own card and declares the right `og:locale` |
 | `cards` | each social card still matches the page metadata it was drawn from |
-| `copy` | English prose keeps one spelling and punctuation convention |
+| `copy` | English prose keeps one spelling and punctuation convention; no link in either language carries an arrow |
 | `sitemap` | `sitemap.xml` still matches the pages' own canonical URLs |
 | `cjk` | no Chinese line break renders as a stray space |
 
@@ -345,25 +369,24 @@ slash. Without it the pattern also matched `assets/cv/`, because macOS sets
 
 ## Ideas for later
 
-- Add a LinkedIn link once there is something on the profile worth linking.
 - Serve both languages from one URL. Worth revisiting only if editing two files
   becomes the real bottleneck: switching language already keeps your place, and
   the current split is what makes each language separately indexable.
 
 ## When to move to a framework
 
-Deliberately none today. The site is 20 pages on one stylesheet and one script,
-with no dependencies and no build step: `git push` deploys it, the first visit
-costs 24 to 35 KB gzipped of HTML, CSS and JS over zero external requests, plus
-one 71 KB portrait on the home page, and it will still build untouched in five
-years. (`style.css` and `main.js` are 17 KB gzipped of that and are shared, so
-every page after the first costs only its own HTML.)
+Deliberately none today. The site is 27 pages on one stylesheet and two
+scripts, with no dependencies and no build step: `git push` deploys it, and it
+will still build untouched in five years. The home page's first visit costs
+about 32 KB gzipped of HTML, CSS and JS over zero external requests, plus the
+68 KB font and the 71 KB portrait. (`style.css` and `main.js` are 18 KB gzipped
+of that and shared, and the font is cached once, so every page after the first
+costs only its own HTML.)
 
 What that costs is real and worth naming: the head, header, footer and
-back-to-top blocks are repeated on every page. Measured, 56 distinct lines
-appear on 20 or more of the 21 pages, for 2,853 line-instances, about 30% of all
-HTML in the repo. `404.html` carries the full nav too, so adding a nav item is
-twenty-one edits.
+back-to-top blocks are repeated on every page, about a third of all HTML in the
+repo. `404.html` carries the full nav too, so adding a nav item is twenty-seven
+edits; the redesign did it with a one-off script.
 
 If that stops being worth it, the answer is **Astro**, not React or Vue. It
 ships zero JavaScript by default and outputs static HTML to the same GitHub
@@ -377,6 +400,9 @@ prose, and would be slower on the phone a recruiter actually reads this on.
 Migrate when any one of these is true:
 
 1. A third language is added.
-2. Unique page count passes about 12 (it is 11 now).
+2. Unique page count passes about 12. It is 13 now, and the November 2026
+   redesign weighed Astro and stayed with plain HTML: migrating would have been a
+   second project during interviews, and visitors would not have seen a
+   difference. The trigger still stands for the next large change.
 3. Case studies would be better authored in Markdown than in hand-written HTML.
 4. You catch yourself avoiding a change because of how many files it touches.
