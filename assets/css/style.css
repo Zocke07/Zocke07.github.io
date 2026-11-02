@@ -730,6 +730,9 @@ a:hover { text-decoration: underline; }
   max-width: var(--measure);
   margin-bottom: 1.5rem;
 }
+/* The online-courses line under the grid. The grid has no bottom margin, so
+   the note takes the grid's own gap above it. */
+.skills-note.is-below { margin-top: 1.75rem; }
 
 .languages-title { margin-top: 3rem; }
 
