@@ -98,7 +98,7 @@
 }
 
 /* ---------- 2. Font, base, reset ---------- */
-/* Recursive, by Arrow Type, under the SIL Open Font License: /assets/fonts/OFL.txt
+/* Recursive, by Arrow Type, under the SIL Open Font License (/assets/fonts/OFL.txt).
    Subset to the characters the site uses and instanced to two axes, weight
    (300 to 1000) and MONO (0 to 1). The casual axis is pinned at 0, which halves
    the file; MONO stays because the intro animates it and code chips use it. */
@@ -773,6 +773,9 @@ main { position: relative; display: block; }
 .timeline .when { font-size: 0.8125rem; color: var(--faint); font-variant-numeric: tabular-nums; }
 
 /* The closing link row on every case-study page. */
+/* The 404 page's code, set in the font's code-style letters. */
+.error-code { font-size: clamp(3.5rem, 8vw, 6rem); line-height: 1; font-weight: 800; color: var(--acc); font-variation-settings: "MONO" 1; }
+
 .case-nav { display: flex; flex-wrap: wrap; gap: 0.3rem 1.75rem; margin-top: 1.5rem; }
 
 /* ---------- 11. Exhibits: figures, diagrams, charts, tables, code, clips ---------- */
