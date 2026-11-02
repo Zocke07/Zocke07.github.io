@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I Wrote the Spec. An AI Agent Wrote the Code. &#183; Rivan Wong</title>
+  <meta name="description" content="AgentBase, a local-first desktop app where AI agents work behind an approval gate. An AI agent wrote the code from my specification; this page is about the specification, the gate and how it was verified." />
+  <meta property="og:title" content="I Wrote the Spec. An AI Agent Wrote the Code." />
+  <meta property="og:description" content="A desktop app where every file, shell and network call an AI agent makes passes an approval gate, built to a written specification." />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:locale:alternate" content="zh_TW" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/case-study-agentbase" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og/agentbase.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Case study: AgentBase, AI agents behind an approval gate, built from a written specification." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23F2F4F0'/%3E%3Cpath d='M44 32H64' stroke='%23B84A0B' stroke-width='6'/%3E%3Ccircle cx='28' cy='32' r='14' fill='%23F2F4F0' stroke='%23B84A0B' stroke-width='7'/%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme, and
+    // mark that scripts run, so the opening may hide what it is about to reveal.
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // where storage is blocked (cookies denied, a sandboxed iframe).
+    (function () {
+      var d = document.documentElement, saved = null;
+      d.classList.add("js");
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      d.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <link rel="canonical" href="https://zocke07.github.io/case-study-agentbase" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-agentbase" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-agentbase" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-agentbase" />
+  <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="nav" aria-label="Primary">
+      <a class="nav-brand" href="/"><i aria-hidden="true"></i>Rivan Wong</a>
+      <div class="nav-right">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu"><span class="nav-toggle-icon" aria-hidden="true"><i></i><i></i></span>Menu</button>
+        <ul id="nav-menu" class="nav-menu" role="list">
+          <li><a href="/#work">Work</a></li>
+          <li><a href="/#experience">Experience</a></li>
+          <li><a href="/#about">About</a></li>
+          <li><a href="/#education">Education</a></li>
+          <li><a href="/#skills">Skills</a></li>
+          <li><a href="/#contact">Contact</a></li>
+        </ul>
+        <a class="lang-toggle" href="/zh/case-study-agentbase" hreflang="zh-Hant-TW" lang="zh-Hant-TW"
+           aria-label="切換至繁體中文">中文</a>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="Dark theme"
+                data-label-dark="Dark theme" data-label-light="Light theme">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div class="backdrop is-short" aria-hidden="true"></div>
+    <div class="rail" aria-hidden="true"><span class="rail-fill"></span><span class="rail-tip"></span></div>
+    <!-- ===================== Case study hero ===================== -->
+    <section class="case-hero">
+      <div class="container">
+        <dl class="summary">
+          <div><dt>Format</dt><dd class="format">Case study</dd></div>
+          <div><dt>Project</dt><dd>Personal project; an AI agent wrote the code from my specification</dd></div>
+          <div><dt>Tools</dt><dd>Python, FastAPI, Tauri, React, SQLite</dd></div>
+          <div><dt>When</dt><dd>Sep to Oct 2026</dd></div>
+          <div><dt>Code</dt><dd>Private repository</dd></div>
+        </dl>
+        <h1>I Wrote the Spec. An AI Agent Wrote the Code.</h1>
+        <p class="hero-blurb">
+          AgentBase is a local-first desktop app where AI agents work on a task while you watch
+          them on a live graph, and every file, shell and network call they make waits at an
+          approval gate. I did not write its code. An AI coding agent did, from a specification I
+          wrote first and kept in the repository from the first commit. This page is about the
+          parts that were mine: what the specification fixed in advance, how the gate was
+          defined and tested, and how I decided each version was ready to ship.
+        </p>
+        <p class="hero-blurb role-line">
+          <strong>My role:</strong> the specification, every review, the testing and each
+          decision to ship. That is also where responsibility sits: "the AI wrote it" explains
+          nothing about a defect that shipped. Skill tags elsewhere on this site never point
+          here, because the code is not my evidence; the specification and the verification
+          record are.
+        </p>
+        <ul class="facts" role="list">
+          <li><strong>8 hard constraints</strong>, set before any code</li>
+          <li><strong>284 commits</strong> over six weeks</li>
+          <li><strong>15 tagged versions</strong> between 11 and 28 September</li>
+          <li><strong>1,100+ backend tests</strong></li>
+          <li><strong>1 gate</strong> for every file, shell and network call</li>
+          <li><strong>0 listeners</strong> beyond 127.0.0.1</li>
+        </ul>
+        <aside class="source-note">
+          <strong>Scope and sources:</strong> the repository is private, so nothing here links to
+          it, and every claim points at a file in it: the build specification, the architecture
+          guide, the release notes, the verification record and the test suite. The personal
+          research workflows I later ran on the app are left out; they are about how I use it, not
+          how it was built.
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== The problem ===================== -->
+    <section id="problem" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Agents That Can Touch Your Machine</h2>
+        <p>
+          An agent that can read files, run shell commands and fetch pages is useful for exactly
+          the reason it is dangerous. The specification's reason for its strictest rule says it
+          plainly: unchecked tool calls are the failure mode behind dozens of security advisories
+          in comparable projects. So the question was never whether to put a person in the loop,
+          but where the loop sits and what nobody can route around.
+        </p>
+        <p>
+          The other requirement came from who would use it. The success criterion, written before
+          any code, was that someone who is not a developer double-clicks an installer, types a
+          task, and watches every spawn, tool call, handoff and completion, with no terminal,
+          no Docker and no configuration files.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== The specification ===================== -->
+    <section id="spec" class="section">
+      <div class="container prose">
+        <h2 class="section-title">The Specification Came First</h2>
+        <p>
+          The build specification was in the first commit, on 9 September, and every session with
+          the agent started by reading it. Its first section is a table of hard constraints, each
+          with the reason it exists, and an instruction to stop rather than work around any of
+          them. Five of the eight:
+        </p>
+        <ul class="layer-stack" role="list">
+          <li class="layer"><b>No agent framework</b><span>The orchestration loop is written by hand, because the live graph only works if the app owns its event stream.</span></li>
+          <li class="layer"><b>Everything binds 127.0.0.1, hardcoded</b><span>Nothing reachable off the machine means nothing to expose by accident.</span></li>
+          <li class="layer"><b>Credentials live in the OS keychain</b><span>Never in an environment file, the database, a log or a command line.</span></li>
+          <li class="layer"><b>Every file, shell and network call passes an approval gate</b><span>No exceptions, and no privileged path for any channel.</span></li>
+          <li class="layer"><b>Chat channels act on explicit commands only</b><span>Ambient messages never reach an agent's context, which closes the door on indirect prompt injection.</span></li>
+        </ul>
+        <p>
+          The specification also told the agent how to work, and those rules are the part I would
+          reuse on any project. One phase per session, then stop and report what was built, what
+          was actually run and what was not verified. Never call something working without having
+          executed it. Write the test before the feature in the three places where silent bugs get
+          expensive: the event store, the spending ledger and the sandbox. Report a failed approach
+          instead of quietly substituting another. Ask before deviating from a constraint.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Architecture ===================== -->
+    <section id="architecture" class="section">
+      <div class="container prose">
+        <h2 class="section-title">One Idea Everything Hangs Off</h2>
+        <p>
+          Every agent action is an append-only event. The window only projects that log, so a live
+          run and a replay share the same code, and a window that reconnects picks up from the last
+          sequence number it saw. The rule that follows is the one the specification states most
+          bluntly: never send an ad-hoc message to the window; fix the event contract instead.
+        </p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
+            <svg class="fig-svg" viewBox="0 0 900 462" role="img" aria-labelledby="ab-arch-title ab-arch-desc">
+              <title id="ab-arch-title">What runs where in AgentBase</title>
+              <desc id="ab-arch-desc">Inside a boundary labeled this computer, where everything binds 127.0.0.1: the desktop app, a Tauri shell, exchanges HTTP requests and a server-sent event stream with the sidecar. The sidecar, FastAPI on one local port, holds the orchestrator, which reaches the tools only through the approval gate. The sidecar writes events to SQLite, the append-only log, and sends updates to a Discord adapter that acts on explicit commands only. Outside the boundary, the model provider API is reached over HTTPS, the only traffic that leaves the machine.</desc>
+              <defs>
+                <marker id="ab-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" />
+                </marker>
+                <marker id="ab-arrow-acc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" />
+                </marker>
+              </defs>
+              <text x="12" y="24" class="fig-panel-title">What runs where</text>
+              <rect class="fig-box-muted" x="10" y="44" width="880" height="310" rx="12" />
+              <text x="26" y="68" class="fig-tick">This computer: everything binds 127.0.0.1</text>
+
+              <rect class="fig-box" x="40" y="86" width="240" height="96" rx="8" />
+              <text x="160" y="118" text-anchor="middle" class="fig-label">Desktop app</text>
+              <text x="160" y="142" text-anchor="middle" class="fig-tick">Tauri shell, Rust</text>
+              <text x="160" y="164" text-anchor="middle" class="fig-tick">hosts the React window</text>
+
+              <rect class="fig-box" x="40" y="240" width="240" height="86" rx="8" />
+              <text x="160" y="270" text-anchor="middle" class="fig-label">SQLite</text>
+              <text x="160" y="294" text-anchor="middle" class="fig-tick">append-only event log,</text>
+              <text x="160" y="314" text-anchor="middle" class="fig-tick">runs and spending</text>
+
+              <rect class="fig-box" x="340" y="80" width="320" height="246" rx="8" />
+              <text x="500" y="108" text-anchor="middle" class="fig-label">Sidecar</text>
+              <text x="500" y="130" text-anchor="middle" class="fig-tick">FastAPI, Python, one local port</text>
+              <rect class="fig-box" x="360" y="150" width="130" height="46" rx="6" />
+              <text x="425" y="179" text-anchor="middle" class="fig-label">Orchestrator</text>
+              <rect class="fig-box-accent" x="510" y="150" width="130" height="46" rx="6" />
+              <text x="575" y="179" text-anchor="middle" class="fig-label fig-label-hero">Approval gate</text>
+              <rect class="fig-box" x="510" y="222" width="130" height="64" rx="6" />
+              <text x="575" y="249" text-anchor="middle" class="fig-label">Tools</text>
+              <text x="575" y="272" text-anchor="middle" class="fig-tick">files, shell, web</text>
+              <path class="fig-line-accent" d="M490 173 H508" marker-end="url(#ab-arrow-acc)" />
+              <path class="fig-line-accent" d="M575 196 V220" marker-end="url(#ab-arrow-acc)" />
+
+              <rect class="fig-box" x="720" y="110" width="150" height="72" rx="8" />
+              <text x="795" y="140" text-anchor="middle" class="fig-label">Discord</text>
+              <text x="795" y="164" text-anchor="middle" class="fig-tick">commands only</text>
+
+              <path class="fig-line" d="M280 116 H338" marker-end="url(#ab-arrow)" />
+              <text x="309" y="108" text-anchor="middle" class="fig-tick">HTTP</text>
+              <path class="fig-line" d="M340 152 H282" marker-end="url(#ab-arrow)" />
+              <text x="309" y="172" text-anchor="middle" class="fig-tick">SSE</text>
+              <path class="fig-line" d="M340 283 H282" marker-end="url(#ab-arrow)" />
+              <text x="309" y="274" text-anchor="middle" class="fig-tick">events</text>
+              <path class="fig-line" d="M660 146 H718" marker-end="url(#ab-arrow)" />
+              <path class="fig-line" d="M500 326 V390" marker-end="url(#ab-arrow)" />
+              <text x="512" y="364" class="fig-tick">HTTPS</text>
+
+              <rect class="fig-box" x="340" y="392" width="320" height="58" rx="8" />
+              <text x="500" y="416" text-anchor="middle" class="fig-label">Model provider API</text>
+              <text x="500" y="438" text-anchor="middle" class="fig-tick">the only traffic that leaves the machine</text>
+            </svg>
+          </div>
+          <figcaption class="figcaption">
+            Drawn from the specification's own architecture section. The orchestrator never calls a
+            tool directly: every call goes through the gate, and every step lands in the event log
+            the window reads.
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== The gate ===================== -->
+    <section id="gate" class="section">
+      <div class="container prose">
+        <h2 class="section-title">The Gate, and the Test That Defines It</h2>
+        <p>
+          Every tool declares a risk level. A medium or high risk call writes an approval request
+          to the event log and blocks until someone answers it; a low risk call, reading inside the
+          workspace, may be answered by policy. A path outside the workspace is refused before the
+          question is even asked, and a shell command has a hard timeout that ends its whole
+          process tree. The question itself had to be legible to a person, not raw JSON:
+          <q>Agent "researcher" wants to delete report.docx: Allow / Deny</q>.
+        </p>
+        <p>
+          What made the gate a requirement rather than a description was its acceptance line, in
+          the specification before the feature existed: an agent instructed to write outside the
+          workspace root is blocked at the sandbox layer, with the denial visible in the event log.
+          The test of that name,
+          <code>test_an_agent_told_to_write_outside_the_workspace_is_blocked</code>, is in the
+          suite.
+        </p>
+        <p>
+          Later I changed the default so a fresh install answers low and medium risk calls by policy
+          and only stops for the rest. The architecture guide records the rule that change had to
+          keep: autonomy is a policy answer, never a bypass. Every call still goes through the gate
+          and is logged as answered automatically, with the rule that answered it; a shell command
+          always asks; and a migration kept every existing install on the answers it already had,
+          because a new default silently moves everyone who never chose.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== Verification ===================== -->
+    <section id="verification" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Shipped When Verified, Not When Written</h2>
+        <p>
+          The repository keeps a verification record whose first line sets its terms: results cover
+          only work actually executed. Each version shipped with release notes that say what changed
+          and, as often, what did not. One opens: <q>A frontend-only release. Nothing about the
+          sidecar, the event contract, the sandbox or the budget ledger changes.</q> That sentence is
+          a claim a reviewer can check against the diff, which is the point of writing it.
+        </p>
+        <p>
+          The specification asked for the test before the feature in the event store, the ledger
+          and the sandbox, and the backend suite grew past 1,100 tests. The pace is in the tags:
+          fifteen versions between 11 and 28 September, five of them on 19 September alone.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================== What I would change ===================== -->
+    <section id="change" class="section">
+      <div class="container prose">
+        <h2 class="section-title">What I Would Change</h2>
+        <ul class="limits" role="list">
+          <li><b>Fewer versions in one day.</b> Five releases on 19 September outran field testing: the next release opens by fixing four issues found in the first day after the one before it. A day of real use between versions would have caught them more cheaply.</li>
+          <li><b>Settle the default before the first install.</b> Moving from "ask for everything" to "answer low and medium by policy" was right, but doing it after people had installed it cost a migration. Defaults are decisions for every install that never changes them.</li>
+          <li><b>Name the isolation, then build it.</b> The specification says honestly that the shared build does not isolate shell commands at the operating-system level, and offers containers only as an option for my own instance. The honesty is right; the gap is still a gap.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section">
+      <div class="container prose">
+        <h2 class="section-title">Key Engineering Learnings</h2>
+        <ol class="learnings" role="list">
+          <li><b>A specification is a test plan someone else can run.</b> Constraints with reasons and acceptance lines told the agent what done meant, and told me what to check.</li>
+          <li><b>Owning the event stream is what makes a system observable.</b> Refusing a framework cost a hand-written loop and bought a live graph and a replay from one log.</li>
+          <li><b>Autonomy should be a policy answer, never a bypass.</b> An automatic yes still passes the gate and leaves a record.</li>
+          <li><b>Claim only what was executed.</b> The working rule I gave the agent is the one I hold myself to on this page.</li>
+        </ol>
+        <p class="entry-more"><a href="/#work">Back to portfolio</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Rivan Wong. Built with plain HTML and CSS, hosted on GitHub Pages.</p>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="Back to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="/assets/js/main.js?v=137a8ce7"></script>
+</body>
+</html>

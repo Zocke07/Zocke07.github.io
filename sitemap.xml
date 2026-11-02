@@ -2,6 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://zocke07.github.io/case-study-agentbase</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-agentbase"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-agentbase"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-agentbase"/>
+  </url>
+  <url>
     <loc>https://zocke07.github.io/case-study-ai-products</loc>
     <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-ai-products"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-ai-products"/>
@@ -72,6 +78,12 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/project-mobile-testing"/>
     <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/project-mobile-testing"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/project-mobile-testing"/>
+  </url>
+  <url>
+    <loc>https://zocke07.github.io/zh/case-study-agentbase</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-agentbase"/>
+    <xhtml:link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-agentbase"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-agentbase"/>
   </url>
   <url>
     <loc>https://zocke07.github.io/zh/case-study-ai-products</loc>

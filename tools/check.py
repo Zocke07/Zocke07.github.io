@@ -548,7 +548,14 @@ def check_copy():
                     continue
                 seen.add(word)
                 fail("copy", f"{f}: {m.group(0)!r} ({why})")
-    return "US English + punctuation, prose and metadata"
+    # Both languages: a link says where it goes, so it carries no arrow. The
+    # redesign took them off every page; this keeps them off.
+    for f in PAGES:
+        for m in re.finditer(r"<a\b[^>]*>([^<]*)</a>", read(f)):
+            text = m.group(1).strip()
+            if text.startswith(("←", "→")) or text.endswith(("←", "→")):
+                fail("copy", f"{f}: link text {text!r} carries an arrow")
+    return "US English + punctuation, prose and metadata, no arrows on links"
 
 
 # ---------- social cards ----------

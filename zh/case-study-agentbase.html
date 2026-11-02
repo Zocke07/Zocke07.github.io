@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>規格是我寫的，程式碼由 AI 代理撰寫 &#183; 黃家輝</title>
+  <meta name="description" content="AgentBase，一個讓 AI 代理在審核關卡下工作的本機優先桌面應用程式。程式碼由 AI 代理依我寫的規格撰寫；這一頁談的是規格、關卡，以及它如何被驗證。" />
+  <meta property="og:title" content="規格是我寫的，程式碼由 AI 代理撰寫" />
+  <meta property="og:description" content="一個本機優先的桌面應用程式：AI 代理的每一次檔案、shell 與網路操作都要通過審核關卡，依一份含有硬性限制與驗收測試的規格建置。" />
+  <meta property="og:locale" content="zh_TW" />
+  <meta property="og:locale:alternate" content="en_US" />
+  <meta property="og:type" content="article" />
+  <meta property="og:url" content="https://zocke07.github.io/zh/case-study-agentbase" />
+  <meta property="og:image" content="https://zocke07.github.io/assets/img/og/agentbase-zh.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="案例研究：AgentBase，在審核關卡下工作的 AI 代理，依一份書面規格建置。" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23F2F4F0'/%3E%3Cpath d='M44 32H64' stroke='%23B84A0B' stroke-width='6'/%3E%3Ccircle cx='28' cy='32' r='14' fill='%23F2F4F0' stroke='%23B84A0B' stroke-width='7'/%3E%3C/svg%3E" />
+  <script>
+    // Set the theme before styles load to avoid a flash of the wrong theme, and
+    // mark that scripts run, so the opening may hide what it is about to reveal.
+    // Reading the stored choice is wrapped because touching localStorage throws
+    // where storage is blocked (cookies denied, a sandboxed iframe).
+    (function () {
+      var d = document.documentElement, saved = null;
+      d.classList.add("js");
+      try { saved = localStorage.getItem("theme"); } catch (e) {}
+      d.dataset.theme = saved ||
+        (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    })();
+  </script>
+  <link rel="canonical" href="https://zocke07.github.io/zh/case-study-agentbase" />
+  <link rel="alternate" hreflang="en" href="https://zocke07.github.io/case-study-agentbase" />
+  <link rel="alternate" hreflang="zh-Hant-TW" href="https://zocke07.github.io/zh/case-study-agentbase" />
+  <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-agentbase" />
+  <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
+  <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+
+  <!-- ===================== Header / Nav ===================== -->
+  <header class="site-header">
+    <nav class="nav" aria-label="主要導覽">
+      <a class="nav-brand" href="/zh/"><i aria-hidden="true"></i>黃家輝</a>
+      <div class="nav-right">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-menu"><span class="nav-toggle-icon" aria-hidden="true"><i></i><i></i></span>選單</button>
+        <ul id="nav-menu" class="nav-menu" role="list">
+          <li><a href="/zh/#work">作品</a></li>
+          <li><a href="/zh/#experience">經歷</a></li>
+          <li><a href="/zh/#about">關於我</a></li>
+          <li><a href="/zh/#education">學歷</a></li>
+          <li><a href="/zh/#skills">技能</a></li>
+          <li><a href="/zh/#contact">聯絡方式</a></li>
+        </ul>
+        <a class="lang-toggle" href="/case-study-agentbase" hreflang="en" lang="en"
+           aria-label="Switch to English">EN</a>
+        <button class="theme-toggle" type="button" aria-pressed="false" aria-label="深色主題"
+                data-label-dark="深色主題" data-label-light="淺色主題">
+          <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/></svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div class="backdrop is-short" aria-hidden="true"></div>
+    <div class="rail" aria-hidden="true"><span class="rail-fill"></span><span class="rail-tip"></span></div>
+    <!-- ===================== Case study hero ===================== -->
+    <section class="case-hero">
+      <div class="container">
+        <dl class="summary">
+          <div><dt>形式</dt><dd class="format">案例研究</dd></div>
+          <div><dt>專案</dt><dd>個人專案；程式碼由 AI 代理依我寫的規格撰寫</dd></div>
+          <div><dt>工具</dt><dd>Python、FastAPI、Tauri、React、SQLite</dd></div>
+          <div><dt>時間</dt><dd>2026 年 9 月至 10 月</dd></div>
+          <div><dt>原始碼</dt><dd>不公開的程式碼庫</dd></div>
+        </dl>
+        <h1>規格是我寫的，程式碼由 AI 代理撰寫</h1>
+        <p class="hero-blurb">AgentBase 是一個本機優先的桌面應用程式：AI 代理處理任務時，你可以在一張即時更新的圖上看著它們工作，而它們的每一次檔案、shell 與網路操作，都要先在審核關卡前等待。它的程式碼不是我寫的，是一個 AI 程式設計代理依照我先寫好的規格寫成的；那份規格從第一個 commit 起就放在程式碼庫裡。這一頁談的是屬於我的部分：規格事先定下了什麼、關卡如何被定義與測試，以及我如何判斷每一個版本可以發布。</p>
+        <p class="hero-blurb role-line"><strong>我的角色：</strong>規格、每一次審查、測試，以及每一次發布的決定。責任也在這裡：「是 AI 寫的」解釋不了任何一個上線的缺陷。這個網站其他地方的技能標籤從不連到這一頁，因為程式碼不是我的證據；規格與驗證紀錄才是。</p>
+        <ul class="facts" role="list">
+          <li><strong>8 條硬性限制</strong>，在寫任何程式碼之前定下</li>
+          <li><strong>284 個 commit</strong>，歷時六週</li>
+          <li><strong>15 個標記版本</strong>，在 9 月 11 日到 28 日之間</li>
+          <li><strong>1,100 個以上</strong>後端測試</li>
+          <li><strong>1 道關卡</strong>，攔下每一次檔案、shell 與網路操作</li>
+          <li><strong>0 個</strong> 127.0.0.1 以外的監聽位址</li>
+        </ul>
+        <aside class="source-note"><strong>範圍與來源：</strong>程式碼庫不公開，所以這裡沒有任何連結指向它，但每一項說法都對應到其中的檔案：建置規格、架構指南、版本說明、驗證紀錄與測試套件。我後來在這個應用程式上跑的個人研究流程不在這一頁裡；那是我怎麼使用它，不是它怎麼被建置的。</aside>
+      </div>
+    </section>
+
+    <!-- ===================== The problem ===================== -->
+    <section id="problem" class="section">
+      <div class="container prose">
+        <h2 class="section-title">能動到你電腦的代理</h2>
+        <p>一個能讀檔、執行 shell 指令、抓取網頁的代理，之所以有用，正是因為它危險。規格為它最嚴格的一條規則寫下的理由說得很直白：未經檢查的工具呼叫，正是同類專案裡數十個安全公告背後的失效模式。所以問題從來不是要不要讓人參與把關，而是把關放在哪裡，以及什麼東西是誰都繞不過去的。</p>
+        <p>另一項要求來自使用它的人。在寫任何程式碼之前就寫下的成功標準是：一個不是開發者的人，雙擊安裝程式、輸入一項任務，就能看著每一次代理產生、工具呼叫、交接與完成，不需要終端機、不需要 Docker，也不需要任何設定檔。</p>
+      </div>
+    </section>
+
+    <!-- ===================== The specification ===================== -->
+    <section id="spec" class="section">
+      <div class="container prose">
+        <h2 class="section-title">先有規格</h2>
+        <p>建置規格在 9 月 9 日的第一個 commit 裡就已經存在，而每一次和代理的工作階段都從讀它開始。它的第一節是一張硬性限制表，每一條都附上存在的理由，並要求遇到衝突時先停下來，而不是想辦法繞過去。八條裡的五條：</p>
+        <ul class="layer-stack" role="list">
+          <li class="layer"><b>不使用代理框架</b><span>調度迴圈全部自己寫，因為即時圖只有在應用程式擁有自己的事件流時才行得通。</span></li>
+          <li class="layer"><b>一律綁定 127.0.0.1，寫死在程式裡</b><span>沒有任何東西能從本機以外連到，就沒有東西會意外暴露。</span></li>
+          <li class="layer"><b>憑證存在作業系統的鑰匙圈裡</b><span>絕不放在環境變數檔、資料庫、日誌或命令列參數中。</span></li>
+          <li class="layer"><b>每一次檔案、shell 與網路操作都要通過審核關卡</b><span>沒有例外，任何通道都沒有特權路徑。</span></li>
+          <li class="layer"><b>聊天通道只回應明確的指令</b><span>頻道裡的一般訊息永遠不會進入代理的上下文，藉此擋下間接的提示注入。</span></li>
+        </ul>
+        <p>規格也規定了代理該怎麼工作，而這些規則是我在任何專案都會沿用的部分：每個工作階段只做一個階段，做完就停下來回報建了什麼、實際執行了什麼、還有什麼沒驗證；沒有實際執行過，就不能說它可以運作；在三個安靜的錯誤最昂貴的地方，也就是事件儲存、花費帳本與沙箱，先寫測試再寫功能；一條路走不通就回報失敗，而不是悄悄換一條路；偏離任何一條限制之前先詢問。</p>
+      </div>
+    </section>
+
+    <!-- ===================== Architecture ===================== -->
+    <section id="architecture" class="section">
+      <div class="container prose">
+        <h2 class="section-title">一切都掛在同一個想法上</h2>
+        <p>代理的每一個動作，都是一筆只能附加的事件。視窗只負責把這份紀錄投影出來，所以即時執行與重播共用同一套程式碼，而一個重新連線的視窗，會從它看過的最後一個序號接著讀。由此而來的規則，是規格說得最不留情面的一條：永遠不要臨時對視窗送一則訊息；改的是事件合約。</p>
+        <figure class="figure">
+          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
+            <svg class="fig-svg" viewBox="0 0 900 462" role="img" aria-labelledby="ab-arch-title ab-arch-desc">
+              <title id="ab-arch-title">AgentBase 中各元件在哪裡執行</title>
+              <desc id="ab-arch-desc">在標示為「這台電腦」的邊界內，一切都綁定 127.0.0.1：桌面應用程式（Tauri 外殼）與 sidecar 之間交換 HTTP 請求與伺服器推送的事件流。sidecar 是只開一個本機連接埠的 FastAPI，裡面的調度器只能透過審核關卡使用工具。sidecar 把事件寫進只能附加的 SQLite 紀錄，並把更新送到只回應明確指令的 Discord 轉接器。邊界外的模型供應商 API 以 HTTPS 連線，是唯一離開這台電腦的流量。</desc>
+              <defs>
+                <marker id="ab-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" />
+                </marker>
+                <marker id="ab-arrow-acc" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" />
+                </marker>
+              </defs>
+              <text x="12" y="24" class="fig-panel-title">什麼在哪裡執行</text>
+              <rect class="fig-box-muted" x="10" y="44" width="880" height="310" rx="12" />
+              <text x="26" y="68" class="fig-tick">這台電腦：一切都綁定 127.0.0.1</text>
+
+              <rect class="fig-box" x="40" y="86" width="240" height="96" rx="8" />
+              <text x="160" y="118" text-anchor="middle" class="fig-label">桌面應用程式</text>
+              <text x="160" y="142" text-anchor="middle" class="fig-tick">Tauri 外殼，Rust</text>
+              <text x="160" y="164" text-anchor="middle" class="fig-tick">承載 React 視窗</text>
+
+              <rect class="fig-box" x="40" y="240" width="240" height="86" rx="8" />
+              <text x="160" y="270" text-anchor="middle" class="fig-label">SQLite</text>
+              <text x="160" y="294" text-anchor="middle" class="fig-tick">只能附加的事件紀錄，</text>
+              <text x="160" y="314" text-anchor="middle" class="fig-tick">執行與花費</text>
+
+              <rect class="fig-box" x="340" y="80" width="320" height="246" rx="8" />
+              <text x="500" y="108" text-anchor="middle" class="fig-label">Sidecar</text>
+              <text x="500" y="130" text-anchor="middle" class="fig-tick">FastAPI，Python，單一本機連接埠</text>
+              <rect class="fig-box" x="360" y="150" width="130" height="46" rx="6" />
+              <text x="425" y="179" text-anchor="middle" class="fig-label">調度器</text>
+              <rect class="fig-box-accent" x="510" y="150" width="130" height="46" rx="6" />
+              <text x="575" y="179" text-anchor="middle" class="fig-label fig-label-hero">審核關卡</text>
+              <rect class="fig-box" x="510" y="222" width="130" height="64" rx="6" />
+              <text x="575" y="249" text-anchor="middle" class="fig-label">工具</text>
+              <text x="575" y="272" text-anchor="middle" class="fig-tick">檔案、shell、網路</text>
+              <path class="fig-line-accent" d="M490 173 H508" marker-end="url(#ab-arrow-acc)" />
+              <path class="fig-line-accent" d="M575 196 V220" marker-end="url(#ab-arrow-acc)" />
+
+              <rect class="fig-box" x="720" y="110" width="150" height="72" rx="8" />
+              <text x="795" y="140" text-anchor="middle" class="fig-label">Discord</text>
+              <text x="795" y="164" text-anchor="middle" class="fig-tick">只回應指令</text>
+
+              <path class="fig-line" d="M280 116 H338" marker-end="url(#ab-arrow)" />
+              <text x="309" y="108" text-anchor="middle" class="fig-tick">HTTP</text>
+              <path class="fig-line" d="M340 152 H282" marker-end="url(#ab-arrow)" />
+              <text x="309" y="172" text-anchor="middle" class="fig-tick">SSE</text>
+              <path class="fig-line" d="M340 283 H282" marker-end="url(#ab-arrow)" />
+              <text x="309" y="274" text-anchor="middle" class="fig-tick">事件</text>
+              <path class="fig-line" d="M660 146 H718" marker-end="url(#ab-arrow)" />
+              <path class="fig-line" d="M500 326 V390" marker-end="url(#ab-arrow)" />
+              <text x="512" y="364" class="fig-tick">HTTPS</text>
+
+              <rect class="fig-box" x="340" y="392" width="320" height="58" rx="8" />
+              <text x="500" y="416" text-anchor="middle" class="fig-label">模型供應商 API</text>
+              <text x="500" y="438" text-anchor="middle" class="fig-tick">唯一離開這台電腦的流量</text>
+            </svg>
+          </div>
+          <figcaption class="figcaption">依規格自己的架構章節繪製。調度器從不直接呼叫工具：每一次呼叫都經過關卡，而每一步都會寫進視窗讀取的事件紀錄。</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===================== The gate ===================== -->
+    <section id="gate" class="section">
+      <div class="container prose">
+        <h2 class="section-title">關卡，以及定義它的那個測試</h2>
+        <p>每一個工具都宣告自己的風險等級。中、高風險的呼叫會在事件紀錄裡寫下一筆審核請求，並一直等到有人回應；低風險的呼叫，也就是在工作區內讀取，可以由政策自動回應。工作區以外的路徑，在問題被提出之前就會被拒絕；shell 指令有硬性的逾時，時間一到就結束整棵行程樹。問題本身必須是人看得懂的句子，而不是原始 JSON：<q>Agent "researcher" wants to delete report.docx: Allow / Deny</q>。</p>
+        <p>讓關卡成為一項要求、而不只是一段描述的，是它的驗收條件；在功能存在之前，它就已經寫在規格裡：一個被指示寫入工作區根目錄以外位置的代理，會在沙箱層被擋下，而且拒絕紀錄會出現在事件紀錄中。同名的測試 <code>test_an_agent_told_to_write_outside_the_workspace_is_blocked</code> 就在測試套件裡。</p>
+        <p>後來我改了預設值，讓新安裝的版本由政策自動回應低、中風險的呼叫，只在其餘情況停下來詢問。架構指南記下了這項改動必須守住的規則：自主是政策給出的回答，永遠不是繞道。每一次呼叫仍然經過關卡，並以「自動回應」連同作出回應的規則一起記錄；shell 指令永遠都會詢問；另外有一個遷移，讓每一個既有的安裝維持原本的回答，因為新的預設值會默默改變每一個從沒做過選擇的人。</p>
+      </div>
+    </section>
+
+    <!-- ===================== Verification ===================== -->
+    <section id="verification" class="section">
+      <div class="container prose">
+        <h2 class="section-title">驗證過才發布，而不是寫完就發布</h2>
+        <p>程式碼庫裡有一份驗證紀錄，第一行就定下它的規矩：結果只涵蓋實際執行過的工作。每一個版本都附有版本說明，寫出改了什麼，也同樣常寫出沒改什麼。其中一份是這樣開頭的：<q>A frontend-only release. Nothing about the sidecar, the event contract, the sandbox or the budget ledger changes.</q>這句話是審查者可以拿 diff 去核對的說法，而這正是把它寫下來的意義。</p>
+        <p>規格要求在事件儲存、帳本與沙箱這三處先寫測試再寫功能，後端測試套件也成長到 1,100 個以上。節奏寫在標記裡：9 月 11 日到 28 日之間共 15 個版本，光是 9 月 19 日一天就有五個。</p>
+      </div>
+    </section>
+
+    <!-- ===================== What I would change ===================== -->
+    <section id="change" class="section">
+      <div class="container prose">
+        <h2 class="section-title">我會改變的地方</h2>
+        <ul class="limits" role="list">
+          <li><b>一天裡少發幾個版本。</b>9 月 19 日的五個版本跑在實際使用測試的前面：下一個版本一開頭，就在修正前一版發布後第一天找到的四個問題。版本之間留一天實際使用，能用更低的代價抓到它們。</li>
+          <li><b>在第一次安裝前就定好預設值。</b>從「什麼都問」改成「低、中風險由政策回應」是對的，但在已經有人安裝之後才改，就得多付一個遷移的代價。預設值是替每一個從不更改它的安裝做的決定。</li>
+          <li><b>先說清楚隔離做到哪裡，再把它做出來。</b>規格誠實地寫明，共用版本沒有在作業系統層級隔離 shell 指令，並且只把容器當成我自己那一份的選項。誠實是對的，但缺口仍然是缺口。</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== Learnings ===================== -->
+    <section id="learnings" class="section">
+      <div class="container prose">
+        <h2 class="section-title">關鍵工程心得</h2>
+        <ol class="learnings" role="list">
+          <li><b>規格是一份別人可以照著執行的測試計畫。</b>附上理由與驗收條件的限制，告訴代理「完成」是什麼意思，也告訴我該檢查什麼。</li>
+          <li><b>擁有事件流，系統才看得見。</b>拒絕框架的代價是一個自己寫的迴圈，換來的是從同一份紀錄而來的即時圖與重播。</li>
+          <li><b>自主應該是政策給出的回答，永遠不是繞道。</b>一個自動的「好」仍然要通過關卡，並留下紀錄。</li>
+          <li><b>只說實際執行過的事。</b>我給代理的那條工作規則，也是我在這一頁對自己的要求。</li>
+        </ol>
+        <p class="entry-more"><a href="/zh/#work">回到作品集</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> 黃家輝。以純 HTML 與 CSS 打造，部署於 GitHub Pages。</p>
+    </div>
+  </footer>
+
+  <button class="to-top" type="button" aria-label="回到頁首">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
+  </button>
+
+  <script src="/assets/js/main.js?v=137a8ce7"></script>
+</body>
+</html>

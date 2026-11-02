@@ -6,14 +6,13 @@
     python3 tools/og.py --all            # English pages too (see below)
     python3 tools/og.py --check          # exit 1 if a card has gone stale
 
-The card text is read out of the page: the hero kicker, og:title, and
-og:description. Nothing is restated here, so a card cannot drift from the page
-it belongs to.
+The card text is read out of the page: the summary strip's format and project,
+og:title, and og:description. Nothing is restated here, so a card cannot drift
+from the page it belongs to.
 
-The English cards were drawn by hand before this existed and are not identical
-to what this produces, so they are left alone unless --all is passed. The
-palette and geometry below were measured off assets/img/og/lmad.png, so the two
-sets sit in the same family.
+Every card, English and Chinese, is drawn by this script in the site's dark
+theme: warm charcoal, the faint dot grid, the one orange, and Recursive from
+assets/fonts. --all redraws the English set as well.
 
 Rendering is Chrome headless at exactly 1200x630. That means the system's own
 CJK font (PingFang TC) does the Chinese, which is what the site uses too.
@@ -45,72 +44,66 @@ CHROME = next((p for p in [
     shutil.which("chromium") or "",
 ] if p and Path(p).exists()), None)
 
-# Measured off the hand-drawn cards, so a generated card matches the family.
+# The site's dark theme, so a card looks like the page it opens.
 CSS = """
+  @font-face{font-family:"Recursive";src:url("{FONT}") format("woff2");font-weight:300 1000}
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{width:1200px;height:630px}
   body{
-    background:#0f141c;
-    background-image:radial-gradient(60% 75% at 78% 42%,
-      rgba(36,86,166,.34) 0%, rgba(36,86,166,.10) 45%, transparent 72%);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
-      "Helvetica Neue",Arial,"PingFang TC","Noto Sans TC",
-      "Microsoft JhengHei",sans-serif;
+    background-color:#181A17;
+    background-image:
+      radial-gradient(55% 70% at 86% 8%, rgba(255,148,71,.17), transparent 70%),
+      radial-gradient(circle, rgba(236,232,220,.10) 1px, transparent 1.6px);
+    background-size:auto, 22px 22px;
+    font-family:"Recursive","PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+    color:#ECE8DC;
     -webkit-font-smoothing:antialiased;
-    padding:88px;
+    padding:84px 88px;
     display:flex;flex-direction:column;
   }
-  /* Top-anchored, as the hand-drawn cards are: the kicker sits on the
-     padding line and the footer is pinned to the bottom. */
   .top{flex:1;display:flex;flex-direction:column;justify-content:flex-start}
-  .kicker{
-    color:#7aa7e8;font-size:19px;font-weight:700;
-    text-transform:uppercase;letter-spacing:.18em;line-height:1;
-  }
-  /* uppercase and tight tracking do nothing for CJK, and 19px Han strokes
-     read far lighter than 19px caps, so the Chinese kicker is set larger. */
-  .kicker.cjk{font-size:23px;letter-spacing:.08em;text-transform:none}
+  .kicker{display:flex;align-items:center;gap:18px;font-size:22px;line-height:1.2}
+  .fmt{display:inline-flex;align-items:center;gap:14px;color:#FF9447;font-weight:700}
+  .fmt::before{content:"";width:14px;height:14px;border-radius:50%;background:#FF9447;
+    box-shadow:0 0 0 6px rgba(255,148,71,.18)}
+  .sep{width:6px;height:6px;border-radius:50%;background:#737869}
+  .proj{color:#ABA799}
+  .cjk .fmt,.cjk .proj{font-size:24px}
   h1{
-    color:#f2f5fa;font-size:64px;font-weight:700;line-height:1.19;
-    letter-spacing:-.015em;margin-top:40px;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-    overflow:hidden;
-    /* Two even lines rather than a long one and an orphan. */
+    font-size:66px;font-weight:800;line-height:1.12;letter-spacing:-.025em;margin-top:44px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
     text-wrap:balance;
   }
-  h1.cjk{letter-spacing:.01em;font-size:72px;line-height:1.24}
+  h1.cjk{font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+    font-weight:600;letter-spacing:.02em;font-size:70px;line-height:1.25}
   h1.long{font-size:56px}
   h1.cjk.long{font-size:60px}
-  .rule{width:117px;height:5px;background:#2f6fd0;margin-top:42px;border-radius:3px}
-  .cjk ~ .rule,
-  h1.cjk + .rule{margin-top:48px}
+  .wire{position:relative;width:150px;height:3px;margin:40px 0 0 7px;border-radius:2px;
+    background:linear-gradient(90deg,#FF9447,#FFB680)}
+  .wire::before{content:"";position:absolute;left:-7px;top:-6px;width:15px;height:15px;
+    border-radius:50%;background:#FF9447}
   p{
-    color:#9aa7ba;font-size:24px;line-height:1.58;margin-top:36px;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
-    overflow:hidden;
+    color:#ABA799;font-size:25px;line-height:1.55;margin-top:34px;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
     text-wrap:balance;
   }
-  p.cjk{font-size:25px;line-height:1.66;margin-top:40px}
-  .foot{display:flex;align-items:center;height:62px}
-  .badge{
-    width:62px;height:62px;border-radius:15px;background:#2456a6;
-    color:#fff;font-family:Georgia,serif;font-size:27px;font-weight:700;
-    display:flex;align-items:center;justify-content:center;letter-spacing:.01em;
-  }
-  .who{color:#f2f5fa;font-size:26px;font-weight:700;margin-left:19px}
-  .site{color:#8593a6;font-size:23px;margin-left:auto}
+  p.cjk{font-size:26px;line-height:1.7;margin-top:38px}
+  .foot{display:flex;align-items:center;height:56px}
+  .ring{width:30px;height:30px;border-radius:50%;border:5px solid #FF9447}
+  .who{font-size:27px;font-weight:760;margin-left:16px}
+  .site{color:#959285;font-size:23px;margin-left:auto}
 """
 
 TEMPLATE = """<!DOCTYPE html><html lang="{lang}"><head><meta charset="UTF-8">
 <style>{css}</style></head><body>
 <div class="top">
-  <div class="kicker {cjk}">{kicker}</div>
+  <div class="kicker {cjk}"><span class="fmt">{fmt}</span><span class="sep"></span><span class="proj">{proj}</span></div>
   <h1 class="{cjk}{long}">{title}</h1>
-  <div class="rule"></div>
+  <div class="wire"></div>
   <p class="{cjk}">{desc}</p>
 </div>
 <div class="foot">
-  <div class="badge">RW</div>
+  <div class="ring"></div>
   <div class="who">{who}</div>
   <div class="site">zocke07.github.io</div>
 </div>
@@ -122,35 +115,44 @@ def meta(text, prop):
     return html.unescape(m.group(1)) if m else ""
 
 
-def kicker_of(text):
-    m = re.search(r'<p class="hero-kicker">\s*(.*?)\s*</p>', text, re.S)
-    if not m:
-        return ""
-    return html.unescape(re.sub(r"<[^>]+>", "", m.group(1))).strip()
+def summary_of(text):
+    """The summary strip's format and project, the two facts a card leads with."""
+    fmt = re.search(r'<dd class="format">\s*(.*?)\s*</dd>', text, re.S)
+    if not fmt:
+        return "", ""
+    proj = re.search(r"<dd>\s*(.*?)\s*</dd>", text[fmt.end():], re.S)
+
+    def clean(m):
+        return html.unescape(re.sub(r"<[^>]+>", "", m.group(1))).strip() if m else ""
+
+    project = clean(proj)
+    # A long project line keeps its first clause: the card has one line for it.
+    if len(project) > 34:
+        project = re.split(r"[;,；，]", project)[0].strip()
+    return clean(fmt), project
 
 
 def card_for(page):
     text = (ROOT / page).read_text(encoding="utf-8")
     zh = page.startswith("zh/")
     title = meta(text, "og:title")
-    # The home card is the only one whose og:title is the name; its kicker is a
-    # location, which is not what a card wants to lead with.
-    kicker = kicker_of(text)
+    fmt, proj = summary_of(text)
     desc = meta(text, "og:description")
     # The home page is the one card not derived from an article. Its hero kicker
     # is a location and its og:description is a tagline, neither of which is
     # card copy, so the two lines it needs are written here.
     if page in ("index.html", "zh/index.html"):
-        kicker = "作品集" if zh else "PORTFOLIO"
+        fmt, proj = ("作品集", "新北市") if zh else ("Portfolio", "New Taipei, Taiwan")
         title = "黃家輝" if zh else "Rivan Wong"
-        desc = ("國立臺北科技大學資訊工程碩士，專注於軟體工程、"
-                "自動化測試與聯邦式學習安全。") if zh else \
-               "Computer Science M.S. graduate. Software Engineer, Security, Test Automation, in Taipei."
+        desc = ("軟體工程師，資訊工程碩士。自動化測試、後端服務"
+                "與聯邦式學習安全。") if zh else \
+               "Software engineer with an M.S. in Computer Science: test automation, backend services and federated learning security."
     return dict(
         lang="zh-Hant-TW" if zh else "en",
         cjk="cjk" if zh else "",
         long=" long" if (zh and len(title) > 15) or (not zh and len(title) > 46) else "",
-        kicker=html.escape(kicker),
+        fmt=html.escape(fmt),
+        proj=html.escape(proj),
         title=html.escape(title),
         desc=html.escape(desc),
         who="黃家輝" if zh else "Rivan Wong",
@@ -161,7 +163,8 @@ def render(page, out_png):
     if CHROME is None:
         sys.exit("No Chrome or Chromium found; cannot render cards.")
     spec = card_for(page)
-    doc = TEMPLATE.format(css=CSS, **spec)
+    css = CSS.replace("{FONT}", (ROOT / "assets/fonts/recursive.woff2").as_uri())
+    doc = TEMPLATE.format(css=css, **spec)
     with tempfile.TemporaryDirectory() as tmp:
         src = Path(tmp) / "card.html"
         src.write_text(doc, encoding="utf-8")
@@ -177,6 +180,7 @@ def render(page, out_png):
 ZH_PAGES = sorted(p.name for p in ROOT.glob("zh/*.html"))
 SLUG = {
     "index.html": "home", "case-study-ai-products.html": "ai",
+    "case-study-agentbase.html": "agentbase",
     "case-study-capstone.html": "capstone",
     "case-study-event-courier.html": "event-courier",
     "case-study-kitaliturgi.html": "kitaliturgi",
