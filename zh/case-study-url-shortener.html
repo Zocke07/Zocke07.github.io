@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-url-shortener" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -197,6 +197,16 @@ Location: https://spring.io/projects/spring-boot</code></pre>
         <p>
           代價立刻就來。如果短碼是 id 的函數，而 id 是那句 INSERT 發出來的，那短碼就不可能是同一句 INSERT 的一部分。於是建立一個短連結是兩句 SQL，不是一句。
         </p>
+        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="決策表，可捲動">
+          <table class="decision">
+            <caption>短碼從哪裡來：考慮過的選項</caption>
+            <thead><tr><th scope="col">選項</th><th scope="col">換來什麼</th><th scope="col">付出什麼</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">把網址雜湊後截短</th><td data-label="換來什麼">一句 SQL，不需要保存狀態</td><td data-label="付出什麼">兩個網址遲早會撞上同一個短碼，每次寫入都得帶著碰撞處理的分支</td></tr>
+              <tr class="is-chosen"><th scope="row" data-chosen="採用">該列自己 id 的 Base62</th><td data-label="換來什麼">不可能碰撞：編碼是一對一的映射，不是事後檢查</td><td data-label="付出什麼">id 來自那句 INSERT，所以建立一個連結需要兩句 SQL</td></tr>
+            </tbody>
+          </table>
+        </div>
         <figure class="figure">
           <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
             <svg class="fig-svg" viewBox="0 0 800 276" role="img" aria-labelledby="us-flow-title us-flow-desc">

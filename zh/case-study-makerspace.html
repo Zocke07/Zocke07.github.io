@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-makerspace" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -189,6 +189,16 @@
         <p>
           「同一台機器的兩筆預約不能重疊」這條規則，多數系統都寫在應用層：先讀出既有預約、判斷、再寫入。這中間讀和寫之間有一段競爭窗口，而當兩個人同時按下確認，你就是在那段窗口裡把機器弄丟的。PostgreSQL 可以把這條規則寫成資料表層級的約束，這也是它被選上的原因。
         </p>
+        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="決策表，可捲動">
+          <table class="decision">
+            <caption>「同一台機器的預約不可重疊」可以怎麼執行</caption>
+            <thead><tr><th scope="col">選項</th><th scope="col">換來什麼</th><th scope="col">付出什麼</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">在應用程式裡檢查：先讀、判斷、再寫入</th><td data-label="換來什麼">任何資料庫都能用</td><td data-label="付出什麼">讀取與寫入之間有競態空窗：兩個人同時確認，可能都成功</td></tr>
+              <tr class="is-chosen"><th scope="row" data-chosen="採用">PostgreSQL 的排除約束</th><td data-label="換來什麼">同一時段的兩筆並行寫入不可能都成功，而它建立的 GiST 索引也正好服務可用時段的查詢，約 2 毫秒</td><td data-label="付出什麼">有三個細節得做對：tstzrange、讓已取消預約釋出時段的 WHERE 子句，以及半開區間</td></tr>
+            </tbody>
+          </table>
+        </div>
         <pre class="snippet" tabindex="0" role="group" aria-label="程式碼範例，可捲動"><code><span class="cm">-- 001_create_schema.sql: 唯一一條資料庫自己守住的關鍵規則</span>
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 

@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-kitaliturgi" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -250,6 +250,16 @@ Post-Pentecost Ordinary Time Sundays 2026-2031: 102 of 154 differ
         <p>
           基督君王節並不像復活節那樣是可動節日。它的定義是將臨期前的最後一個主日，將臨期的定義是聖誕節前四個主日，而聖誕節不會動。所以它的位置完全不需要參照復活節就能決定，而且依定義，它就是常年期的第三十四個主日。那是一個固定點，而固定點正是一段計數該綁上去的東西。
         </p>
+        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="決策表，可捲動">
+          <table class="decision">
+            <caption>常年期的主日要怎麼編號</caption>
+            <thead><tr><th scope="col">選項</th><th scope="col">換來什麼</th><th scope="col">付出什麼</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">從年初往前累加</th><td data-label="換來什麼">跟著年曆本身的閱讀順序</td><td data-label="付出什麼">四旬期與復活期佔掉的週數不固定，所以會漂移：154 個主日裡有 102 個算錯</td></tr>
+              <tr class="is-chosen"><th scope="row" data-chosen="採用">從基督君王節往回數</th><td data-label="換來什麼">它永遠是第 34 個主日，所以只要一次減法，不必依賴復活節</td><td data-label="付出什麼">週數必須四捨五入而不是截斷，否則跨過日光節約時間的邊界就會少算一個主日</td></tr>
+            </tbody>
+          </table>
+        </div>
         <p class="snippet-caption">替換後的版本。一行，而且它永遠不需要知道今年稍早發生過什麼。照原樣引用，所以它組出來的字串仍然是「Minggu Biasa」，也就是印尼文的常年期。</p>
         <pre class="snippet" tabindex="0" role="group" aria-label="程式碼，可捲動"><code><span class="cm">// Ordinary Time after Pentecost: Lent and Easter consume a variable number of
 // weeks, so counting forward is guaranteed to drift. Christ the King is always

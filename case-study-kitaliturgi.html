@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-kitaliturgi" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -316,6 +316,16 @@ Post-Pentecost Ordinary Time Sundays 2026-2031: 102 of 154 differ
           definition it is the thirty-fourth Sunday in Ordinary Time. That is a fixed point, and
           a fixed point is the thing a count wants to be tied to.
         </p>
+        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="Decision table, scrollable">
+          <table class="decision">
+            <caption>How to number the Sundays of Ordinary Time</caption>
+            <thead><tr><th scope="col">Option</th><th scope="col">What it buys</th><th scope="col">What it costs</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Count forward from the start of the year</th><td data-label="What it buys">Follows the calendar's own reading order</td><td data-label="What it costs">Lent and Easter take a variable number of weeks, so the count drifts: 102 of 154 Sundays came out wrong</td></tr>
+              <tr class="is-chosen"><th scope="row" data-chosen="Chosen">Count backwards from Christ the King</th><td data-label="What it buys">It is always the 34th Sunday, so one subtraction, with no dependence on Easter</td><td data-label="What it costs">The week count has to round, not truncate, or a daylight-saving boundary loses a Sunday</td></tr>
+            </tbody>
+          </table>
+        </div>
         <p class="snippet-caption">The replacement. One line, and it never needs to know what happened earlier in
           the year. Quoted verbatim, so the string it builds is still "Minggu Biasa", Indonesian
           for Ordinary Time.</p>

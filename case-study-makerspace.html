@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-makerspace" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -217,6 +217,16 @@
           moment it is the window that loses you the machine. PostgreSQL can state the rule as a
           table constraint instead, which is the reason it was picked over anything else.
         </p>
+        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="Decision table, scrollable">
+          <table class="decision">
+            <caption>How the no-overlap rule could be enforced</caption>
+            <thead><tr><th scope="col">Option</th><th scope="col">What it buys</th><th scope="col">What it costs</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Check in application code: read, decide, insert</th><td data-label="What it buys">Works on any database</td><td data-label="What it costs">A race window between the read and the insert: two people confirming at once can both win</td></tr>
+              <tr class="is-chosen"><th scope="row" data-chosen="Chosen">A PostgreSQL exclusion constraint</th><td data-label="What it buys">Two concurrent inserts for one slot cannot both succeed, and its GiST index also serves the availability search, at about 2 ms</td><td data-label="What it costs">Three details to get right: tstzrange, a WHERE clause that frees canceled slots, and half-open ranges</td></tr>
+            </tbody>
+          </table>
+        </div>
         <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm">-- 001_create_schema.sql: the one load-bearing rule the database keeps by itself</span>
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 

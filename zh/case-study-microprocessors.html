@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-microprocessors" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -113,7 +113,7 @@
         <p>
           前一門課是累積上去的。每週的實驗都是用上週的檔案做出來的，最後一個就是一顆處理器。後一門課則是往下鑽的，從應用程式開始，結束在核心裡面。
         </p>
-        <ol class="levels" role="list">
+        <ol class="timeline" role="list">
           <li><b>七段顯示器解碼電路</b><span>七條布林方程式，一個線段一條，全部是手工從真值表推出來的。第二個目標要三位數，於是同樣七條方程式被貼了三次，每個訊號名稱加上後綴，一個檔案裡二十一個輸出，完全沒有用到元件。</span></li>
           <li><b>加法器與減法器</b><span>八個一位元全加器用進位串起來變成八位元加法器，再用全減器做一次同樣的事。也是從這裡開始，那個解碼器不再被複製貼上，而是變成 package 裡的一個元件，用名字實體化。</span></li>
           <li><b>BCD 加法器</b><span>二進位加法在十進位底下會得到錯的答案，所以每一位數都要判斷有沒有進位、或結果是否大於九，然後加六修正。每位數十六個全加器加上一條布林式，整個結構化寫到底。</span></li>
@@ -122,7 +122,7 @@
           <li><b>狀態機</b><span>標準的兩段式寫法：一個組合邏輯 process 決定下一個狀態，一個時序 process 負責更新。六個狀態、一個輸入。後面所有東西都是用這塊拼出來的。</span></li>
           <li><b>回復式除法器</b><span>把除法寫成八次迭代的狀態機：減掉位移過的除數，如果結果變成負的就加回去，並在商裡補零而不是補一。六個狀態，而且迴圈計數那裡到現在還留著一行註解寫 <code>--7 or 8?</code>。</span></li>
           <li><b>簡易 CPU</b><span>把除法器的狀態機升級成一個指令週期：擷取、讀 Rs、讀 Rt、運算、寫回，由一個步驟計數器推動。八個 opcode、四個暫存器，一次做一件事。</span></li>
-          <li><b>管線化 CPU</b><span>同一組指令集，差別在四個階段同時在跑，而且需要還在管線裡的值的指令會直接被前饋，而不是等它寫回。218 行。</span></li>
+          <li class="is-key"><b>管線化 CPU</b><span>同一組指令集，差別在四個階段同時在跑，而且需要還在管線裡的值的指令會直接被前饋，而不是等它寫回。218 行。</span></li>
         </ol>
         <p>
           有一個細節一路活到最後。第一週那七條方程式現在還在期末專案裡，而且不是精神上的：逐字比對，它們就是同樣的算式，只是輸入訊號改了名字。
@@ -342,14 +342,14 @@ else
         <p>
           第二個學期從第一個學期蓋好的東西上方開始，然後一層一層往下穿過去。它的第一課是「編譯器不等於機器」：一支寫抽象形狀與排序的 C++ 程式，在一台電腦上用 <code>aarch64-linux-gnu-g++</code> 編譯，拿到另一台上執行。這支程式本身沒有任何一點嵌入式的味道，但讓它跑起來的過程全都是。
         </p>
-        <ol class="levels" role="list">
+        <ol class="timeline" role="list">
           <li><b>交叉編譯</b><span>多型的形狀類別加上一個排序，在筆電上編成 aarch64 的執行檔，拿到板子上跑。makefile 開頭第一行是 <code>CROSS_COMPILE = aarch64-linux-gnu-</code>。</span></li>
           <li><b>從使用者空間控制 GPIO</b><span>點亮一顆 LED 的做法是：<code>open("/sys/class/gpio/export")</code>、寫入接腳編號、往它的 direction 檔寫 "out"、再往 value 檔寫 "1"。四次檔案寫入，不需要任何函式庫。</span></li>
           <li><b>把 GUI 疊在同樣那四次寫入上</b><span>直接在板子上跑 Qt：核取方塊、綁定閃爍週期的滑桿、鍵盤快捷鍵，以及一個讓兩組 LED 輪流亮的 <code>QTimer</code>。</span></li>
           <li><b>把瀏覽器疊在同樣那四次寫入上</b><span>一台 Express 伺服器負責送出靜態頁面，並用子行程呼叫實驗二那支執行檔。控制介面從板子上搬走，搬到同一個網段裡任何一台有瀏覽器的機器。</span></li>
           <li><b>一個位元一個位元地讀類比訊號</b><span>數位接腳讀不了光敏電阻，所以由 MCP3008 負責轉換，而 Jetson 得自己把這段對話敲出來：先移出五個位元的命令，再打十二個時脈把結果移進來，整段交換的前後還要拉低與拉高晶片選擇腳。SPI 是用 Python 迴圈切換四條線做出來的。</span></li>
           <li><b>讓瀏覽器把數值讀回來</b><span>實驗四與實驗五接在一起：Express 伺服器同時用子行程呼叫驅動 MCP3008 的那支 Python，網頁再用 <code>$.ajax</code> 定時輪詢，而不是只問一次。回傳值一旦越過門檻，LED 就自己切換，不需要任何人點擊。這就是期末專題的縮小版，只是從四間房間變成一間。</span></li>
-          <li><b>進到核心裡</b><span>一個註冊字元裝置的可載入模組，於是 LED 改成靠寫位元組到 <code>/dev/demo</code> 來切換，而不是寫 sysfs。</span></li>
+          <li class="is-key"><b>進到核心裡</b><span>一個註冊字元裝置的可載入模組，於是 LED 改成靠寫位元組到 <code>/dev/demo</code> 來切換，而不是寫 sysfs。</span></li>
         </ol>
         <p>
           期末專題就是把這七層疊起來：一個叫 Smart Room Management 的會議室管理面板，四顆 LED 是四間房間，第五顆是預約計時器，走廊上的光敏電阻決定走廊燈需不需要開。在瀏覽器裡勾選房間、設定時間，被選到的房間就會在這段時間內閃爍。

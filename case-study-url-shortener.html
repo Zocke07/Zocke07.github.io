@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-url-shortener" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -229,6 +229,16 @@ Location: https://spring.io/projects/spring-boot</code></pre>
           by the insert, then the code cannot be part of that insert. Creating one short link is
           therefore two statements and not one.
         </p>
+        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="Decision table, scrollable">
+          <table class="decision">
+            <caption>Where the short code comes from: the options weighed</caption>
+            <thead><tr><th scope="col">Option</th><th scope="col">What it buys</th><th scope="col">What it costs</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Hash the URL, truncated</th><td data-label="What it buys">One statement, and no state to keep</td><td data-label="What it costs">Two URLs eventually share a code, so every insert carries a collision branch, forever</td></tr>
+              <tr class="is-chosen"><th scope="row" data-chosen="Chosen">Base62 of the row's own id</th><td data-label="What it buys">No collision is possible: the encoding is a bijection, not a check</td><td data-label="What it costs">The id comes from the insert, so creating a link takes two statements</td></tr>
+            </tbody>
+          </table>
+        </div>
         <figure class="figure">
           <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
             <svg class="fig-svg" viewBox="0 0 800 276" role="img" aria-labelledby="us-flow-title us-flow-desc">

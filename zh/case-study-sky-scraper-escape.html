@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-sky-scraper-escape" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -128,6 +128,16 @@
           其實框架本身早就在做我們需要的事，只是高了一層。它握著一個指向當下狀態的指標，把事件轉發過去，而且從來不問那是哪一種狀態。所以我們把同一個想法往下複製一層：寫一個基底類別 <code>levelInit</code>，宣告和框架的 <code>CGameState</code>
           一模一樣的那組函式。我當初留在那些宣告上方的註解到現在還在，而那三個英文字就是整個設計：<em>imitates mygame_run functions</em>（模仿 mygame_run 的函式）。
         </p>
+        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="決策表，可捲動">
+          <table class="decision">
+            <caption>八個畫面如何共用一個執行狀態</caption>
+            <thead><tr><th scope="col">選項</th><th scope="col">換來什麼</th><th scope="col">付出什麼</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">在執行狀態裡依目前關卡分支</th><td data-label="換來什麼">每個關卡可以各寫各的</td><td data-label="付出什麼">每加一個關卡都要改分派器，選單也得有自己的分支</td></tr>
+              <tr class="is-chosen"><th scope="row" data-chosen="採用">把框架的狀態介面對應到一個基底類別</th><td data-label="換來什麼">八個畫面都在同一個指標後面，加一個關卡就是加一個元素；執行狀態的十一個方法中有七個只是一行轉送</td><td data-label="付出什麼">每個畫面都得符合同一個形狀，選單也不例外</td></tr>
+            </tbody>
+          </table>
+        </div>
         <p>
           等到每個關卡都實作了那組介面，遊玩狀態就不再是一個分派器，而只是一個容器。它持有一個裝著基底類別指標的向量，以及一個指向當下元素的指標。
         </p>

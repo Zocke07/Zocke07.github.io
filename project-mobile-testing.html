@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/project-mobile-testing" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -116,6 +116,19 @@
     <section id="problem" class="section section-alt">
       <div class="container prose">
         <h2 class="section-title">The Problem</h2>
+        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="Table, scrollable">
+          <table class="findings">
+            <caption>Test report summary</caption>
+            <thead><tr><th scope="col">Item</th><th scope="col">Detail</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Scope</th><td data-label="Detail">The settings area, all seven of its files: report export, units, personal goals, daily routines and custom foods</td></tr>
+              <tr><th scope="row">Test cases</th><td data-label="Detail">15 in my area; 103 across 26 suites, team-wide</td></tr>
+              <tr><th scope="row">Test design</th><td data-label="Detail">A user story, an activity diagram drawn from the outside, an input-space partition, then base-choice coverage</td></tr>
+              <tr><th scope="row">Stack</th><td data-label="Detail">Robot Framework 6.1.1 driving Appium; 78 page keywords, 64 of them written from scratch</td></tr>
+              <tr><th scope="row">Known limits</th><td data-label="Detail">Five swipe keywords assume a 1080 × 2400 screen, and cleanup through the UI is only as reliable as the UI</td></tr>
+            </tbody>
+          </table>
+        </div>
         <p>
           At work I had gotten used to setting up test state through a REST API and skipping the
           interface entirely. Here there was no interface to skip to. The app under test was a

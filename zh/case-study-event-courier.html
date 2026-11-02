@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-event-courier" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -119,6 +119,18 @@
     <section id="review" class="section">
       <div class="container prose">
         <h2 class="section-title">活動結束後才找到的四個問題</h2>
+        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="表格，可捲動">
+          <table class="findings">
+            <caption>四個問題、它們的修正與測試</caption>
+            <thead><tr><th scope="col">問題</th><th scope="col">造成的風險</th><th scope="col">修正</th><th scope="col">測試</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">留言被當成 HTML 解析</th><td data-label="造成的風險">小卡裡的標記會在收件人的收件匣中被解析；CSP 標頭只在有送出時才擋得住行內腳本</td><td data-label="修正">小卡與姓名改以 <code>textContent</code> 放上頁面</td><td data-label="測試">靠讀程式碼確認：這套測試裡沒有瀏覽器</td></tr>
+              <tr><th scope="row">守著公開姓名的只有四位數</th><td data-label="造成的風險">一萬種可能、猜測次數不受限制，而姓名就列在登入頁上</td><td data-label="修正">同一個姓名猜錯五次就鎖定十五分鐘，回傳 429 與 Retry-After</td><td data-label="測試">已釘住：鎖定後即使輸入正確號碼也會被擋</td></tr>
+              <tr><th scope="row">工作階段只存在單一執行個體的記憶體裡</th><td data-label="造成的風險">在 serverless 主機上，下一個執行個體不認得這次登入，每次冷啟動都會讓所有人登出</td><td data-label="修正">改用簽章權杖：id 與到期時間加上 HMAC，任何執行個體都能驗證</td><td data-label="測試">已釘住：改成別人 id 的權杖會被拒絕</td></tr>
+              <tr><th scope="row">收件匣以姓名比對</th><td data-label="造成的風險">兩位同名的參加者會讀到彼此的小卡</td><td data-label="修正">小卡改存收件人 id，正式資料庫以選擇性啟用的欄位銜接</td><td data-label="測試">已釘住：兩位同名的人拿到各自的收件匣</td></tr>
+            </tbody>
+          </table>
+        </div>
         <h3>留言被當成 HTML 解析</h3>
         <p>
           收件匣用 <code>innerHTML</code> 組出每張小卡，把寄件人的顯示名稱和留言內容直接塞進樣板。這兩者都來自寫小卡的人，不論有沒有登入，所以一張含有標記的小卡，會在收件人的收件匣裡被當成標記解析。

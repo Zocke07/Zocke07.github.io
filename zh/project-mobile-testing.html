@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/project-mobile-testing" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=b9ad5565" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=072a31a7" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -104,6 +104,19 @@
     <section id="problem" class="section section-alt">
       <div class="container prose">
         <h2 class="section-title">問題</h2>
+        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="表格，可捲動">
+          <table class="findings">
+            <caption>測試報告摘要</caption>
+            <thead><tr><th scope="col">項目</th><th scope="col">內容</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">範圍</th><td data-label="內容">設定頁全部七個檔案：報表匯出、單位、個人目標、每日作息與自訂食物</td></tr>
+              <tr><th scope="row">測試案例</th><td data-label="內容">我負責的範圍 15 個；全團隊 26 個套件共 103 個</td></tr>
+              <tr><th scope="row">測試設計</th><td data-label="內容">使用者故事、從外部畫出的活動圖、輸入空間切分，再以基本選擇涵蓋</td></tr>
+              <tr><th scope="row">技術</th><td data-label="內容">Robot Framework 6.1.1 驅動 Appium；78 個頁面關鍵字，其中 64 個從零寫成</td></tr>
+              <tr><th scope="row">已知限制</th><td data-label="內容">五個滑動關鍵字預設 1080 × 2400 的螢幕，而透過 UI 收尾的可靠度，只等於 UI 本身的可靠度</td></tr>
+            </tbody>
+          </table>
+        </div>
         <p>
           在公司我已經很習慣透過 REST API 建立測試狀態，直接跳過介面。這裡沒有可以跳過去的介面：受測物就是手機上一個已經完成的產品。每一個前置條件都得靠點擊一步步到達，每一個斷言也都得從畫面上讀回來。
         </p>
