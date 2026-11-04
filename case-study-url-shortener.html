@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-url-shortener" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=6df30950" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=86370a58" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -76,7 +76,6 @@
           <div><dt>Project</dt><dd>Personal project</dd></div>
           <div><dt>Tools</dt><dd>Java, Spring Boot, MySQL</dd></div>
           <div><dt>When</dt><dd>Aug to Sep 2026</dd></div>
-          <div><dt>Code</dt><dd><a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">Public repository</a></dd></div>
         </dl>
         <h1>Two Writes for One Short Link</h1>
         <p class="hero-blurb">
@@ -110,7 +109,6 @@
           more than one host, argued about at the end rather than built. Every status code quoted
           here was taken from the running service against a local MySQL rather than from the
           README, and the one place those two disagreed is written up below as the defect it is.
-          <a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">The repository is public</a>.
         </aside>
       </div>
     </section>
@@ -518,9 +516,6 @@ verifyNoInteractions(repository);</code></pre>
           <li><b>A guard clause is only worth what it stops.</b> Asserting that an exception was thrown says nothing about when. Asserting that the repository was never touched is what pins the check to the side of the boundary where it protects something.</li>
           <li><b>Test the README.</b> It documented a 400 that the service has never once returned. Documentation drifts in exactly the places nobody re-runs, and the endpoint contract is the worst possible place to let it.</li>
         </ol>
-        <p class="entry-more">
-          <a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">View the source on GitHub</a>
-        </p>
         <p class="entry-more"><a href="/#work">Back to portfolio</a></p>
       </div>
     </section>

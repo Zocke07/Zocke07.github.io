@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-url-shortener" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=6df30950" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=86370a58" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -76,7 +76,6 @@
           <div><dt>專案</dt><dd>個人專案</dd></div>
           <div><dt>工具</dt><dd>Java、Spring Boot、MySQL</dd></div>
           <div><dt>時間</dt><dd>2026 年 8 月至 9 月</dd></div>
-          <div><dt>原始碼</dt><dd><a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">公開的程式碼庫</a></dd></div>
         </dl>
         <h1>一個短連結，兩次寫入</h1>
         <p class="hero-blurb">
@@ -94,7 +93,7 @@
           <li>短碼字母表共 <strong>62 個字元</strong></li>
         </ul>
         <aside class="source-note">
-          <strong>範圍，以及數字的來源：</strong>這個服務刻意做得很小。兩個端點、一張表，而一個正式上線的短網址服務接下來需要的東西，像是擋在跳轉前的快取、離開請求路徑的點擊分析、流量限制、多台主機，都放在最後當作取捨來談，而不是做出來。這一頁引用的每一個狀態碼，都是對著跑起來的服務、連著本機 MySQL 量到的，而不是抄自 README；而這兩者唯一對不上的地方，下面寫成了它本來的樣子：一個缺陷。<a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">原始碼是公開的</a>。
+          <strong>範圍，以及數字的來源：</strong>這個服務刻意做得很小。兩個端點、一張表，而一個正式上線的短網址服務接下來需要的東西，像是擋在跳轉前的快取、離開請求路徑的點擊分析、流量限制、多台主機，都放在最後當作取捨來談，而不是做出來。這一頁引用的每一個狀態碼，都是對著跑起來的服務、連著本機 MySQL 量到的，而不是抄自 README；而這兩者唯一對不上的地方，下面寫成了它本來的樣子：一個缺陷。
         </aside>
       </div>
     </section>
@@ -412,9 +411,6 @@ verifyNoInteractions(repository);</code></pre>
           <li><b>守衛條款的價值，等於它擋下了什麼。</b>斷言例外被丟出來，對「什麼時候」一個字都沒說。斷言 repository 從來沒有被碰過，才把這個檢查釘在邊界上真正有保護到東西的那一側。</li>
           <li><b>連 README 也要測。</b>它寫著一個這個服務從來沒有回傳過的 400。文件恰恰是在沒有人重跑的地方漂走的，而端點契約是最不該讓它漂走的地方。</li>
         </ol>
-        <p class="entry-more">
-          <a href="https://github.com/Zocke07/url-shortener" target="_blank" rel="noopener">在 GitHub 上查看原始碼</a>
-        </p>
         <p class="entry-more"><a href="/zh/#work">回到作品集</a></p>
       </div>
     </section>

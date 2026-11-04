@@ -162,7 +162,8 @@ no em dashes anywhere.
 ### Case-study pages: four formats, one summary strip
 
 Every case-study page opens with the same `<dl class="summary">`: format,
-project, tools, dates, and the code link or why there is none. Then the
+project, tools, dates and, when there is something to click, a code link. A
+page with no public code leaves that row out rather than say so. Then the
 headline, the lead, the role line, the key numbers and the scope note. The body
 takes one of four shapes, chosen by the kind of project rather than by habit:
 
