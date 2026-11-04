@@ -263,7 +263,7 @@ main { position: relative; display: block; }
 .nav-brand {
   display: flex; align-items: center; gap: 10px; min-height: 44px;
   color: var(--ink); text-decoration: none;
-  font-weight: 760; font-size: 1.0625rem; letter-spacing: -0.01em;
+  font-weight: 760; font-size: 1.0625rem; letter-spacing: -0.01em; white-space: nowrap;
 }
 .nav-brand:hover { color: var(--ink); }
 .nav-brand i { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--acc); transition: background-color var(--d-base); }
@@ -274,7 +274,7 @@ main { position: relative; display: block; }
 .nav-menu a,
 .lang-toggle {
   position: relative; display: inline-flex; align-items: center; min-height: 44px;
-  color: var(--mut); font-size: 0.9375rem; text-decoration: none;
+  color: var(--mut); font-size: 0.9375rem; text-decoration: none; white-space: nowrap;
   transition: color var(--d-fast);
 }
 .nav-menu a::after {
@@ -308,6 +308,13 @@ main { position: relative; display: block; }
 .nav-toggle-icon i:last-child { top: 8px; }
 .nav-toggle[aria-expanded="true"] .nav-toggle-icon i:first-child { top: 4px; transform: rotate(45deg); }
 .nav-toggle[aria-expanded="true"] .nav-toggle-icon i:last-child { top: 4px; transform: rotate(-45deg); }
+
+/* The smallest phones: tighten the header rather than let the name wrap. */
+@media (max-width: 360px) {
+  .nav { gap: 0.5rem; }
+  .nav-brand { gap: 8px; font-size: 1rem; }
+  .nav-toggle { padding: 0 10px; }
+}
 
 @media (max-width: 760px) {
   .nav-right { gap: 0.5rem; }
@@ -352,14 +359,15 @@ main { position: relative; display: block; }
 .action-row { display: flex; flex-wrap: wrap; gap: 0.875rem; align-items: center; }
 .action-group { display: contents; font-style: normal; }
 
-/* A link that says where it goes, drawn with an underline that grows. */
+/* A link that says where it goes. A real text underline, because a long link wraps
+   and a painted one would cut through its last line. It lifts away on hover. */
 .text-link {
   display: inline-flex; align-items: center; min-height: 44px;
-  color: var(--acc); font-weight: 650; text-decoration: none;
-  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 10px) / 100% 1.5px no-repeat;
-  transition: background-size var(--d-base) var(--ease-out), color var(--d-fast);
+  color: var(--acc); font-weight: 650;
+  text-decoration: underline 1.5px currentColor; text-underline-offset: 5px;
+  transition: text-decoration-color var(--d-base) var(--ease-out), text-underline-offset var(--d-base) var(--ease-out), color var(--d-fast);
 }
-.text-link:hover { color: var(--ink); background-size: 0% 1.5px; background-position: 100% calc(100% - 10px); }
+.text-link:hover { color: var(--ink); text-decoration-color: transparent; text-underline-offset: 8px; }
 
 .tags, .chips { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; }
 .tags li, .chips li {
@@ -433,27 +441,30 @@ main { position: relative; display: block; }
 
 .profile {
   position: relative; justify-self: start; width: min(100%, 14.5rem);
-  padding: 10px 10px 12px; border-radius: 18px;
+  padding: 10px; border-radius: 18px;
   background: var(--panel); border: 1px solid var(--edge); box-shadow: var(--lift); rotate: 2deg;
   transition: rotate var(--d-base) var(--ease-out), translate var(--d-base) var(--ease-out),
               background-color 0.5s var(--ease-io), border-color 0.5s;
 }
 .profile:hover { rotate: 0deg; translate: 0 -4px; transition: rotate 0.9s var(--spring), translate 0.9s var(--spring); }
-.profile img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; }
-.profile figcaption { margin-top: 9px; padding: 0 4px; font-size: 0.875rem; color: var(--mut); }
+.profile img { display: block; width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 12px; }
 
 /* ---------- 7. Home: the path diagram ----------
-   Small and medium widths: a stacked two-column flow, read top to bottom.
-   From 1000px of room: five columns, read left to right. path.js draws the
-   wires from wherever the boxes land and uses the same threshold. */
+   Two tracks that run side by side: study, and the work done during it. A
+   solid wire is "then"; a dashed one joins a job to the degree it overlapped.
+   Small and medium widths: study down the left column, work down the right.
+   From 1000px of room: four columns read left to right, study above work.
+   path.js draws the wires from wherever the boxes land and uses the same
+   threshold. */
 .path { container: path / inline-size; position: relative; padding: 0.5rem 0 1rem; }
-.graph { position: relative; display: grid; grid-template-columns: 1fr 1fr; column-gap: 0.875rem; row-gap: 2.5rem; align-items: start; }
+.graph { position: relative; display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.75rem; row-gap: 2.5rem; align-items: start; }
 .graph-wires { position: absolute; left: 0; top: 0; z-index: 1; overflow: visible; pointer-events: none; }
 .wire {
   fill: none; stroke: var(--wire); stroke-width: 1.8; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0;
   transition: stroke var(--d-base), stroke-width var(--d-base), opacity var(--d-base);
 }
 .wire.is-hot { stroke: var(--acc); }
+.wire.is-during { stroke-dasharray: 4 5; }
 .sig-head, .sig {
   position: absolute; left: 0; top: 0; z-index: 2; width: 9px; height: 9px; border-radius: 50%;
   background: var(--acc); offset-anchor: 50% 50%; offset-rotate: 0deg; opacity: 0; pointer-events: none;
@@ -461,11 +472,11 @@ main { position: relative; display: block; }
 }
 .step-wrap { position: relative; z-index: 3; min-width: 0; }
 .step-wrap[data-id="origin"] { grid-area: 1 / 1 / 2 / 3; justify-self: center; width: min(100%, 21rem); }
-.step-wrap[data-id="bachelor"] { grid-area: 2 / 1 / 3 / 3; justify-self: center; width: min(100%, 21rem); }
-.step-wrap[data-id="sunbird"] { grid-area: 3 / 1; }
-.step-wrap[data-id="master"] { grid-area: 3 / 2; }
-.step-wrap[data-id="taiwanmobile"] { grid-area: 4 / 1; }
-.step-wrap[data-id="next"] { grid-area: 5 / 1 / 6 / 3; justify-self: center; width: min(100%, 21rem); }
+.step-wrap[data-id="bachelor"] { grid-area: 2 / 1; }
+.step-wrap[data-id="sunbird"] { grid-area: 2 / 2; }
+.step-wrap[data-id="master"] { grid-area: 3 / 1; }
+.step-wrap[data-id="taiwanmobile"] { grid-area: 3 / 2; }
+.step-wrap[data-id="next"] { grid-area: 4 / 1 / 5 / 3; justify-self: center; width: min(100%, 21rem); }
 
 .step-node {
   position: relative; display: block; width: 100%; padding: 10px 16px 12px; border-radius: var(--r-box);
@@ -489,6 +500,10 @@ main { position: relative; display: block; }
 }
 .port-in { top: -6.5px; }
 .port-out { bottom: -6.5px; }
+/* The "at the same time" port faces the other track: sideways when the tracks
+   are columns, up and down when they are rows. */
+.port-during { top: 50%; left: auto; right: -6.5px; margin: -5.5px 0 0; }
+.is-work .port-during { right: auto; left: -6.5px; }
 .is-next .step-node { border-color: var(--acc); box-shadow: 0 0 0 5px var(--acc-soft); }
 .is-next .port-in { border-color: var(--acc); }
 .live { display: inline-block; width: 8px; height: 8px; margin-right: 7px; border-radius: 50%; background: var(--acc); vertical-align: 1px; }
@@ -508,8 +523,8 @@ main { position: relative; display: block; }
 .step-more a:hover { color: inherit; text-decoration-thickness: 2.5px; }
 /* In the stacked layout the paired boxes are half width, so their details span
    both columns. */
-.step-wrap:is([data-id="sunbird"], [data-id="taiwanmobile"]) .step-more { width: calc(200% + 0.875rem); }
-.step-wrap[data-id="master"] .step-more { left: auto; right: 0; width: calc(200% + 0.875rem); transform-origin: top right; }
+.step-wrap:is([data-id="bachelor"], [data-id="master"]) .step-more { width: calc(200% + 1.75rem); }
+.step-wrap.is-work .step-more { left: auto; right: 0; width: calc(200% + 1.75rem); transform-origin: top right; }
 .step-wrap.is-open .step-more,
 .step-wrap:focus-within .step-more {
   visibility: visible; opacity: 1; transform: none;
@@ -536,32 +551,33 @@ main { position: relative; display: block; }
 
 @container path (min-width: 1000px) {
   .graph {
-    grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(3, auto);
-    column-gap: 2rem; row-gap: 1.25rem; align-items: center; padding-top: 2.6rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(2, auto);
+    column-gap: 2.5rem; row-gap: 3rem; align-items: center; padding-top: 1.75rem;
   }
   .step-wrap[data-id] { justify-self: stretch; width: auto; }
-  .step-wrap[data-id="origin"] { grid-area: 2 / 1; }
-  .step-wrap[data-id="bachelor"] { grid-area: 2 / 2; }
-  .step-wrap[data-id="sunbird"] { grid-area: 1 / 3; }
-  .step-wrap[data-id="master"] { grid-area: 3 / 3; }
-  .step-wrap[data-id="taiwanmobile"] { grid-area: 1 / 4; }
-  .step-wrap[data-id="next"] { grid-area: 2 / 5; }
+  .step-wrap[data-id="origin"] { grid-area: 1 / 1; }
+  .step-wrap[data-id="bachelor"] { grid-area: 1 / 2; }
+  .step-wrap[data-id="master"] { grid-area: 1 / 3; }
+  .step-wrap[data-id="next"] { grid-area: 1 / 4; }
+  .step-wrap[data-id="sunbird"] { grid-area: 2 / 2; }
+  .step-wrap[data-id="taiwanmobile"] { grid-area: 2 / 3; }
   .port { top: 50%; left: auto; margin: -5.5px 0 0; }
   .port-in { left: -6.5px; }
   .port-out { right: -6.5px; bottom: auto; }
+  .port-during { top: auto; bottom: -6.5px; left: 50%; right: auto; margin: 0 0 0 -5.5px; }
+  .is-work .port-during { top: -6.5px; bottom: auto; left: 50%; }
   .step-more,
-  .step-wrap:is([data-id="sunbird"], [data-id="taiwanmobile"], [data-id="master"]) .step-more { width: max(100%, 16rem); }
-  .step-wrap[data-id="master"] .step-more { left: 0; right: auto; transform-origin: top left; }
-  .step-wrap:is([data-id="taiwanmobile"], [data-id="next"]) .step-more { left: auto; right: 0; transform-origin: top right; }
+  .step-wrap:is([data-id], .is-work) .step-more { left: 0; right: auto; width: max(100%, 16rem); transform-origin: top left; }
+  .step-wrap:is([data-id="master"], [data-id="taiwanmobile"], [data-id="next"]) .step-more { left: auto; right: 0; transform-origin: top right; }
+  /* A label on the work row, in the empty cell left of it, with a line into
+     the row: the 2.5 years belong to the internships, not to the columns. */
   .span-mark {
-    position: absolute; top: 6px; z-index: 2; height: 12px; display: flex; align-items: center; justify-content: center;
-    border-left: 1.5px solid var(--faint); border-right: 1.5px solid var(--faint);
+    grid-area: 2 / 1; justify-self: end; align-self: center; z-index: 2;
+    display: flex; align-items: center; gap: 12px; margin-right: -2.5rem;
+    max-width: calc(100% + 2.5rem); text-align: right;
   }
-  .span-mark::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--faint); }
-  .span-mark span {
-    position: relative; padding: 0 10px; background: var(--paper); font-size: 0.8125rem; color: var(--mut); white-space: nowrap;
-    transition: background-color 0.5s var(--ease-io);
-  }
+  .span-mark span { font-size: 0.875rem; line-height: 1.4; color: var(--mut); }
+  .span-mark::after { content: ""; flex: none; width: 2rem; height: 1.5px; background: var(--faint); }
 }
 
 /* ---------- 8. Home: selected work, more projects ---------- */
@@ -661,8 +677,6 @@ main { position: relative; display: block; }
 
 .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(17rem, 100%), 1fr)); gap: 1.75rem 2.5rem; }
 .skill-group h3 { margin-bottom: 0.7rem; font-size: 1rem; font-weight: 720; }
-.skill-group.is-coursework { padding: 1rem 1.1rem; border-radius: var(--r-box); border: 1px dashed var(--edge); }
-.skill-group.is-coursework p { margin-bottom: 0.7rem; font-size: 0.875rem; color: var(--mut); }
 .skills-note { max-width: var(--measure); margin-bottom: 1.75rem; color: var(--mut); font-size: 0.9375rem; }
 .skills-note.is-below { margin: 1.75rem 0 0; }
 

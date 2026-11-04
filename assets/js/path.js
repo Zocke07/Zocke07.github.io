@@ -23,26 +23,36 @@
     wraps[w.dataset.id] = w;
     nodes[w.dataset.id] = w.querySelector(".step-node");
   });
+  // Two tracks: study, and the work done during it. A "then" edge runs along a
+  // track; a "during" edge joins a job to the degree it overlapped, across the
+  // tracks, and is drawn dashed.
   const EDGES = [
-    ["origin", "bachelor"], ["bachelor", "sunbird"], ["bachelor", "master"],
-    ["sunbird", "taiwanmobile"], ["taiwanmobile", "next"], ["master", "next"],
+    ["origin", "bachelor", "then"], ["bachelor", "master", "then"], ["master", "next", "then"],
+    ["sunbird", "taiwanmobile", "then"], ["taiwanmobile", "next", "then"],
+    ["bachelor", "sunbird", "during"], ["master", "taiwanmobile", "during"],
   ].filter(([a, b]) => nodes[a] && nodes[b]);
   const HOT = new Set(["taiwanmobile>next", "master>next"]);
   const TRACKS = [
-    ["origin", "bachelor", "sunbird", "taiwanmobile", "next"],
     ["origin", "bachelor", "master", "next"],
+    ["origin", "bachelor", "sunbird", "taiwanmobile", "next"],
   ];
   const ORDER = ["origin", "bachelor", "sunbird", "master", "taiwanmobile", "next"];
   if (!svg || !EDGES.length) return;
 
   const NS = "http://www.w3.org/2000/svg";
   const wires = {};
-  EDGES.forEach(([a, b]) => {
+  const kind = {};
+  EDGES.forEach(([a, b, k]) => {
     const p = document.createElementNS(NS, "path");
-    p.setAttribute("class", HOT.has(`${a}>${b}`) ? "wire is-hot" : "wire");
-    p.setAttribute("pathLength", "1");
+    p.setAttribute("class", "wire");
+    if (HOT.has(`${a}>${b}`)) p.classList.add("is-hot");
+    if (k === "during") p.classList.add("is-during");
+    // A dashed wire keeps its own dash pattern, so only solid wires are
+    // normalised for the draw-on animation.
+    if (k !== "during") p.setAttribute("pathLength", "1");
     svg.appendChild(p);
     wires[`${a}>${b}`] = p;
+    kind[`${a}>${b}`] = k;
   });
 
   let wide = false;
@@ -55,21 +65,31 @@
     const n = nodes[id];
     return { x: w.offsetLeft + n.offsetLeft, y: w.offsetTop + n.offsetTop, w: n.offsetWidth, h: n.offsetHeight };
   };
-  const portOut = (id) => {
+  const side = (id, where) => {
     const b = box(id);
-    return wide ? [b.x + b.w, b.y + b.h / 2] : [b.x + b.w / 2, b.y + b.h];
+    return {
+      left: [b.x, b.y + b.h / 2], right: [b.x + b.w, b.y + b.h / 2],
+      top: [b.x + b.w / 2, b.y], bottom: [b.x + b.w / 2, b.y + b.h],
+    }[where];
   };
-  const portIn = (id) => {
-    const b = box(id);
-    return wide ? [b.x, b.y + b.h / 2] : [b.x + b.w / 2, b.y];
+  // Where an edge leaves and arrives. "Then" runs with the reading direction;
+  // "during" runs across it, from the degree to the job beside it.
+  const anchors = (a, b) => {
+    const during = kind[`${a}>${b}`] === "during";
+    if (wide) return during ? [side(a, "bottom"), side(b, "top"), "v"] : [side(a, "right"), side(b, "left"), "h"];
+    return during ? [side(a, "right"), side(b, "left"), "h"] : [side(a, "bottom"), side(b, "top"), "v"];
   };
-  const curve = ([ax, ay], [bx, by]) => {
-    if (wide) {
-      const dx = Math.max(16, (bx - ax) / 2);
+  const curve = ([ax, ay], [bx, by], dir) => {
+    if (dir === "h") {
+      const dx = Math.max(16, Math.abs(bx - ax) / 2) * Math.sign(bx - ax || 1);
       return `M${ax} ${ay} C${ax + dx} ${ay} ${bx - dx} ${by} ${bx} ${by}`;
     }
-    const dy = Math.max(14, (by - ay) / 2);
+    const dy = Math.max(14, Math.abs(by - ay) / 2) * Math.sign(by - ay || 1);
     return `M${ax} ${ay} C${ax} ${ay + dy} ${bx} ${by - dy} ${bx} ${by}`;
+  };
+  const wireD = (a, b) => {
+    const [p, q, dir] = anchors(a, b);
+    return curve(p, q, dir);
   };
 
   const layout = () => {
@@ -79,24 +99,18 @@
     svg.setAttribute("width", w);
     svg.setAttribute("height", h);
     svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
-    EDGES.forEach(([a, b]) => wires[`${a}>${b}`].setAttribute("d", curve(portOut(a), portIn(b))));
+    EDGES.forEach(([a, b]) => wires[`${a}>${b}`].setAttribute("d", wireD(a, b)));
     // A pulse track runs along the wires and straight through each box, so the
     // signal visibly goes in one side and out the other.
     tracks = TRACKS.filter((ids) => ids.every((id) => nodes[id])).map((ids) => {
       let d = "";
       for (let i = 0; i < ids.length - 1; i++) {
-        const a = portOut(ids[i]);
-        const seg = curve(a, portIn(ids[i + 1]));
+        const a = anchors(ids[i], ids[i + 1])[0];
+        const seg = wireD(ids[i], ids[i + 1]);
         d += i === 0 ? seg : ` L${a[0]} ${a[1]}${seg.replace(/^M[^C]+/, " ")}`;
       }
       return d;
     });
-    if (wide && span && nodes.sunbird && nodes.taiwanmobile) {
-      const s = box("sunbird");
-      const t = box("taiwanmobile");
-      span.style.left = `${s.x}px`;
-      span.style.width = `${t.x + t.w - s.x}px`;
-    }
   };
 
   // --- The opening ---
@@ -118,8 +132,13 @@
         const wire = wires[`${a}>${b}`];
         const t0 = at[a] + HOLD;
         const dur = Math.max(0.12, wire.getTotalLength() / SPEED);
-        wire.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }],
-          { duration: dur * 1000, delay: t0 * 1000, easing: "linear", fill: "backwards" });
+        if (kind[`${a}>${b}`] === "during") {
+          wire.animate([{ opacity: 0 }, { opacity: 1 }],
+            { duration: dur * 1000, delay: t0 * 1000, easing: "linear", fill: "backwards" });
+        } else {
+          wire.animate([{ strokeDashoffset: 1 }, { strokeDashoffset: 0 }],
+            { duration: dur * 1000, delay: t0 * 1000, easing: "linear", fill: "backwards" });
+        }
         const head = document.createElement("i");
         head.className = "sig-head";
         head.style.offsetPath = `path("${wire.getAttribute("d")}")`;
@@ -136,8 +155,8 @@
       flash(nodes[id], t + 40);
     });
     if (wide && span) {
-      span.animate([{ opacity: 0, transform: "scaleX(.6)" }, { opacity: 1, transform: "none" }],
-        { duration: 700, delay: ((at.taiwanmobile ?? 2) + 0.2) * 1000, easing: "cubic-bezier(.16,1,.3,1)", fill: "backwards" });
+      span.animate([{ opacity: 0, transform: "translateX(-8px)" }, { opacity: 1, transform: "none" }],
+        { duration: 700, delay: ((at.sunbird ?? 2) + 0.2) * 1000, easing: "cubic-bezier(.16,1,.3,1)", fill: "backwards" });
     }
     return at.next ?? 2.5;
   };

@@ -119,7 +119,9 @@ Contact. Mirror every edit into `zh/index.html`.
 class="step-node">` inside a `.step-wrap` with a `data-id`, followed by the
 `.step-more` panel it opens. `assets/js/path.js` draws the wires from wherever
 the boxes land, so moving a box is a CSS change (`grid-area` per `data-id`) and
-a new box needs its id added to `EDGES` and `TRACKS` there. The boxes use plain
+a new box needs its id added to `EDGES` and `TRACKS` there. The diagram is two
+tracks, study and the work done during it: a solid "then" edge runs along a
+track, and a dashed "during" edge joins a job to the degree it overlapped. The boxes use plain
 words; the technical detail, with a short gloss, goes in the panel.
 
 **Selected work** is six projects, each an `<article class="pipe">`: a title,
@@ -142,11 +144,11 @@ first lines (the summary strip, the lead or the role line), so a click lands
 where it said it would.
 
 A skill tag in the Skills section is a link when a case study demonstrates it
-and plain text when none does, and only the linked ones lift on hover. The bar
-for appearing at all is code he wrote, which is why VHDL, FPGA, embedded Linux
-and kernel modules sit in their own labeled group, "From team coursework",
-linking once to the lab notebook instead of each tag: the microprocessors page
-says in its own words that the labs were team work. AgentBase never backs a tag
+and plain text when none does, and only the linked ones lift on hover. A link
+needs a page showing code he wrote, which is why the Hardware and embedded tags
+(VHDL, FPGA, embedded Linux, kernel modules) are plain: the only page about
+them, the microprocessors lab notebook, credits its labs to the team, so it
+backs no tag even though the skills are his. AgentBase never backs a tag
 either: an AI agent wrote its code, and the page says so. Before adding a link,
 check the destination actually discusses the skill, and that the page
 attributes it to him.
