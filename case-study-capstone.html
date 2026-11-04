@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-capstone" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=86370a58" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=f6899cc9" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -154,24 +154,208 @@
           <li><b>Open the pull request</b><span>Branch merged toward main only through a PR.</span></li>
           <li><b>Fix until the engineers approve</b><span>The company's engineers review and comment. The case is not finished when it passes. It is finished when they merge it.</span></li>
         </ol>
-        <figure class="figure">
-          <div class="figure-doc">
-            <a href="/assets/img/capstone-dev-workflow.png" target="_blank" rel="noopener">
-              <img src="/assets/img/capstone-dev-workflow.png" width="410" height="540" loading="lazy" decoding="async"
-                   alt="Flowchart of the development workflow, shaded into four tool regions. Product
-                        backlog feeds a sprint backlog, then developing, case refinement and code
-                        review in the Robot Editor region; a sprint review in the Microsoft Teams
-                        region loops suggestions back; creating a branch leads to running CI and
-                        RfLint analysis in the Jenkins region; a pull request waits for review in the
-                        GitHub region, and a rejection loops back to modify." />
-              <span class="sr-only">Open full size in a new tab</span>
-            </a>
-          </div>
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="-1 -1 642 646" role="img" aria-labelledby="cw-across-title cw-across-desc">
+              <title id="cw-across-title">The development workflow, grouped by the tool each stage lives in</title>
+              <desc id="cw-across-desc">Flowchart of the development workflow across five areas: Backlog, Robot Editor, Microsoft Teams, GitHub and Jenkins. Product backlog feeds the sprint backlog, which leads to sprint planning and to developing. Developing leads to case refinement and code review; if code review finds a problem, the case returns to case refinement. Otherwise a sprint review follows. Suggestions from it go through a Modify step, and with or without suggestions the work moves to creating a branch. The branch runs CI, which produces RfLint analysis and a pull request waiting for merge. The review either approves it, which is done, or rejects it, which goes to Modify and back to review.</desc>
+              <defs>
+                <marker id="cw-across-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="cw-across-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-flow-group" d="M0 14 Q0 0 14 0 L626 0 Q640 0 640 14 L640 116 Q640 130 626 130 L14 130 Q0 130 0 116 Z" />
+              <text class="fig-flow-zone-label" x="14" y="24">Backlog</text>
+              <path class="fig-flow-group is-deep" d="M0 150 Q0 136 14 136 L626 136 Q640 136 640 150 L640 262 Q640 276 626 276 L226 276 Q212 276 212 290 L212 438 Q212 452 198 452 L14 452 Q0 452 0 438 Z" />
+              <text class="fig-flow-zone-label" x="320" y="250" text-anchor="middle">Robot Editor</text>
+              <path class="fig-flow-group is-pale" d="M218 296 Q218 282 232 282 L626 282 Q640 282 640 296 L640 364 Q640 378 626 378 L232 378 Q218 378 218 364 Z" />
+              <text class="fig-flow-zone-label" x="230" y="299">Microsoft Teams</text>
+              <path class="fig-flow-group" d="M218 398 Q218 384 232 384 L410 384 Q424 384 424 398 L424 630 Q424 644 410 644 L14 644 Q0 644 0 630 L0 472 Q0 458 14 458 L204 458 Q218 458 218 444 Z" />
+              <text class="fig-flow-zone-label" x="14" y="632">GitHub</text>
+              <path class="fig-flow-group is-deep" d="M430 398 Q430 384 444 384 L626 384 Q640 384 640 398 L640 630 Q640 644 626 644 L444 644 Q430 644 430 630 Z" />
+              <text class="fig-flow-zone-label" x="628" y="632" text-anchor="end">Jenkins</text>
+              <path class="fig-line" d="M320 56 L320 76" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M400 100 L453.5 100" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M320 124 L320 148" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M240 172 L186.5 172" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M112 196 L112 220" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M112 268 L112 290" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M177 330 L240 330" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M400 330 L463 330" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M528 290 L528 268" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M602.5 244 L616 244 Q626 244 626 254 L626 410 Q626 420 616 420 L400 420" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M528 370 L528 420" />
+              <path class="fig-line" d="M320 444 L320 452 Q320 460 328 460 L448 460" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M448 482 L353 482 Q345 482 345 490 L345 512" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M528 494 L528 518" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M240 536 L177 536" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line" d="M112 576 L112 598 Q112 608 122 608 L240 608" marker-end="url(#cw-across-arrow)" />
+              <path class="fig-line-accent" d="M47 330 L24 330 Q14 330 14 320 L14 182 Q14 172 24 172 L37.5 172" marker-end="url(#cw-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M112 496 L112 444" marker-end="url(#cw-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M37.5 420 L24 420 Q14 420 14 430 L14 526 Q14 536 24 536 L47 536" marker-end="url(#cw-across-arrow-hot)" />
+              <text class="fig-flow-label" x="186" y="322">No</text>
+              <text class="fig-flow-label" x="538" y="284">Yes</text>
+              <text class="fig-flow-label" x="538" y="398">No</text>
+              <text class="fig-flow-label" x="124" y="600">Approve</text>
+              <text class="fig-flow-label" x="19" y="322">Yes</text>
+              <text class="fig-flow-label" x="122" y="476">Reject</text>
+              <rect class="fig-box" x="240" y="12" width="160" height="44" rx="22" />
+              <text class="fig-flow-step" x="320" y="38.3" text-anchor="middle">Product backlog</text>
+              <rect class="fig-box" x="240" y="76" width="160" height="48" rx="12" />
+              <text class="fig-flow-step" x="320" y="104.3" text-anchor="middle">Sprint backlog</text>
+              <polygon class="fig-box fig-flow-decide" points="459,76 608,76 597,124 448,124" />
+              <text class="fig-flow-step" x="528" y="104.3" text-anchor="middle">Sprint planning</text>
+              <rect class="fig-box" x="240" y="148" width="160" height="48" rx="12" />
+              <text class="fig-flow-step" x="320" y="176.3" text-anchor="middle">Developing</text>
+              <polygon class="fig-box fig-flow-decide" points="43,148 192,148 181,196 32,196" />
+              <text class="fig-flow-step" x="112" y="176.3" text-anchor="middle">Case refinement</text>
+              <polygon class="fig-box fig-flow-decide" points="43,220 192,220 181,268 32,268" />
+              <text class="fig-flow-step" x="112" y="248.3" text-anchor="middle">Code review</text>
+              <polygon class="fig-box fig-flow-decide" points="459,220 608,220 597,268 448,268" />
+              <text class="fig-flow-step" x="528" y="248.3" text-anchor="middle">Modify</text>
+              <polygon class="fig-box fig-flow-diamond" points="112,290 177,330 112,370 47,330" />
+              <text class="fig-flow-step" x="112" y="334.3" text-anchor="middle">Problem?</text>
+              <rect class="fig-box" x="240" y="306" width="160" height="48" rx="12" />
+              <text class="fig-flow-step" x="320" y="334.3" text-anchor="middle">Sprint review</text>
+              <polygon class="fig-box fig-flow-diamond" points="528,290 593,330 528,370 463,330" />
+              <text class="fig-flow-step" x="528" y="334.3" text-anchor="middle">Suggestions?</text>
+              <polygon class="fig-box fig-flow-decide" points="43,396 192,396 181,444 32,444" />
+              <text class="fig-flow-step" x="112" y="424.3" text-anchor="middle">Modify</text>
+              <rect class="fig-box" x="240" y="396" width="160" height="48" rx="12" />
+              <text class="fig-flow-step" x="320" y="424.3" text-anchor="middle">Creating branch</text>
+              <rect class="fig-box" x="448" y="446" width="160" height="48" rx="12" />
+              <text class="fig-flow-step" x="528" y="474.3" text-anchor="middle">Running CI</text>
+              <polygon class="fig-box fig-flow-diamond" points="112,496 177,536 112,576 47,536" />
+              <text class="fig-flow-step" x="112" y="540.3" text-anchor="middle">Review</text>
+              <rect class="fig-box" x="240" y="512" width="160" height="48" rx="12" />
+              <text class="fig-flow-step" x="320" y="531.3" text-anchor="middle"><tspan x="320" dy="0">PR waiting</tspan><tspan x="320" dy="18">for merge</tspan></text>
+              <polygon class="fig-box fig-flow-decide" points="459,518 608,518 597,566 448,566" />
+              <text class="fig-flow-step" x="528" y="546.3" text-anchor="middle">RfLint analysis</text>
+              <rect class="fig-box" x="240" y="586" width="160" height="44" rx="22" />
+              <text class="fig-flow-step" x="320" y="612.3" text-anchor="middle">Done</text>
+              <circle class="fig-flow-port" cx="320" cy="56" r="4" />
+              <circle class="fig-flow-port" cx="400" cy="100" r="4" />
+              <circle class="fig-flow-port" cx="320" cy="124" r="4" />
+              <circle class="fig-flow-port" cx="240" cy="172" r="4" />
+              <circle class="fig-flow-port" cx="112" cy="196" r="4" />
+              <circle class="fig-flow-port" cx="112" cy="268" r="4" />
+              <circle class="fig-flow-port" cx="177" cy="330" r="4" />
+              <circle class="fig-flow-port" cx="400" cy="330" r="4" />
+              <circle class="fig-flow-port" cx="528" cy="290" r="4" />
+              <circle class="fig-flow-port" cx="602.5" cy="244" r="4" />
+              <circle class="fig-flow-port" cx="528" cy="370" r="4" />
+              <circle class="fig-flow-joint" cx="528" cy="420" r="3.5" />
+              <circle class="fig-flow-port" cx="320" cy="444" r="4" />
+              <circle class="fig-flow-port" cx="448" cy="482" r="4" />
+              <circle class="fig-flow-port" cx="528" cy="494" r="4" />
+              <circle class="fig-flow-port" cx="240" cy="536" r="4" />
+              <circle class="fig-flow-port" cx="112" cy="576" r="4" />
+              <circle class="fig-flow-port is-hot" cx="47" cy="330" r="4" />
+              <circle class="fig-flow-port is-hot" cx="112" cy="496" r="4" />
+              <circle class="fig-flow-port is-hot" cx="37.5" cy="420" r="4" />
+            </svg>
+            <svg class="fig-svg is-down" viewBox="-1 -1 323 1074" role="img" aria-labelledby="cw-down-title cw-down-desc">
+              <title id="cw-down-title">The development workflow, grouped by the tool each stage lives in</title>
+              <desc id="cw-down-desc">Flowchart of the development workflow across five areas: Backlog, Robot Editor, Microsoft Teams, GitHub and Jenkins. Product backlog feeds the sprint backlog, which leads to sprint planning and to developing. Developing leads to case refinement and code review; if code review finds a problem, the case returns to case refinement. Otherwise a sprint review follows. Suggestions from it go through a Modify step, and with or without suggestions the work moves to creating a branch. The branch runs CI, which produces RfLint analysis and a pull request waiting for merge. The review either approves it, which is done, or rejects it, which goes to Modify and back to review.</desc>
+              <defs>
+                <marker id="cw-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="cw-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line" d="M114 48 L114 70" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M210 101 L240 101" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M114 132 L114 156" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M114 206 L114 230" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M114 280 L114 304" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M114 354 L114 376" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line-accent" d="M49 418 L13 418 Q6 418 6 411 L6 262 Q6 255 13 255 L24 255" marker-end="url(#cw-down-arrow-hot)" />
+              <path class="fig-line" d="M114 460 L114 486" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M114 536 L114 560" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M182 602 L240 602" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M277 634 L277 685 Q277 695 267 695 L210 695" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M114 644 L114 670" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M114 720 L114 744" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M210 769 L240 769" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M114 794 L114 818" marker-end="url(#cw-down-arrow)" />
+              <path class="fig-line" d="M114 868 L114 889" />
+              <path class="fig-line-accent" d="M179 952 L267 952 Q277 952 277 942 L277 890" marker-end="url(#cw-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M240 858 L228 858 Q222 858 222 864 L222 883 Q222 889 216 889 L114 889" />
+              <path class="fig-line-accent" d="M114 889 L114 910" marker-end="url(#cw-down-arrow-hot)" />
+              <path class="fig-line" d="M114 994 L114 1022" marker-end="url(#cw-down-arrow)" />
+              <text class="fig-flow-label" x="17" y="410">Yes</text>
+              <text class="fig-flow-label" x="124" y="478">No</text>
+              <text class="fig-flow-label" x="190" y="594">Yes</text>
+              <text class="fig-flow-label" x="124" y="662">No</text>
+              <text class="fig-flow-label" x="188" y="944">Reject</text>
+              <text class="fig-flow-label" x="124" y="1013">Approve</text>
+              <rect class="fig-box" x="18" y="0" width="192" height="48" rx="24" />
+              <text class="fig-flow-meta" x="114" y="18.1" text-anchor="middle">Backlog</text>
+              <text class="fig-flow-step" x="114" y="37.8" text-anchor="middle">Product backlog</text>
+              <rect class="fig-box" x="18" y="70" width="192" height="62" rx="12" />
+              <text class="fig-flow-meta" x="30" y="95.1">Backlog</text>
+              <text class="fig-flow-step" x="30" y="114.8">Sprint backlog</text>
+              <polygon class="fig-box fig-flow-decide" points="243,70 318,70 311,132 236,132" />
+              <text class="fig-flow-meta" x="277" y="86.1" text-anchor="middle">Backlog</text>
+              <text class="fig-flow-step" x="277" y="105.8" text-anchor="middle"><tspan x="277" dy="0">Sprint</tspan><tspan x="277" dy="18">planning</tspan></text>
+              <rect class="fig-box" x="18" y="156" width="192" height="50" rx="12" />
+              <text class="fig-flow-meta" x="30" y="175.1">Robot Editor</text>
+              <text class="fig-flow-step" x="30" y="194.8">Developing</text>
+              <polygon class="fig-box fig-flow-decide" points="29,230 210,230 199,280 18,280" />
+              <text class="fig-flow-meta" x="114" y="249.1" text-anchor="middle">Robot Editor</text>
+              <text class="fig-flow-step" x="114" y="268.8" text-anchor="middle">Case refinement</text>
+              <polygon class="fig-box fig-flow-decide" points="29,304 210,304 199,354 18,354" />
+              <text class="fig-flow-meta" x="114" y="323.1" text-anchor="middle">Robot Editor</text>
+              <text class="fig-flow-step" x="114" y="342.8" text-anchor="middle">Code review</text>
+              <polygon class="fig-box fig-flow-diamond" points="114,376 179,418 114,460 49,418" />
+              <text class="fig-flow-step" x="114" y="422.3" text-anchor="middle">Problem?</text>
+              <rect class="fig-box" x="18" y="486" width="192" height="50" rx="12" />
+              <text class="fig-flow-meta" x="30" y="505.1">Microsoft Teams</text>
+              <text class="fig-flow-step" x="30" y="524.8">Sprint review</text>
+              <polygon class="fig-box fig-flow-diamond" points="114,560 182,602 114,644 46,602" />
+              <text class="fig-flow-step" x="114" y="606.3" text-anchor="middle">Suggestions?</text>
+              <polygon class="fig-box fig-flow-decide" points="243,570 318,570 311,634 236,634" />
+              <text class="fig-flow-meta" x="277" y="587.6" text-anchor="middle"><tspan x="277" dy="0">Robot</tspan><tspan x="277" dy="17">Editor</tspan></text>
+              <text class="fig-flow-step" x="277" y="624.3" text-anchor="middle">Modify</text>
+              <rect class="fig-box" x="18" y="670" width="192" height="50" rx="12" />
+              <text class="fig-flow-meta" x="30" y="689.1">GitHub</text>
+              <text class="fig-flow-step" x="30" y="708.8">Creating branch</text>
+              <rect class="fig-box" x="18" y="744" width="192" height="50" rx="12" />
+              <text class="fig-flow-meta" x="30" y="763.1">Jenkins</text>
+              <text class="fig-flow-step" x="30" y="782.8">Running CI</text>
+              <polygon class="fig-box fig-flow-decide" points="243,739 318,739 311,799 236,799" />
+              <text class="fig-flow-meta" x="277" y="754.1" text-anchor="middle">Jenkins</text>
+              <text class="fig-flow-step" x="277" y="773.8" text-anchor="middle"><tspan x="277" dy="0">RfLint</tspan><tspan x="277" dy="18">analysis</tspan></text>
+              <rect class="fig-box" x="18" y="818" width="192" height="50" rx="12" />
+              <text class="fig-flow-meta" x="30" y="837.1">GitHub</text>
+              <text class="fig-flow-step" x="30" y="856.8">PR waiting for merge</text>
+              <polygon class="fig-box fig-flow-decide" points="243,826 318,826 311,890 236,890" />
+              <text class="fig-flow-meta" x="277" y="843.6" text-anchor="middle"><tspan x="277" dy="0">Robot</tspan><tspan x="277" dy="17">Editor</tspan></text>
+              <text class="fig-flow-step" x="277" y="880.3" text-anchor="middle">Modify</text>
+              <polygon class="fig-box fig-flow-diamond" points="114,910 179,952 114,994 49,952" />
+              <text class="fig-flow-step" x="114" y="956.3" text-anchor="middle">Review</text>
+              <rect class="fig-box" x="18" y="1022" width="192" height="48" rx="24" />
+              <text class="fig-flow-meta" x="114" y="1040.1" text-anchor="middle">GitHub</text>
+              <text class="fig-flow-step" x="114" y="1059.8" text-anchor="middle">Done</text>
+              <circle class="fig-flow-port" cx="114" cy="48" r="4" />
+              <circle class="fig-flow-port" cx="210" cy="101" r="4" />
+              <circle class="fig-flow-port" cx="114" cy="132" r="4" />
+              <circle class="fig-flow-port" cx="114" cy="206" r="4" />
+              <circle class="fig-flow-port" cx="114" cy="280" r="4" />
+              <circle class="fig-flow-port" cx="114" cy="354" r="4" />
+              <circle class="fig-flow-port is-hot" cx="49" cy="418" r="4" />
+              <circle class="fig-flow-port" cx="114" cy="460" r="4" />
+              <circle class="fig-flow-port" cx="114" cy="536" r="4" />
+              <circle class="fig-flow-port" cx="182" cy="602" r="4" />
+              <circle class="fig-flow-port" cx="277" cy="634" r="4" />
+              <circle class="fig-flow-port" cx="114" cy="644" r="4" />
+              <circle class="fig-flow-port" cx="114" cy="720" r="4" />
+              <circle class="fig-flow-port" cx="210" cy="769" r="4" />
+              <circle class="fig-flow-port" cx="114" cy="794" r="4" />
+              <circle class="fig-flow-port" cx="114" cy="868" r="4" />
+              <circle class="fig-flow-port is-hot" cx="179" cy="952" r="4" />
+              <circle class="fig-flow-port is-hot" cx="240" cy="858" r="4" />
+              <circle class="fig-flow-joint is-hot" cx="114" cy="889" r="3.5" />
+              <circle class="fig-flow-port" cx="114" cy="994" r="4" />
+            </svg>
           <figcaption class="figure-caption">
-            The same seven gates as our report drew them, shaded by the tool each stage lives in.
-            What the flowchart shows that the list above cannot is the loops: a rejected review
-            returns to <em>Modify</em> rather than to the start, and sprint-review suggestions
-            re-enter at case refinement. Nothing here is a straight line to done.
+            The same seven gates as our report drew them, grouped by the tool each stage lives in. What the flowchart shows that the list above cannot is the loops, in orange: a problem found in code review returns to case refinement, and a rejected review returns to <em>Modify</em> rather than to the start. Sprint-review suggestions get a <em>Modify</em> step of their own before the branch. Nothing here is a straight line to done.
           </figcaption>
         </figure>
         <p>
@@ -360,6 +544,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=137a8ce7"></script>
+  <script src="/assets/js/main.js?v=b56d48b4"></script>
 </body>
 </html>

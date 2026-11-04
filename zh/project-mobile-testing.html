@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/project-mobile-testing" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=86370a58" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=f6899cc9" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -244,17 +244,390 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         </p>
 
         <h3>把它套在一個真實畫面上會長成什麼樣子</h3>
-        <figure class="figure">
-          <div class="figure-doc is-wide" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <a href="/assets/img/tc1-activity-diagram.webp" target="_blank" rel="noopener">
-              <img src="/assets/img/tc1-activity-diagram.webp" width="3200" height="1300" loading="lazy" decoding="async"
-                   alt="新增健康數據畫面的活動圖。判斷菱形由左到右串成一條主幹，每種紀錄類型各一個，而標示為 TC1-1 到 TC1-7 的每一條分支，都往下接到該測試案例所要輸入的欄位。" />
-              <span class="sr-only">在新分頁開啟完整尺寸</span>
-            </a>
-          </div>
+        <figure class="figure is-twin">
+            <svg class="fig-svg is-across" viewBox="-1 -1 1102 732" role="img" aria-labelledby="tc-across-title tc-across-desc">
+              <title id="tc-across-title">新增健康數據畫面的活動圖與七個測試案例</title>
+              <desc id="tc-across-desc">新增健康數據畫面的活動圖。進入新增紀錄頁面後，一條判斷主幹依序詢問是否記錄血糖、血壓、體重、用藥、飲食、運動與建議；標示為 TC1-1 到 TC1-7 的每一條分支，都接到該測試案例所要輸入的欄位。用藥、飲食與運動會先多問一個問題：新增藥物、建立食物資訊或新增其他運動類型。每筆輸入接著都會到取消的判斷：取消就回到主頁面，否則點擊完成。建議的最後會詢問是否更新設定，是就重來一次，否則回到主頁面。兩條路徑接著都詢問是否繼續新增，是就回到新增紀錄頁面，否則結束。</desc>
+              <defs>
+                <marker id="tc-across-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+              </defs>
+              <path class="fig-line" d="M18 68 L60 68" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M150 90 L150 110" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M1010 28 L1010 22 Q1010 12 1000 12 L160 12 Q150 12 150 22 L150 46" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M938 68 L902 68" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M150 182 L150 198" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M238 146 L650 146" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M874 146 L882 146 Q892 146 892 156 L892 410" />
+              <path class="fig-line" d="M150 270 L150 286" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M238 234 L650 234" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M874 234 L892 234" />
+              <path class="fig-line" d="M150 358 L150 374" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M238 322 L650 322" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M874 322 L892 322" />
+              <path class="fig-line" d="M150 446 L150 462" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M238 410 L258 410" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M450 410 L476 410" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M626 410 L650 410" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M354 446 L354 447 Q354 453 360 453 L756 453 Q762 453 762 447 L762 437" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M150 534 L150 550" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M238 498 L258 498" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M450 498 L476 498" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M626 498 L650 498" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M354 534 L354 535 Q354 541 360 541 L756 541 Q762 541 762 535 L762 525" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M874 498 L892 498" />
+              <path class="fig-line" d="M150 622 L150 638" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M238 586 L258 586" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M450 586 L476 586" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M626 586 L650 586" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M354 622 L354 623 Q354 629 360 629 L756 629 Q762 629 762 623 L762 613" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M874 586 L882 586 Q892 586 892 576 L892 410" />
+              <path class="fig-line" d="M874 410 L945 410" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M238 674 L268 674" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M452 674 L472 674" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M612 674 L632 674" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M742 674 L765 674" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M830 710 L830 716 Q830 724 822 724 L364 724 Q356 724 356 716 L356 704" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M895 674 L955 674" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M1010 446 L1010 648" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M1010 374 L1010 260" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M1010 208 L1010 108" marker-end="url(#tc-across-arrow)" />
+              <path class="fig-line" d="M1065 674 L1087 674 Q1095 674 1095 666 L1095 76 Q1095 68 1087 68 L1082 68" marker-end="url(#tc-across-arrow)" />
+              <text class="fig-flow-label" x="976" y="28">是</text>
+              <text class="fig-flow-label" x="912" y="59">否</text>
+              <text class="fig-flow-label" x="160" y="195">否</text>
+              <text class="fig-flow-label" x="246" y="137">是</text>
+              <text class="fig-flow-label" x="160" y="283">否</text>
+              <text class="fig-flow-label" x="246" y="225">是</text>
+              <text class="fig-flow-label" x="160" y="371">否</text>
+              <text class="fig-flow-label" x="246" y="313">是</text>
+              <text class="fig-flow-label" x="160" y="459">否</text>
+              <text class="fig-flow-label" x="236" y="401">是</text>
+              <text class="fig-flow-label" x="449" y="401">是</text>
+              <text class="fig-flow-label" x="336" y="455" text-anchor="end">否</text>
+              <text class="fig-flow-label" x="160" y="547">否</text>
+              <text class="fig-flow-label" x="236" y="489">是</text>
+              <text class="fig-flow-label" x="449" y="489">是</text>
+              <text class="fig-flow-label" x="336" y="543" text-anchor="end">否</text>
+              <text class="fig-flow-label" x="160" y="635">否</text>
+              <text class="fig-flow-label" x="236" y="577">是</text>
+              <text class="fig-flow-label" x="449" y="577">是</text>
+              <text class="fig-flow-label" x="336" y="631" text-anchor="end">否</text>
+              <text class="fig-flow-label" x="240" y="665">是</text>
+              <text class="fig-flow-label" x="780" y="719">是</text>
+              <text class="fig-flow-label" x="905" y="665">否</text>
+              <text class="fig-flow-label" x="1020" y="464">是</text>
+              <text class="fig-flow-label" x="1020" y="362">否</text>
+              <circle class="fig-flow-start" cx="10" cy="68" r="8" />
+              <circle class="fig-flow-end" cx="890" cy="68" r="11.5" />
+              <circle class="fig-flow-start" cx="890" cy="68" r="7" />
+              <rect class="fig-box" x="60" y="46" width="180" height="44" rx="12" />
+              <text class="fig-flow-step" x="71" y="72.3">進入新增紀錄頁面</text>
+              <polygon class="fig-box fig-flow-diamond" points="1010,28 1082,68 1010,108 938,68" />
+              <text class="fig-flow-step" x="1010" y="72.3" text-anchor="middle">繼續新增？</text>
+              <rect class="fig-flow-chip" x="2" y="134" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="29" y="150" text-anchor="middle">TC1-1</text>
+              <polygon class="fig-box fig-flow-diamond" points="150,110 238,146 150,182 62,146" />
+              <text class="fig-flow-step" x="150" y="150.3" text-anchor="middle">記錄血糖？</text>
+              <rect class="fig-box" x="650" y="119" width="224" height="54" rx="12" />
+              <text class="fig-flow-step" x="660" y="141.3"><tspan x="660" dy="0">輸入時間、時段、</tspan><tspan x="660" dy="18">血糖</tspan></text>
+              <rect class="fig-flow-chip" x="2" y="222" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="29" y="238" text-anchor="middle">TC1-2</text>
+              <polygon class="fig-box fig-flow-diamond" points="150,198 238,234 150,270 62,234" />
+              <text class="fig-flow-step" x="150" y="238.3" text-anchor="middle">記錄血壓？</text>
+              <rect class="fig-box" x="650" y="207" width="224" height="54" rx="12" />
+              <text class="fig-flow-step" x="660" y="229.3"><tspan x="660" dy="0">輸入時間、時段、</tspan><tspan x="660" dy="18">收縮壓、舒張壓、脈搏</tspan></text>
+              <rect class="fig-flow-chip" x="2" y="310" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="29" y="326" text-anchor="middle">TC1-3</text>
+              <polygon class="fig-box fig-flow-diamond" points="150,286 238,322 150,358 62,322" />
+              <text class="fig-flow-step" x="150" y="326.3" text-anchor="middle">記錄體重？</text>
+              <rect class="fig-box" x="650" y="295" width="224" height="54" rx="12" />
+              <text class="fig-flow-step" x="660" y="317.3"><tspan x="660" dy="0">輸入時間、時段、</tspan><tspan x="660" dy="18">體重、體脂</tspan></text>
+              <rect class="fig-flow-chip" x="2" y="398" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="29" y="414" text-anchor="middle">TC1-4</text>
+              <polygon class="fig-box fig-flow-diamond" points="150,374 238,410 150,446 62,410" />
+              <text class="fig-flow-step" x="150" y="414.3" text-anchor="middle">記錄用藥？</text>
+              <polygon class="fig-box fig-flow-diamond" points="354,374 450,410 354,446 258,410" />
+              <text class="fig-flow-step" x="354" y="414.3" text-anchor="middle">新增藥物？</text>
+              <rect class="fig-box" x="476" y="384" width="150" height="52" rx="12" />
+              <text class="fig-flow-step" x="487" y="414.3">選擇藥物類型</text>
+              <rect class="fig-box" x="650" y="383" width="224" height="54" rx="12" />
+              <text class="fig-flow-step" x="660" y="405.3"><tspan x="660" dy="0">輸入時間、時段、</tspan><tspan x="660" dy="18">劑量</tspan></text>
+              <rect class="fig-flow-chip" x="2" y="486" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="29" y="502" text-anchor="middle">TC1-5</text>
+              <polygon class="fig-box fig-flow-diamond" points="150,462 238,498 150,534 62,498" />
+              <text class="fig-flow-step" x="150" y="502.3" text-anchor="middle">記錄飲食？</text>
+              <polygon class="fig-box fig-flow-diamond" points="354,462 450,498 354,534 258,498" />
+              <text class="fig-flow-step" x="354" y="493.3" text-anchor="middle"><tspan x="354" dy="0">建立食物</tspan><tspan x="354" dy="18">資訊？</tspan></text>
+              <rect class="fig-box" x="476" y="472" width="150" height="52" rx="12" />
+              <text class="fig-flow-step" x="487" y="502.3">選擇食物資訊</text>
+              <rect class="fig-box" x="650" y="471" width="224" height="54" rx="12" />
+              <text class="fig-flow-step" x="660" y="493.3"><tspan x="660" dy="0">輸入時間、時段、</tspan><tspan x="660" dy="18">已登錄的食物資料</tspan></text>
+              <rect class="fig-flow-chip" x="2" y="574" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="29" y="590" text-anchor="middle">TC1-6</text>
+              <polygon class="fig-box fig-flow-diamond" points="150,550 238,586 150,622 62,586" />
+              <text class="fig-flow-step" x="150" y="590.3" text-anchor="middle">記錄運動？</text>
+              <polygon class="fig-box fig-flow-diamond" points="354,550 450,586 354,622 258,586" />
+              <text class="fig-flow-step" x="354" y="581.3" text-anchor="middle"><tspan x="354" dy="0">新增其他</tspan><tspan x="354" dy="18">運動類型？</tspan></text>
+              <rect class="fig-box" x="476" y="560" width="150" height="52" rx="12" />
+              <text class="fig-flow-step" x="487" y="590.3">選擇新運動</text>
+              <rect class="fig-box" x="650" y="559" width="224" height="54" rx="12" />
+              <text class="fig-flow-step" x="660" y="581.3"><tspan x="660" dy="0">輸入時間、時段、</tspan><tspan x="660" dy="18">運動類型與時長</tspan></text>
+              <rect class="fig-flow-chip" x="2" y="662" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="29" y="678" text-anchor="middle">TC1-7</text>
+              <polygon class="fig-box fig-flow-diamond" points="150,638 238,674 150,710 62,674" />
+              <text class="fig-flow-step" x="150" y="678.3" text-anchor="middle">記錄建議？</text>
+              <rect class="fig-box" x="268" y="644" width="184" height="60" rx="12" />
+              <text class="fig-flow-step" x="278" y="669.3"><tspan x="278" dy="0">輸入病史、</tspan><tspan x="278" dy="18">身高、體重</tspan></text>
+              <rect class="fig-box" x="472" y="644" width="140" height="60" rx="12" />
+              <text class="fig-flow-step" x="480" y="669.3"><tspan x="480" dy="0">選擇可用的</tspan><tspan x="480" dy="18">量測裝置</tspan></text>
+              <rect class="fig-box" x="632" y="648" width="110" height="52" rx="12" />
+              <text class="fig-flow-step" x="642" y="678.3">產生建議</text>
+              <polygon class="fig-box fig-flow-diamond" points="830,638 895,674 830,710 765,674" />
+              <text class="fig-flow-step" x="830" y="678.3" text-anchor="middle">更新設定？</text>
+              <rect class="fig-box" x="955" y="648" width="110" height="52" rx="12" />
+              <text class="fig-flow-step" x="966" y="669.3"><tspan x="966" dy="0">回到</tspan><tspan x="966" dy="18">主頁面</tspan></text>
+              <polygon class="fig-box fig-flow-diamond" points="1010,374 1075,410 1010,446 945,410" />
+              <text class="fig-flow-step" x="1010" y="414.3" text-anchor="middle">取消輸入？</text>
+              <rect class="fig-box" x="955" y="208" width="110" height="52" rx="12" />
+              <text class="fig-flow-step" x="966" y="238.3">點擊完成</text>
+              <circle class="fig-flow-port" cx="150" cy="90" r="4" />
+              <circle class="fig-flow-port" cx="1010" cy="28" r="4" />
+              <circle class="fig-flow-port" cx="938" cy="68" r="4" />
+              <circle class="fig-flow-port" cx="150" cy="182" r="4" />
+              <circle class="fig-flow-port" cx="238" cy="146" r="4" />
+              <circle class="fig-flow-port" cx="874" cy="146" r="4" />
+              <circle class="fig-flow-port" cx="150" cy="270" r="4" />
+              <circle class="fig-flow-port" cx="238" cy="234" r="4" />
+              <circle class="fig-flow-port" cx="874" cy="234" r="4" />
+              <circle class="fig-flow-joint" cx="892" cy="234" r="3.5" />
+              <circle class="fig-flow-port" cx="150" cy="358" r="4" />
+              <circle class="fig-flow-port" cx="238" cy="322" r="4" />
+              <circle class="fig-flow-port" cx="874" cy="322" r="4" />
+              <circle class="fig-flow-joint" cx="892" cy="322" r="3.5" />
+              <circle class="fig-flow-port" cx="150" cy="446" r="4" />
+              <circle class="fig-flow-port" cx="238" cy="410" r="4" />
+              <circle class="fig-flow-port" cx="450" cy="410" r="4" />
+              <circle class="fig-flow-port" cx="626" cy="410" r="4" />
+              <circle class="fig-flow-port" cx="354" cy="446" r="4" />
+              <circle class="fig-flow-port" cx="150" cy="534" r="4" />
+              <circle class="fig-flow-port" cx="238" cy="498" r="4" />
+              <circle class="fig-flow-port" cx="450" cy="498" r="4" />
+              <circle class="fig-flow-port" cx="626" cy="498" r="4" />
+              <circle class="fig-flow-port" cx="354" cy="534" r="4" />
+              <circle class="fig-flow-port" cx="874" cy="498" r="4" />
+              <circle class="fig-flow-joint" cx="892" cy="498" r="3.5" />
+              <circle class="fig-flow-port" cx="150" cy="622" r="4" />
+              <circle class="fig-flow-port" cx="238" cy="586" r="4" />
+              <circle class="fig-flow-port" cx="450" cy="586" r="4" />
+              <circle class="fig-flow-port" cx="626" cy="586" r="4" />
+              <circle class="fig-flow-port" cx="354" cy="622" r="4" />
+              <circle class="fig-flow-port" cx="874" cy="586" r="4" />
+              <circle class="fig-flow-port" cx="874" cy="410" r="4" />
+              <circle class="fig-flow-joint" cx="892" cy="410" r="3.5" />
+              <circle class="fig-flow-port" cx="238" cy="674" r="4" />
+              <circle class="fig-flow-port" cx="452" cy="674" r="4" />
+              <circle class="fig-flow-port" cx="612" cy="674" r="4" />
+              <circle class="fig-flow-port" cx="742" cy="674" r="4" />
+              <circle class="fig-flow-port" cx="830" cy="710" r="4" />
+              <circle class="fig-flow-port" cx="895" cy="674" r="4" />
+              <circle class="fig-flow-port" cx="1010" cy="446" r="4" />
+              <circle class="fig-flow-port" cx="1010" cy="374" r="4" />
+              <circle class="fig-flow-port" cx="1010" cy="208" r="4" />
+              <circle class="fig-flow-port" cx="1065" cy="674" r="4" />
+            </svg>
+            <svg class="fig-svg is-down" viewBox="-1 -1 323 1698" role="img" aria-labelledby="tc-down-title tc-down-desc">
+              <title id="tc-down-title">新增健康數據畫面的活動圖與七個測試案例</title>
+              <desc id="tc-down-desc">新增健康數據畫面的活動圖。進入新增紀錄頁面後，一條判斷主幹依序詢問是否記錄血糖、血壓、體重、用藥、飲食、運動與建議；標示為 TC1-1 到 TC1-7 的每一條分支，都接到該測試案例所要輸入的欄位。用藥、飲食與運動會先多問一個問題：新增藥物、建立食物資訊或新增其他運動類型。每筆輸入接著都會到取消的判斷：取消就回到主頁面，否則點擊完成。建議的最後會詢問是否更新設定，是就重來一次，否則回到主頁面。兩條路徑接著都詢問是否繼續新增，是就回到新增紀錄頁面，否則結束。</desc>
+              <defs>
+                <marker id="tc-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+              </defs>
+              <path class="fig-line" d="M20 17 L20 34" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M20 76 L20 98" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M70 134 L70 154" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M20 134 L20 216" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M70 252 L70 272" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M20 252 L20 334" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M70 370 L70 390" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M20 370 L20 452" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M70 488 L70 508" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M110 544 L110 564" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M262 544 L262 628" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M110 610 L110 628" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M20 488 L20 690" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M70 726 L70 746" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M110 782 L110 802" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M262 782 L262 866" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M110 848 L110 866" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M20 726 L20 928" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M70 964 L70 984" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M110 1020 L110 1040" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M262 1020 L262 1104" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M110 1086 L110 1104" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M20 964 L20 1166" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M70 1202 L70 1222" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M166 1268 L166 1288" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M166 1334 L166 1354" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M166 1390 L166 1410" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M36 1428 L21 1428 Q14 1428 14 1421 L14 1252 Q14 1245 21 1245 L36 1245" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M93 1446 L93 1472" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M296 177 L300 177 Q306 177 306 183 L306 1488 Q306 1494 300 1494 L296 1494" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M296 295 L306 295" />
+              <path class="fig-line" d="M296 413 L306 413" />
+              <path class="fig-line" d="M296 651 L306 651" />
+              <path class="fig-line" d="M296 889 L306 889" />
+              <path class="fig-line" d="M296 1127 L306 1127" />
+              <path class="fig-line" d="M170 1494 L142 1494" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M233 1516 L233 1542" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M233 1582 L233 1606" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M93 1524 L93 1606" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M296 1626 L309 1626 Q316 1626 316 1619 L316 62 Q316 55 309 55 L214 55" marker-end="url(#tc-down-arrow)" />
+              <path class="fig-line" d="M166 1646 L166 1672" marker-end="url(#tc-down-arrow)" />
+              <text class="fig-flow-label" x="79" y="148">是</text>
+              <text class="fig-flow-label" x="26" y="148">否</text>
+              <text class="fig-flow-label" x="79" y="266">是</text>
+              <text class="fig-flow-label" x="26" y="266">否</text>
+              <text class="fig-flow-label" x="79" y="384">是</text>
+              <text class="fig-flow-label" x="26" y="384">否</text>
+              <text class="fig-flow-label" x="79" y="502">是</text>
+              <text class="fig-flow-label" x="26" y="502">否</text>
+              <text class="fig-flow-label" x="119" y="558">是</text>
+              <text class="fig-flow-label" x="271" y="558">否</text>
+              <text class="fig-flow-label" x="79" y="740">是</text>
+              <text class="fig-flow-label" x="26" y="740">否</text>
+              <text class="fig-flow-label" x="119" y="796">是</text>
+              <text class="fig-flow-label" x="271" y="796">否</text>
+              <text class="fig-flow-label" x="79" y="978">是</text>
+              <text class="fig-flow-label" x="26" y="978">否</text>
+              <text class="fig-flow-label" x="119" y="1034">是</text>
+              <text class="fig-flow-label" x="271" y="1034">否</text>
+              <text class="fig-flow-label" x="79" y="1216">是</text>
+              <text class="fig-flow-label" x="4" y="1447">是</text>
+              <text class="fig-flow-label" x="102" y="1462">否</text>
+              <text class="fig-flow-label" x="144" y="1485">是</text>
+              <text class="fig-flow-label" x="242" y="1534">否</text>
+              <text class="fig-flow-label" x="311" y="1600" text-anchor="end">是</text>
+              <text class="fig-flow-label" x="175" y="1664">否</text>
+              <circle class="fig-flow-start" cx="20" cy="8" r="8" />
+              <rect class="fig-box" x="2" y="34" width="212" height="42" rx="12" />
+              <text class="fig-flow-step" x="12" y="59.3">進入新增紀錄頁面</text>
+              <polygon class="fig-box fig-flow-decide" points="14,98 232,98 244,116 232,134 14,134 2,116" />
+              <text class="fig-flow-step" x="18" y="120.3">記錄血糖？</text>
+              <rect class="fig-flow-chip" x="254" y="104" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="281" y="120" text-anchor="middle">TC1-1</text>
+              <rect class="fig-box" x="36" y="154" width="260" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="172.3"><tspan x="46" dy="0">輸入時間、時段、</tspan><tspan x="46" dy="18">血糖</tspan></text>
+              <polygon class="fig-box fig-flow-decide" points="14,216 232,216 244,234 232,252 14,252 2,234" />
+              <text class="fig-flow-step" x="18" y="238.3">記錄血壓？</text>
+              <rect class="fig-flow-chip" x="254" y="222" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="281" y="238" text-anchor="middle">TC1-2</text>
+              <rect class="fig-box" x="36" y="272" width="260" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="290.3"><tspan x="46" dy="0">輸入時間、時段、</tspan><tspan x="46" dy="18">收縮壓、舒張壓、脈搏</tspan></text>
+              <polygon class="fig-box fig-flow-decide" points="14,334 232,334 244,352 232,370 14,370 2,352" />
+              <text class="fig-flow-step" x="18" y="356.3">記錄體重？</text>
+              <rect class="fig-flow-chip" x="254" y="340" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="281" y="356" text-anchor="middle">TC1-3</text>
+              <rect class="fig-box" x="36" y="390" width="260" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="408.3"><tspan x="46" dy="0">輸入時間、時段、</tspan><tspan x="46" dy="18">體重、體脂</tspan></text>
+              <polygon class="fig-box fig-flow-decide" points="14,452 232,452 244,470 232,488 14,488 2,470" />
+              <text class="fig-flow-step" x="18" y="474.3">記錄用藥？</text>
+              <rect class="fig-flow-chip" x="254" y="458" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="281" y="474" text-anchor="middle">TC1-4</text>
+              <polygon class="fig-box fig-flow-decide" points="48,508 284,508 296,526 284,544 48,544 36,526" />
+              <text class="fig-flow-step" x="52" y="530.3">新增藥物？</text>
+              <rect class="fig-box" x="36" y="564" width="196" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="591.3">選擇藥物類型</text>
+              <rect class="fig-box" x="36" y="628" width="260" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="646.3"><tspan x="46" dy="0">輸入時間、時段、</tspan><tspan x="46" dy="18">劑量</tspan></text>
+              <polygon class="fig-box fig-flow-decide" points="14,690 232,690 244,708 232,726 14,726 2,708" />
+              <text class="fig-flow-step" x="18" y="712.3">記錄飲食？</text>
+              <rect class="fig-flow-chip" x="254" y="696" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="281" y="712" text-anchor="middle">TC1-5</text>
+              <polygon class="fig-box fig-flow-decide" points="48,746 284,746 296,764 284,782 48,782 36,764" />
+              <text class="fig-flow-step" x="52" y="768.3">建立食物資訊？</text>
+              <rect class="fig-box" x="36" y="802" width="196" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="829.3">選擇食物資訊</text>
+              <rect class="fig-box" x="36" y="866" width="260" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="884.3"><tspan x="46" dy="0">輸入時間、時段、</tspan><tspan x="46" dy="18">已登錄的食物資料</tspan></text>
+              <polygon class="fig-box fig-flow-decide" points="14,928 232,928 244,946 232,964 14,964 2,946" />
+              <text class="fig-flow-step" x="18" y="950.3">記錄運動？</text>
+              <rect class="fig-flow-chip" x="254" y="934" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="281" y="950" text-anchor="middle">TC1-6</text>
+              <polygon class="fig-box fig-flow-decide" points="48,984 284,984 296,1002 284,1020 48,1020 36,1002" />
+              <text class="fig-flow-step" x="52" y="1006.3">新增其他運動類型？</text>
+              <rect class="fig-box" x="36" y="1040" width="196" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="1067.3">選擇新運動</text>
+              <rect class="fig-box" x="36" y="1104" width="260" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="1122.3"><tspan x="46" dy="0">輸入時間、時段、</tspan><tspan x="46" dy="18">運動類型與時長</tspan></text>
+              <polygon class="fig-box fig-flow-decide" points="14,1166 232,1166 244,1184 232,1202 14,1202 2,1184" />
+              <text class="fig-flow-step" x="18" y="1188.3">記錄建議？</text>
+              <rect class="fig-flow-chip" x="254" y="1172" width="54" height="23" rx="11.5" />
+              <text class="fig-flow-chip-text" x="281" y="1188" text-anchor="middle">TC1-7</text>
+              <rect class="fig-box" x="36" y="1222" width="260" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="1240.3"><tspan x="46" dy="0">輸入病史、</tspan><tspan x="46" dy="18">身高、體重</tspan></text>
+              <rect class="fig-box" x="36" y="1288" width="260" height="46" rx="12" />
+              <text class="fig-flow-step" x="46" y="1306.3"><tspan x="46" dy="0">選擇可用的</tspan><tspan x="46" dy="18">量測裝置</tspan></text>
+              <rect class="fig-box" x="36" y="1354" width="260" height="36" rx="12" />
+              <text class="fig-flow-step" x="46" y="1376.3">產生建議</text>
+              <polygon class="fig-box fig-flow-decide" points="48,1410 284,1410 296,1428 284,1446 48,1446 36,1428" />
+              <text class="fig-flow-step" x="52" y="1432.3">更新設定？</text>
+              <rect class="fig-box" x="36" y="1472" width="106" height="52" rx="12" />
+              <text class="fig-flow-step" x="46" y="1493.3"><tspan x="46" dy="0">回到</tspan><tspan x="46" dy="18">主頁面</tspan></text>
+              <polygon class="fig-box fig-flow-decide" points="182,1472 284,1472 296,1494 284,1516 182,1516 170,1494" />
+              <text class="fig-flow-step" x="233" y="1498.3" text-anchor="middle">取消輸入？</text>
+              <rect class="fig-box" x="170" y="1542" width="126" height="40" rx="12" />
+              <text class="fig-flow-step" x="178" y="1566.3">點擊完成</text>
+              <polygon class="fig-box fig-flow-decide" points="48,1606 284,1606 296,1626 284,1646 48,1646 36,1626" />
+              <text class="fig-flow-step" x="166" y="1630.3" text-anchor="middle">繼續新增？</text>
+              <circle class="fig-flow-end" cx="166" cy="1683" r="11.5" />
+              <circle class="fig-flow-start" cx="166" cy="1683" r="7" />
+              <circle class="fig-flow-port" cx="20" cy="76" r="4" />
+              <circle class="fig-flow-port" cx="70" cy="134" r="4" />
+              <circle class="fig-flow-port" cx="20" cy="134" r="4" />
+              <circle class="fig-flow-port" cx="70" cy="252" r="4" />
+              <circle class="fig-flow-port" cx="20" cy="252" r="4" />
+              <circle class="fig-flow-port" cx="70" cy="370" r="4" />
+              <circle class="fig-flow-port" cx="20" cy="370" r="4" />
+              <circle class="fig-flow-port" cx="70" cy="488" r="4" />
+              <circle class="fig-flow-port" cx="110" cy="544" r="4" />
+              <circle class="fig-flow-port" cx="262" cy="544" r="4" />
+              <circle class="fig-flow-port" cx="110" cy="610" r="4" />
+              <circle class="fig-flow-port" cx="20" cy="488" r="4" />
+              <circle class="fig-flow-port" cx="70" cy="726" r="4" />
+              <circle class="fig-flow-port" cx="110" cy="782" r="4" />
+              <circle class="fig-flow-port" cx="262" cy="782" r="4" />
+              <circle class="fig-flow-port" cx="110" cy="848" r="4" />
+              <circle class="fig-flow-port" cx="20" cy="726" r="4" />
+              <circle class="fig-flow-port" cx="70" cy="964" r="4" />
+              <circle class="fig-flow-port" cx="110" cy="1020" r="4" />
+              <circle class="fig-flow-port" cx="262" cy="1020" r="4" />
+              <circle class="fig-flow-port" cx="110" cy="1086" r="4" />
+              <circle class="fig-flow-port" cx="20" cy="964" r="4" />
+              <circle class="fig-flow-port" cx="70" cy="1202" r="4" />
+              <circle class="fig-flow-port" cx="166" cy="1268" r="4" />
+              <circle class="fig-flow-port" cx="166" cy="1334" r="4" />
+              <circle class="fig-flow-port" cx="166" cy="1390" r="4" />
+              <circle class="fig-flow-port" cx="36" cy="1428" r="4" />
+              <circle class="fig-flow-port" cx="93" cy="1446" r="4" />
+              <circle class="fig-flow-port" cx="296" cy="177" r="4" />
+              <circle class="fig-flow-port" cx="296" cy="295" r="4" />
+              <circle class="fig-flow-joint" cx="306" cy="295" r="3.5" />
+              <circle class="fig-flow-port" cx="296" cy="413" r="4" />
+              <circle class="fig-flow-joint" cx="306" cy="413" r="3.5" />
+              <circle class="fig-flow-port" cx="296" cy="651" r="4" />
+              <circle class="fig-flow-joint" cx="306" cy="651" r="3.5" />
+              <circle class="fig-flow-port" cx="296" cy="889" r="4" />
+              <circle class="fig-flow-joint" cx="306" cy="889" r="3.5" />
+              <circle class="fig-flow-port" cx="296" cy="1127" r="4" />
+              <circle class="fig-flow-joint" cx="306" cy="1127" r="3.5" />
+              <circle class="fig-flow-port" cx="170" cy="1494" r="4" />
+              <circle class="fig-flow-port" cx="233" cy="1516" r="4" />
+              <circle class="fig-flow-port" cx="233" cy="1582" r="4" />
+              <circle class="fig-flow-port" cx="93" cy="1524" r="4" />
+              <circle class="fig-flow-port" cx="296" cy="1626" r="4" />
+              <circle class="fig-flow-port" cx="166" cy="1646" r="4" />
+            </svg>
           <figcaption class="figure-caption">
-            團隊為「新增健康數據」畫的活動圖，直接取自我們的報告。圖上標示的每一條分支，從 TC1-1 到 TC1-7，都是一個測試案例：實際操作 App，每一個真的通往某處的判斷，就變成一個案例，末端接上它自己的輸入。我負責的區塊也長成同樣的形狀，五條分支分別帶著 2、1、6、4、2 個測試案例。這張圖畫的是另一個功能區塊，背後的程式碼是隊友寫的，但方法是我們五個人共同遵循的那一套。
-            <a href="/assets/img/tc1-activity-diagram.webp" target="_blank" rel="noopener">開啟完整尺寸<span class="sr-only">，於新分頁</span></a>
+            團隊為「新增健康數據」畫的活動圖，依我們的報告重繪，每個測試案例一列。圖上標示的每一條分支，從 TC1-1 到 TC1-7，都是一個測試案例：實際操作 App，每一個真的通往某處的判斷，就變成一個案例，末端接上它自己的輸入。我負責的區塊也長成同樣的形狀，五條分支分別帶著 2、1、6、4、2 個測試案例。這張圖畫的是另一個功能區塊，背後的程式碼是隊友寫的，但方法是我們五個人共同遵循的那一套。
           </figcaption>
         </figure>
 
@@ -463,6 +836,6 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=137a8ce7"></script>
+  <script src="/assets/js/main.js?v=b56d48b4"></script>
 </body>
 </html>

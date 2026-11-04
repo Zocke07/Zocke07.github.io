@@ -1,5 +1,5 @@
-// Theme switch, menu, header state, the reading rail, back-to-top, clip
-// players, project chains and the start of the opening sequence. No
+// Theme switch, menu, header state, the reading rail, back-to-top, diagram
+// notes, clip players, project chains and the start of the opening sequence. No
 // dependencies. The initial theme and the .js class are set inline in <head>.
 //
 // Every lookup below is guarded: a page built from a partial template should
@@ -255,6 +255,109 @@ if (pipes.length && "IntersectionObserver" in window && !reducedMotion) {
     });
   }, { threshold: 0.6 });
   pipes.forEach((p) => seen.observe(p));
+}
+
+// --- Diagram notes ---
+// A dotted label in a flowchart explains itself: the text is the <desc> inside the
+// node's group. Pointer, keyboard and finger all reach it, and it stays until the
+// reader moves away, because a note on a timer can vanish mid-sentence. The pointer
+// can cross onto the note, so it never has to be read at a run. The diagrams are
+// plain pictures until this runs, so without it nothing here promises a note.
+const notedNodes = $$(".fig-flow-noted");
+if (notedNodes.length) {
+  const tip = document.createElement("div");
+  tip.className = "fig-flow-note";
+  tip.id = "fig-flow-note";
+  tip.setAttribute("role", "tooltip");
+  let current = null;
+  let closing = 0;
+  let lastPointer = "";
+
+  const place = (node) => {
+    const figure = node.closest(".figure");
+    tip.textContent = node.querySelector("desc").textContent;
+    figure.append(tip);
+    const box = node.getBoundingClientRect();
+    const frame = figure.getBoundingClientRect();
+    const header = $(".site-header");
+    const ceiling = header ? header.getBoundingClientRect().bottom : 0;
+    const below = box.top - tip.offsetHeight - 12 < ceiling + 4;
+    const middle = box.left + box.width / 2;
+    const left = Math.min(Math.max(middle - tip.offsetWidth / 2, 8), innerWidth - tip.offsetWidth - 8);
+    tip.classList.toggle("is-below", below);
+    tip.style.left = `${left - frame.left}px`;
+    tip.style.top = `${(below ? box.bottom + 12 : box.top - tip.offsetHeight - 12) - frame.top}px`;
+    tip.style.setProperty("--caret", `${Math.min(Math.max(middle - left, 18), tip.offsetWidth - 18)}px`);
+  };
+  const hide = () => {
+    clearTimeout(closing);
+    if (!current) return;
+    current.classList.remove("is-open");
+    current.setAttribute("aria-expanded", "false");
+    current.removeAttribute("aria-describedby");
+    current = null;
+    tip.classList.remove("is-on");
+  };
+  const show = (node) => {
+    clearTimeout(closing);
+    if (current === node) return;
+    hide();
+    current = node;
+    node.classList.add("is-open");
+    node.setAttribute("aria-expanded", "true");
+    node.setAttribute("aria-describedby", tip.id);
+    place(node);
+    tip.classList.add("is-on");
+  };
+  const hideSoon = () => { clearTimeout(closing); closing = setTimeout(hide, 140); };
+
+  // Inside role="img" a child cannot be a control, so a drawing with notes becomes a
+  // labeled group of them. Its own <title> goes too, or the browser's tooltip for
+  // the whole drawing would appear on top of the note.
+  new Set(notedNodes.map((node) => node.ownerSVGElement)).forEach((svg) => {
+    const title = svg.querySelector(":scope > title");
+    const desc = svg.querySelector(":scope > desc");
+    if (title) svg.setAttribute("aria-label", title.textContent);
+    svg.removeAttribute("aria-labelledby");
+    if (desc) svg.setAttribute("aria-describedby", desc.id);
+    if (title) title.remove();
+    svg.setAttribute("role", "group");
+    [...svg.children].forEach((child) => {
+      if (child !== desc && !child.classList.contains("fig-flow-noted")) child.setAttribute("aria-hidden", "true");
+    });
+  });
+
+  notedNodes.forEach((node) => {
+    node.setAttribute("role", "button");
+    node.setAttribute("tabindex", "0");
+    node.setAttribute("aria-expanded", "false");
+    node.addEventListener("pointerenter", (e) => { if (e.pointerType === "mouse") show(node); });
+    node.addEventListener("pointerleave", (e) => { if (e.pointerType === "mouse" && !node.matches(":focus-visible")) hideSoon(); });
+    node.addEventListener("focus", () => { if (node.matches(":focus-visible")) show(node); });
+    node.addEventListener("blur", () => { if (current === node) hideSoon(); });
+    node.addEventListener("click", () => {
+      if (lastPointer === "mouse") return;
+      if (current === node) hide(); else show(node);
+    });
+    node.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      e.preventDefault();
+      if (current === node) hide(); else show(node);
+    });
+  });
+  tip.addEventListener("pointerenter", () => clearTimeout(closing));
+  tip.addEventListener("pointerleave", hideSoon);
+  addEventListener("pointerdown", (e) => {
+    lastPointer = e.pointerType;
+    if (current && !e.target.closest(".fig-flow-noted, .fig-flow-note")) hide();
+  });
+  addEventListener("keydown", (e) => { if (e.key === "Escape") hide(); });
+  // A phone's address bar sliding away is a resize too, and must not close a note.
+  let noteWidth = innerWidth;
+  addEventListener("resize", () => {
+    if (innerWidth !== noteWidth) hide();
+    noteWidth = innerWidth;
+  });
 }
 
 // --- Clip players ---

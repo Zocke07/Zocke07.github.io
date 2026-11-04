@@ -36,7 +36,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-lmad" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=86370a58" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=f6899cc9" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -95,7 +95,7 @@
           <li>伺服器端輔助資料 <strong>0</strong> 筆</li>
         </ul>
         <aside class="nda-note">
-          <strong>關於本文範圍：</strong>這頁是寫給一般軟體讀者的摘要，不能取代論文本身。長條圖與散布圖是依論文原始結果重繪，目的是讓它跟著本站的淺色與深色主題走；系統架構圖與攻擊成功率圖則直接取自論文原圖。數值沒有經過任何重新縮放或改寫，全部就是論文定稿的數字。
+          <strong>關於本文範圍：</strong>這頁是寫給一般軟體讀者的摘要，不能取代論文本身。圖表與流程圖都是依論文的原始結果與原始檔重繪，目的是讓它們跟著本站的淺色與深色主題走。數值沒有經過任何重新縮放或改寫，全部就是論文定稿的數字。
         </aside>
       </div>
     </section>
@@ -128,16 +128,174 @@
         <p>
           兩個階段，而且兩個階段都不需要伺服器端持有任何資料。名稱也由此而來：第一階段是「信任感知」的部分，第二階段則是以中位數絕對偏差（MAD）逐層（L）進行的檢查。
         </p>
-        <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <a href="/assets/img/lmad/aggregation.webp" target="_blank" rel="noopener">
-              <img src="/assets/img/lmad/aggregation.webp" width="1500" height="399" loading="lazy" decoding="async"
-                   alt="聚合流程圖：用戶端的層更新由左側進入，先經過第一階段可靠度預判與選用的損失探測閘門，再進入第二階段 MAD 閘門逐一決定接受或拒斥；被定罪的用戶端進入永久封鎖名冊。若該回合全部遭拒，則退回穩健中位數，否則將被接受的用戶端加權平均為全域模型。" />
-              <span class="sr-only">在新分頁開啟完整尺寸</span>
-            </a>
-          </div>
+        <figure class="figure is-twin">
+            <svg class="fig-svg is-across" viewBox="-1 -1 1102 426" role="img" aria-labelledby="agg-across-title agg-across-desc">
+              <title id="agg-across-title">L-MAD 一回合的聚合如何把用戶端更新併入全域模型</title>
+              <desc id="agg-across-desc">聚合流程圖：用戶端的層更新進入後分成兩路。決策層依序經過第一階段可靠度預檢、選配的損失探測閘門，以及逐一決定接受或拒斥的第二階段 MAD 閘門。第一階段會把持續攻擊者定罪並列入永久封鎖名冊，名冊上的用戶端不再進入第二階段，也不納入小型層。若該回合全部遭拒，則退回穩健中位數，否則將被接受的用戶端加權平均；小型層則對未遭封鎖的用戶端加權平均。三條路徑最後都併入聚合後的全域模型。</desc>
+              <defs>
+                <marker id="agg-across-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="agg-across-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line-accent" d="M58 224 L58 162 Q58 150 70 150 L156 150" marker-end="url(#agg-across-arrow-hot)" />
+              <path class="fig-line" d="M58 316 L58 374 Q58 386 70 386 L464 386" marker-end="url(#agg-across-arrow)" />
+              <path class="fig-line-accent" d="M294 150 L318 150" marker-end="url(#agg-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M456 150 L480 150" marker-end="url(#agg-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M618 150 L642 150" marker-end="url(#agg-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M710 91 L710 56 Q710 44 722 44 L808 44" marker-end="url(#agg-across-arrow-hot)" />
+              <path class="fig-line" d="M710 209 L710 258 Q710 270 722 270 L808 270" marker-end="url(#agg-across-arrow)" />
+              <path class="fig-line-accent" d="M950 44 L1022 44 Q1034 44 1034 56 L1034 234" marker-end="url(#agg-across-arrow-hot)" />
+              <path class="fig-line" d="M950 270 L974 270" marker-end="url(#agg-across-arrow)" />
+              <path class="fig-line" d="M634 386 L1022 386 Q1034 386 1034 374 L1034 306" marker-end="url(#agg-across-arrow)" />
+              <path class="fig-line" d="M225 198 L225 258 Q225 270 237 270 L484 270" marker-end="url(#agg-across-arrow)" />
+              <path class="fig-line" d="M549 232 L549 198" marker-end="url(#agg-across-arrow)" />
+              <path class="fig-line" d="M549 308 L549 350" marker-end="url(#agg-across-arrow)" />
+              <text class="fig-flow-label" x="44" y="140">決策層</text>
+              <text class="fig-flow-label" x="80" y="376">小型層</text>
+              <text class="fig-flow-label" x="249" y="260">將持續攻擊者定罪</text>
+              <text class="fig-flow-label" x="560" y="220">排除已封鎖者</text>
+              <text class="fig-flow-label" x="560" y="334">排除已封鎖者</text>
+              <text class="fig-flow-label" x="720" y="72">否</text>
+              <text class="fig-flow-label" x="720" y="240">是</text>
+              <rect class="fig-box" x="0" y="224" width="116" height="92" rx="12" />
+              <text class="fig-flow-title" x="12" y="254.9"><tspan x="12" dy="0">用戶端的</tspan><tspan x="12" dy="19.5">層更新</tspan></text>
+              <text class="fig-flow-sub" x="12" y="294.8">來自層級剖析</text>
+              <rect class="fig-box-accent" x="156" y="102" width="138" height="96" rx="12" />
+              <text class="fig-flow-meta" x="168" y="142.8">第一階段</text>
+              <text class="fig-flow-title" x="168" y="164.7">可靠度預檢</text>
+              <g class="fig-flow-noted">
+                <desc>大型聯邦才用的選配檢查。伺服器用自己持有的 512 筆乾淨樣本測試每個用戶端，這是攻擊者動不了的基準。預設為關閉；開啟就代表伺服器必須保留這批資料。</desc>
+                <rect class="fig-box fig-flow-optional" x="318" y="102" width="138" height="96" rx="12" />
+                <text class="fig-flow-title" x="330" y="135.7">損失探測閘門</text>
+                <text class="fig-flow-sub" x="330" y="156.1"><tspan x="330" dy="0">選配，用戶端</tspan><tspan x="330" dy="18">較多時使用</tspan></text>
+              </g>
+              <rect class="fig-box-accent" x="480" y="102" width="138" height="96" rx="12" />
+              <text class="fig-flow-meta" x="492" y="123.8">第二階段</text>
+              <text class="fig-flow-title" x="492" y="145.7">MAD 閘門</text>
+              <text class="fig-flow-sub" x="492" y="166.1"><tspan x="492" dy="0">逐一接受或拒斥</tspan><tspan x="492" dy="18">用戶端</tspan></text>
+              <polygon class="fig-box fig-flow-diamond" points="710,91 778,150 710,209 642,150" />
+              <text class="fig-flow-title" x="710" y="144.9" text-anchor="middle"><tspan x="710" dy="0">全部更新</tspan><tspan x="710" dy="19.5">都遭拒斥？</tspan></text>
+              <rect class="fig-box" x="808" y="4" width="142" height="80" rx="12" />
+              <text class="fig-flow-title" x="820" y="38.7">加權平均</text>
+              <text class="fig-flow-sub" x="820" y="59.1">被接受的用戶端</text>
+              <g class="fig-flow-noted">
+                <desc>如果某一層的所有用戶端都被拒斥，伺服器會改用所有更新的逐元素中位數，而不是直接失敗。少數極端值拉不動中位數。</desc>
+                <rect class="fig-box" x="808" y="238" width="142" height="64" rx="12" />
+                <text class="fig-flow-title" x="820" y="264.7">退回</text>
+                <text class="fig-flow-sub" x="820" y="285.1">穩健中位數</text>
+              </g>
+              <g class="fig-flow-noted">
+                <desc>第一階段記錄定罪用戶端的地方。不信任分數每回合都會衰減，所以只有持續的異常才會走到這裡。一旦進入，之後每個回合都不再納入，攻擊者無法收手後再混回來。</desc>
+                <path class="fig-box" d="M484 241 A65 9 0 0 1 614 241 V299 A65 9 0 0 1 484 299 Z" />
+                <path class="fig-flow-lid" d="M484 241 A65 9 0 0 0 614 241" />
+                <text class="fig-flow-title" x="549" y="269.4" text-anchor="middle"><tspan x="549" dy="0">永久</tspan><tspan x="549" dy="19.5">封鎖名冊</tspan></text>
+              </g>
+              <g class="fig-flow-noted">
+                <desc>偏置向量與其他少於 1,024 個元素的張量。這麼小的層，中位數與距離估計提供不了多少判別力，所以跳過異常過濾，只做一般的加權平均。</desc>
+                <rect class="fig-box" x="464" y="350" width="170" height="72" rx="12" />
+                <text class="fig-flow-title" x="476" y="371.7">小型層</text>
+                <text class="fig-flow-sub" x="476" y="392.1"><tspan x="476" dy="0">對未遭封鎖的</tspan><tspan x="476" dy="18">用戶端加權平均</tspan></text>
+              </g>
+              <rect class="fig-flow-halo" x="969" y="229" width="130" height="82" rx="17" />
+              <rect class="fig-box fig-flow-out" x="974" y="234" width="120" height="72" rx="12" />
+              <text class="fig-flow-title" x="984" y="264.9"><tspan x="984" dy="0">聚合後的</tspan><tspan x="984" dy="19.5">全域模型</tspan></text>
+              <circle class="fig-flow-port is-hot" cx="58" cy="224" r="4" />
+              <circle class="fig-flow-port" cx="58" cy="316" r="4" />
+              <circle class="fig-flow-port is-hot" cx="294" cy="150" r="4" />
+              <circle class="fig-flow-port is-hot" cx="456" cy="150" r="4" />
+              <circle class="fig-flow-port is-hot" cx="618" cy="150" r="4" />
+              <circle class="fig-flow-port is-hot" cx="710" cy="91" r="4" />
+              <circle class="fig-flow-port" cx="710" cy="209" r="4" />
+              <circle class="fig-flow-port is-hot" cx="950" cy="44" r="4" />
+              <circle class="fig-flow-port" cx="950" cy="270" r="4" />
+              <circle class="fig-flow-port" cx="634" cy="386" r="4" />
+              <circle class="fig-flow-port" cx="225" cy="198" r="4" />
+              <circle class="fig-flow-port" cx="549" cy="232" r="4" />
+              <circle class="fig-flow-port" cx="549" cy="308" r="4" />
+            </svg>
+            <svg class="fig-svg is-down" viewBox="-1 -1 323 757" role="img" aria-labelledby="agg-down-title agg-down-desc">
+              <title id="agg-down-title">L-MAD 一回合的聚合如何把用戶端更新併入全域模型</title>
+              <desc id="agg-down-desc">聚合流程圖：用戶端的層更新進入後分成兩路。決策層依序經過第一階段可靠度預檢、選配的損失探測閘門，以及逐一決定接受或拒斥的第二階段 MAD 閘門。第一階段會把持續攻擊者定罪並列入永久封鎖名冊，名冊上的用戶端不再進入第二階段，也不納入小型層。若該回合全部遭拒，則退回穩健中位數，否則將被接受的用戶端加權平均；小型層則對未遭封鎖的用戶端加權平均。三條路徑最後都併入聚合後的全域模型。</desc>
+              <defs>
+                <marker id="agg-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="agg-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line-accent" d="M76 60 L76 96" marker-end="url(#agg-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M76 180 L76 204" marker-end="url(#agg-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M76 294 L76 318" marker-end="url(#agg-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M76 418 L76 444" marker-end="url(#agg-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M76 562 L76 590" marker-end="url(#agg-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M76 670 L76 698" marker-end="url(#agg-down-arrow-hot)" />
+              <path class="fig-line" d="M299 60 L299 394" marker-end="url(#agg-down-arrow)" />
+              <path class="fig-line" d="M299 486 L299 698" marker-end="url(#agg-down-arrow)" />
+              <path class="fig-line" d="M147 138 L211 138 Q221 138 221 148 L221 206" marker-end="url(#agg-down-arrow)" />
+              <path class="fig-line" d="M221 272 L221 394" marker-end="url(#agg-down-arrow)" />
+              <path class="fig-line" d="M221 368 L147 368" marker-end="url(#agg-down-arrow)" />
+              <path class="fig-line" d="M147 503 L215 503 Q225 503 225 513 L225 590" marker-end="url(#agg-down-arrow)" />
+              <path class="fig-line" d="M225 670 L225 698" marker-end="url(#agg-down-arrow)" />
+              <text class="fig-flow-label" x="86" y="83">決策層</text>
+              <text class="fig-flow-label" x="156" y="111"><tspan x="156" dy="0">將持續攻擊者</tspan><tspan x="156" dy="17">定罪</tspan></text>
+              <text class="fig-flow-label" x="231" y="310"><tspan x="231" dy="0">排除</tspan><tspan x="231" dy="17">已封鎖者</tspan></text>
+              <text class="fig-flow-label" x="86" y="581">否</text>
+              <text class="fig-flow-label" x="156" y="521">是</text>
+              <rect class="fig-box" x="5" y="0" width="311" height="60" rx="12" />
+              <text class="fig-flow-title" x="17" y="24.7">用戶端的層更新</text>
+              <text class="fig-flow-sub" x="17" y="45.1">來自層級剖析</text>
+              <rect class="fig-box-accent" x="5" y="96" width="142" height="84" rx="12" />
+              <text class="fig-flow-meta" x="16" y="130.8">第一階段</text>
+              <text class="fig-flow-title" x="16" y="152.7">可靠度預檢</text>
+              <g class="fig-flow-noted">
+                <desc>大型聯邦才用的選配檢查。伺服器用自己持有的 512 筆乾淨樣本測試每個用戶端，這是攻擊者動不了的基準。預設為關閉；開啟就代表伺服器必須保留這批資料。</desc>
+                <rect class="fig-box fig-flow-optional" x="5" y="204" width="142" height="90" rx="12" />
+                <text class="fig-flow-title" x="16" y="234.7">損失探測閘門</text>
+                <text class="fig-flow-sub" x="16" y="255.1"><tspan x="16" dy="0">選配，用戶端</tspan><tspan x="16" dy="18">較多時使用</tspan></text>
+              </g>
+              <rect class="fig-box-accent" x="5" y="318" width="142" height="100" rx="12" />
+              <text class="fig-flow-meta" x="16" y="341.8">第二階段</text>
+              <text class="fig-flow-title" x="16" y="363.7">MAD 閘門</text>
+              <text class="fig-flow-sub" x="16" y="384.1"><tspan x="16" dy="0">逐一接受或拒斥</tspan><tspan x="16" dy="18">用戶端</tspan></text>
+              <polygon class="fig-box fig-flow-diamond" points="76,444 147,503 76,562 5,503" />
+              <text class="fig-flow-title" x="76" y="497.9" text-anchor="middle"><tspan x="76" dy="0">全部更新</tspan><tspan x="76" dy="19.5">都遭拒斥？</tspan></text>
+              <rect class="fig-box" x="5" y="590" width="142" height="80" rx="12" />
+              <text class="fig-flow-title" x="16" y="624.7">加權平均</text>
+              <text class="fig-flow-sub" x="16" y="645.1">被接受的用戶端</text>
+              <g class="fig-flow-noted">
+                <desc>如果某一層的所有用戶端都被拒斥，伺服器會改用所有更新的逐元素中位數，而不是直接失敗。少數極端值拉不動中位數。</desc>
+                <rect class="fig-box" x="163" y="590" width="124" height="80" rx="12" />
+                <text class="fig-flow-title" x="172" y="624.7">退回</text>
+                <text class="fig-flow-sub" x="172" y="645.1">穩健中位數</text>
+              </g>
+              <g class="fig-flow-noted">
+                <desc>第一階段記錄定罪用戶端的地方。不信任分數每回合都會衰減，所以只有持續的異常才會走到這裡。一旦進入，之後每個回合都不再納入，攻擊者無法收手後再混回來。</desc>
+                <path class="fig-box" d="M165 215 A56 9 0 0 1 277 215 V263 A56 9 0 0 1 165 263 Z" />
+                <path class="fig-flow-lid" d="M165 215 A56 9 0 0 0 277 215" />
+                <text class="fig-flow-title" x="221" y="238.4" text-anchor="middle"><tspan x="221" dy="0">永久</tspan><tspan x="221" dy="19.5">封鎖名冊</tspan></text>
+              </g>
+              <g class="fig-flow-noted">
+                <desc>偏置向量與其他少於 1,024 個元素的張量。這麼小的層，中位數與距離估計提供不了多少判別力，所以跳過異常過濾，只做一般的加權平均。</desc>
+                <rect class="fig-box" x="163" y="394" width="148" height="92" rx="12" />
+                <text class="fig-flow-title" x="172" y="425.7">小型層</text>
+                <text class="fig-flow-sub" x="172" y="446.1"><tspan x="172" dy="0">對未遭封鎖的</tspan><tspan x="172" dy="18">用戶端加權平均</tspan></text>
+              </g>
+              <rect class="fig-flow-halo" x="0" y="693" width="321" height="62" rx="17" />
+              <rect class="fig-box fig-flow-out" x="5" y="698" width="311" height="52" rx="12" />
+              <text class="fig-flow-title" x="17" y="728.7">聚合後的全域模型</text>
+              <circle class="fig-flow-port is-hot" cx="76" cy="60" r="4" />
+              <circle class="fig-flow-port is-hot" cx="76" cy="180" r="4" />
+              <circle class="fig-flow-port is-hot" cx="76" cy="294" r="4" />
+              <circle class="fig-flow-port is-hot" cx="76" cy="418" r="4" />
+              <circle class="fig-flow-port is-hot" cx="76" cy="562" r="4" />
+              <circle class="fig-flow-port is-hot" cx="76" cy="670" r="4" />
+              <circle class="fig-flow-port" cx="299" cy="60" r="4" />
+              <circle class="fig-flow-port" cx="299" cy="486" r="4" />
+              <circle class="fig-flow-port" cx="147" cy="138" r="4" />
+              <circle class="fig-flow-port" cx="221" cy="272" r="4" />
+              <circle class="fig-flow-joint" cx="221" cy="368" r="3.5" />
+              <circle class="fig-flow-port" cx="147" cy="503" r="4" />
+              <circle class="fig-flow-port" cx="225" cy="670" r="4" />
+            </svg>
+          <p class="fig-hint">點選有虛線的標籤，查看它的意思。</p>
           <figcaption class="figure-caption">
-            先看整條路徑，再看零件。更新從左側進入，通過兩道閘門，最後併入全域模型。被預判定罪的用戶端會進入封鎖名冊，兩條分支都不再納入。值得先注意的是右下角：若某一回合把所有更新都拒斥掉，聚合器會退回穩健中位數，而不是直接失敗。
+            先看整條路徑，再看零件。更新進入後通過兩道閘門，最後併入全域模型。被預檢定罪的用戶端會進入封鎖名冊，兩條分支都不再納入。值得先注意的是「是」這條分支：若某一回合把所有更新都拒斥掉，聚合器會退回穩健中位數，而不是直接失敗。橘色線是至少接受一個用戶端時，決策層走的路徑。
           </figcaption>
         </figure>
 
@@ -246,27 +404,194 @@
           上面這些在真的跑起來之前都還只是紙上結果。整套框架分成四個子系統：存放原始資料集與實驗指標的儲存層、前處理與模型層、負責訓練並回傳參數的邊緣用戶端，以及負責層級剖析、聚合與評估的伺服器。這篇文章裡的每一組實驗都是從它跑出來的。
         </p>
         <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <a href="/assets/img/lmad/architecture.webp" target="_blank" rel="noopener">
-              <img src="/assets/img/lmad/architecture.webp" width="1500" height="1320" loading="lazy" decoding="async"
-                   alt="系統架構圖，由四個堆疊的子系統組成：資料與持久化、前處理與模型、邊緣用戶端，以及聯邦伺服器，各自包含所屬模組。" />
-              <span class="sr-only">在新分頁開啟完整尺寸</span>
-            </a>
-          </div>
+          <ul class="subsystems" role="list" aria-label="四個子系統與各自的模組">
+            <li class="subsystem">
+              <b>資料與持久化子系統</b>
+              <ul class="modules" role="list">
+                <li class="is-store">原始資料集儲存</li>
+                <li class="is-store">實驗指標儲存</li>
+              </ul>
+            </li>
+            <li class="subsystem">
+              <b>前處理與模型子系統</b>
+              <ul class="modules" role="list">
+                <li>資料前處理模組</li>
+                <li>資料分布模組</li>
+                <li>神經網路模組</li>
+              </ul>
+            </li>
+            <li class="subsystem">
+              <b>邊緣用戶端子系統</b>
+              <ul class="modules" role="list">
+                <li>訓練模組</li>
+                <li>參數擷取模組</li>
+              </ul>
+            </li>
+            <li class="subsystem">
+              <b>聯邦伺服器子系統</b>
+              <ul class="modules" role="list">
+                <li class="is-key">層級剖析模組</li>
+                <li class="is-key">聚合模組</li>
+                <li>全域評估模組</li>
+              </ul>
+            </li>
+          </ul>
           <figcaption class="figure-caption">
-            四個子系統。這樣切分有一個容易被忽略的理由：層級剖析與聚合都放在伺服器端，因此用戶端無法影響自己被評判的方式。
+            四個子系統。這樣切分有一個容易被忽略的理由：層級剖析與聚合（橘色）都放在伺服器端，因此用戶端無法影響自己被評判的方式。
           </figcaption>
         </figure>
-        <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <a href="/assets/img/lmad/federated-server.webp" target="_blank" rel="noopener">
-              <img src="/assets/img/lmad/federated-server.webp" width="1500" height="930" loading="lazy" decoding="async"
-                   alt="聯邦伺服器迴圈流程圖：初始化全域模型、廣播給 K 個用戶端，用戶端訓練並擷取參數，伺服器接收 K 份參數更新、剖析尚未處理的層、進行聚合並做全域評估，直到達到回合上限。" />
-              <span class="sr-only">在新分頁開啟完整尺寸</span>
-            </a>
-          </div>
+        <figure class="figure is-twin">
+            <svg class="fig-svg is-across" viewBox="-1 -1 1074 434" role="img" aria-labelledby="fed-across-title fed-across-desc">
+              <title id="fed-across-title">聯邦訓練的一個完整回合</title>
+              <desc id="fed-across-desc">聯邦伺服器迴圈流程圖。開始並初始化全域模型後，每個回合先判斷是否達到回合上限。若尚未達到，伺服器把模型廣播給 K 個用戶端，用戶端進行訓練與參數擷取，伺服器再接收 K 份參數更新。只要還有未處理的層，就依序經過層級剖析與聚合並儲存，再處理下一層。所有層處理完後進行全域評估，接著進入下一個回合。達到上限時，訓練完成。</desc>
+              <defs>
+                <marker id="fed-across-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+              </defs>
+              <path class="fig-line" d="M136 116 L158 116" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M280 116 L300 116" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M436 116 L480 116" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M624 116 L646 116" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M752 116 L774 116" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M880 116 L902 116" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M964 154 L964 179" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M368 66 L368 44" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M879 238 L436 238" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M368 200 L368 166" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M964 297 L964 340" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M889 372 L865 372" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M733 372 L709 372" marker-end="url(#fed-across-arrow)" />
+              <path class="fig-line" d="M639 412 L639 416 Q639 428 651 428 L1056 428 Q1068 428 1068 416 L1068 250 Q1068 238 1056 238 L1049 238" marker-end="url(#fed-across-arrow)" />
+              <text class="fig-flow-label" x="444" y="107">是</text>
+              <text class="fig-flow-label" x="378" y="60">否</text>
+              <text class="fig-flow-label" x="853" y="229">否</text>
+              <text class="fig-flow-label" x="974" y="316">是</text>
+              <rect class="fig-box" x="0" y="351" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="362">聯邦伺服器子系統</text>
+              <rect class="fig-box fig-flow-tint" x="0" y="377" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="388">邊緣用戶端子系統</text>
+              <rect class="fig-box" x="0" y="86" width="136" height="60" rx="30" />
+              <text class="fig-flow-step" x="68" y="120.3" text-anchor="middle">開始聯邦訓練</text>
+              <rect class="fig-box" x="158" y="86" width="122" height="60" rx="12" />
+              <text class="fig-flow-step" x="170" y="111.3"><tspan x="170" dy="0">初始化</tspan><tspan x="170" dy="18">全域模型</tspan></text>
+              <polygon class="fig-box fig-flow-diamond" points="368,66 436,116 368,166 300,116" />
+              <text class="fig-flow-step" x="368" y="120.3" text-anchor="middle">回合 &lt; 上限？</text>
+              <rect class="fig-box" x="293" y="4" width="150" height="40" rx="20" />
+              <text class="fig-flow-step" x="368" y="28.3" text-anchor="middle">訓練完成</text>
+              <rect class="fig-box" x="480" y="86" width="144" height="60" rx="12" />
+              <text class="fig-flow-step" x="492" y="111.3"><tspan x="492" dy="0">廣播模型給</tspan><tspan x="492" dy="18">K 個用戶端</tspan></text>
+              <rect class="fig-box fig-flow-tint" x="646" y="86" width="106" height="60" rx="12" />
+              <text class="fig-flow-step" x="657" y="120.3">訓練模組</text>
+              <rect class="fig-box fig-flow-tint" x="774" y="78" width="106" height="76" rx="12" />
+              <text class="fig-flow-step" x="785" y="111.3"><tspan x="785" dy="0">參數擷取</tspan><tspan x="785" dy="18">模組</tspan></text>
+              <rect class="fig-box" x="902" y="78" width="124" height="76" rx="12" />
+              <text class="fig-flow-step" x="914" y="111.3"><tspan x="914" dy="0">接收 K 份</tspan><tspan x="914" dy="18">參數更新</tspan></text>
+              <polygon class="fig-box fig-flow-diamond" points="964,179 1049,238 964,297 879,238" />
+              <text class="fig-flow-step" x="964" y="233.3" text-anchor="middle"><tspan x="964" dy="0">還有</tspan><tspan x="964" dy="18">未處理的層？</tspan></text>
+              <rect class="fig-box" x="300" y="200" width="136" height="76" rx="12" />
+              <text class="fig-flow-step" x="312" y="233.3"><tspan x="312" dy="0">全域評估</tspan><tspan x="312" dy="18">模組</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>依大小與名稱為每個參數張量分類。1,024 個元素以上的決策層走完整的 L-MAD 過濾，更小的層只做一般的加權平均。</desc>
+                <rect class="fig-box-accent" x="889" y="340" width="150" height="64" rx="12" />
+                <path class="fig-flow-lid is-hot" d="M898 340 V404 M1030 340 V404" />
+                <text class="fig-flow-step" x="907" y="367.3"><tspan x="907" dy="0">層級剖析</tspan><tspan x="907" dy="18">模組</tspan></text>
+              </g>
+              <rect class="fig-box-accent" x="733" y="340" width="132" height="64" rx="12" />
+              <path class="fig-flow-lid is-hot" d="M742 340 V404 M856 340 V404" />
+              <text class="fig-flow-step" x="751" y="376.3">聚合模組</text>
+              <rect class="fig-box" x="569" y="332" width="140" height="80" rx="12" />
+              <text class="fig-flow-step" x="581" y="367.3"><tspan x="581" dy="0">儲存聚合</tspan><tspan x="581" dy="18">後的層</tspan></text>
+              <circle class="fig-flow-port" cx="136" cy="116" r="4" />
+              <circle class="fig-flow-port" cx="280" cy="116" r="4" />
+              <circle class="fig-flow-port" cx="436" cy="116" r="4" />
+              <circle class="fig-flow-port" cx="624" cy="116" r="4" />
+              <circle class="fig-flow-port" cx="752" cy="116" r="4" />
+              <circle class="fig-flow-port" cx="880" cy="116" r="4" />
+              <circle class="fig-flow-port" cx="964" cy="154" r="4" />
+              <circle class="fig-flow-port" cx="368" cy="66" r="4" />
+              <circle class="fig-flow-port" cx="879" cy="238" r="4" />
+              <circle class="fig-flow-port" cx="368" cy="200" r="4" />
+              <circle class="fig-flow-port" cx="964" cy="297" r="4" />
+              <circle class="fig-flow-port" cx="889" cy="372" r="4" />
+              <circle class="fig-flow-port" cx="733" cy="372" r="4" />
+              <circle class="fig-flow-port" cx="639" cy="412" r="4" />
+            </svg>
+            <svg class="fig-svg is-down" viewBox="-1 -1 323 1084" role="img" aria-labelledby="fed-down-title fed-down-desc">
+              <title id="fed-down-title">聯邦訓練的一個完整回合</title>
+              <desc id="fed-down-desc">聯邦伺服器迴圈流程圖。開始並初始化全域模型後，每個回合先判斷是否達到回合上限。若尚未達到，伺服器把模型廣播給 K 個用戶端，用戶端進行訓練與參數擷取，伺服器再接收 K 份參數更新。只要還有未處理的層，就依序經過層級剖析與聚合並儲存，再處理下一層。所有層處理完後進行全域評估，接著進入下一個回合。達到上限時，訓練完成。</desc>
+              <defs>
+                <marker id="fed-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+              </defs>
+              <path class="fig-line" d="M130 40 L130 64" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M130 120 L130 146" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M195 192 L241 192" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M130 238 L130 266" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M130 322 L130 346" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M130 390 L130 414" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M130 470 L130 494" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M130 550 L130 576" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M130 696 L130 724" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M130 784 L130 808" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M130 856 L130 880" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M210 636 L290 636 Q300 636 300 646 L300 981 Q300 991 290 991 L230 991" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M30 909 L26 909 Q18 909 18 901 L18 644 Q18 636 26 636 L50 636" marker-end="url(#fed-down-arrow)" />
+              <path class="fig-line" d="M30 991 L16 991 Q8 991 8 983 L8 200 Q8 192 16 192 L65 192" marker-end="url(#fed-down-arrow)" />
+              <text class="fig-flow-label" x="204" y="184">否</text>
+              <text class="fig-flow-label" x="140" y="256">是</text>
+              <text class="fig-flow-label" x="140" y="714">是</text>
+              <text class="fig-flow-label" x="218" y="628">否</text>
+              <rect class="fig-box" x="30" y="1039" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="58" y="1050">聯邦伺服器子系統</text>
+              <rect class="fig-box fig-flow-tint" x="30" y="1063" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="58" y="1074">邊緣用戶端子系統</text>
+              <rect class="fig-box" x="30" y="0" width="200" height="40" rx="20" />
+              <text class="fig-flow-step" x="130" y="24.3" text-anchor="middle">開始聯邦訓練</text>
+              <rect class="fig-box" x="30" y="64" width="200" height="56" rx="12" />
+              <text class="fig-flow-step" x="42" y="87.3"><tspan x="42" dy="0">初始化</tspan><tspan x="42" dy="18">全域模型</tspan></text>
+              <polygon class="fig-box fig-flow-diamond" points="130,146 195,192 130,238 65,192" />
+              <text class="fig-flow-step" x="130" y="196.3" text-anchor="middle">回合 &lt; 上限？</text>
+              <rect class="fig-box" x="241" y="166" width="76" height="52" rx="26" />
+              <text class="fig-flow-step" x="279" y="187.3" text-anchor="middle"><tspan x="279" dy="0">訓練</tspan><tspan x="279" dy="18">完成</tspan></text>
+              <rect class="fig-box" x="30" y="266" width="200" height="56" rx="12" />
+              <text class="fig-flow-step" x="42" y="289.3"><tspan x="42" dy="0">廣播模型給</tspan><tspan x="42" dy="18">K 個用戶端</tspan></text>
+              <rect class="fig-box fig-flow-tint" x="30" y="346" width="200" height="44" rx="12" />
+              <text class="fig-flow-step" x="42" y="372.3">訓練模組</text>
+              <rect class="fig-box fig-flow-tint" x="30" y="414" width="200" height="56" rx="12" />
+              <text class="fig-flow-step" x="42" y="446.3">參數擷取模組</text>
+              <rect class="fig-box" x="30" y="494" width="200" height="56" rx="12" />
+              <text class="fig-flow-step" x="42" y="526.3">接收 K 份參數更新</text>
+              <polygon class="fig-box fig-flow-diamond" points="130,576 210,636 130,696 50,636" />
+              <text class="fig-flow-step" x="130" y="631.3" text-anchor="middle"><tspan x="130" dy="0">還有</tspan><tspan x="130" dy="18">未處理的層？</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>依大小與名稱為每個參數張量分類。1,024 個元素以上的決策層走完整的 L-MAD 過濾，更小的層只做一般的加權平均。</desc>
+                <rect class="fig-box-accent" x="30" y="724" width="200" height="60" rx="12" />
+                <path class="fig-flow-lid is-hot" d="M39 724 V784 M221 724 V784" />
+                <text class="fig-flow-step" x="48" y="749.3"><tspan x="48" dy="0">層級剖析</tspan><tspan x="48" dy="18">模組</tspan></text>
+              </g>
+              <rect class="fig-box-accent" x="30" y="808" width="200" height="48" rx="12" />
+              <path class="fig-flow-lid is-hot" d="M39 808 V856 M221 808 V856" />
+              <text class="fig-flow-step" x="48" y="836.3">聚合模組</text>
+              <rect class="fig-box" x="30" y="880" width="200" height="58" rx="12" />
+              <text class="fig-flow-step" x="42" y="913.3">儲存聚合後的層</text>
+              <rect class="fig-box" x="30" y="962" width="200" height="58" rx="12" />
+              <text class="fig-flow-step" x="42" y="995.3">全域評估模組</text>
+              <circle class="fig-flow-port" cx="130" cy="40" r="4" />
+              <circle class="fig-flow-port" cx="130" cy="120" r="4" />
+              <circle class="fig-flow-port" cx="195" cy="192" r="4" />
+              <circle class="fig-flow-port" cx="130" cy="238" r="4" />
+              <circle class="fig-flow-port" cx="130" cy="322" r="4" />
+              <circle class="fig-flow-port" cx="130" cy="390" r="4" />
+              <circle class="fig-flow-port" cx="130" cy="470" r="4" />
+              <circle class="fig-flow-port" cx="130" cy="550" r="4" />
+              <circle class="fig-flow-port" cx="130" cy="696" r="4" />
+              <circle class="fig-flow-port" cx="130" cy="784" r="4" />
+              <circle class="fig-flow-port" cx="130" cy="856" r="4" />
+              <circle class="fig-flow-port" cx="210" cy="636" r="4" />
+              <circle class="fig-flow-port" cx="30" cy="909" r="4" />
+              <circle class="fig-flow-port" cx="30" cy="991" r="4" />
+            </svg>
+          <p class="fig-hint">點選有虛線的標籤，查看它的意思。</p>
           <figcaption class="figure-caption">
-            一個回合的完整流程。在剖析與聚合那一步之前，這就是一般的聯邦平均；L-MAD 取代的正是那一步裡的平均。
+            一個回合的完整流程。在剖析與聚合那一步（橘色）之前，這就是一般的聯邦平均；L-MAD 取代的正是那一步裡的平均。
           </figcaption>
         </figure>
       </div>
@@ -439,28 +764,341 @@
         <p>
           強健性的結論，好不過它底下那條資料路徑，所以在任何策略開跑之前，這條路徑的兩半都已經固定下來。前處理是決定性的，而且只在訓練切分上擬合。異質性則住在切分這一步：由 Dirichlet 分配決定各標籤在用戶端之間分布得多不平均，而這正是下面那組掃描要移動的軸。
         </p>
-        <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <a href="/assets/img/lmad/preprocessing.webp" target="_blank" rel="noopener">
-              <img src="/assets/img/lmad/preprocessing.webp" width="1500" height="1024" loading="lazy" decoding="async"
-                   alt="前處理流程圖：Edge-IIoT 資料集先經過攻擊類型篩選與無狀態清理，以八比二切分為全域訓練池與測試集，再進行特徵編碼、缺值填補與特徵選擇，最後進入資料分布階段。" />
-              <span class="sr-only">在新分頁開啟完整尺寸</span>
-            </a>
-          </div>
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="-1 -1 642 394" role="img" aria-labelledby="pre-across-title pre-across-desc">
+              <title id="pre-across-title">從原始資料集到資料分布的前處理流程</title>
+              <desc id="pre-across-desc">前處理流程圖。Edge-IIoT 資料集先經過攻擊類型篩選與無狀態資料清理，再由全域切分把 80% 送進全域訓練池、20% 送進全域測試集。特徵編碼與缺值填補在訓練池上擬合並轉換，在測試集上則只做轉換。接著依變異數與相關性進行特徵選擇，最後進入資料分布階段。</desc>
+              <defs>
+                <marker id="pre-across-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="pre-across-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <rect class="fig-flow-group" x="0" y="84" width="640" height="306" rx="14" />
+              <text class="fig-flow-group-label" x="321" y="108" text-anchor="middle">資料前處理</text>
+              <path class="fig-line-accent" d="M79 64 L79 122" marker-end="url(#pre-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M79 178 L79 216" marker-end="url(#pre-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M79 272 L79 310" marker-end="url(#pre-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M144 326 L170 326 Q180 326 180 316 L180 215 Q180 205 190 205 L262 205" marker-end="url(#pre-across-arrow-hot)" />
+              <path class="fig-line" d="M144 350 L186 350 Q196 350 196 340 L196 317 Q196 307 206 307 L262 307" marker-end="url(#pre-across-arrow)" />
+              <path class="fig-line-accent" d="M382 205 L452 205 Q462 205 462 195 L462 150 Q462 140 472 140 L486 140" marker-end="url(#pre-across-arrow-hot)" />
+              <path class="fig-line fig-flow-dashed" d="M382 307 L466 307 Q474 307 474 299 L474 170 Q474 162 482 162 L486 162" marker-end="url(#pre-across-arrow)" />
+              <path class="fig-line-accent" d="M557 178 L557 216" marker-end="url(#pre-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M557 282 L557 310" marker-end="url(#pre-across-arrow-hot)" />
+              <text class="fig-flow-label" x="188" y="196">80% 訓練</text>
+              <text class="fig-flow-label" x="201" y="298">20% 測試</text>
+              <text class="fig-flow-label" x="389" y="184"><tspan x="389" dy="0">擬合</tspan><tspan x="389" dy="17">並轉換</tspan></text>
+              <text class="fig-flow-label" x="389" y="285"><tspan x="389" dy="0">僅做</tspan><tspan x="389" dy="17">轉換</tspan></text>
+              <path class="fig-box" d="M14 9 A65 9 0 0 1 144 9 V55 A65 9 0 0 1 14 55 Z" />
+              <path class="fig-flow-lid" d="M14 9 A65 9 0 0 0 144 9" />
+              <text class="fig-flow-step" x="79" y="31.8" text-anchor="middle"><tspan x="79" dy="0">Edge-IIoT</tspan><tspan x="79" dy="18">資料集</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>把資料縮減成一個問題：DDoS 還是正常流量。其他攻擊類型的資料列全部捨棄，留下約 195 萬筆紀錄，大約 83% 正常、17% DDoS。</desc>
+                <rect class="fig-box" x="14" y="122" width="130" height="56" rx="12" />
+                <text class="fig-flow-step" x="26" y="145.3"><tspan x="26" dy="0">攻擊類型</tspan><tspan x="26" dy="18">篩選</tspan></text>
+              </g>
+              <g class="fig-flow-noted">
+                <desc>統一欄位名稱，並移除 26 個中繼資料與識別欄位，讓模型無法靠特定端點或封包內容來判斷。它不使用任何資料集統計量，所以可以安全地在切分之前執行。</desc>
+                <rect class="fig-box" x="14" y="216" width="130" height="56" rx="12" />
+                <text class="fig-flow-step" x="26" y="239.3"><tspan x="26" dy="0">無狀態</tspan><tspan x="26" dy="18">資料清理</tspan></text>
+              </g>
+              <rect class="fig-box" x="14" y="310" width="130" height="56" rx="12" />
+              <text class="fig-flow-step" x="26" y="342.3">全域切分</text>
+              <path class="fig-box" d="M262 175 A60 9 0 0 1 382 175 V235 A60 9 0 0 1 262 235 Z" />
+              <path class="fig-flow-lid" d="M262 175 A60 9 0 0 0 382 175" />
+              <text class="fig-flow-step" x="322" y="204.8" text-anchor="middle"><tspan x="322" dy="0">全域</tspan><tspan x="322" dy="18">訓練池</tspan></text>
+              <path class="fig-box" d="M262 277 A60 9 0 0 1 382 277 V337 A60 9 0 0 1 262 337 Z" />
+              <path class="fig-flow-lid" d="M262 277 A60 9 0 0 0 382 277" />
+              <text class="fig-flow-step" x="322" y="306.8" text-anchor="middle"><tspan x="322" dy="0">全域</tspan><tspan x="322" dy="18">測試集</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>把每個欄位轉成數值，並補上缺值。它學到的一切，例如欄位的中位數或類別代碼，都只來自訓練池。</desc>
+                <rect class="fig-box" x="486" y="122" width="142" height="56" rx="12" />
+                <text class="fig-flow-step" x="495" y="145.3"><tspan x="495" dy="0">特徵編碼</tspan><tspan x="495" dy="18">與缺值填補</tspan></text>
+              </g>
+              <g class="fig-flow-noted">
+                <desc>先移除幾乎沒有變化的欄位（變異數低於 0.01），再從相關性高於 0.95 的每一組中只留一個。整個過程完全不看標籤。</desc>
+                <rect class="fig-box" x="486" y="216" width="142" height="66" rx="12" />
+                <text class="fig-flow-step" x="495" y="243.3">特徵選擇</text>
+                <text class="fig-flow-sub" x="495" y="263.3">變異數與相關性</text>
+              </g>
+              <rect class="fig-box" x="486" y="310" width="142" height="56" rx="12" />
+              <path class="fig-flow-lid" d="M495 310 V366 M619 310 V366" />
+              <text class="fig-flow-step" x="504" y="342.3">資料分布</text>
+              <circle class="fig-flow-port is-hot" cx="79" cy="64" r="4" />
+              <circle class="fig-flow-port is-hot" cx="79" cy="178" r="4" />
+              <circle class="fig-flow-port is-hot" cx="79" cy="272" r="4" />
+              <circle class="fig-flow-port is-hot" cx="144" cy="326" r="4" />
+              <circle class="fig-flow-port" cx="144" cy="350" r="4" />
+              <circle class="fig-flow-port is-hot" cx="382" cy="205" r="4" />
+              <circle class="fig-flow-port" cx="382" cy="307" r="4" />
+              <circle class="fig-flow-port is-hot" cx="557" cy="178" r="4" />
+              <circle class="fig-flow-port is-hot" cx="557" cy="282" r="4" />
+            </svg>
+            <svg class="fig-svg is-down" viewBox="-1 -1 323 710" role="img" aria-labelledby="pre-down-title pre-down-desc">
+              <title id="pre-down-title">從原始資料集到資料分布的前處理流程</title>
+              <desc id="pre-down-desc">前處理流程圖。Edge-IIoT 資料集先經過攻擊類型篩選與無狀態資料清理，再由全域切分把 80% 送進全域訓練池、20% 送進全域測試集。特徵編碼與缺值填補在訓練池上擬合並轉換，在測試集上則只做轉換。接著依變異數與相關性進行特徵選擇，最後進入資料分布階段。</desc>
+              <defs>
+                <marker id="pre-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="pre-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <rect class="fig-flow-group" x="0" y="84" width="321" height="622" rx="14" />
+              <text class="fig-flow-group-label" x="14" y="106">資料前處理</text>
+              <path class="fig-line-accent" d="M160 62 L160 118" marker-end="url(#pre-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M160 162 L160 186" marker-end="url(#pre-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M160 230 L160 254" marker-end="url(#pre-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M120 298 L120 312 Q120 320 112 320 L90 320 Q82 320 82 328 L82 342" marker-end="url(#pre-down-arrow-hot)" />
+              <path class="fig-line" d="M200 298 L200 312 Q200 320 208 320 L231 320 Q239 320 239 328 L239 342" marker-end="url(#pre-down-arrow)" />
+              <path class="fig-line-accent" d="M82 412 L82 438 Q82 446 90 446 L112 446 Q120 446 120 454 L120 478" marker-end="url(#pre-down-arrow-hot)" />
+              <path class="fig-line fig-flow-dashed" d="M239 412 L239 438 Q239 446 231 446 L208 446 Q200 446 200 454 L200 478" marker-end="url(#pre-down-arrow)" />
+              <path class="fig-line-accent" d="M160 534 L160 558" marker-end="url(#pre-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M160 622 L160 646" marker-end="url(#pre-down-arrow-hot)" />
+              <text class="fig-flow-label" x="16" y="312">80% 訓練</text>
+              <text class="fig-flow-label" x="246" y="312">20% 測試</text>
+              <text class="fig-flow-label" x="90" y="424"><tspan x="90" dy="0">擬合</tspan><tspan x="90" dy="17">並轉換</tspan></text>
+              <text class="fig-flow-label" x="231" y="424" text-anchor="end"><tspan x="231" dy="0">僅做</tspan><tspan x="231" dy="17">轉換</tspan></text>
+              <path class="fig-box" d="M80 9 A80 9 0 0 1 240 9 V53 A80 9 0 0 1 80 53 Z" />
+              <path class="fig-flow-lid" d="M80 9 A80 9 0 0 0 240 9" />
+              <text class="fig-flow-step" x="160" y="30.8" text-anchor="middle"><tspan x="160" dy="0">Edge-IIoT</tspan><tspan x="160" dy="18">資料集</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>把資料縮減成一個問題：DDoS 還是正常流量。其他攻擊類型的資料列全部捨棄，留下約 195 萬筆紀錄，大約 83% 正常、17% DDoS。</desc>
+                <rect class="fig-box" x="48" y="118" width="224" height="44" rx="12" />
+                <text class="fig-flow-step" x="60" y="144.3">攻擊類型篩選</text>
+              </g>
+              <g class="fig-flow-noted">
+                <desc>統一欄位名稱，並移除 26 個中繼資料與識別欄位，讓模型無法靠特定端點或封包內容來判斷。它不使用任何資料集統計量，所以可以安全地在切分之前執行。</desc>
+                <rect class="fig-box" x="48" y="186" width="224" height="44" rx="12" />
+                <text class="fig-flow-step" x="60" y="212.3">無狀態資料清理</text>
+              </g>
+              <rect class="fig-box" x="48" y="254" width="224" height="44" rx="12" />
+              <text class="fig-flow-step" x="60" y="280.3">全域切分</text>
+              <path class="fig-box" d="M14 351 A68 9 0 0 1 150 351 V403 A68 9 0 0 1 14 403 Z" />
+              <path class="fig-flow-lid" d="M14 351 A68 9 0 0 0 150 351" />
+              <text class="fig-flow-step" x="82" y="376.8" text-anchor="middle"><tspan x="82" dy="0">全域</tspan><tspan x="82" dy="18">訓練池</tspan></text>
+              <path class="fig-box" d="M171 351 A68 9 0 0 1 307 351 V403 A68 9 0 0 1 171 403 Z" />
+              <path class="fig-flow-lid" d="M171 351 A68 9 0 0 0 307 351" />
+              <text class="fig-flow-step" x="239" y="376.8" text-anchor="middle"><tspan x="239" dy="0">全域</tspan><tspan x="239" dy="18">測試集</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>把每個欄位轉成數值，並補上缺值。它學到的一切，例如欄位的中位數或類別代碼，都只來自訓練池。</desc>
+                <rect class="fig-box" x="48" y="478" width="224" height="56" rx="12" />
+                <text class="fig-flow-step" x="60" y="510.3">特徵編碼與缺值填補</text>
+              </g>
+              <g class="fig-flow-noted">
+                <desc>先移除幾乎沒有變化的欄位（變異數低於 0.01），再從相關性高於 0.95 的每一組中只留一個。整個過程完全不看標籤。</desc>
+                <rect class="fig-box" x="48" y="558" width="224" height="64" rx="12" />
+                <text class="fig-flow-step" x="60" y="584.3">特徵選擇</text>
+                <text class="fig-flow-sub" x="60" y="604.3">變異數與相關性</text>
+              </g>
+              <rect class="fig-box" x="48" y="646" width="224" height="44" rx="12" />
+              <path class="fig-flow-lid" d="M57 646 V690 M263 646 V690" />
+              <text class="fig-flow-step" x="66" y="672.3">資料分布</text>
+              <circle class="fig-flow-port is-hot" cx="160" cy="62" r="4" />
+              <circle class="fig-flow-port is-hot" cx="160" cy="162" r="4" />
+              <circle class="fig-flow-port is-hot" cx="160" cy="230" r="4" />
+              <circle class="fig-flow-port is-hot" cx="120" cy="298" r="4" />
+              <circle class="fig-flow-port" cx="200" cy="298" r="4" />
+              <circle class="fig-flow-port is-hot" cx="82" cy="412" r="4" />
+              <circle class="fig-flow-port" cx="239" cy="412" r="4" />
+              <circle class="fig-flow-port is-hot" cx="160" cy="534" r="4" />
+              <circle class="fig-flow-port is-hot" cx="160" cy="622" r="4" />
+            </svg>
+          <p class="fig-hint">點選有虛線的標籤，查看它的意思。</p>
           <figcaption class="figure-caption">
-            前處理。切分發生在編碼與特徵選擇擬合之前，因此測試集不會有任何資訊流進轉換器。
+            前處理。切分發生在編碼與特徵選擇擬合之前，因此測試集不會有任何資訊流進轉換器。橘色線是訓練資料的路徑，轉換器只在這份資料上擬合；測試集只做轉換。
           </figcaption>
         </figure>
-        <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <a href="/assets/img/lmad/distribution.webp" target="_blank" rel="noopener">
-              <img src="/assets/img/lmad/distribution.webp" width="1500" height="787" loading="lazy" decoding="async"
-                   alt="資料分布流程圖：前處理後的訓練池依 Dirichlet 非獨立同分布配置或均勻獨立同分布洗牌，切成 K 份用戶端分割，各自再分為本地訓練與驗證集，最後進行全域與本地 z-score 標準化。" />
-              <span class="sr-only">在新分頁開啟完整尺寸</span>
-            </a>
-          </div>
+        <figure class="figure is-twin">
+            <svg class="fig-svg is-across" viewBox="-6 -6 1112 518" role="img" aria-labelledby="dis-across-title dis-across-desc">
+              <title id="dis-across-title">訓練資料如何變成用戶端分割與標準化後的資料集</title>
+              <desc id="dis-across-desc">資料分布流程圖。前處理後的全域訓練池先經過判斷：若設定了 Dirichlet 切分，就使用 Dirichlet 非獨立同分布配置，重試 50 次失敗後退回均勻洗牌；否則直接使用均勻洗牌的獨立同分布配置。兩者都產生 K 份用戶端分割，各自以 80 比 20 切成本地訓練集與本地驗證集。本地 z-score 標準化在訓練集上擬合並轉換，在驗證集上只做轉換，用戶端即可開始本地訓練。全域 z-score 標準化在全域訓練池上擬合統計量，並只轉換前處理後的全域測試集，伺服器即可進行全域評估。</desc>
+              <defs>
+                <marker id="dis-across-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="dis-across-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <rect class="fig-flow-group" x="146" y="0" width="954" height="292" rx="14" />
+              <text class="fig-flow-group-label" x="160" y="20">資料切分</text>
+              <rect class="fig-flow-group" x="452" y="332" width="648" height="120" rx="14" />
+              <text class="fig-flow-group-label" x="466" y="446">特徵標準化</text>
+              <path class="fig-line-accent" d="M124 130 L152 130" marker-end="url(#dis-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M240 74 L240 71 Q240 61 250 61 L368 61" marker-end="url(#dis-across-arrow-hot)" />
+              <path class="fig-line" d="M240 186 L240 187 Q240 197 250 197 L368 197" marker-end="url(#dis-across-arrow)" />
+              <path class="fig-line fig-flow-dashed" d="M448 100 L448 165" marker-end="url(#dis-across-arrow)" />
+              <path class="fig-line-accent" d="M528 61 L556 61 Q566 61 566 71 L566 100 Q566 110 576 110 L600 110" marker-end="url(#dis-across-arrow-hot)" />
+              <path class="fig-line" d="M528 197 L556 197 Q566 197 566 187 L566 156 Q566 146 576 146 L600 146" marker-end="url(#dis-across-arrow)" />
+              <path class="fig-line-accent" d="M720 128 L756 128" marker-end="url(#dis-across-arrow-hot)" />
+              <path class="fig-line-accent" d="M800 158 L800 170 Q800 178 792 178 L758 178 Q750 178 750 186 L750 200" marker-end="url(#dis-across-arrow-hot)" />
+              <path class="fig-line" d="M852 158 L852 170 Q852 178 860 178 L952 178 Q960 178 960 186 L960 200" marker-end="url(#dis-across-arrow)" />
+              <path class="fig-line-accent" d="M750 272 L750 300 Q750 310 760 310 L830 310 Q840 310 840 320 L840 356" marker-end="url(#dis-across-arrow-hot)" />
+              <path class="fig-line fig-flow-dashed" d="M960 272 L960 300 Q960 310 950 310 L890 310 Q880 310 880 320 L880 356" marker-end="url(#dis-across-arrow)" />
+              <path class="fig-line-accent" d="M920 388 L950 388" marker-end="url(#dis-across-arrow-hot)" />
+              <path class="fig-line" d="M62 170 L62 360 Q62 372 74 372 L470 372" marker-end="url(#dis-across-arrow)" />
+              <path class="fig-line fig-flow-dashed" d="M62 420 L62 410 Q62 400 72 400 L470 400" marker-end="url(#dis-across-arrow)" />
+              <path class="fig-line" d="M600 386 L630 386" marker-end="url(#dis-across-arrow)" />
+              <text class="fig-flow-label" x="262" y="52">是</text>
+              <text class="fig-flow-label" x="262" y="190">否</text>
+              <text class="fig-flow-label" x="440" y="127" text-anchor="end"><tspan x="440" dy="0">重試 50 次</tspan><tspan x="440" dy="17">失敗後退回</tspan></text>
+              <text class="fig-flow-label" x="764" y="172">80%</text>
+              <text class="fig-flow-label" x="872" y="172">20%</text>
+              <text class="fig-flow-label" x="742" y="312" text-anchor="end">擬合並轉換</text>
+              <text class="fig-flow-label" x="970" y="312">僅做轉換</text>
+              <text class="fig-flow-label" x="150" y="363">擬合全域統計量</text>
+              <text class="fig-flow-label" x="150" y="392">僅做轉換</text>
+              <path class="fig-box" d="M0 93 A62 9 0 0 1 124 93 V161 A62 9 0 0 1 0 161 Z" />
+              <path class="fig-flow-lid" d="M0 93 A62 9 0 0 0 124 93" />
+              <text class="fig-flow-step" x="62" y="117.8" text-anchor="middle"><tspan x="62" dy="0">前處理後的</tspan><tspan x="62" dy="18">全域</tspan><tspan x="62" dy="18">訓練池</tspan></text>
+              <path class="fig-box" d="M0 429 A62 9 0 0 1 124 429 V495 A62 9 0 0 1 0 495 Z" />
+              <path class="fig-flow-lid" d="M0 429 A62 9 0 0 0 124 429" />
+              <text class="fig-flow-step" x="62" y="452.8" text-anchor="middle"><tspan x="62" dy="0">前處理後的</tspan><tspan x="62" dy="18">全域</tspan><tspan x="62" dy="18">測試集</tspan></text>
+              <polygon class="fig-box fig-flow-diamond" points="240,74 328,130 240,186 152,130" />
+              <text class="fig-flow-step" x="240" y="116.3" text-anchor="middle"><tspan x="240" dy="0">是否設定</tspan><tspan x="240" dy="18">Dirichlet</tspan><tspan x="240" dy="18">切分？</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>非獨立同分布（non-IID）代表每個用戶端看到的標籤比例都不同。Dirichlet 抽樣決定比例有多不均：α 越小越偏斜。主要實驗使用 α = 1.0。</desc>
+                <rect class="fig-box-accent" x="368" y="22" width="160" height="78" rx="12" />
+                <text class="fig-flow-step" x="380" y="46.3"><tspan x="380" dy="0">Dirichlet</tspan><tspan x="380" dy="18">分布</tspan></text>
+                <text class="fig-flow-sub" x="380" y="84.3">非獨立同分布配置</text>
+              </g>
+              <g class="fig-flow-noted">
+                <desc>獨立同分布（IID）代表每個用戶端看到的標籤比例大致相同。訓練池洗牌後切成 K 等份。在這些實驗中，它是 Dirichlet 重試 50 次仍無法讓每個用戶端都分到樣本時的退路。</desc>
+                <rect class="fig-box" x="368" y="165" width="160" height="64" rx="12" />
+                <text class="fig-flow-step" x="380" y="191.3">均勻洗牌</text>
+                <text class="fig-flow-sub" x="380" y="211.3">獨立同分布配置</text>
+              </g>
+              <path class="fig-box" d="M600 97 A60 9 0 0 1 720 97 V159 A60 9 0 0 1 600 159 Z" />
+              <path class="fig-flow-lid" d="M600 97 A60 9 0 0 0 720 97" />
+              <text class="fig-flow-step" x="660" y="127.8" text-anchor="middle"><tspan x="660" dy="0">K 份</tspan><tspan x="660" dy="18">用戶端分割</tspan></text>
+              <rect class="fig-box" x="756" y="98" width="140" height="60" rx="12" />
+              <text class="fig-flow-step" x="768" y="123.3"><tspan x="768" dy="0">本地訓練與</tspan><tspan x="768" dy="18">驗證切分</tspan></text>
+              <path class="fig-box" d="M690 209 A60 9 0 0 1 810 209 V263 A60 9 0 0 1 690 263 Z" />
+              <path class="fig-flow-lid" d="M690 209 A60 9 0 0 0 810 209" />
+              <text class="fig-flow-step" x="750" y="235.8" text-anchor="middle"><tspan x="750" dy="0">本地</tspan><tspan x="750" dy="18">訓練集</tspan></text>
+              <path class="fig-box" d="M900 209 A60 9 0 0 1 1020 209 V263 A60 9 0 0 1 900 263 Z" />
+              <path class="fig-flow-lid" d="M900 209 A60 9 0 0 0 1020 209" />
+              <text class="fig-flow-step" x="960" y="235.8" text-anchor="middle"><tspan x="960" dy="0">本地</tspan><tspan x="960" dy="18">驗證集</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>伺服器評估時的同一種縮放，在完整訓練池上擬合，讓測試有一致的基準。</desc>
+                <rect class="fig-box" x="470" y="354" width="130" height="64" rx="12" />
+                <text class="fig-flow-step" x="482" y="381.3"><tspan x="482" dy="0">全域 z-score</tspan><tspan x="482" dy="18">標準化</tspan></text>
+              </g>
+              <rect class="fig-box" x="630" y="354" width="146" height="64" rx="12" />
+              <text class="fig-flow-step" x="642" y="381.3"><tspan x="642" dy="0">伺服器就緒，</tspan><tspan x="642" dy="18">可全域評估</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>把每個特徵縮放成平均 0、標準差 1。它只用該用戶端自己的訓練資料擬合，因為邊緣裝置看不到全域資料。</desc>
+                <rect class="fig-box" x="800" y="356" width="120" height="64" rx="12" />
+                <text class="fig-flow-step" x="812" y="383.3"><tspan x="812" dy="0">本地 z-score</tspan><tspan x="812" dy="18">標準化</tspan></text>
+              </g>
+              <rect class="fig-box" x="950" y="356" width="136" height="64" rx="12" />
+              <text class="fig-flow-step" x="962" y="383.3"><tspan x="962" dy="0">用戶端就緒，</tspan><tspan x="962" dy="18">可本地訓練</tspan></text>
+              <circle class="fig-flow-port is-hot" cx="124" cy="130" r="4" />
+              <circle class="fig-flow-port is-hot" cx="240" cy="74" r="4" />
+              <circle class="fig-flow-port" cx="240" cy="186" r="4" />
+              <circle class="fig-flow-port" cx="448" cy="100" r="4" />
+              <circle class="fig-flow-port is-hot" cx="528" cy="61" r="4" />
+              <circle class="fig-flow-port" cx="528" cy="197" r="4" />
+              <circle class="fig-flow-port is-hot" cx="720" cy="128" r="4" />
+              <circle class="fig-flow-port is-hot" cx="800" cy="158" r="4" />
+              <circle class="fig-flow-port" cx="852" cy="158" r="4" />
+              <circle class="fig-flow-port is-hot" cx="750" cy="272" r="4" />
+              <circle class="fig-flow-port" cx="960" cy="272" r="4" />
+              <circle class="fig-flow-port is-hot" cx="920" cy="388" r="4" />
+              <circle class="fig-flow-port" cx="62" cy="170" r="4" />
+              <circle class="fig-flow-port" cx="62" cy="420" r="4" />
+              <circle class="fig-flow-port" cx="600" cy="386" r="4" />
+            </svg>
+            <svg class="fig-svg is-down" viewBox="-1 -17 323 1058" role="img" aria-labelledby="dis-down-title dis-down-desc">
+              <title id="dis-down-title">訓練資料如何變成用戶端分割與標準化後的資料集</title>
+              <desc id="dis-down-desc">資料分布流程圖。前處理後的全域訓練池先經過判斷：若設定了 Dirichlet 切分，就使用 Dirichlet 非獨立同分布配置，重試 50 次失敗後退回均勻洗牌；否則直接使用均勻洗牌的獨立同分布配置。兩者都產生 K 份用戶端分割，各自以 80 比 20 切成本地訓練集與本地驗證集。本地 z-score 標準化在訓練集上擬合並轉換，在驗證集上只做轉換，用戶端即可開始本地訓練。全域 z-score 標準化在全域訓練池上擬合統計量，並只轉換前處理後的全域測試集，伺服器即可進行全域評估。</desc>
+              <defs>
+                <marker id="dis-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="dis-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <rect class="fig-flow-group" x="14" y="96" width="293" height="572" rx="14" />
+              <text class="fig-flow-group-label" x="297" y="116" text-anchor="end">資料切分</text>
+              <rect class="fig-flow-group" x="14" y="706" width="293" height="330" rx="14" />
+              <text class="fig-flow-group-label" x="28" y="1028">特徵標準化</text>
+              <path class="fig-line-accent" d="M82 74 L82 98 Q82 106 90 106 L152 106 Q160 106 160 114 L160 126" marker-end="url(#dis-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M65 178 L53 178 Q45 178 45 186 L45 250" marker-end="url(#dis-down-arrow-hot)" />
+              <path class="fig-line" d="M255 178 L267 178 Q275 178 275 186 L275 250" marker-end="url(#dis-down-arrow)" />
+              <path class="fig-line fig-flow-dashed" d="M147 298 L171 298" marker-end="url(#dis-down-arrow)" />
+              <path class="fig-line-accent" d="M87 346 L87 433 Q87 441 95 441 L105 441" marker-end="url(#dis-down-arrow-hot)" />
+              <path class="fig-line" d="M234 346 L234 433 Q234 441 226 441 L215 441" marker-end="url(#dis-down-arrow)" />
+              <path class="fig-line-accent" d="M160 478 L160 498" marker-end="url(#dis-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M100 542 L100 556 Q100 562 94 562 L93 562 Q87 562 87 568 L87 582" marker-end="url(#dis-down-arrow-hot)" />
+              <path class="fig-line" d="M220 542 L220 556 Q220 562 226 562 L228 562 Q234 562 234 568 L234 582" marker-end="url(#dis-down-arrow)" />
+              <path class="fig-line-accent" d="M87 652 L87 682 Q87 690 95 690 L122 690 Q130 690 130 698 L130 736" marker-end="url(#dis-down-arrow-hot)" />
+              <path class="fig-line fig-flow-dashed" d="M234 652 L234 682 Q234 690 226 690 L198 690 Q190 690 190 698 L190 736" marker-end="url(#dis-down-arrow)" />
+              <path class="fig-line-accent" d="M160 780 L160 804" marker-end="url(#dis-down-arrow-hot)" />
+              <path class="fig-line" d="M18 37 L12 37 Q6 37 6 43 L6 900 Q6 906 12 906 L65 906" marker-end="url(#dis-down-arrow)" />
+              <path class="fig-line fig-flow-dashed" d="M303 37 L309 37 Q315 37 315 43 L315 900 Q315 906 309 906 L255 906" marker-end="url(#dis-down-arrow)" />
+              <path class="fig-line" d="M160 928 L160 952" marker-end="url(#dis-down-arrow)" />
+              <text class="fig-flow-label" x="53" y="214">是</text>
+              <text class="fig-flow-label" x="268" y="214" text-anchor="end">否</text>
+              <text class="fig-flow-label" x="160" y="362" text-anchor="middle"><tspan x="160" dy="0">重試 50 次</tspan><tspan x="160" dy="17">失敗後退回</tspan></text>
+              <text class="fig-flow-label" x="56" y="560">80%</text>
+              <text class="fig-flow-label" x="241" y="560">20%</text>
+              <text class="fig-flow-label" x="78" y="682" text-anchor="end"><tspan x="78" dy="0">擬合</tspan><tspan x="78" dy="17">並轉換</tspan></text>
+              <text class="fig-flow-label" x="243" y="682"><tspan x="243" dy="0">僅做</tspan><tspan x="243" dy="17">轉換</tspan></text>
+              <text class="fig-flow-label" x="22" y="876">擬合全域統計量</text>
+              <text class="fig-flow-label" x="300" y="876" text-anchor="end">僅做轉換</text>
+              <path class="fig-box" d="M18 -8 A64 8 0 0 1 146 -8 V66 A64 8 0 0 1 18 66 Z" />
+              <path class="fig-flow-lid" d="M18 -8 A64 8 0 0 0 146 -8" />
+              <text class="fig-flow-step" x="82" y="19.3" text-anchor="middle"><tspan x="82" dy="0">前處理後的</tspan><tspan x="82" dy="18">全域</tspan><tspan x="82" dy="18">訓練池</tspan></text>
+              <path class="fig-box" d="M175 -8 A64 8 0 0 1 303 -8 V66 A64 8 0 0 1 175 66 Z" />
+              <path class="fig-flow-lid" d="M175 -8 A64 8 0 0 0 303 -8" />
+              <text class="fig-flow-step" x="239" y="19.3" text-anchor="middle"><tspan x="239" dy="0">前處理後的</tspan><tspan x="239" dy="18">全域</tspan><tspan x="239" dy="18">測試集</tspan></text>
+              <polygon class="fig-box fig-flow-diamond" points="160,126 255,178 160,230 65,178" />
+              <text class="fig-flow-step" x="160" y="164.3" text-anchor="middle"><tspan x="160" dy="0">是否設定</tspan><tspan x="160" dy="18">Dirichlet</tspan><tspan x="160" dy="18">切分？</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>非獨立同分布（non-IID）代表每個用戶端看到的標籤比例都不同。Dirichlet 抽樣決定比例有多不均：α 越小越偏斜。主要實驗使用 α = 1.0。</desc>
+                <rect class="fig-box-accent" x="24" y="250" width="123" height="96" rx="12" />
+                <text class="fig-flow-step" x="34" y="274.3"><tspan x="34" dy="0">Dirichlet</tspan><tspan x="34" dy="18">分布</tspan></text>
+                <text class="fig-flow-sub" x="34" y="312.3"><tspan x="34" dy="0">非獨立同分布</tspan><tspan x="34" dy="18">配置</tspan></text>
+              </g>
+              <g class="fig-flow-noted">
+                <desc>獨立同分布（IID）代表每個用戶端看到的標籤比例大致相同。訓練池洗牌後切成 K 等份。在這些實驗中，它是 Dirichlet 重試 50 次仍無法讓每個用戶端都分到樣本時的退路。</desc>
+                <rect class="fig-box" x="171" y="250" width="126" height="96" rx="12" />
+                <text class="fig-flow-step" x="181" y="274.3"><tspan x="181" dy="0">均勻</tspan><tspan x="181" dy="18">洗牌</tspan></text>
+                <text class="fig-flow-sub" x="181" y="312.3"><tspan x="181" dy="0">獨立同分布</tspan><tspan x="181" dy="18">配置</tspan></text>
+              </g>
+              <path class="fig-box" d="M105 413 A55 9 0 0 1 215 413 V469 A55 9 0 0 1 105 469 Z" />
+              <path class="fig-flow-lid" d="M105 413 A55 9 0 0 0 215 413" />
+              <text class="fig-flow-step" x="160" y="440.8" text-anchor="middle"><tspan x="160" dy="0">K 份</tspan><tspan x="160" dy="18">用戶端分割</tspan></text>
+              <rect class="fig-box" x="60" y="498" width="200" height="44" rx="12" />
+              <text class="fig-flow-step" x="72" y="524.3">本地訓練與驗證切分</text>
+              <path class="fig-box" d="M24 591 A63 9 0 0 1 150 591 V643 A63 9 0 0 1 24 643 Z" />
+              <path class="fig-flow-lid" d="M24 591 A63 9 0 0 0 150 591" />
+              <text class="fig-flow-step" x="87" y="616.8" text-anchor="middle"><tspan x="87" dy="0">本地</tspan><tspan x="87" dy="18">訓練集</tspan></text>
+              <path class="fig-box" d="M171 591 A63 9 0 0 1 297 591 V643 A63 9 0 0 1 171 643 Z" />
+              <path class="fig-flow-lid" d="M171 591 A63 9 0 0 0 297 591" />
+              <text class="fig-flow-step" x="234" y="616.8" text-anchor="middle"><tspan x="234" dy="0">本地</tspan><tspan x="234" dy="18">驗證集</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>把每個特徵縮放成平均 0、標準差 1。它只用該用戶端自己的訓練資料擬合，因為邊緣裝置看不到全域資料。</desc>
+                <rect class="fig-box" x="60" y="736" width="200" height="44" rx="12" />
+                <text class="fig-flow-step" x="72" y="762.3">本地 z-score 標準化</text>
+              </g>
+              <rect class="fig-box" x="60" y="804" width="200" height="56" rx="12" />
+              <text class="fig-flow-step" x="72" y="827.3"><tspan x="72" dy="0">用戶端就緒，</tspan><tspan x="72" dy="18">可本地訓練</tspan></text>
+              <g class="fig-flow-noted">
+                <desc>伺服器評估時的同一種縮放，在完整訓練池上擬合，讓測試有一致的基準。</desc>
+                <rect class="fig-box" x="65" y="884" width="190" height="44" rx="12" />
+                <text class="fig-flow-step" x="77" y="910.3">全域 z-score 標準化</text>
+              </g>
+              <rect class="fig-box" x="60" y="952" width="200" height="56" rx="12" />
+              <text class="fig-flow-step" x="72" y="975.3"><tspan x="72" dy="0">伺服器就緒，</tspan><tspan x="72" dy="18">可全域評估</tspan></text>
+              <circle class="fig-flow-port is-hot" cx="82" cy="74" r="4" />
+              <circle class="fig-flow-port is-hot" cx="65" cy="178" r="4" />
+              <circle class="fig-flow-port" cx="255" cy="178" r="4" />
+              <circle class="fig-flow-port is-hot" cx="87" cy="346" r="4" />
+              <circle class="fig-flow-port" cx="234" cy="346" r="4" />
+              <circle class="fig-flow-port is-hot" cx="160" cy="478" r="4" />
+              <circle class="fig-flow-port is-hot" cx="100" cy="542" r="4" />
+              <circle class="fig-flow-port" cx="220" cy="542" r="4" />
+              <circle class="fig-flow-port is-hot" cx="87" cy="652" r="4" />
+              <circle class="fig-flow-port" cx="234" cy="652" r="4" />
+              <circle class="fig-flow-port is-hot" cx="160" cy="780" r="4" />
+              <circle class="fig-flow-port" cx="18" cy="37" r="4" />
+              <circle class="fig-flow-port" cx="303" cy="37" r="4" />
+              <circle class="fig-flow-port" cx="160" cy="928" r="4" />
+            </svg>
+          <p class="fig-hint">點選有虛線的標籤，查看它的意思。</p>
           <figcaption class="figure-caption">
-            資料切分。Dirichlet 那一條分支製造的是「誠實的不一致」，而這正是整件事的難處：防禦必須把它跟「刻意的不一致」分開。
+            資料切分。Dirichlet 那一條分支（橘色）製造的是「誠實的不一致」，而這正是整件事的難處：防禦必須把它跟「刻意的不一致」分開。
           </figcaption>
         </figure>
         <h3>掃過各個軸線，而不只是基準點</h3>
@@ -472,16 +1110,203 @@
         <p>
           結果發現，每個基準方法的三組種子平均值，都藏著某個讓它徹底崩潰的資料切分。跑滿 20 組資料切分之後，我自己的方法也露出同樣的性質：它在其中 40% 上會失敗。要把這件事講清楚，需要對失敗率計算 Wilson 信賴區間，以及做配對顯著性檢定（McNemar 與 Wilcoxon），而不是盯著長條圖目測。檢定結果顯示 L-MAD 顯著優於未設防的 FedAvg（p = 0.003），但與 LGP、BRAFL、ATTA-FL-Lite <em>無法</em>區分（p &#8805; 0.06）。後面這項發現，在論文裡佔的篇幅和前面那項一樣大。
         </p>
-        <figure class="figure">
-          <div class="figure-doc is-diagram" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <a href="/assets/img/lmad/asr.webp" target="_blank" rel="noopener">
-              <img src="/assets/img/lmad/asr.webp" width="1500" height="833" loading="lazy" decoding="async"
-                   alt="七張攻擊成功率對訓練回合的小型折線圖，分別對應 FedAvg、Krum、Trimmed Mean、LGP、BRAFL、ATTA-FL-Lite 與 L-MAD，每張都附有變異數帶。" />
-              <span class="sr-only">在新分頁開啟完整尺寸</span>
-            </a>
-          </div>
+        <figure class="figure is-twin">
+            <svg class="fig-svg is-across" viewBox="-1 -1 1102 232" role="img" aria-labelledby="asr-across-title asr-across-desc">
+              <title id="asr-across-title">各訓練回合的攻擊成功率，每個策略一張小圖</title>
+              <desc id="asr-across-desc">七張攻擊成功率對訓練回合（第 0 到 20 回合）的小型折線圖，分別對應 FedAvg、Krum、Trimmed Mean、LGP、BRAFL、ATTA-FL-Lite 與 L-MAD。每條線是三個種子的平均，帶狀範圍為一個標準差。所有策略都從 0.31 左右開始。FedAvg 最後約 0.52、Krum 0.26、Trimmed Mean 0.44、LGP 0.33、BRAFL 0.39、ATTA-FL-Lite 0.29，帶狀範圍大多很寬。L-MAD 在第 3 回合就降到接近零，並維持在那裡。</desc>
+              <line class="fig-grid" x1="56.0" y1="180" x2="191.4" y2="180" />
+              <line class="fig-grid" x1="56.0" y1="105.0" x2="191.4" y2="105.0" />
+              <line class="fig-grid" x1="56.0" y1="30" x2="191.4" y2="30" />
+              <line class="fig-grid" x1="56.0" y1="30" x2="56.0" y2="180" />
+              <line class="fig-grid" x1="123.7" y1="30" x2="123.7" y2="180" />
+              <line class="fig-grid" x1="191.4" y1="30" x2="191.4" y2="180" />
+              <polygon class="fig-band" points="56.0,99.4 62.8,59.2 69.5,71.6 76.3,74.5 83.1,74.5 89.8,73.7 96.6,64.5 103.4,56.6 110.2,66.3 116.9,59.1 123.7,60.0 130.5,59.5 137.2,62.8 144.0,63.8 150.8,62.8 157.6,62.9 164.3,69.5 171.1,62.3 177.9,61.0 184.6,63.8 191.4,62.5 191.4,142.9 184.6,149.3 177.9,156.0 171.1,150.9 164.3,150.0 157.6,153.4 150.8,154.5 144.0,158.7 137.2,154.1 130.5,156.6 123.7,158.5 116.9,160.5 110.2,170.4 103.4,174.7 96.6,180 89.8,180 83.1,180 76.3,180 69.5,180 62.8,180 56.0,166.5" />
+              <polyline class="fig-trace" points="56.0,132.9 62.8,129.6 69.5,134.3 76.3,134.5 83.1,134.3 89.8,129.3 96.6,124.4 103.4,115.7 110.2,118.4 116.9,109.8 123.7,109.2 130.5,108.0 137.2,108.5 144.0,111.3 150.8,108.6 157.6,108.2 164.3,109.8 171.1,106.6 177.9,108.5 184.6,106.6 191.4,102.7" />
+              <text class="fig-panel-title" x="123.7" y="20" text-anchor="middle">FedAvg</text>
+              <text class="fig-tick" x="48.0" y="185" text-anchor="end">0</text>
+              <text class="fig-tick" x="48.0" y="110.0" text-anchor="end">0.5</text>
+              <text class="fig-tick" x="48.0" y="35" text-anchor="end">1</text>
+              <text class="fig-tick" x="56.0" y="199" text-anchor="start">0</text>
+              <text class="fig-tick" x="123.7" y="199" text-anchor="middle">10</text>
+              <text class="fig-tick" x="191.4" y="199" text-anchor="end">20</text>
+              <line class="fig-grid" x1="207.4" y1="180" x2="342.8" y2="180" />
+              <line class="fig-grid" x1="207.4" y1="105.0" x2="342.8" y2="105.0" />
+              <line class="fig-grid" x1="207.4" y1="30" x2="342.8" y2="30" />
+              <line class="fig-grid" x1="207.4" y1="30" x2="207.4" y2="180" />
+              <line class="fig-grid" x1="275.1" y1="30" x2="275.1" y2="180" />
+              <line class="fig-grid" x1="342.8" y1="30" x2="342.8" y2="180" />
+              <polygon class="fig-band" points="207.4,99.4 214.2,30 220.9,38.8 227.7,42.7 234.5,36.8 241.2,48.5 248.0,54.6 254.8,38.4 261.6,59.6 268.3,70.3 275.1,57.9 281.9,53.6 288.6,54.1 295.4,56.2 302.2,53.8 308.9,84.8 315.7,88.7 322.5,40.5 329.3,60.1 336.0,80.8 342.8,98.7 342.8,180 336.0,112.8 329.3,169.9 322.5,150.0 315.7,167.6 308.9,163.6 302.2,150.6 295.4,180 288.6,158.0 281.9,169.4 275.1,180 268.3,131.7 261.6,180 254.8,101.8 248.0,177.3 241.2,156.0 234.5,156.7 227.7,101.0 220.9,161.5 214.2,42.6 207.4,166.5" />
+              <polyline class="fig-trace" points="207.4,132.9 214.2,35.2 220.9,100.2 227.7,71.9 234.5,96.7 241.2,102.3 248.0,115.9 254.8,70.1 261.6,125.2 268.3,101.0 275.1,125.5 281.9,111.5 288.6,106.0 295.4,119.3 302.2,102.2 308.9,124.2 315.7,128.1 322.5,95.2 329.3,115.0 336.0,96.8 342.8,141.3" />
+              <text class="fig-panel-title" x="275.1" y="20" text-anchor="middle">Krum</text>
+              <text class="fig-tick" x="207.4" y="199" text-anchor="start">0</text>
+              <text class="fig-tick" x="275.1" y="199" text-anchor="middle">10</text>
+              <text class="fig-tick" x="342.8" y="199" text-anchor="end">20</text>
+              <line class="fig-grid" x1="358.8" y1="180" x2="494.20000000000005" y2="180" />
+              <line class="fig-grid" x1="358.8" y1="105.0" x2="494.20000000000005" y2="105.0" />
+              <line class="fig-grid" x1="358.8" y1="30" x2="494.20000000000005" y2="30" />
+              <line class="fig-grid" x1="358.8" y1="30" x2="358.8" y2="180" />
+              <line class="fig-grid" x1="426.5" y1="30" x2="426.5" y2="180" />
+              <line class="fig-grid" x1="494.2" y1="30" x2="494.2" y2="180" />
+              <polygon class="fig-band" points="358.8,99.4 365.6,86.0 372.3,83.8 379.1,85.9 385.9,85.5 392.7,86.5 399.4,86.9 406.2,86.4 413.0,90.9 419.7,91.9 426.5,89.9 433.3,93.0 440.0,91.0 446.8,93.1 453.6,87.7 460.4,88.6 467.1,88.8 473.9,88.6 480.7,86.5 487.4,87.0 494.2,86.8 494.2,142.6 487.4,142.7 480.7,143.5 473.9,142.9 467.1,147.4 460.4,148.0 453.6,155.0 446.8,168.5 440.0,166.8 433.3,176.5 426.5,180 419.7,178.6 413.0,177.1 406.2,176.2 399.4,176.6 392.7,175.2 385.9,175.8 379.1,175.5 372.3,174.7 365.6,180 358.8,166.5" />
+              <polyline class="fig-trace" points="358.8,132.9 365.6,135.6 372.3,129.3 379.1,130.7 385.9,130.7 392.7,130.9 399.4,131.7 406.2,131.3 413.0,134.0 419.7,135.2 426.5,135.5 433.3,134.8 440.0,128.9 446.8,130.8 453.6,121.3 460.4,118.3 467.1,118.1 473.9,115.7 480.7,115.0 487.4,114.9 494.2,114.7" />
+              <text class="fig-panel-title" x="426.5" y="20" text-anchor="middle">Trimmed Mean</text>
+              <text class="fig-tick" x="358.8" y="199" text-anchor="start">0</text>
+              <text class="fig-tick" x="426.5" y="199" text-anchor="middle">10</text>
+              <text class="fig-tick" x="494.2" y="199" text-anchor="end">20</text>
+              <line class="fig-grid" x1="510.2" y1="180" x2="645.6" y2="180" />
+              <line class="fig-grid" x1="510.2" y1="105.0" x2="645.6" y2="105.0" />
+              <line class="fig-grid" x1="510.2" y1="30" x2="645.6" y2="30" />
+              <line class="fig-grid" x1="510.2" y1="30" x2="510.2" y2="180" />
+              <line class="fig-grid" x1="577.9" y1="30" x2="577.9" y2="180" />
+              <line class="fig-grid" x1="645.6" y1="30" x2="645.6" y2="180" />
+              <polygon class="fig-band" points="510.2,99.4 517.0,120.6 523.7,125.1 530.5,148.3 537.3,159.8 544.0,110.4 550.8,134.6 557.6,124.9 564.4,163.9 571.1,87.7 577.9,56.7 584.7,57.2 591.4,34.1 598.2,44.0 605.0,45.7 611.8,49.1 618.5,94.3 625.3,88.0 632.1,97.3 638.8,84.7 645.6,90.5 645.6,171.1 638.8,143.3 632.1,159.9 625.3,161.2 618.5,169.9 611.8,162.9 605.0,149.3 598.2,162.3 591.4,157.9 584.7,180 577.9,159.6 571.1,148.3 564.4,180 557.6,180 550.8,180 544.0,175.9 537.3,180 530.5,180 523.7,171.1 517.0,170.4 510.2,166.5" />
+              <polyline class="fig-trace" points="510.2,132.9 517.0,145.5 523.7,148.1 530.5,166.0 537.3,171.3 544.0,143.2 550.8,160.8 557.6,156.8 564.4,173.0 571.1,118.0 577.9,108.1 584.7,123.5 591.4,96.0 598.2,103.2 605.0,97.5 611.8,106.0 618.5,132.1 625.3,124.6 632.1,128.6 638.8,114.0 645.6,130.8" />
+              <text class="fig-panel-title" x="577.9" y="20" text-anchor="middle">LGP</text>
+              <text class="fig-tick" x="510.2" y="199" text-anchor="start">0</text>
+              <text class="fig-tick" x="577.9" y="199" text-anchor="middle">10</text>
+              <text class="fig-tick" x="645.6" y="199" text-anchor="end">20</text>
+              <line class="fig-grid" x1="661.6" y1="180" x2="797.0" y2="180" />
+              <line class="fig-grid" x1="661.6" y1="105.0" x2="797.0" y2="105.0" />
+              <line class="fig-grid" x1="661.6" y1="30" x2="797.0" y2="30" />
+              <line class="fig-grid" x1="661.6" y1="30" x2="661.6" y2="180" />
+              <line class="fig-grid" x1="729.3" y1="30" x2="729.3" y2="180" />
+              <line class="fig-grid" x1="797.0" y1="30" x2="797.0" y2="180" />
+              <polygon class="fig-band" points="661.6,99.4 668.4,34.2 675.1,30 681.9,30 688.7,30 695.5,50.0 702.2,85.9 709.0,98.0 715.8,103.2 722.5,104.2 729.3,101.1 736.1,94.7 742.8,91.4 749.6,79.0 756.4,51.8 763.1,49.1 769.9,51.8 776.7,67.6 783.5,77.2 790.2,77.1 797.0,69.0 797.0,173.1 790.2,180 783.5,179.9 776.7,174.3 769.9,167.3 763.1,153.7 756.4,152.2 749.6,160.1 742.8,169.4 736.1,179.3 729.3,180 722.5,180 715.8,180 709.0,180 702.2,180 695.5,158.5 688.7,150.2 681.9,120.8 675.1,79.7 668.4,78.3 661.6,166.5" />
+              <polyline class="fig-trace" points="661.6,132.9 668.4,56.2 675.1,52.8 681.9,69.8 688.7,83.8 695.5,104.3 702.2,135.5 709.0,145.3 715.8,147.4 722.5,147.5 729.3,144.3 736.1,137.0 742.8,130.4 749.6,119.5 756.4,102.0 763.1,101.4 769.9,109.5 776.7,120.9 783.5,128.5 790.2,129.5 797.0,121.0" />
+              <text class="fig-panel-title" x="729.3000000000001" y="20" text-anchor="middle">BRAFL</text>
+              <text class="fig-tick" x="661.6" y="199" text-anchor="start">0</text>
+              <text class="fig-tick" x="729.3" y="199" text-anchor="middle">10</text>
+              <text class="fig-tick" x="797.0" y="199" text-anchor="end">20</text>
+              <line class="fig-grid" x1="813.0" y1="180" x2="948.4" y2="180" />
+              <line class="fig-grid" x1="813.0" y1="105.0" x2="948.4" y2="105.0" />
+              <line class="fig-grid" x1="813.0" y1="30" x2="948.4" y2="30" />
+              <line class="fig-grid" x1="813.0" y1="30" x2="813.0" y2="180" />
+              <line class="fig-grid" x1="880.7" y1="30" x2="880.7" y2="180" />
+              <line class="fig-grid" x1="948.4" y1="30" x2="948.4" y2="180" />
+              <polygon class="fig-band" points="813.0,99.4 819.8,30 826.5,144.5 833.3,66.8 840.1,148.4 846.9,50.3 853.6,159.3 860.4,54.9 867.2,132.5 873.9,52.6 880.7,127.3 887.5,53.9 894.2,121.9 901.0,42.5 907.8,115.8 914.5,41.8 921.3,114.2 928.1,51.8 934.9,105.1 941.6,42.8 948.4,105.5 948.4,168.6 941.6,164.7 934.9,168.7 928.1,165.8 921.3,168.4 914.5,163.9 907.8,168.7 901.0,164.2 894.2,170.0 887.5,134.0 880.7,173.8 873.9,161.0 867.2,174.0 860.4,174.5 853.6,178.1 846.9,156.5 840.1,174.5 833.3,166.2 826.5,175.2 819.8,150.2 813.0,166.5" />
+              <polyline class="fig-trace" points="813.0,132.9 819.8,79.8 826.5,159.9 833.3,116.5 840.1,161.5 846.9,103.4 853.6,168.7 860.4,114.7 867.2,153.3 873.9,106.8 880.7,150.6 887.5,94.0 894.2,146.0 901.0,103.3 907.8,142.2 914.5,102.9 921.3,141.3 928.1,108.8 934.9,136.9 941.6,103.8 948.4,137.0" />
+              <text class="fig-panel-title" x="880.7" y="20" text-anchor="middle">ATTA-FL-Lite</text>
+              <text class="fig-tick" x="813.0" y="199" text-anchor="start">0</text>
+              <text class="fig-tick" x="880.7" y="199" text-anchor="middle">10</text>
+              <text class="fig-tick" x="948.4" y="199" text-anchor="end">20</text>
+              <line class="fig-grid" x1="964.4" y1="180" x2="1099.8" y2="180" />
+              <line class="fig-grid" x1="964.4" y1="105.0" x2="1099.8" y2="105.0" />
+              <line class="fig-grid" x1="964.4" y1="30" x2="1099.8" y2="30" />
+              <line class="fig-grid" x1="964.4" y1="30" x2="964.4" y2="180" />
+              <line class="fig-grid" x1="1032.1" y1="30" x2="1032.1" y2="180" />
+              <line class="fig-grid" x1="1099.8" y1="30" x2="1099.8" y2="180" />
+              <polygon class="fig-band is-hot" points="964.4,99.4 971.2,59.2 977.9,68.0 984.7,179.1 991.5,179.4 998.2,179.4 1005.0,179.4 1011.8,179.1 1018.6,179.4 1025.3,179.4 1032.1,179.4 1038.9,179.4 1045.6,179.4 1052.4,179.4 1059.2,179.3 1066.0,179.1 1072.7,179.4 1079.5,179.4 1086.3,179.4 1093.0,179.4 1099.8,179.4 1099.8,179.4 1093.0,179.4 1086.3,179.4 1079.5,179.4 1072.7,179.4 1066.0,179.5 1059.2,179.5 1052.4,179.4 1045.6,179.4 1038.9,179.4 1032.1,179.4 1025.3,179.4 1018.6,179.4 1011.8,179.5 1005.0,179.4 998.2,179.4 991.5,179.4 984.7,179.5 977.9,180 971.2,180 964.4,166.5" />
+              <polyline class="fig-trace is-hot" points="964.4,132.9 971.2,129.6 977.9,133.3 984.7,179.3 991.5,179.4 998.2,179.4 1005.0,179.4 1011.8,179.3 1018.6,179.4 1025.3,179.4 1032.1,179.4 1038.9,179.4 1045.6,179.4 1052.4,179.4 1059.2,179.4 1066.0,179.3 1072.7,179.4 1079.5,179.4 1086.3,179.4 1093.0,179.4 1099.8,179.4" />
+              <text class="fig-panel-title fig-label-hero" x="1032.1" y="20" text-anchor="middle">L-MAD</text>
+              <text class="fig-tick" x="964.4" y="199" text-anchor="start">0</text>
+              <text class="fig-tick" x="1032.1" y="199" text-anchor="middle">10</text>
+              <text class="fig-tick" x="1099.8" y="199" text-anchor="end">20</text>
+              <text class="fig-tick" transform="rotate(-90 14 105.0)" x="14" y="105.0" text-anchor="middle">攻擊成功率</text>
+              <text class="fig-tick" x="578.0" y="224" text-anchor="middle">回合</text>
+            </svg>
+            <svg class="fig-svg is-down" viewBox="-1 -1 323 638" role="img" aria-labelledby="asr-down-title asr-down-desc">
+              <title id="asr-down-title">各訓練回合的攻擊成功率，每個策略一張小圖</title>
+              <desc id="asr-down-desc">七張攻擊成功率對訓練回合（第 0 到 20 回合）的小型折線圖，分別對應 FedAvg、Krum、Trimmed Mean、LGP、BRAFL、ATTA-FL-Lite 與 L-MAD。每條線是三個種子的平均，帶狀範圍為一個標準差。所有策略都從 0.31 左右開始。FedAvg 最後約 0.52、Krum 0.26、Trimmed Mean 0.44、LGP 0.33、BRAFL 0.39、ATTA-FL-Lite 0.29，帶狀範圍大多很寬。L-MAD 在第 3 回合就降到接近零，並維持在那裡。</desc>
+              <line class="fig-grid" x1="38.0" y1="126" x2="173.5" y2="126" />
+              <line class="fig-grid" x1="38.0" y1="76.0" x2="173.5" y2="76.0" />
+              <line class="fig-grid" x1="38.0" y1="26" x2="173.5" y2="26" />
+              <line class="fig-grid" x1="38.0" y1="26" x2="38.0" y2="126" />
+              <line class="fig-grid" x1="105.8" y1="26" x2="105.8" y2="126" />
+              <line class="fig-grid" x1="173.5" y1="26" x2="173.5" y2="126" />
+              <polygon class="fig-band" points="38.0,72.2 44.8,45.5 51.5,53.7 58.3,55.6 65.1,55.6 71.9,55.1 78.7,49.0 85.4,43.8 92.2,50.2 99.0,45.4 105.8,46.0 112.5,45.7 119.3,47.9 126.1,48.5 132.8,47.9 139.6,48.0 146.4,52.3 153.2,47.5 159.9,46.6 166.7,48.6 173.5,47.6 173.5,101.3 166.7,105.5 159.9,110.0 153.2,106.6 146.4,106.0 139.6,108.3 132.8,109.0 126.1,111.8 119.3,108.7 112.5,110.4 105.8,111.6 99.0,113.0 92.2,119.6 85.4,122.4 78.7,126 71.9,126 65.1,126 58.3,126 51.5,126 44.8,126 38.0,117.0" />
+              <polyline class="fig-trace" points="38.0,94.6 44.8,92.4 51.5,95.6 58.3,95.7 65.1,95.5 71.9,92.2 78.7,88.9 85.4,83.1 92.2,84.9 99.0,79.2 105.8,78.8 112.5,78.0 119.3,78.3 126.1,80.2 132.8,78.4 139.6,78.1 146.4,79.2 153.2,77.1 159.9,78.3 166.7,77.0 173.5,74.5" />
+              <text class="fig-panel-title" x="105.75" y="16" text-anchor="middle">FedAvg</text>
+              <text class="fig-tick" x="30.0" y="131" text-anchor="end">0</text>
+              <text class="fig-tick" x="30.0" y="81.0" text-anchor="end">0.5</text>
+              <text class="fig-tick" x="30.0" y="31" text-anchor="end">1</text>
+              <text class="fig-tick" x="38.0" y="145" text-anchor="start">0</text>
+              <text class="fig-tick" x="105.8" y="145" text-anchor="middle">10</text>
+              <text class="fig-tick" x="173.5" y="145" text-anchor="end">20</text>
+              <line class="fig-grid" x1="185.5" y1="126" x2="321.0" y2="126" />
+              <line class="fig-grid" x1="185.5" y1="76.0" x2="321.0" y2="76.0" />
+              <line class="fig-grid" x1="185.5" y1="26" x2="321.0" y2="26" />
+              <line class="fig-grid" x1="185.5" y1="26" x2="185.5" y2="126" />
+              <line class="fig-grid" x1="253.2" y1="26" x2="253.2" y2="126" />
+              <line class="fig-grid" x1="321.0" y1="26" x2="321.0" y2="126" />
+              <polygon class="fig-band" points="185.5,72.2 192.3,26 199.1,31.9 205.8,34.5 212.6,30.5 219.4,38.4 226.2,42.4 232.9,31.6 239.7,45.8 246.5,52.8 253.2,44.6 260.0,41.7 266.8,42.1 273.6,43.5 280.4,41.9 287.1,62.5 293.9,65.1 300.7,33.0 307.4,46.0 314.2,59.9 321.0,71.8 321.0,126 314.2,81.2 307.4,119.3 300.7,106.0 293.9,117.7 287.1,115.0 280.4,106.4 273.6,126 266.8,111.3 260.0,119.0 253.2,126 246.5,93.8 239.7,126 232.9,73.9 226.2,124.2 219.4,110.0 212.6,110.5 205.8,73.3 199.1,113.7 192.3,34.4 185.5,117.0" />
+              <polyline class="fig-trace" points="185.5,94.6 192.3,29.5 199.1,72.8 205.8,53.9 212.6,70.5 219.4,74.2 226.2,83.3 232.9,52.8 239.7,89.5 246.5,73.3 253.2,89.7 260.0,80.3 266.8,76.7 273.6,85.6 280.4,74.2 287.1,88.8 293.9,91.4 300.7,69.5 307.4,82.7 314.2,70.5 321.0,100.2" />
+              <text class="fig-panel-title" x="253.25" y="16" text-anchor="middle">Krum</text>
+              <text class="fig-tick" x="185.5" y="145" text-anchor="start">0</text>
+              <text class="fig-tick" x="253.2" y="145" text-anchor="middle">10</text>
+              <text class="fig-tick" x="321.0" y="145" text-anchor="end">20</text>
+              <line class="fig-grid" x1="38.0" y1="286" x2="173.5" y2="286" />
+              <line class="fig-grid" x1="38.0" y1="236.0" x2="173.5" y2="236.0" />
+              <line class="fig-grid" x1="38.0" y1="186" x2="173.5" y2="186" />
+              <line class="fig-grid" x1="38.0" y1="186" x2="38.0" y2="286" />
+              <line class="fig-grid" x1="105.8" y1="186" x2="105.8" y2="286" />
+              <line class="fig-grid" x1="173.5" y1="186" x2="173.5" y2="286" />
+              <polygon class="fig-band" points="38.0,232.2 44.8,223.3 51.5,221.9 58.3,223.3 65.1,223.0 71.9,223.7 78.7,223.9 85.4,223.6 92.2,226.6 99.0,227.3 105.8,225.9 112.5,228.0 119.3,226.7 126.1,228.0 132.8,224.5 139.6,225.1 146.4,225.2 153.2,225.1 159.9,223.7 166.7,224.0 173.5,223.9 173.5,261.0 166.7,261.2 159.9,261.7 153.2,261.2 146.4,264.2 139.6,264.7 132.8,269.3 126.1,278.4 119.3,277.2 112.5,283.7 105.8,286 99.0,285.1 92.2,284.0 85.4,283.5 78.7,283.7 71.9,282.8 65.1,283.2 58.3,283.0 51.5,282.5 44.8,286 38.0,277.0" />
+              <polyline class="fig-trace" points="38.0,254.6 44.8,256.4 51.5,252.2 58.3,253.1 65.1,253.1 71.9,253.3 78.7,253.8 85.4,253.5 92.2,255.3 99.0,256.2 105.8,256.4 112.5,255.8 119.3,252.0 126.1,253.2 132.8,246.9 139.6,244.9 146.4,244.7 153.2,243.1 159.9,242.7 166.7,242.6 173.5,242.5" />
+              <text class="fig-panel-title" x="105.75" y="176" text-anchor="middle">Trimmed Mean</text>
+              <text class="fig-tick" x="30.0" y="291" text-anchor="end">0</text>
+              <text class="fig-tick" x="30.0" y="241.0" text-anchor="end">0.5</text>
+              <text class="fig-tick" x="30.0" y="191" text-anchor="end">1</text>
+              <text class="fig-tick" x="38.0" y="305" text-anchor="start">0</text>
+              <text class="fig-tick" x="105.8" y="305" text-anchor="middle">10</text>
+              <text class="fig-tick" x="173.5" y="305" text-anchor="end">20</text>
+              <line class="fig-grid" x1="185.5" y1="286" x2="321.0" y2="286" />
+              <line class="fig-grid" x1="185.5" y1="236.0" x2="321.0" y2="236.0" />
+              <line class="fig-grid" x1="185.5" y1="186" x2="321.0" y2="186" />
+              <line class="fig-grid" x1="185.5" y1="186" x2="185.5" y2="286" />
+              <line class="fig-grid" x1="253.2" y1="186" x2="253.2" y2="286" />
+              <line class="fig-grid" x1="321.0" y1="186" x2="321.0" y2="286" />
+              <polygon class="fig-band" points="185.5,232.2 192.3,246.4 199.1,249.4 205.8,264.9 212.6,272.5 219.4,239.6 226.2,255.7 232.9,249.3 239.7,275.3 246.5,224.5 253.2,203.8 260.0,204.2 266.8,188.7 273.6,195.4 280.4,196.5 287.1,198.7 293.9,228.8 300.7,224.6 307.4,230.9 314.2,222.5 321.0,226.3 321.0,280.0 314.2,261.6 307.4,272.6 300.7,273.4 293.9,279.3 287.1,274.6 280.4,265.5 273.6,274.2 266.8,271.3 260.0,286 253.2,272.4 246.5,264.9 239.7,286 232.9,286 226.2,286 219.4,283.3 212.6,286 205.8,286 199.1,280.1 192.3,279.6 185.5,277.0" />
+              <polyline class="fig-trace" points="185.5,254.6 192.3,263.0 199.1,264.7 205.8,276.6 212.6,280.2 219.4,261.4 226.2,273.2 232.9,270.5 239.7,281.3 246.5,244.7 253.2,238.1 260.0,248.3 266.8,230.0 273.6,234.8 280.4,231.0 287.1,236.7 293.9,254.0 300.7,249.0 307.4,251.7 314.2,242.0 321.0,253.2" />
+              <text class="fig-panel-title" x="253.25" y="176" text-anchor="middle">LGP</text>
+              <text class="fig-tick" x="185.5" y="305" text-anchor="start">0</text>
+              <text class="fig-tick" x="253.2" y="305" text-anchor="middle">10</text>
+              <text class="fig-tick" x="321.0" y="305" text-anchor="end">20</text>
+              <line class="fig-grid" x1="38.0" y1="446" x2="173.5" y2="446" />
+              <line class="fig-grid" x1="38.0" y1="396.0" x2="173.5" y2="396.0" />
+              <line class="fig-grid" x1="38.0" y1="346" x2="173.5" y2="346" />
+              <line class="fig-grid" x1="38.0" y1="346" x2="38.0" y2="446" />
+              <line class="fig-grid" x1="105.8" y1="346" x2="105.8" y2="446" />
+              <line class="fig-grid" x1="173.5" y1="346" x2="173.5" y2="446" />
+              <polygon class="fig-band" points="38.0,392.2 44.8,348.8 51.5,346 58.3,346 65.1,346 71.9,359.3 78.7,383.3 85.4,391.3 92.2,394.8 99.0,395.5 105.8,393.4 112.5,389.1 119.3,386.9 126.1,378.7 132.8,360.6 139.6,358.8 146.4,360.5 153.2,371.0 159.9,377.5 166.7,377.4 173.5,372.0 173.5,441.4 166.7,446 159.9,445.9 153.2,442.2 146.4,437.5 139.6,428.5 132.8,427.5 126.1,432.7 119.3,439.0 112.5,445.5 105.8,446 99.0,446 92.2,446 85.4,446 78.7,446 71.9,431.7 65.1,426.1 58.3,406.5 51.5,379.1 44.8,378.2 38.0,437.0" />
+              <polyline class="fig-trace" points="38.0,414.6 44.8,363.5 51.5,361.2 58.3,372.5 65.1,381.9 71.9,395.5 78.7,416.3 85.4,422.8 92.2,424.3 99.0,424.3 105.8,422.2 112.5,417.3 119.3,412.9 126.1,405.7 132.8,394.0 139.6,393.6 146.4,399.0 153.2,406.6 159.9,411.7 166.7,412.3 173.5,406.7" />
+              <text class="fig-panel-title" x="105.75" y="336" text-anchor="middle">BRAFL</text>
+              <text class="fig-tick" x="30.0" y="451" text-anchor="end">0</text>
+              <text class="fig-tick" x="30.0" y="401.0" text-anchor="end">0.5</text>
+              <text class="fig-tick" x="30.0" y="351" text-anchor="end">1</text>
+              <text class="fig-tick" x="38.0" y="465" text-anchor="start">0</text>
+              <text class="fig-tick" x="105.8" y="465" text-anchor="middle">10</text>
+              <text class="fig-tick" x="173.5" y="465" text-anchor="end">20</text>
+              <line class="fig-grid" x1="185.5" y1="446" x2="321.0" y2="446" />
+              <line class="fig-grid" x1="185.5" y1="396.0" x2="321.0" y2="396.0" />
+              <line class="fig-grid" x1="185.5" y1="346" x2="321.0" y2="346" />
+              <line class="fig-grid" x1="185.5" y1="346" x2="185.5" y2="446" />
+              <line class="fig-grid" x1="253.2" y1="346" x2="253.2" y2="446" />
+              <line class="fig-grid" x1="321.0" y1="346" x2="321.0" y2="446" />
+              <polygon class="fig-band" points="185.5,392.2 192.3,346 199.1,422.4 205.8,370.6 212.6,424.9 219.4,359.5 226.2,432.2 232.9,362.6 239.7,414.3 246.5,361.1 253.2,410.9 260.0,362.0 266.8,407.3 273.6,354.3 280.4,403.2 287.1,353.9 293.9,402.1 300.7,360.5 307.4,396.1 314.2,354.5 321.0,396.3 321.0,438.4 314.2,435.8 307.4,438.4 300.7,436.5 293.9,438.2 287.1,435.3 280.4,438.4 273.6,435.5 266.8,439.3 260.0,415.3 253.2,441.8 246.5,433.3 239.7,442.0 232.9,442.4 226.2,444.7 219.4,430.4 212.6,442.3 205.8,436.8 199.1,442.8 192.3,426.2 185.5,437.0" />
+              <polyline class="fig-trace" points="185.5,414.6 192.3,379.2 199.1,432.6 205.8,403.7 212.6,433.6 219.4,394.9 226.2,438.5 232.9,402.5 239.7,428.2 246.5,397.2 253.2,426.4 260.0,388.6 266.8,423.3 273.6,394.9 280.4,420.8 287.1,394.6 293.9,420.2 300.7,398.5 307.4,417.3 314.2,395.2 321.0,417.4" />
+              <text class="fig-panel-title" x="253.25" y="336" text-anchor="middle">ATTA-FL-Lite</text>
+              <text class="fig-tick" x="185.5" y="465" text-anchor="start">0</text>
+              <text class="fig-tick" x="253.2" y="465" text-anchor="middle">10</text>
+              <text class="fig-tick" x="321.0" y="465" text-anchor="end">20</text>
+              <line class="fig-grid" x1="38.0" y1="606" x2="173.5" y2="606" />
+              <line class="fig-grid" x1="38.0" y1="556.0" x2="173.5" y2="556.0" />
+              <line class="fig-grid" x1="38.0" y1="506" x2="173.5" y2="506" />
+              <line class="fig-grid" x1="38.0" y1="506" x2="38.0" y2="606" />
+              <line class="fig-grid" x1="105.8" y1="506" x2="105.8" y2="606" />
+              <line class="fig-grid" x1="173.5" y1="506" x2="173.5" y2="606" />
+              <polygon class="fig-band is-hot" points="38.0,552.2 44.8,525.5 51.5,531.4 58.3,605.4 65.1,605.6 71.9,605.6 78.7,605.6 85.4,605.4 92.2,605.6 99.0,605.6 105.8,605.6 112.5,605.6 119.3,605.6 126.1,605.6 132.8,605.5 139.6,605.4 146.4,605.6 153.2,605.6 159.9,605.6 166.7,605.6 173.5,605.6 173.5,605.6 166.7,605.6 159.9,605.6 153.2,605.6 146.4,605.6 139.6,605.7 132.8,605.6 126.1,605.6 119.3,605.6 112.5,605.6 105.8,605.6 99.0,605.6 92.2,605.6 85.4,605.7 78.7,605.6 71.9,605.6 65.1,605.6 58.3,605.7 51.5,606 44.8,606 38.0,597.0" />
+              <polyline class="fig-trace is-hot" points="38.0,574.6 44.8,572.4 51.5,574.9 58.3,605.5 65.1,605.6 71.9,605.6 78.7,605.6 85.4,605.5 92.2,605.6 99.0,605.6 105.8,605.6 112.5,605.6 119.3,605.6 126.1,605.6 132.8,605.6 139.6,605.5 146.4,605.6 153.2,605.6 159.9,605.6 166.7,605.6 173.5,605.6" />
+              <text class="fig-panel-title fig-label-hero" x="105.75" y="496" text-anchor="middle">L-MAD</text>
+              <text class="fig-tick" x="30.0" y="611" text-anchor="end">0</text>
+              <text class="fig-tick" x="30.0" y="561.0" text-anchor="end">0.5</text>
+              <text class="fig-tick" x="30.0" y="511" text-anchor="end">1</text>
+              <text class="fig-tick" x="38.0" y="625" text-anchor="start">0</text>
+              <text class="fig-tick" x="105.8" y="625" text-anchor="middle">10</text>
+              <text class="fig-tick" x="173.5" y="625" text-anchor="end">20</text>
+              <text class="fig-tick" x="189.5" y="530"><tspan x="189.5" dy="0">橫軸：回合</tspan><tspan x="189.5" dy="21">縱軸：</tspan><tspan x="189.5" dy="21">攻擊成功率</tspan></text>
+            </svg>
           <figcaption class="figure-caption">
-            這正是那些顯著性檢定要取代的東西。每張小圖是一個策略在各回合的攻擊成功率，陰影為跨種子的分布範圍。這些帶狀範圍寬到用肉眼挑贏家等於猜測，這也是上面那組比較改用 McNemar 與 Wilcoxon 的理由。
+            這正是那些顯著性檢定要取代的東西。每張小圖是一個策略在各回合的攻擊成功率，取三個種子的平均，陰影為上下各一個標準差。L-MAD 以橘色標示。這些帶狀範圍寬到用肉眼挑贏家等於猜測，這也是上面那組比較改用 McNemar 與 Wilcoxon 的理由。
           </figcaption>
         </figure>
 
@@ -567,6 +1392,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=137a8ce7"></script>
+  <script src="/assets/js/main.js?v=b56d48b4"></script>
 </body>
 </html>

@@ -187,6 +187,28 @@ wire and box edge 3:1; `prefers-contrast: more` and `forced-colors` are
 handled. Diagrams inside pages draw from the same tokens (`var(--acc)`,
 `var(--edge)`, `var(--mut)`), so they follow the theme.
 
+The diagrams are inline SVG, not images, so they follow the theme and carry
+Chinese labels on the Chinese pages. A figure too wide for the reading column is
+a `.figure.is-twin` holding two SVGs of the same chart: `.fig-svg.is-across`,
+wider than the measure, and `.fig-svg.is-down`, for screens under 1080px. Add
+`.is-column` when the wide drawing fits the measure and only a phone needs the
+other one. CSS displays one, so a screen reader hears one. Each SVG needs its own
+ids and arrow markers, because a marker inside a hidden SVG does not draw. Text
+sits in one `<text>` per role, with the line breaks as plain `<tspan>`s, so the
+two languages keep the same class sequence. Boxes hold their text at every
+width, labels stay clear of wires, and orange marks one thing, named in the
+caption. A system with no wires (`.subsystems`, on the L-MAD page) is nested
+lists that reflow on their own.
+
+A node that needs explaining is a `<g class="fig-flow-noted">` with the
+explanation in a `<desc>` as its first child, in both drawings of a twin. The
+script in `main.js` draws the note from that text, for a pointer, a finger or a
+keyboard alike, and it stays open until the reader moves away. Until the script
+runs the drawing is a plain picture, so the dotted label and the `.fig-hint` line
+under the figure only appear with `.js`. Notes are for terms of art, written from
+the thesis, and nothing essential goes only in one: the captions carry the
+argument. A label that explains itself gets no note.
+
 The only web font is Recursive (SIL Open Font License, `assets/fonts/OFL.txt`),
 self-hosted as one 68 KB subset with two axes: weight, and MONO, which the
 intro animates and code chips use. The casual axis is pinned at 0, which halved
