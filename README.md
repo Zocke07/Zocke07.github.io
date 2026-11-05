@@ -307,9 +307,10 @@ python3 tools/serve.py        # http://127.0.0.1:8000
 python3 tools/serve.py 8080   # or pick a port
 ```
 
-It is `http.server` with one added rule: a URL with no extension falls back to
-`name.html`, then `name/index.html`, which is the order GitHub Pages tries. That
-makes the preview resolve `/case-study-lmad` the way the deployed site does. It
+It is `http.server` with two added rules. A URL with no extension falls back to
+`name.html`, then `name/index.html`, which is the order GitHub Pages tries, and a
+URL that matches nothing gets `404.html`. That makes the preview resolve
+`/case-study-lmad` the way the deployed site does. It
 binds to `127.0.0.1`, so the preview stays off the local network, and sends
 `Cache-Control: no-store`, so an edit shows up on reload.
 
@@ -323,6 +324,27 @@ Pushes to `main` publish automatically once GitHub Pages is enabled:
 1. In the repo: **Settings → Pages → Build and deployment**.
 2. Source: **Deploy from a branch**, Branch: **main**, Folder: **/ (root)**.
 3. Push. The site appears at <https://zocke07.github.io/>.
+
+## When something fails
+
+A visitor should get a readable page and no controls that do nothing. Section 15
+of the stylesheet holds most of this, and none of it shows on a normal visit.
+
+| What fails | What the visitor gets |
+| --- | --- |
+| A bad URL | `404.html`, in both languages, with a way home in each |
+| An old `/#projects` link | The Selected work section, through a kept anchor |
+| An image | Its reserved space, and a note with its alt text |
+| A clip | Its still frame and a note; the dead controls go. Labels are `data-failed-label` on `.clips-toggle` |
+| No scripts, or `main.js` fails | The nav stays reachable on phones, the menu and theme buttons go, and each diagram box prints its details. The `onerror` on the `main.js` tag removes `.js`, and `tools/check.py chrome` holds every page to it |
+| `path.js` alone | `main.js` adds `.no-wires`, with the same diagram fallback |
+| The font | The system faces, which fit the same layouts |
+| Stored theme | The switch still works for that page |
+| The mail link | The button's label is the address, so it can be copied |
+
+The clip note and the image note are the only strings in this table that the page
+does not carry as text: the first is a `data-` attribute, the second is in the
+stylesheet, in both languages.
 
 ## Checks
 

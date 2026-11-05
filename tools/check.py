@@ -346,6 +346,8 @@ CHROME_PATTERNS = {
     "theme-toggle light label": r'class="theme-toggle"[^>]*data-label-light="([^"]*)"',
     "to-top aria-label": r'class="to-top"[^>]*aria-label="([^"]*)"',
     "footer": r'<footer class="site-footer">.*?<p>(.*?)</p>',
+    # If main.js cannot load, this hands the page back to its no-script layout.
+    "main.js onerror": r'/assets/js/main\.js\?v=\w+"\s+onerror="([^"]*)"',
 }
 
 

@@ -3,7 +3,8 @@
 
 The site links to pages without the .html suffix (/case-study-lmad), which
 GitHub Pages resolves for free. `python3 -m http.server` does not, so it would
-404 on every internal link. This adds just that one rule.
+404 on every internal link. This adds that rule, and answers a URL that truly is
+bad with 404.html, as GitHub Pages does.
 
     python3 tools/serve.py            # http://127.0.0.1:8000
     python3 tools/serve.py 8080
@@ -31,6 +32,20 @@ class Handler(http.server.SimpleHTTPRequestHandler):
                     return str(candidate)
         return str(local)
 
+    def send_error(self, code, message=None, explain=None) -> None:
+        # A bad URL gets 404.html, the same page GitHub Pages answers with.
+        page = ROOT / "404.html"
+        if code != 404 or not page.is_file():
+            super().send_error(code, message, explain)
+            return
+        body = page.read_bytes()
+        self.send_response(404)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        if self.command != "HEAD":
+            self.wfile.write(body)
+
     def end_headers(self) -> None:
         # Never cache during preview, so an edit shows up on reload.
         self.send_header("Cache-Control", "no-store")
@@ -43,7 +58,9 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 port = int(sys.argv[1]) if len(sys.argv) > 1 else 8000
 os.chdir(ROOT)
 socketserver.TCPServer.allow_reuse_address = True
-with socketserver.TCPServer(("127.0.0.1", port), Handler) as httpd:
+# Threaded, because one clip streaming to the browser would otherwise hold up
+# every other request on the page until it finished.
+with socketserver.ThreadingTCPServer(("127.0.0.1", port), Handler) as httpd:
     print(f"serving {ROOT} at http://127.0.0.1:{port}  (ctrl-c to stop)")
     try:
         httpd.serve_forever()

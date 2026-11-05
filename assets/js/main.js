@@ -263,7 +263,7 @@ if (pipes.length && "IntersectionObserver" in window && !reducedMotion) {
 // reader moves away, because a note on a timer can vanish mid-sentence. The pointer
 // can cross onto the note, so it never has to be read at a run. The diagrams are
 // plain pictures until this runs, so without it nothing here promises a note.
-const notedNodes = $$(".fig-flow-noted");
+const notedNodes = $$(".fig-flow-noted").filter((node) => $("desc", node) && node.closest(".figure"));
 if (notedNodes.length) {
   const tip = document.createElement("div");
   tip.className = "fig-flow-note";
@@ -377,17 +377,33 @@ if (clipFrames.length && clipsToggle) {
   // `selfStarted` marks the starts apply() makes itself.
   const manual = new Set();
   const selfStarted = new Set();
+  // A clip that did not load keeps its still frame and says so. Its controls would
+  // only ever show 0:00, and with no clip left to govern the button goes as well.
+  const failed = new Set();
   let running = !reducedMotion;
+
+  const markFailed = (video) => {
+    failed.add(video);
+    video.controls = false;
+    const frame = video.closest(".clip-frame");
+    if (frame) {
+      frame.dataset.failed = clipsToggle.dataset.failedLabel || "";
+      frame.classList.add("is-failed");
+    }
+    clipsToggle.classList.toggle("is-ready", failed.size < videos.length);
+  };
 
   videos.forEach((video) => {
     video.addEventListener("play", () => {
       if (selfStarted.has(video)) selfStarted.delete(video);
       else manual.add(video);
     });
+    video.addEventListener("error", () => markFailed(video));
   });
 
   const apply = () => {
     videos.forEach((video) => {
+      if (failed.has(video)) return;
       video.controls = !running;
       if (manual.has(video)) return;
       if (running && onScreen.has(video)) {
@@ -404,6 +420,8 @@ if (clipFrames.length && clipsToggle) {
   };
 
   clipsToggle.classList.add("is-ready");
+  // Its error event may already have fired before this file ran.
+  videos.filter((video) => video.error).forEach(markFailed);
   clipsToggle.addEventListener("click", () => {
     running = !running;
     manual.clear();
@@ -430,6 +448,13 @@ if (clipFrames.length && clipsToggle) {
 
   apply();
 }
+
+// --- A script that fails after this one ---
+// Only path.js loads after this file, and this is the one place its failure can be
+// heard. The stylesheet then prints each box's details below it (section 15).
+addEventListener("error", (e) => {
+  if (e.target?.tagName === "SCRIPT") root.classList.add("no-wires");
+}, true);
 
 // --- The opening ---
 // Reveal first, decorate second. The home page waits at most 0.6s for the
