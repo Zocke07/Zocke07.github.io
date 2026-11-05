@@ -37,6 +37,7 @@ tools/diff.py                    # git diff with the ?v= stamp churn filtered ou
 tools/cv.py                      # refreshes the CV copy from CV/build
 tools/og.py                      # renders a page's social card from its own metadata
 tools/sitemap.py                 # rebuilds sitemap.xml from the pages' own canonicals
+tools/icons.py                   # exports the PNG icons from assets/img/favicon.svg
 tools/cjk.py                     # unwraps Chinese lines that would render a stray space
 tools/og-cards.json              # generated; what each social card was drawn from
 .githooks/pre-commit             # runs tools/check.py before a commit is written
@@ -208,6 +209,11 @@ runs the drawing is a plain picture, so the dotted label and the `.fig-hint` lin
 under the figure only appear with `.js`. Notes are for terms of art, written from
 the thesis, and nothing essential goes only in one: the captions carry the
 argument. A label that explains itself gets no note.
+
+The tab icon is `assets/img/favicon.svg`: the initials, in paper on the orange,
+because at 16 pixels a mark has to say whose site this is before it says anything
+else. Run `python3 tools/icons.py` after editing it, to re-export the PNGs for older
+browsers and phone home screens. The ring beside the name in the header is separate.
 
 The only web font is Recursive (SIL Open Font License, `assets/fonts/OFL.txt`),
 self-hosted as one 68 KB subset with two axes: weight, and MONO, which the
