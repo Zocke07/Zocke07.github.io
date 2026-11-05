@@ -112,7 +112,7 @@ and a Latin one is fine: that space is wanted, and the pages already write it.
 ## Editing content
 
 All landing-page content lives in `index.html`, in commented sections: Intro,
-Path, Selected work, Experience, About, Education, Skills, Languages and
+Path, Selected work, Experience, Education, Skills, About, Languages and
 Contact. Mirror every edit into `zh/index.html`.
 
 **The path diagram** under the intro is six boxes, each a `<button
