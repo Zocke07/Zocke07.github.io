@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-agentbase" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -171,9 +171,8 @@
           sequence number it saw. The rule that follows is the one the specification states most
           bluntly: never send an ad-hoc message to the window; fix the event contract instead.
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 900 462" role="img" aria-labelledby="ab-arch-title ab-arch-desc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 900 462" role="img" aria-labelledby="ab-arch-title ab-arch-desc">
               <title id="ab-arch-title">What runs where in AgentBase</title>
               <desc id="ab-arch-desc">Inside a boundary labeled this computer, where everything binds 127.0.0.1: the desktop app, a Tauri shell, exchanges HTTP requests and a server-sent event stream with the sidecar. The sidecar, FastAPI on one local port, holds the orchestrator, which reaches the tools only through the approval gate. The sidecar writes events to SQLite, the append-only log, and sends updates to a Discord adapter that acts on explicit commands only. Outside the boundary, the model provider API is reached over HTTPS, the only traffic that leaves the machine.</desc>
               <defs>
@@ -229,7 +228,50 @@
               <text x="500" y="416" text-anchor="middle" class="fig-label">Model provider API</text>
               <text x="500" y="438" text-anchor="middle" class="fig-tick">the only traffic that leaves the machine</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 606" role="img" aria-labelledby="ab-arch-down-title ab-arch-down-desc">
+              <title id="ab-arch-down-title">What runs where in AgentBase</title>
+              <desc id="ab-arch-down-desc">Inside a boundary labeled this computer, where everything binds 127.0.0.1: the desktop app, a Tauri shell, exchanges HTTP requests and a server-sent event stream with the sidecar. The sidecar, FastAPI on one local port, holds the orchestrator, which reaches the tools only through the approval gate. The sidecar writes events to SQLite, the append-only log, and sends updates to a Discord adapter that acts on explicit commands only. Outside the boundary, the model provider API is reached over HTTPS, the only traffic that leaves the machine.</desc>
+              <defs>
+                <marker id="ab-arch-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="ab-arch-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <rect class="fig-box-muted" x="0" y="26" width="320" height="470" rx="14" />
+              <rect class="fig-box" x="14" y="172" width="292" height="180" rx="12" />
+              <path class="fig-line" d="M110 134 L110 172" marker-end="url(#ab-arch-down-arrow)" />
+              <path class="fig-line" d="M210 172 L210 134" marker-end="url(#ab-arch-down-arrow)" />
+              <path class="fig-line-accent" d="M134 244 L156 244" marker-end="url(#ab-arch-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M225 264 L225 284" marker-end="url(#ab-arch-down-arrow-hot)" />
+              <path class="fig-line" d="M90 352 L90 390" marker-end="url(#ab-arch-down-arrow)" />
+              <path class="fig-line" d="M249 352 L249 390" marker-end="url(#ab-arch-down-arrow)" />
+              <path class="fig-line" d="M178 352 L178 530" marker-end="url(#ab-arch-down-arrow)" />
+              <text class="fig-flow-step" x="0" y="14">What runs where</text>
+              <text class="fig-flow-label" x="104" y="157" text-anchor="end">HTTP</text>
+              <text class="fig-flow-label" x="216" y="157">SSE</text>
+              <text class="fig-flow-step" x="160" y="194" text-anchor="middle">Sidecar</text>
+              <text class="fig-flow-sub" x="160" y="212" text-anchor="middle">FastAPI, Python, one local port</text>
+              <text class="fig-flow-label" x="84" y="375" text-anchor="end">events</text>
+              <text class="fig-flow-group-label" x="14" y="47">This computer: everything binds 127.0.0.1</text>
+              <text class="fig-flow-label" x="186" y="518">HTTPS</text>
+              <rect class="fig-box" x="14" y="60" width="292" height="74" rx="10" />
+              <text class="fig-flow-step" x="160" y="82.3" text-anchor="middle">Desktop app</text>
+              <text class="fig-flow-sub" x="160" y="102.3" text-anchor="middle"><tspan x="160" dy="0">Tauri shell, Rust</tspan><tspan x="160" dy="18">hosts the React window</tspan></text>
+              <rect class="fig-box" x="26" y="224" width="108" height="40" rx="10" />
+              <text class="fig-flow-step" x="80" y="248.3" text-anchor="middle">Orchestrator</text>
+              <rect class="fig-box-accent" x="156" y="224" width="138" height="40" rx="10" />
+              <text class="fig-flow-step is-hot" x="225" y="248.3" text-anchor="middle">Approval gate</text>
+              <rect class="fig-box" x="156" y="284" width="138" height="56" rx="10" />
+              <text class="fig-flow-step" x="225" y="306.3" text-anchor="middle">Tools</text>
+              <text class="fig-flow-sub" x="225" y="326.3" text-anchor="middle">files, shell, web</text>
+              <rect class="fig-box" x="14" y="390" width="150" height="92" rx="10" />
+              <text class="fig-flow-step" x="89" y="412.3" text-anchor="middle">SQLite</text>
+              <text class="fig-flow-sub" x="89" y="432.3" text-anchor="middle"><tspan x="89" dy="0">append-only</tspan><tspan x="89" dy="18">event log,</tspan><tspan x="89" dy="18">runs and spending</tspan></text>
+              <rect class="fig-box" x="192" y="390" width="114" height="56" rx="10" />
+              <text class="fig-flow-step" x="249" y="412.3" text-anchor="middle">Discord</text>
+              <text class="fig-flow-sub" x="249" y="432.3" text-anchor="middle">commands only</text>
+              <rect class="fig-box" x="0" y="530" width="320" height="74" rx="10" />
+              <text class="fig-flow-step" x="160" y="552.3" text-anchor="middle">Model provider API</text>
+              <text class="fig-flow-sub" x="160" y="572.3" text-anchor="middle"><tspan x="160" dy="0">the only traffic that</tspan><tspan x="160" dy="18">leaves the machine</tspan></text>
+            </svg>
           <figcaption class="figcaption">
             Drawn from the specification's own architecture section. The orchestrator never calls a
             tool directly: every call goes through the gate, and every step lands in the event log
@@ -326,6 +368,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

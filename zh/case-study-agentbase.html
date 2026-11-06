@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-agentbase" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -77,18 +77,18 @@
           <div><dt>形式</dt><dd class="format">案例研究</dd></div>
           <div><dt>專案</dt><dd>個人專案；程式碼由 AI 代理依我寫的規格撰寫</dd></div>
           <div><dt>工具</dt><dd>Python、FastAPI、Tauri、React、SQLite</dd></div>
-          <div><dt>時間</dt><dd>2026 年 9 月至 10 月</dd></div>
+          <div><dt>時間</dt><dd>2026&nbsp;年 9&nbsp;月至 10&nbsp;月</dd></div>
         </dl>
         <h1>規格是我寫的，程式碼由 AI 代理撰寫</h1>
         <p class="hero-blurb">AgentBase 是一個本機優先的桌面應用程式：AI 代理處理任務時，你可以在一張即時更新的圖上看著它們工作，而它們的每一次檔案、shell 與網路操作，都要先在審核關卡前等待。它的程式碼不是我寫的，是一個 AI 程式設計代理依照我先寫好的規格寫成的；那份規格從第一個 commit 起就放在程式碼庫裡。這一頁談的是屬於我的部分：規格事先定下了什麼、關卡如何被定義與測試，以及我如何判斷每一個版本可以發布。</p>
         <p class="hero-blurb role-line"><strong>我的角色：</strong>規格、每一次審查、測試，以及每一次發布的決定。責任也在這裡：「是 AI 寫的」解釋不了任何一個上線的缺陷。這個網站其他地方的技能標籤從不連到這一頁，因為程式碼不是我的證據；規格與驗證紀錄才是。</p>
         <ul class="facts" role="list">
-          <li><strong>8 條硬性限制</strong>，在寫任何程式碼之前定下</li>
-          <li><strong>284 個 commit</strong>，歷時六週</li>
-          <li><strong>15 個標記版本</strong>，在 9 月 11 日到 28 日之間</li>
-          <li><strong>1,100 個以上</strong>後端測試</li>
-          <li><strong>1 道關卡</strong>，攔下每一次檔案、shell 與網路操作</li>
-          <li><strong>0 個</strong> 127.0.0.1 以外的監聽位址</li>
+          <li><strong>8&nbsp;條硬性限制</strong>，在寫任何程式碼之前定下</li>
+          <li><strong>284&nbsp;個 commit</strong>，歷時六週</li>
+          <li><strong>15&nbsp;個標記版本</strong>，在 9&nbsp;月 11&nbsp;日到 28&nbsp;日之間</li>
+          <li><strong>1,100&nbsp;個以上</strong>後端測試</li>
+          <li><strong>1&nbsp;道關卡</strong>，攔下每一次檔案、shell 與網路操作</li>
+          <li><strong>0&nbsp;個</strong> 127.0.0.1&nbsp;以外的監聽位址</li>
         </ul>
         <aside class="source-note"><strong>範圍與來源：</strong>程式碼庫不公開，所以這裡沒有任何連結指向它，但每一項說法都對應到其中的檔案：建置規格、架構指南、版本說明、驗證紀錄與測試套件。我後來在這個應用程式上跑的個人研究流程不在這一頁裡；那是我怎麼使用它，不是它怎麼被建置的。</aside>
       </div>
@@ -97,7 +97,7 @@
     <!-- ===================== The problem ===================== -->
     <section id="problem" class="section">
       <div class="container prose">
-        <h2 class="section-title">能動到你電腦的代理</h2>
+        <h2 class="section-title">能動到<wbr>你電腦的代理</h2>
         <p>一個能讀檔、執行 shell 指令、抓取網頁的代理，之所以有用，正是因為它危險。規格為它最嚴格的一條規則寫下的理由說得很直白：未經檢查的工具呼叫，正是同類專案裡數十個安全公告背後的失效模式。所以問題從來不是要不要讓人參與把關，而是把關放在哪裡，以及什麼東西是誰都繞不過去的。</p>
         <p>另一項要求來自使用它的人。在寫任何程式碼之前就寫下的成功標準是：一個不是開發者的人，雙擊安裝程式、輸入一項任務，就能看著每一次代理產生、工具呼叫、交接與完成，不需要終端機、不需要 Docker，也不需要任何設定檔。</p>
       </div>
@@ -122,11 +122,10 @@
     <!-- ===================== Architecture ===================== -->
     <section id="architecture" class="section">
       <div class="container prose">
-        <h2 class="section-title">一切都掛在同一個想法上</h2>
+        <h2 class="section-title">一切都掛在<wbr>同一個想法上</h2>
         <p>代理的每一個動作，都是一筆只能附加的事件。視窗只負責把這份紀錄投影出來，所以即時執行與重播共用同一套程式碼，而一個重新連線的視窗，會從它看過的最後一個序號接著讀。由此而來的規則，是規格說得最不留情面的一條：永遠不要臨時對視窗送一則訊息；改的是事件合約。</p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 900 462" role="img" aria-labelledby="ab-arch-title ab-arch-desc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 900 462" role="img" aria-labelledby="ab-arch-title ab-arch-desc">
               <title id="ab-arch-title">AgentBase 中各元件在哪裡執行</title>
               <desc id="ab-arch-desc">在標示為「這台電腦」的邊界內，一切都綁定 127.0.0.1：桌面應用程式（Tauri 外殼）與 sidecar 之間交換 HTTP 請求與伺服器推送的事件流。sidecar 是只開一個本機連接埠的 FastAPI，裡面的調度器只能透過審核關卡使用工具。sidecar 把事件寫進只能附加的 SQLite 紀錄，並把更新送到只回應明確指令的 Discord 轉接器。邊界外的模型供應商 API 以 HTTPS 連線，是唯一離開這台電腦的流量。</desc>
               <defs>
@@ -182,7 +181,50 @@
               <text x="500" y="416" text-anchor="middle" class="fig-label">模型供應商 API</text>
               <text x="500" y="438" text-anchor="middle" class="fig-tick">唯一離開這台電腦的流量</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 588" role="img" aria-labelledby="ab-arch-down-title ab-arch-down-desc">
+              <title id="ab-arch-down-title">AgentBase 中各元件在哪裡執行</title>
+              <desc id="ab-arch-down-desc">在標示為「這台電腦」的邊界內，一切都綁定 127.0.0.1：桌面應用程式（Tauri 外殼）與 sidecar 之間交換 HTTP 請求與伺服器推送的事件流。sidecar 是只開一個本機連接埠的 FastAPI，裡面的調度器只能透過審核關卡使用工具。sidecar 把事件寫進只能附加的 SQLite 紀錄，並把更新送到只回應明確指令的 Discord 轉接器。邊界外的模型供應商 API 以 HTTPS 連線，是唯一離開這台電腦的流量。</desc>
+              <defs>
+                <marker id="ab-arch-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="ab-arch-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <rect class="fig-box-muted" x="0" y="26" width="320" height="470" rx="14" />
+              <rect class="fig-box" x="14" y="172" width="292" height="180" rx="12" />
+              <path class="fig-line" d="M110 134 L110 172" marker-end="url(#ab-arch-down-arrow)" />
+              <path class="fig-line" d="M210 172 L210 134" marker-end="url(#ab-arch-down-arrow)" />
+              <path class="fig-line-accent" d="M134 244 L156 244" marker-end="url(#ab-arch-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M225 264 L225 284" marker-end="url(#ab-arch-down-arrow-hot)" />
+              <path class="fig-line" d="M90 352 L90 390" marker-end="url(#ab-arch-down-arrow)" />
+              <path class="fig-line" d="M249 352 L249 390" marker-end="url(#ab-arch-down-arrow)" />
+              <path class="fig-line" d="M178 352 L178 530" marker-end="url(#ab-arch-down-arrow)" />
+              <text class="fig-flow-step" x="0" y="14">什麼在哪裡執行</text>
+              <text class="fig-flow-label" x="104" y="157" text-anchor="end">HTTP</text>
+              <text class="fig-flow-label" x="216" y="157">SSE</text>
+              <text class="fig-flow-step" x="160" y="194" text-anchor="middle">Sidecar</text>
+              <text class="fig-flow-sub" x="160" y="212" text-anchor="middle">FastAPI，Python，單一本機連接埠</text>
+              <text class="fig-flow-label" x="84" y="375" text-anchor="end">事件</text>
+              <text class="fig-flow-group-label" x="14" y="47">這台電腦：一切都綁定 127.0.0.1</text>
+              <text class="fig-flow-label" x="186" y="518">HTTPS</text>
+              <rect class="fig-box" x="14" y="60" width="292" height="74" rx="10" />
+              <text class="fig-flow-step" x="160" y="82.3" text-anchor="middle">桌面應用程式</text>
+              <text class="fig-flow-sub" x="160" y="102.3" text-anchor="middle"><tspan x="160" dy="0">Tauri 外殼，Rust</tspan><tspan x="160" dy="18">承載 React 視窗</tspan></text>
+              <rect class="fig-box" x="26" y="224" width="108" height="40" rx="10" />
+              <text class="fig-flow-step" x="80" y="248.3" text-anchor="middle">調度器</text>
+              <rect class="fig-box-accent" x="156" y="224" width="138" height="40" rx="10" />
+              <text class="fig-flow-step is-hot" x="225" y="248.3" text-anchor="middle">審核關卡</text>
+              <rect class="fig-box" x="156" y="284" width="138" height="56" rx="10" />
+              <text class="fig-flow-step" x="225" y="306.3" text-anchor="middle">工具</text>
+              <text class="fig-flow-sub" x="225" y="326.3" text-anchor="middle">檔案、shell、網路</text>
+              <rect class="fig-box" x="14" y="390" width="150" height="92" rx="10" />
+              <text class="fig-flow-step" x="89" y="412.3" text-anchor="middle">SQLite</text>
+              <text class="fig-flow-sub" x="89" y="432.3" text-anchor="middle"><tspan x="89" dy="0">只能附加的</tspan><tspan x="89" dy="18">事件紀錄，</tspan><tspan x="89" dy="18">執行與花費</tspan></text>
+              <rect class="fig-box" x="192" y="390" width="114" height="56" rx="10" />
+              <text class="fig-flow-step" x="249" y="412.3" text-anchor="middle">Discord</text>
+              <text class="fig-flow-sub" x="249" y="432.3" text-anchor="middle">只回應指令</text>
+              <rect class="fig-box" x="0" y="530" width="320" height="56" rx="10" />
+              <text class="fig-flow-step" x="160" y="552.3" text-anchor="middle">模型供應商 API</text>
+              <text class="fig-flow-sub" x="160" y="572.3" text-anchor="middle">唯一離開這台電腦的流量</text>
+            </svg>
           <figcaption class="figcaption">依規格自己的架構章節繪製。調度器從不直接呼叫工具：每一次呼叫都經過關卡，而每一步都會寫進視窗讀取的事件紀錄。</figcaption>
         </figure>
       </div>
@@ -191,7 +233,7 @@
     <!-- ===================== The gate ===================== -->
     <section id="gate" class="section">
       <div class="container prose">
-        <h2 class="section-title">關卡，以及定義它的那個測試</h2>
+        <h2 class="section-title">關卡，以及定義它的<wbr>那個測試</h2>
         <p>每一個工具都宣告自己的風險等級。中、高風險的呼叫會在事件紀錄裡寫下一筆審核請求，並一直等到有人回應；低風險的呼叫，也就是在工作區內讀取，可以由政策自動回應。工作區以外的路徑，在問題被提出之前就會被拒絕；shell 指令有硬性的逾時，時間一到就結束整棵行程樹。問題本身必須是人看得懂的句子，而不是原始 JSON：<q>Agent "researcher" wants to delete report.docx: Allow / Deny</q>。</p>
         <p>讓關卡成為一項要求、而不只是一段描述的，是它的驗收條件；在功能存在之前，它就已經寫在規格裡：一個被指示寫入工作區根目錄以外位置的代理，會在沙箱層被擋下，而且拒絕紀錄會出現在事件紀錄中。同名的測試 <code>test_an_agent_told_to_write_outside_the_workspace_is_blocked</code> 就在測試套件裡。</p>
         <p>後來我改了預設值，讓新安裝的版本由政策自動回應低、中風險的呼叫，只在其餘情況停下來詢問。架構指南記下了這項改動必須守住的規則：自主是政策給出的回答，永遠不是繞道。每一次呼叫仍然經過關卡，並以「自動回應」連同作出回應的規則一起記錄；shell 指令永遠都會詢問；另外有一個遷移，讓每一個既有的安裝維持原本的回答，因為新的預設值會默默改變每一個從沒做過選擇的人。</p>
@@ -244,6 +286,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

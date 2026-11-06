@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-url-shortener" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -77,7 +77,7 @@
           <div><dt>形式</dt><dd class="format">設計筆記</dd></div>
           <div><dt>專案</dt><dd>個人專案</dd></div>
           <div><dt>工具</dt><dd>Java、Spring Boot、MySQL</dd></div>
-          <div><dt>時間</dt><dd>2026 年 8 月至 9 月</dd></div>
+          <div><dt>時間</dt><dd>2026&nbsp;年 8&nbsp;月至 9&nbsp;月</dd></div>
         </dl>
         <h1>一個短連結，兩次寫入</h1>
         <p class="hero-blurb">
@@ -87,12 +87,12 @@
           <strong>我的角色：</strong>一個沒有團隊、也沒有人出題的個人專案，而這件事是雙面的：沒有東西是別人交到我手上的，也沒有東西經過別人審查。這個服務小到每一個決定都得拿出理由，而不是從框架的預設值裡順手收下，這正是這一頁在談的事。最值得讀的一段，是 Spring 的一個便利功能悄悄蓋掉了 schema 早就宣告好的欄位預設值。
         </p>
         <ul class="facts" role="list">
-          <li><strong>2 個端點</strong>，一個建立、一個跳轉</li>
-          <li><strong>6 個類別</strong>，分成四層</li>
-          <li><strong>1 張表</strong>、4 個欄位、1 個索引</li>
-          <li>建立一個連結要 <strong>2 句 SQL</strong></li>
-          <li><strong>4 個測試</strong>，3 個單元、1 個整合</li>
-          <li>短碼字母表共 <strong>62 個字元</strong></li>
+          <li><strong>2&nbsp;個端點</strong>，一個建立、一個跳轉</li>
+          <li><strong>6&nbsp;個類別</strong>，分成四層</li>
+          <li><strong>1&nbsp;張表</strong>、4&nbsp;個欄位、1&nbsp;個索引</li>
+          <li>建立一個連結要 <strong>2&nbsp;句 SQL</strong></li>
+          <li><strong>4&nbsp;個測試</strong>，3&nbsp;個單元、1&nbsp;個整合</li>
+          <li>短碼字母表共 <strong>62&nbsp;個字元</strong></li>
         </ul>
         <aside class="source-note">
           <strong>範圍，以及數字的來源：</strong>這個服務刻意做得很小。兩個端點、一張表，而一個正式上線的短網址服務接下來需要的東西，像是擋在跳轉前的快取、離開請求路徑的點擊分析、流量限制、多台主機，都放在最後當作取捨來談，而不是做出來。這一頁引用的每一個狀態碼，都是對著跑起來的服務、連著本機 MySQL 量到的，而不是抄自 README；而這兩者唯一對不上的地方，下面寫成了它本來的樣子：一個缺陷。
@@ -107,7 +107,7 @@
         <p>
           一個端點替網址建立短碼，一個端點把短碼帶回原網址。沒有帳號、沒有後台、也沒有刪除，而這個介面刻意維持在這麼小：這兩個之後的每一個功能，能買到的都比替這兩個辯護所花的時間還少。
         </p>
-        <pre class="snippet" tabindex="0" role="group" aria-label="終端機操作，可捲動"><code><span class="cm">$ curl -s -X POST localhost:8080/api/v1/urls \
+        <pre class="snippet"><code><span class="cm">$ curl -s -X POST localhost:8080/api/v1/urls \
     -H 'Content-Type: application/json' \
     -d '{"url": "https://spring.io/projects/spring-boot"}'</span>
 {"code":"5"}
@@ -121,9 +121,8 @@ Location: https://spring.io/projects/spring-boot</code></pre>
         <p>
           這兩個呼叫的背後是四層，而把它們分開的理由是：這樣每一層就只需要知道一件事。controller 知道 HTTP，service 知道規則，repository 知道 SQL，而整個設計所倚賴的那個 id，在資料庫說出來之前只有它自己知道。
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 900 548" role="img" aria-labelledby="us-seq-title us-seq-desc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 900 548" role="img" aria-labelledby="us-seq-title us-seq-desc">
               <title id="us-seq-title">一個建立請求從客戶端穿過 controller、service、repository 與資料庫的路徑</title>
               <desc id="us-seq-desc">五條垂直的泳道，由左至右是客戶端、UrlController、UrlService、UrlRepository 與 MySQL。客戶端向 controller 發出 POST，controller 呼叫 service，一段註記寫著空白輸入在任何 SQL 執行之前就被擋下。service 呼叫 repository，由它把長網址寫進 MySQL。MySQL 把產生的鍵值 100 交回 repository，repository 再把它回傳給 service。第二段註記記下那個 id 的 Base62 編碼結果 1C。接著 service 再次呼叫 repository 寫入短碼，repository 送出 UPDATE，短碼再經由 controller 回到客戶端。總共有兩次來回抵達資料庫。</desc>
               <defs>
@@ -179,7 +178,63 @@ Location: https://spring.io/projects/spring-boot</code></pre>
               <line class="fig-line-accent" x1="270" y1="492" x2="92" y2="492" stroke-dasharray="6 4" marker-end="url(#us-seq-arrow)" />
               <text x="12" y="534" class="fig-tick">Spring 在啟動時各建一個，並把它們交進彼此的建構子。</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 570" role="img" aria-labelledby="us-seq-down-title us-seq-down-desc">
+              <title id="us-seq-down-title">一個建立請求從客戶端穿過 controller、service、repository 與資料庫的路徑</title>
+              <desc id="us-seq-down-desc">五條垂直的泳道，由左至右是客戶端、UrlController、UrlService、UrlRepository 與 MySQL。客戶端向 controller 發出 POST，controller 呼叫 service，一段註記寫著空白輸入在任何 SQL 執行之前就被擋下。service 呼叫 repository，由它把長網址寫進 MySQL。MySQL 把產生的鍵值 100 交回 repository，repository 再把它回傳給 service。第二段註記記下那個 id 的 Base62 編碼結果 1C。接著 service 再次呼叫 repository 寫入短碼，repository 送出 UPDATE，短碼再經由 controller 回到客戶端。總共有兩次來回抵達資料庫。</desc>
+              <defs>
+                <marker id="us-seq-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <line x1="6" y1="34" x2="6" y2="524" stroke="var(--wire)" stroke-width="1" stroke-dasharray="3 3" />
+              <line x1="24" y1="56" x2="24" y2="524" stroke="var(--wire)" stroke-width="1" stroke-dasharray="3 3" />
+              <line x1="42" y1="78" x2="42" y2="524" stroke="var(--wire)" stroke-width="1" stroke-dasharray="3 3" />
+              <line x1="60" y1="100" x2="60" y2="524" stroke="var(--wire)" stroke-width="1" stroke-dasharray="3 3" />
+              <line x1="78" y1="122" x2="78" y2="524" stroke="var(--wire)" stroke-width="1" stroke-dasharray="3 3" />
+              <path class="fig-line-accent" d="M6 161 L24 161" marker-end="url(#us-seq-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M24 191 L42 191" marker-end="url(#us-seq-down-arrow-hot)" />
+              <path class="fig-line-accent fig-flow-dashed" d="M42 221.5 L92 221.5" />
+              <path class="fig-line-accent" d="M42 258 L60 258" marker-end="url(#us-seq-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M60 288 L78 288" marker-end="url(#us-seq-down-arrow-hot)" />
+              <path class="fig-line-accent fig-flow-dashed" d="M78 318 L60 318" marker-end="url(#us-seq-down-arrow-hot)" />
+              <path class="fig-line-accent fig-flow-dashed" d="M60 348 L42 348" marker-end="url(#us-seq-down-arrow-hot)" />
+              <path class="fig-line-accent fig-flow-dashed" d="M42 378.5 L92 378.5" />
+              <path class="fig-line-accent" d="M42 415 L60 415" marker-end="url(#us-seq-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M60 445 L78 445" marker-end="url(#us-seq-down-arrow-hot)" />
+              <path class="fig-line-accent fig-flow-dashed" d="M42 475 L24 475" marker-end="url(#us-seq-down-arrow-hot)" />
+              <path class="fig-line-accent fig-flow-dashed" d="M24 505 L6 505" marker-end="url(#us-seq-down-arrow-hot)" />
+              <text class="fig-flow-step" x="0" y="14">POST /api/v1/urls，穿過四層</text>
+              <text class="fig-flow-code is-strong" x="16" y="39">客戶端</text>
+              <text class="fig-flow-meta" x="320" y="39" text-anchor="end">curl、瀏覽器</text>
+              <text class="fig-flow-code is-strong" x="34" y="61">UrlController</text>
+              <text class="fig-flow-meta" x="320" y="61" text-anchor="end">@RestController</text>
+              <text class="fig-flow-code is-strong" x="52" y="83">UrlService</text>
+              <text class="fig-flow-meta" x="320" y="83" text-anchor="end">@Service</text>
+              <text class="fig-flow-code is-strong" x="70" y="105">UrlRepository</text>
+              <text class="fig-flow-meta" x="320" y="105" text-anchor="end">@Repository</text>
+              <text class="fig-flow-code is-strong" x="88" y="127">MySQL</text>
+              <text class="fig-flow-meta" x="320" y="127" text-anchor="end">urls 資料表</text>
+              <text class="fig-flow-code" x="92" y="166">POST /api/v1/urls</text>
+              <text class="fig-flow-code" x="92" y="196">createShortUrl(url)</text>
+              <text class="fig-flow-code" x="92" y="263">insertAndGetId(url)</text>
+              <text class="fig-flow-code" x="92" y="293">INSERT (long_url)</text>
+              <text class="fig-flow-label" x="92" y="323">產生的鍵值 = 100</text>
+              <text class="fig-flow-label" x="92" y="353">回傳 100</text>
+              <text class="fig-flow-code" x="92" y="420">setShortCode(id, code)</text>
+              <text class="fig-flow-code" x="92" y="450">UPDATE short_code</text>
+              <text class="fig-flow-label" x="92" y="480">短碼</text>
+              <text class="fig-flow-label" x="92" y="510">200 {"code":"1C"}</text>
+              <text class="fig-flow-label" x="0" y="544"><tspan x="0" dy="0">Spring 在啟動時各建一個，</tspan><tspan x="0" dy="18">並把它們交進彼此的建構子。</tspan></text>
+              <rect class="fig-box-muted" x="92" y="206" width="228" height="31" rx="8" />
+              <text class="fig-flow-code" x="102" y="225.6">空白輸入在任何 SQL 之前被擋下</text>
+              <rect class="fig-box-accent" x="92" y="363" width="228" height="31" rx="8" />
+              <text class="fig-flow-code" x="102" y="382.6">Base62(100) 得到短碼 "1C"</text>
+              <circle class="fig-flow-joint" cx="6" cy="34" r="3" />
+              <circle class="fig-flow-joint" cx="24" cy="56" r="3" />
+              <circle class="fig-flow-joint" cx="42" cy="78" r="3" />
+              <circle class="fig-flow-joint" cx="60" cy="100" r="3" />
+              <circle class="fig-flow-joint" cx="78" cy="122" r="3" />
+              <circle class="fig-flow-joint is-hot" cx="42" cy="221.5" r="3.5" />
+              <circle class="fig-flow-joint is-hot" cx="42" cy="378.5" r="3.5" />
+            </svg>
           <figcaption class="figure-caption">寫入路徑，以及每一步屬於哪一層。id 回來的路上走了兩段，因為 MySQL 是把產生的鍵值交給 repository，再由 repository 回傳給 service。<code>GET /{code}</code> 走的是同樣幾條泳道，而且一步就到：對 <code>short_code</code> 做一次 <code>SELECT</code>，然後回 302 加上 <code>Location</code> 標頭，查不到就回 404。這張圖真正的用途是知道改動該放在哪裡：新的規則屬於中間，新的查詢屬於右邊，狀態碼屬於左邊。</figcaption>
         </figure>
       </div>
@@ -188,7 +243,7 @@ Location: https://spring.io/projects/spring-boot</code></pre>
     <!-- ===================== Two writes ===================== -->
     <section id="two-writes" class="section">
       <div class="container prose">
-        <h2 class="section-title">短碼來自它所指向的那一列</h2>
+        <h2 class="section-title">短碼來自<wbr>它所指向的那一列</h2>
         <p>
           最直覺的產生方式，是把網址雜湊之後截短到可以打得出來的長度。它只要一句 SQL、不需要保存狀態，而它錯在一個要很久以後才會現形的地方：雜湊值截得夠短，兩個不同的網址遲早會產生同一個短碼。那不是一個你可以選擇不要有的錯誤，而是一條你得寫出來、測出來，然後在每一次寫入都付出代價的分支。
         </p>
@@ -198,7 +253,7 @@ Location: https://spring.io/projects/spring-boot</code></pre>
         <p>
           代價立刻就來。如果短碼是 id 的函數，而 id 是那句 INSERT 發出來的，那短碼就不可能是同一句 INSERT 的一部分。於是建立一個短連結是兩句 SQL，不是一句。
         </p>
-        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="決策表，可捲動">
+        <div class="table-scroll is-wide">
           <table class="decision">
             <caption>短碼從哪裡來：考慮過的選項</caption>
             <thead><tr><th scope="col">選項</th><th scope="col">換來什麼</th><th scope="col">付出什麼</th></tr></thead>
@@ -208,9 +263,8 @@ Location: https://spring.io/projects/spring-boot</code></pre>
             </tbody>
           </table>
         </div>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 800 276" role="img" aria-labelledby="us-flow-title us-flow-desc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 800 276" role="img" aria-labelledby="us-flow-title us-flow-desc">
               <title id="us-flow-title">為什麼建立一個短連結需要兩句 SQL，而不是一句</title>
               <desc id="us-flow-desc">分成兩列。上面一列是單獨一句 INSERT，同時寫入 long_url 與 short_code，短碼的位置留著問號，旁邊註明短碼是某個 id 的 Base62，而那個 id 正是這句 INSERT 還沒發出來的。下面一列依序是三個步驟：只寫入 long_url 的 INSERT，之後 MySQL 發出 id 100；把 100 編成短碼 1C；以及把短碼寫回那一列的 UPDATE。</desc>
               <defs>
@@ -241,13 +295,37 @@ Location: https://spring.io/projects/spring-boot</code></pre>
               <text x="12" y="250" class="fig-tick">在第一句和第三句之間，那一列是沒有短碼的，這就是 short_code 允許為 null 的原因。</text>
               <text x="12" y="270" class="fig-tick">建立一個連結要兩次來回；跳轉一次仍然只花一次讀取。</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 451" role="img" aria-labelledby="us-flow-down-title us-flow-down-desc">
+              <title id="us-flow-down-title">為什麼建立一個短連結需要兩句 SQL，而不是一句</title>
+              <desc id="us-flow-down-desc">分成兩列。上面一列是單獨一句 INSERT，同時寫入 long_url 與 short_code，短碼的位置留著問號，旁邊註明短碼是某個 id 的 Base62，而那個 id 正是這句 INSERT 還沒發出來的。下面一列依序是三個步驟：只寫入 long_url 的 INSERT，之後 MySQL 發出 id 100；把 100 編成短碼 1C；以及把短碼寫回那一列的 UPDATE。</desc>
+              <defs>
+                <marker id="us-flow-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line-accent" d="M130 219 L130 237" marker-end="url(#us-flow-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M130 292 L130 310" marker-end="url(#us-flow-down-arrow-hot)" />
+              <path class="fig-line fig-flow-dashed" d="M260 191.5 L282 191.5 Q290 191.5 290 199.5 L290 329.5 Q290 337.5 282 337.5 L260 337.5" />
+              <text class="fig-flow-step" x="0" y="14">行不通的那一句</text>
+              <text class="fig-flow-label" x="0" y="100"><tspan x="0" dy="0">短碼是那一列 id 的 Base62，</tspan><tspan x="0" dy="18">而 id 正是這句 INSERT 發出來的</tspan></text>
+              <text class="fig-flow-step" x="0" y="152">實際跑的那兩句</text>
+              <text class="fig-flow-label" x="0" y="389"><tspan x="0" dy="0">在第一句和第三句之間，那一列是沒有短碼的，</tspan><tspan x="0" dy="18">這就是 short_code 允許為 null 的原因。</tspan><tspan x="0" dy="18">建立一個連結要兩次來回；</tspan><tspan x="0" dy="18">跳轉一次仍然只花一次讀取。</tspan></text>
+              <rect class="fig-box-muted" x="0" y="26" width="320" height="52" rx="10" />
+              <text class="fig-flow-code" x="10" y="47.6"><tspan x="10" dy="0">INSERT INTO urls (long_url, short_code)</tspan><tspan x="10" dy="17">VALUES ('https://spring.io/...', ???)</tspan></text>
+              <rect class="fig-box" x="0" y="164" width="260" height="55" rx="10" />
+              <text class="fig-flow-code" x="12" y="185.6">1. INSERT long_url</text>
+              <text class="fig-flow-sub" x="12" y="205.3">MySQL 發出 id = 100</text>
+              <rect class="fig-box-accent" x="0" y="237" width="260" height="55" rx="10" />
+              <text class="fig-flow-code" x="12" y="258.6">2. Base62(100)</text>
+              <text class="fig-flow-sub" x="12" y="278.3">短碼 = "1C"</text>
+              <rect class="fig-box" x="0" y="310" width="260" height="55" rx="10" />
+              <text class="fig-flow-code" x="12" y="331.6">3. UPDATE short_code</text>
+              <text class="fig-flow-sub" x="12" y="351.3">WHERE id = 100</text>
+            </svg>
           <figcaption class="figure-caption">產生器的輸入，是由它本該參與的那次寫入產生的，所以那次寫入裂成了兩半。schema 裡其他每一件事都是從這張圖長出來的，包括那個唯一允許為 null 的欄位。</figcaption>
         </figure>
         <p>
           編碼本身是一個迴圈，裡面有兩件很容易被混在一起的工作：餘數負責挑字元，除法負責把數字縮小到下一輪。它是從最低位往上把字串疊出來的，所以每個字元是插在最前面，而不是接在後面。
         </p>
-        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code><span class="cm">// 0 -&gt; "0", 61 -&gt; "Z", 62 -&gt; "10", 63 -&gt; "11"</span>
+        <pre class="snippet"><code><span class="cm">// 0 -&gt; "0", 61 -&gt; "Z", 62 -&gt; "10", 63 -&gt; "11"</span>
 StringBuilder code = new StringBuilder();
 while (counter &gt; 0) {
     code.insert(0, ALPHABET.charAt((int) (counter % BASE)));
@@ -262,8 +340,8 @@ while (counter &gt; 0) {
     <!-- ===================== The table ===================== -->
     <section id="schema" class="section section-alt">
       <div class="container prose">
-        <h2 class="section-title">一張表，以及每個欄位得自己掙來的位置</h2>
-        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code>CREATE TABLE urls (
+        <h2 class="section-title">一張表，以及每個欄位<wbr>得自己掙來的位置</h2>
+        <pre class="snippet"><code>CREATE TABLE urls (
     id          BIGINT AUTO_INCREMENT PRIMARY KEY,
     short_code  VARCHAR(10)   UNIQUE,
     long_url    VARCHAR(2048) NOT NULL,
@@ -294,9 +372,8 @@ while (counter &gt; 0) {
         <p>
           原因是一個便利功能。Spring 的 <code>SimpleJdbcInsert</code> 只拿到一張表、其他什麼都沒給的時候，會去檢查那張表所有的欄位，然後替每一個沒有拿到值的欄位明寫一個 <code>NULL</code>。SQL 是在語句「省略」某個欄位時才套用預設值，而不是在語句寫出那個欄位、並把它設成 null 的時候。嚴格說，預設值從來沒有被跳過：它是被一個應用程式自己都不知道送出去的值推翻的。
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 800 258" role="img" aria-labelledby="us-null-title us-null-desc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 800 258" role="img" aria-labelledby="us-null-title us-null-desc">
               <title id="us-null-title">同一次寫入，在把欄位釘成一個之前與之後</title>
               <desc id="us-null-desc">分成兩列。上面是驅動程式產生的語句，寫出四個欄位，並且把 id、short_code 與 created_at 都傳成 NULL，結果 created_at 是 null。下面是只寫出 long_url 的語句，結果 created_at 拿到欄位預設值給的時間戳記。</desc>
               <defs>
@@ -323,13 +400,34 @@ while (counter &gt; 0) {
               <text x="698" y="199" text-anchor="middle" class="fig-label">09:04:08</text>
               <text x="12" y="240" class="fig-tick">預設值從來沒有被跳過，是被一個應用程式不知道自己送出去的值推翻的。</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 428" role="img" aria-labelledby="us-null-down-title us-null-down-desc">
+              <title id="us-null-down-title">同一次寫入，在把欄位釘成一個之前與之後</title>
+              <desc id="us-null-down-desc">分成兩列。上面是驅動程式產生的語句，寫出四個欄位，並且把 id、short_code 與 created_at 都傳成 NULL，結果 created_at 是 null。下面是只寫出 long_url 的語句，結果 created_at 拿到欄位預設值給的時間戳記。</desc>
+              <defs>
+                <marker id="us-null-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line-accent" d="M70 130 L70 150" marker-end="url(#us-null-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M70 301 L70 321" marker-end="url(#us-null-down-arrow-hot)" />
+              <text class="fig-flow-step" x="0" y="14"><tspan x="0" dy="0">之前：驅動程式寫出了它找到的</tspan><tspan x="0" dy="18">每一個欄位</tspan></text>
+              <text class="fig-flow-step" x="0" y="237">之後：usingColumns("long_url")</text>
+              <text class="fig-flow-label" x="0" y="402"><tspan x="0" dy="0">預設值從來沒有被跳過，是被一個應用程式</tspan><tspan x="0" dy="18">不知道自己送出去的值推翻的。</tspan></text>
+              <rect class="fig-box-muted" x="0" y="44" width="320" height="86" rx="10" />
+              <text class="fig-flow-code" x="10" y="65.6"><tspan x="10" dy="0">INSERT INTO urls (id, short_code,</tspan><tspan x="10" dy="17">long_url, created_at)</tspan><tspan x="10" dy="17">VALUES (NULL, NULL,</tspan><tspan x="10" dy="17">'https://spring.io/...', NULL)</tspan></text>
+              <rect class="fig-box-muted" x="0" y="150" width="140" height="55" rx="10" />
+              <text class="fig-flow-sub" x="70" y="172.3" text-anchor="middle">created_at</text>
+              <text class="fig-flow-code" x="70" y="191.6" text-anchor="middle">NULL</text>
+              <rect class="fig-box" x="0" y="249" width="320" height="52" rx="10" />
+              <text class="fig-flow-code" x="10" y="270.6"><tspan x="10" dy="0">INSERT INTO urls (long_url)</tspan><tspan x="10" dy="17">VALUES ('https://spring.io/...')</tspan></text>
+              <rect class="fig-box-accent" x="0" y="321" width="140" height="55" rx="10" />
+              <text class="fig-flow-sub" x="70" y="343.3" text-anchor="middle">created_at</text>
+              <text class="fig-flow-code" x="70" y="362.6" text-anchor="middle">09:04:08</text>
+            </svg>
           <figcaption class="figure-caption">這兩句的差別不在值，真正重要的每一個欄位裡的值都一樣。差別在於哪些欄位被寫出來了，而那正是欄位預設值真正依附的東西。</figcaption>
         </figure>
         <p>
           要找到它，得放棄讀應用程式，改成去讀資料庫。MySQL 的 <code>general_log</code> 會記下一條連線送出去的原始 SQL，這把「這段程式大概做了什麼」的爭論，換成了一行寫著它到底送了什麼的文字。修正只有一個呼叫，把那次寫入釘在它唯一有值的那個欄位上：
         </p>
-        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code>this.insertUrl = new SimpleJdbcInsert(jdbcTemplate)
+        <pre class="snippet"><code>this.insertUrl = new SimpleJdbcInsert(jdbcTemplate)
         .withTableName("urls")
         .usingColumns("long_url")          <span class="cm">// 整個修正就是這一行</span>
         .usingGeneratedKeyColumns("id");</code></pre>
@@ -345,7 +443,7 @@ while (counter &gt; 0) {
     <!-- ===================== The redirect ===================== -->
     <section id="redirect" class="section section-alt">
       <div class="container prose">
-        <h2 class="section-title">用 302，因為 301 是一個只能做一次的決定</h2>
+        <h2 class="section-title">用 302，因為 301 是一個只能<wbr>做一次的決定</h2>
         <p>
           跳轉要挑一個狀態碼，而 301 是那個聽起來對的：目的地確實是永久的。它同時也是瀏覽器有權快取的那一個，也就是說，同一個短連結的第二次點擊，根本不會再回到這個服務。每一次計數、每一個來源、每一份「這個連結正在被用」的證據，都沒了，而且是安靜地沒了，因為一個被快取的跳轉看起來和一個正常運作的跳轉一模一樣。
         </p>
@@ -358,14 +456,14 @@ while (counter &gt; 0) {
     <!-- ===================== Tests ===================== -->
     <section id="tests" class="section">
       <div class="container prose">
-        <h2 class="section-title">測試證明了什麼，又只是看起來證明了什麼</h2>
+        <h2 class="section-title">測試證明了什麼，又只是看起來<wbr>證明了什麼</h2>
         <p>
           三個單元測試跑在一個被替換掉的 repository 上，所以完全沒有資料庫參與：建立一個短碼並解回原網址、拒絕空白網址，以及對不存在的短碼回傳 null。那個假物件只換掉資料庫這個邊界，其他什麼都沒換，而這個細節正是第一個測試值得跑的原因。Base62 編碼器並沒有被替換，所以斷言 id 62 會產生短碼 <code>"10"</code>，跑的是真正的邏輯，不是一個事先塞好的答案。
         </p>
         <p>
           空白網址那個測試是我最想替它辯護的一個，因為它的第二個斷言。
         </p>
-        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code>assertThrows(IllegalArgumentException.class, () -&gt; service.createShortUrl("   "));
+        <pre class="snippet"><code>assertThrows(IllegalArgumentException.class, () -&gt; service.createShortUrl("   "));
 
 <span class="cm">// assertThrows 只證明了某個地方丟出了例外。
 // 這一行證明的是：它發生在守衛條款真正的工作，也就是
@@ -428,6 +526,6 @@ verifyNoInteractions(repository);</code></pre>
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/project-mobile-testing" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -118,7 +118,7 @@
     <section id="problem" class="section section-alt">
       <div class="container prose">
         <h2 class="section-title">The Problem</h2>
-        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="Table, scrollable">
+        <div class="table-scroll is-wide">
           <table class="findings">
             <caption>Test report summary</caption>
             <thead><tr><th scope="col">Item</th><th scope="col">Detail</th></tr></thead>
@@ -171,7 +171,7 @@
           the routines suite with all five times at 23:59. That is the real gap in this design and
           the first thing I would fix.
         </p>
-        <pre class="snippet" tabindex="0" role="group" aria-label="Code sample, scrollable"><code><span class="cm"># Change the units, prove they changed, then change them back.</span>
+        <pre class="snippet"><code><span class="cm"># Change the units, prove they changed, then change them back.</span>
 Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     Click "Units" Option
     Modify Blood Glucose Unit    mmol/L
@@ -690,7 +690,7 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
         </figure>
 
         <h3>The blocks behind my fifteen tests</h3>
-        <div class="blocks" tabindex="0" role="group" aria-label="Table, scrollable">
+        <div class="blocks">
           <table>
             <caption class="sr-only">Equivalence partitions for the settings area, by input</caption>
             <thead>
@@ -704,39 +704,39 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
             <tbody>
               <tr>
                 <th scope="row">Blood glucose goal</th>
-                <td>Low below high <span class="v">99/100 · 98/99 · 101/102</span></td>
-                <td>Low equal to high <span class="v">100/100</span></td>
-                <td>Low above high <span class="v">101/100</span></td>
+                <td data-label="Block 1">Low below high <span class="v">99/100 · 98/99 · 101/102</span></td>
+                <td data-label="Block 2">Low equal to high <span class="v">100/100</span></td>
+                <td data-label="Block 3">Low above high <span class="v">101/100</span></td>
               </tr>
               <tr>
                 <th scope="row">Daily routine time</th>
-                <td>Minimum <span class="v">00:00</span></td>
-                <td>Middle <span class="v">12:30</span></td>
-                <td>Maximum <span class="v">23:59</span></td>
+                <td data-label="Block 1">Minimum <span class="v">00:00</span></td>
+                <td data-label="Block 2">Middle <span class="v">12:30</span></td>
+                <td data-label="Block 3">Maximum <span class="v">23:59</span></td>
               </tr>
               <tr>
                 <th scope="row">Routine ordering</th>
-                <td>All five in sequence</td>
-                <td>Lunch outside breakfast to dinner</td>
-                <td>Dinner outside lunch to bedtime</td>
+                <td data-label="Block 1">All five in sequence</td>
+                <td data-label="Block 2">Lunch outside breakfast to dinner</td>
+                <td data-label="Block 3">Dinner outside lunch to bedtime</td>
               </tr>
               <tr>
                 <th scope="row">Favorite food name</th>
-                <td>Non-empty <span class="v">Hamburger</span></td>
-                <td>Empty string</td>
-                <td></td>
+                <td data-label="Block 1">Non-empty <span class="v">Hamburger</span></td>
+                <td data-label="Block 2">Empty string</td>
+                <td data-label="Block 3"></td>
               </tr>
               <tr>
                 <th scope="row">Report recipient</th>
-                <td>Address supplied</td>
-                <td>No address</td>
-                <td></td>
+                <td data-label="Block 1">Address supplied</td>
+                <td data-label="Block 2">No address</td>
+                <td data-label="Block 3"></td>
               </tr>
               <tr>
                 <th scope="row">Measurement units</th>
-                <td>Default <span class="v">mg/dL, kg</span></td>
-                <td>Switched <span class="v">mmol/L, lb</span></td>
-                <td></td>
+                <td data-label="Block 1">Default <span class="v">mg/dL, kg</span></td>
+                <td data-label="Block 2">Switched <span class="v">mmol/L, lb</span></td>
+                <td data-label="Block 3"></td>
               </tr>
             </tbody>
           </table>
@@ -777,8 +777,8 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
           dialog, then pushes dinner past bedtime and asserts that second complaint too. One test,
           two ways to break the ordering.
         </p>
-        <figure class="figure is-tight is-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-          <svg viewBox="0 0 620 580" role="img" aria-labelledby="routine-flow-title routine-flow-desc">
+        <figure class="figure is-tight is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 620 580" role="img" aria-labelledby="routine-flow-title routine-flow-desc">
             <title id="routine-flow-title">Activity diagram for the daily routine ordering test</title>
             <desc id="routine-flow-desc">
               Five routine times are entered and Done is tapped. The app checks whether lunch falls
@@ -846,6 +846,47 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
               <text x="452" y="61" text-anchor="middle">correct the values and retry</text>
             </g>
           </svg>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 648" role="img" aria-labelledby="routine-flow-down-title routine-flow-down-desc">
+              <title id="routine-flow-down-title">Activity diagram for the daily routine ordering test</title>
+              <desc id="routine-flow-down-desc">Five routine times are entered and Done is tapped. The app checks whether lunch falls between breakfast and dinner, and then whether dinner falls between lunch and bedtime. Either check failing shows a warning, which the test asserts before correcting the values and retrying. Only when both checks pass are the five times saved.</desc>
+              <defs>
+                <marker id="routine-flow-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="routine-flow-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line" d="M100 15 L100 34" marker-end="url(#routine-flow-down-arrow)" />
+              <path class="fig-line" d="M100 78 L100 98" marker-end="url(#routine-flow-down-arrow)" />
+              <path class="fig-line" d="M100 138 L100 158" marker-end="url(#routine-flow-down-arrow)" />
+              <path class="fig-line-accent" d="M200 220 L242 220 Q250 220 250 228 L250 266" marker-end="url(#routine-flow-down-arrow-hot)" />
+              <path class="fig-line" d="M100 282 L100 358" marker-end="url(#routine-flow-down-arrow)" />
+              <path class="fig-line-accent" d="M200 420 L242 420 Q250 420 250 428 L250 466" marker-end="url(#routine-flow-down-arrow-hot)" />
+              <path class="fig-line" d="M100 482 L100 558" marker-end="url(#routine-flow-down-arrow)" />
+              <path class="fig-line" d="M100 600 L100 620" marker-end="url(#routine-flow-down-arrow)" />
+              <path class="fig-line" d="M308 501 L309 501 Q317 501 317 493 L317 64 Q317 56 309 56 L200 56" marker-end="url(#routine-flow-down-arrow)" />
+              <path class="fig-line" d="M308 301 L317 301" />
+              <text class="fig-flow-label" x="212" y="213">No</text>
+              <text class="fig-flow-label" x="92" y="352" text-anchor="end">Yes</text>
+              <text class="fig-flow-label" x="212" y="413">No</text>
+              <text class="fig-flow-label" x="92" y="552" text-anchor="end">Yes</text>
+              <text class="fig-flow-label" x="212" y="12"><tspan x="212" dy="0">correct</tspan><tspan x="212" dy="18">the values</tspan><tspan x="212" dy="18">and retry</tspan></text>
+              <circle class="fig-flow-start" cx="100" cy="8" r="7" />
+              <rect class="fig-box" x="0" y="34" width="200" height="44" rx="10" />
+              <text class="fig-flow-step" x="100" y="60.3" text-anchor="middle">Enter five routine times</text>
+              <rect class="fig-box" x="30" y="98" width="140" height="40" rx="10" />
+              <text class="fig-flow-step" x="100" y="122.3" text-anchor="middle">Tap Done</text>
+              <polygon class="fig-box fig-flow-diamond" points="100,158 200,220 100,282 0,220" />
+              <text class="fig-flow-code" x="100" y="215.6" text-anchor="middle"><tspan x="100" dy="0">Lunch between</tspan><tspan x="100" dy="17">breakfast and dinner?</tspan></text>
+              <rect class="fig-box-accent" x="128" y="266" width="180" height="70" rx="10" />
+              <text class="fig-flow-sub" x="218" y="287.3" text-anchor="middle"><tspan x="218" dy="0">Warning: lunch must</tspan><tspan x="218" dy="18">be between breakfast</tspan><tspan x="218" dy="18">and dinner</tspan></text>
+              <polygon class="fig-box fig-flow-diamond" points="100,358 200,420 100,482 0,420" />
+              <text class="fig-flow-code" x="100" y="415.6" text-anchor="middle"><tspan x="100" dy="0">Dinner between</tspan><tspan x="100" dy="17">lunch and bedtime?</tspan></text>
+              <rect class="fig-box-accent" x="128" y="466" width="180" height="70" rx="10" />
+              <text class="fig-flow-sub" x="218" y="487.3" text-anchor="middle"><tspan x="218" dy="0">Warning: dinner must</tspan><tspan x="218" dy="18">be between lunch</tspan><tspan x="218" dy="18">and bedtime</tspan></text>
+              <rect class="fig-box" x="20" y="558" width="160" height="42" rx="10" />
+              <text class="fig-flow-step" x="100" y="583.3" text-anchor="middle">Five times saved</text>
+              <circle class="fig-flow-end" cx="100" cy="632" r="10.5" />
+              <circle class="fig-flow-start" cx="100" cy="632" r="6" />
+              <circle class="fig-flow-joint" cx="317" cy="301" r="3" />
+            </svg>
           <figcaption class="figure-caption">
             The activity diagram for that one test. The two decision points are the whole reason it
             exists, and they are the part no per-field partition would have reached.
@@ -932,6 +973,6 @@ Verify Units Of "Blood Glucose" And "Weight" Can Be Modified
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

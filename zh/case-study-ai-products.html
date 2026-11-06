@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-ai-products" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -77,9 +77,9 @@
           <div><dt>形式</dt><dd class="format">案例研究</dd></div>
           <div><dt>專案</dt><dd>台灣大哥大業界工作</dd></div>
           <div><dt>工具</dt><dd>Jira、LLM API、VS Code 擴充套件</dd></div>
-          <div><dt>時間</dt><dd>2025 年 7 月至 2026 年 6 月</dd></div>
+          <div><dt>時間</dt><dd>2025&nbsp;年 7&nbsp;月至 2026&nbsp;年 6&nbsp;月</dd></div>
         </dl>
-        <h1>在程式碼與人之間</h1>
+        <h1>在程式碼<wbr>與人之間</h1>
         <p class="hero-blurb">
           六位實習生，分處兩個國家，為一家大型電信公司開發兩項內部 AI 產品。這是一支新團隊，沒有配置 QA 工程師，最需要自動化測試的那項產品也沒有測試套件；程式碼中更有相當比例是在 AI 協助下寫成的，因此不管實際能不能運作，看起來都很合理。總得有人判斷每一項變更到底什麼時候才真的算準備好，這就是我的工作。
         </p>
@@ -87,9 +87,9 @@
           <strong>我的角色：</strong>一半是遠端團隊的技術專案管理者，一半是在其他人必須信任這個東西之前，先親自把它測過一遍的人。我負責協調工作、掌管驗證關卡，並為另外兩項內部專案撰寫自動化程式。產品本身則是整個團隊的成果。
         </p>
         <ul class="facts" role="list">
-          <li><strong>6 人</strong>的分散式團隊</li>
-          <li>完成 <strong>2</strong> 項內部 AI 產品</li>
-          <li>約兩個月內 <strong>~40</strong> 項規格化變更</li>
+          <li><strong>6&nbsp;人</strong>的分散式團隊</li>
+          <li>完成 <strong>2</strong>&nbsp;項內部 AI 產品</li>
+          <li>約兩個月內 <strong>~40</strong>&nbsp;項規格化變更</li>
           <li>這些變更共 <strong>300+</strong> 條書面驗收條件</li>
           <li><strong>規格驅動</strong>的交付，先提案再寫程式</li>
           <li>發布前<strong>親手驗證</strong>並簽核</li>
@@ -162,9 +162,8 @@
           <li><b>手動端對端驗證</b><span>這一步由我親自負責。用真實瀏覽器對上真正在運行的執行個體，明確寫出測試目標、預期訊號與通過標準。</span></li>
           <li><b>明確簽核，或把不簽核的決定記錄下來</b><span>當我們選擇接受某個缺口或跳過某一輪驗證時，這個決定連同理由都會寫下來，而不是留給大家自行意會。</span></li>
         </ol>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 720 215" role="img" aria-labelledby="aigatetitle aigatedesc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 720 215" role="img" aria-labelledby="aigatetitle aigatedesc">
               <title id="aigatetitle">一個能乾淨編譯的缺陷，實際上是在哪裡被攔下來的</title>
               <desc id="aigatedesc">一項變更由左至右通過五道關卡：提案與設計、驗收條件、實作查核清單、親手驗證，以及簽核。一個能乾淨編譯、讀起來也正確的缺陷，會毫無阻礙地通過前三步，最後在親手驗證這一步被攔下來。</desc>
 
@@ -212,7 +211,41 @@
               <text x="499" y="180" text-anchor="middle" class="fig-label fig-label-hero">在這裡被攔下</text>
               <text x="499" y="197" text-anchor="middle" class="fig-tick">被壓掉的格式、被截斷的模型輸出</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 373" role="img" aria-labelledby="aigate-down-title aigate-down-desc">
+              <title id="aigate-down-title">一個能乾淨編譯的缺陷，實際上是在哪裡被攔下來的</title>
+              <desc id="aigate-down-desc">一項變更由左至右通過五道關卡：提案與設計、驗收條件、實作查核清單、親手驗證，以及簽核。一個能乾淨編譯、讀起來也正確的缺陷，會毫無阻礙地通過前三步，最後在親手驗證這一步被攔下來。</desc>
+              <defs>
+                <marker id="aigate-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="aigate-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line" d="M71 56 L71 74" marker-end="url(#aigate-down-arrow)" />
+              <path class="fig-line" d="M71 130 L71 148" marker-end="url(#aigate-down-arrow)" />
+              <path class="fig-line" d="M71 204 L71 222" marker-end="url(#aigate-down-arrow)" />
+              <path class="fig-line" d="M71 297 L71 315" marker-end="url(#aigate-down-arrow)" />
+              <path class="fig-line fig-flow-dashed" d="M158 28 L158 250.5" />
+              <path class="fig-line-accent" d="M142 259.5 L149 259.5" marker-end="url(#aigate-down-arrow-hot)" />
+              <text class="fig-flow-label" x="170" y="24"><tspan x="170" dy="0">一個能乾淨編譯、</tspan><tspan x="170" dy="18">讀起來也正確的缺陷</tspan></text>
+              <text class="fig-flow-label is-hot is-strong" x="174" y="255.5">在這裡被攔下</text>
+              <text class="fig-flow-label" x="174" y="273.5"><tspan x="174" dy="0">被壓掉的格式、</tspan><tspan x="174" dy="18">被截斷的模型輸出</tspan></text>
+              <rect class="fig-box" x="0" y="0" width="142" height="56" rx="10" />
+              <text class="fig-flow-step" x="71" y="22.3" text-anchor="middle">提案</text>
+              <text class="fig-flow-sub" x="71" y="42.3" text-anchor="middle">與設計</text>
+              <rect class="fig-box" x="0" y="74" width="142" height="56" rx="10" />
+              <text class="fig-flow-step" x="71" y="96.3" text-anchor="middle">驗收</text>
+              <text class="fig-flow-sub" x="71" y="116.3" text-anchor="middle">條件</text>
+              <rect class="fig-box" x="0" y="148" width="142" height="56" rx="10" />
+              <text class="fig-flow-step" x="71" y="170.3" text-anchor="middle">實作</text>
+              <text class="fig-flow-sub" x="71" y="190.3" text-anchor="middle">查核清單</text>
+              <rect class="fig-box-accent" x="0" y="222" width="142" height="75" rx="10" />
+              <text class="fig-flow-meta is-hot" x="71" y="243.6" text-anchor="middle">我負責的那一步</text>
+              <text class="fig-flow-step is-hot" x="71" y="263.3" text-anchor="middle">親手</text>
+              <text class="fig-flow-sub" x="71" y="283.3" text-anchor="middle">驗證</text>
+              <rect class="fig-box" x="0" y="315" width="142" height="56" rx="10" />
+              <text class="fig-flow-step" x="71" y="337.3" text-anchor="middle">簽核</text>
+              <text class="fig-flow-sub" x="71" y="357.3" text-anchor="middle">或記錄下的缺口</text>
+              <circle class="fig-flow-port is-hot" cx="158" cy="259.5" r="9" />
+              <path class="fig-line-accent" d="M154 255.5 L162 263.5 M162 255.5 L154 263.5" />
+            </svg>
           <figcaption class="figcaption">
             前三步都只是在「讀」這項變更，只有第四步真的把它跑起來。這就是這道關卡值回票價的全部理由，因為真正要命的那些缺陷，對瀏覽器之前的每一個環節來說都是隱形的。
           </figcaption>
@@ -224,9 +257,8 @@
         <p>
           在 IDE 擴充套件這邊，驗證的樣貌不太一樣，因為那裡做得出測試套件。有三個相依讓這件事變得棘手：即時的編輯器 API、真實的版本控制系統，以及不具確定性的模型。團隊把測試放進真正的編輯器執行個體裡跑，在磁碟上建立用完即丟的儲存庫來實際執行指令，並把模型換成 stub，讓結果具備確定性、執行起來也不花錢。審閱那套測試套件的過程，是我今天對於如何測試「看似不可測之物」的認識的主要來源。
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 700 240" role="img" aria-labelledby="aitesttitle aitestdesc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 240" role="img" aria-labelledby="aitesttitle aitestdesc">
               <title id="aitesttitle">三個棘手的相依，以及各自採用的替代做法</title>
               <desc id="aitestdesc">三列對照。即時的編輯器 API，做法是把測試放進真正的編輯器執行個體裡跑；真實的版本控制系統，做法是在磁碟上建立用完即丟的儲存庫；不具確定性的模型，則換成 stub，讓結果具備確定性且不花錢。</desc>
 
@@ -264,7 +296,38 @@
               <text x="538" y="215" text-anchor="middle" class="fig-tick">結果具備確定性，執行不花錢</text>
               <line class="fig-line-accent" x1="266" y1="200" x2="385" y2="200" marker-end="url(#ai-sub-arrow)" />
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 480" role="img" aria-labelledby="aitest-down-title aitest-down-desc">
+              <title id="aitest-down-title">三個棘手的相依，以及各自採用的替代做法</title>
+              <desc id="aitest-down-desc">三列對照。即時的編輯器 API，做法是把測試放進真正的編輯器執行個體裡跑；真實的版本控制系統，做法是在磁碟上建立用完即丟的儲存庫；不具確定性的模型，則換成 stub，讓結果具備確定性且不花錢。</desc>
+              <defs>
+                <marker id="aitest-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line-accent" d="M160 108 L160 126" marker-end="url(#aitest-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M160 256 L160 274" marker-end="url(#aitest-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M160 404 L160 422" marker-end="url(#aitest-down-arrow-hot)" />
+              <rect class="fig-box-muted" x="0" y="3" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="14">難以測試的地方</text>
+              <rect class="fig-box-accent" x="0" y="25" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="36">測試套件改用的做法</text>
+              <rect class="fig-box-muted" x="0" y="52" width="320" height="56" rx="10" />
+              <text class="fig-flow-step" x="160" y="74.3" text-anchor="middle">即時的編輯器 API</text>
+              <text class="fig-flow-sub" x="160" y="94.3" text-anchor="middle">沒辦法直接 import 進來呼叫</text>
+              <rect class="fig-box-accent" x="0" y="126" width="320" height="56" rx="10" />
+              <text class="fig-flow-step" x="160" y="148.3" text-anchor="middle">放進真正的編輯器執行個體裡跑</text>
+              <text class="fig-flow-sub" x="160" y="168.3" text-anchor="middle">相依本身，每次執行時啟動</text>
+              <rect class="fig-box-muted" x="0" y="200" width="320" height="56" rx="10" />
+              <text class="fig-flow-step" x="160" y="222.3" text-anchor="middle">真實的版本控制系統</text>
+              <text class="fig-flow-sub" x="160" y="242.3" text-anchor="middle">狀態在磁碟上，不在記憶體裡</text>
+              <rect class="fig-box-accent" x="0" y="274" width="320" height="56" rx="10" />
+              <text class="fig-flow-step" x="160" y="296.3" text-anchor="middle">建立用完即丟的儲存庫</text>
+              <text class="fig-flow-sub" x="160" y="316.3" text-anchor="middle">執行真實指令，事後整個丟掉</text>
+              <rect class="fig-box-muted" x="0" y="348" width="320" height="56" rx="10" />
+              <text class="fig-flow-step" x="160" y="370.3" text-anchor="middle">不具確定性的模型</text>
+              <text class="fig-flow-sub" x="160" y="390.3" text-anchor="middle">每次呼叫答案都不同，而且要計費</text>
+              <rect class="fig-box-accent" x="0" y="422" width="320" height="56" rx="10" />
+              <text class="fig-flow-step" x="160" y="444.3" text-anchor="middle">換成 stub</text>
+              <text class="fig-flow-sub" x="160" y="464.3" text-anchor="middle">結果具備確定性，執行不花錢</text>
+            </svg>
           <figcaption class="figcaption">
             三個之中有兩個維持真實、一個被替換掉，而這個取捨跟著缺陷走。編輯器與儲存庫正是缺陷真正藏身的地方，把它們假造掉，等於連結果一起假造。模型之所以換成 stub，是因為它的變異屬於雜訊，而不是這裡要測的東西，也因為一套每跑一次就跟你收錢的測試，最後就不會有人去跑它。
           </figcaption>
@@ -275,7 +338,7 @@
     <!-- ===================== Coordination ===================== -->
     <section id="coordination" class="section">
       <div class="container prose">
-        <h2 class="section-title">讓六個人朝同一個方向</h2>
+        <h2 class="section-title">讓六個人<wbr>朝同一個方向</h2>
         <p>
           這份工作中屬於專案管理的那一半，主要是在模糊變成重工之前先把它消掉。用 Jira 追蹤
           sprint 任務，讓現場工程師與遠端團隊共用同一份進度狀態。書面提案與設計這一步，則讓意見分歧在還很便宜的時候就浮上檯面，也就是停留在文件裡，而不是等到有人已經朝錯的方向做了一個星期之後。
@@ -289,12 +352,12 @@
     <!-- ===================== Automation ===================== -->
     <section id="automation" class="section section-alt">
       <div class="container prose">
-        <h2 class="section-title">不需要我在場也能跑的那一半</h2>
+        <h2 class="section-title">不需要我在場<wbr>也能跑的那一半</h2>
         <p>
           上面那道關卡之所以必須靠人工，是有原因的。在地化工具沒有自動化測試套件，而真正重要的那些缺陷，也只有親手驗證才攔得下來。這份工作的另一半，就是不讓這件事成為故事的全部。
         </p>
         <p>
-          我為另外兩項內部專案撰寫了自動化程式。一項是 Python 測試套件，從零以 PyTest 建置，針對某項內部服務的關鍵端點執行，完全依據 API 文件寫成：有哪些端點、每個端點吃什麼、回什麼、可能拋出哪些錯誤碼，以及少數幾個範例呼叫。那份文件就是全部的規格，所以套件裡的每一條斷言，都是那份文件許下的承諾——當測試變紅，不是服務錯了，就是文件錯了，而只有人能判斷是哪一個。
+          我為另外兩項內部專案撰寫了自動化程式。一項是 Python 測試套件，從零以 PyTest 建置，針對某項內部服務的關鍵端點執行，完全依據 API 文件寫成：有哪些端點、每個端點吃什麼、回什麼、可能拋出哪些錯誤碼，以及少數幾個範例呼叫。那份文件就是全部的規格，所以套件裡的每一條斷言，都是那份文件許下的承諾。當測試變紅，不是服務錯了，就是文件錯了，而只有人能判斷是哪一個。
         </p>
         <p>
           而這套測試最先需要的並不是測試本身。API 的酬載是編碼過的，在有東西把它解開之前，斷言根本碰不到回應的內容；我先寫了這一層，之後每一條測試都是針對解碼後的欄位撰寫，而不是針對傳輸格式。
@@ -334,6 +397,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

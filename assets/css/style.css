@@ -132,7 +132,14 @@ body {
   transition: background-color 0.5s var(--ease-io), color 0.5s var(--ease-io);
 }
 :root:lang(zh) body { line-height: 1.8; }
+/* A Chinese heading breaks at punctuation, a space or a <wbr>, never inside a word,
+   and takes no negative tracking: its characters already sit edge to edge. */
+:root:lang(zh) :is(h1, h2, h3, h4, .pipe-title) { word-break: keep-all; overflow-wrap: anywhere; }
+/* So do the short labels and facts, which are phrases and not running text. */
+:root:lang(zh) :is(.summary dd, .facts li, .how b, .gate-flow b, .layer b, .levels b, .result-table th) { word-break: keep-all; overflow-wrap: anywhere; }
+:root:lang(zh) :is(h1, h2, h3, h4, .pipe-title):not(.name) { letter-spacing: 0.01em; }
 
+p, li, figcaption, dd, td, th, .chain-step, .step-more { text-wrap: pretty; }
 img, svg, video { max-width: 100%; }
 img { display: block; height: auto; }
 button { font: inherit; color: inherit; }
@@ -230,8 +237,9 @@ main { position: relative; display: block; }
 
 /* Atmosphere behind the top of a page: a faint dot grid that fades out rather
    than ending at an edge, and a soft glow. */
+/* It starts behind the 65px header, so the glow has no edge where the header ends. */
 .backdrop {
-  position: absolute; inset: 0 0 auto; height: 1000px; pointer-events: none;
+  position: absolute; inset: -65px 0 auto; height: 1000px; pointer-events: none;
   background:
     radial-gradient(46% 58% at 84% 6%, var(--hero-glow), transparent 72%);
 }
@@ -254,6 +262,9 @@ main { position: relative; display: block; }
   transition: border-color 0.4s, background-color 0.5s var(--ease-io);
 }
 .site-header.scrolled { border-color: var(--line); }
+/* Clear at the top of a page, and solid once anything scrolls under it. Only where
+   main.js can tell the two apart: without it, .scrolled never comes. */
+.js .site-header:not(.scrolled) { background: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
 
 .nav {
   position: relative;
@@ -381,7 +392,8 @@ main { position: relative; display: block; }
    lift: the others have nowhere to go. */
 .tags li:has(a) { padding: 0; }
 .tags a {
-  display: inline-block; padding: 4px 11px; border-radius: inherit; color: var(--ink); text-decoration: none;
+  display: inline-block; padding: 4px 11px; border-radius: inherit; color: var(--ink);
+  text-decoration: underline 1.5px var(--acc); text-underline-offset: 3px;
   transition: transform var(--d-fast) var(--ease-out), color var(--d-fast);
 }
 .tags li:has(a) { border-color: var(--wire); }
@@ -436,7 +448,7 @@ main { position: relative; display: block; }
    no MONO axis to morph, so it rises instead, and keeps CJK letter-spacing. */
 :root:lang(zh) .name { font-family: var(--font-zh); font-weight: 600; letter-spacing: 0.04em; }
 :root:lang(zh) .name-zh { font-family: var(--font); font-weight: 450; letter-spacing: 0.02em; }
-.lede { margin-top: 1.6rem; max-width: 37rem; text-wrap: pretty; font-size: clamp(1.0625rem, 0.4vw + 1rem, 1.1875rem); line-height: 1.6; color: var(--mut); }
+.lede { margin-top: 1.6rem; max-width: 37rem; font-size: clamp(1.0625rem, 0.4vw + 1rem, 1.1875rem); line-height: 1.6; color: var(--mut); }
 .lede strong { color: var(--ink); font-weight: 650; }
 .cta { display: flex; flex-wrap: wrap; gap: 0.875rem; margin-top: 2rem; }
 
@@ -458,7 +470,7 @@ main { position: relative; display: block; }
    path.js draws the wires from wherever the boxes land and uses the same
    threshold. */
 .path { container: path / inline-size; position: relative; padding: 0.5rem 0 1rem; }
-.graph { position: relative; display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.75rem; row-gap: 2.5rem; align-items: start; }
+.graph { position: relative; display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.75rem; row-gap: 2.5rem; align-items: stretch; }
 .graph-wires { position: absolute; left: 0; top: 0; z-index: 1; overflow: visible; pointer-events: none; }
 .wire {
   fill: none; stroke: var(--wire); stroke-width: 1.8; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 0;
@@ -479,8 +491,9 @@ main { position: relative; display: block; }
 .step-wrap[data-id="taiwanmobile"] { grid-area: 3 / 2; }
 .step-wrap[data-id="next"] { grid-area: 4 / 1 / 5 / 3; justify-self: center; width: min(100%, 21rem); }
 
+/* Full height, so the boxes in a row match and the wires between them run straight. */
 .step-node {
-  position: relative; display: block; width: 100%; padding: 10px 16px 12px; border-radius: var(--r-box);
+  position: relative; display: flex; flex-direction: column; width: 100%; height: 100%; padding: 10px 16px 12px; border-radius: var(--r-box);
   text-align: left; cursor: pointer;
   background: var(--panel); border: 1px solid var(--edge); box-shadow: var(--rest); color: var(--ink);
   transition: transform var(--d-fast) var(--ease-out), box-shadow var(--d-base) var(--ease-out), border-color var(--d-fast),
@@ -520,7 +533,7 @@ main { position: relative; display: block; }
 }
 /* A bridge across the gap, so the pointer can travel from box to panel. */
 .step-more::before { content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px; }
-.step-more a { display: inline-block; margin-top: 6px; color: inherit; font-weight: 650; text-decoration: underline; }
+.step-more a { display: block; width: fit-content; margin-top: 6px; color: inherit; font-weight: 650; text-decoration: underline; }
 .step-more a:hover { color: inherit; text-decoration-thickness: 2.5px; }
 /* In the stacked layout the paired boxes are half width, so their details span
    both columns. */
@@ -550,10 +563,15 @@ main { position: relative; display: block; }
 .span-mark { display: none; }
 .path-hint { margin-top: 2.25rem; font-size: 0.875rem; color: var(--mut); }
 
+/* Half-width boxes on a phone: some labels would share a line with their dates and
+   some would not, so none do. */
+@container path (max-width: 400px) {
+  .step-wrap:not([data-id="origin"], [data-id="next"]) .step-meta { flex-direction: column; }
+}
 @container path (min-width: 1000px) {
   .graph {
     grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(2, auto);
-    column-gap: 2.5rem; row-gap: 3rem; align-items: center; padding-top: 1.75rem;
+    column-gap: 2.5rem; row-gap: 3rem; padding-top: 1.75rem;
   }
   .step-wrap[data-id] { justify-self: stretch; width: auto; }
   .step-wrap[data-id="origin"] { grid-area: 1 / 1; }
@@ -629,7 +647,7 @@ main { position: relative; display: block; }
 .brief { position: relative; padding-left: 1.4rem; }
 .brief::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--wire); transition: background-color var(--d-base), border-color var(--d-base); }
 .brief:hover::before { background: var(--acc); border-color: var(--acc); }
-.brief h4 { font-size: 1rem; line-height: 1.35; font-weight: 680; }
+.brief h4 { font-size: 1rem; line-height: 1.35; font-weight: 680; text-wrap: balance; }
 .brief h4 a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--edge); }
 .brief h4 a:hover { color: var(--acc); text-decoration-color: currentColor; }
 .brief-meta { margin-top: 2px; font-size: 0.875rem; color: var(--faint); }
@@ -638,7 +656,6 @@ main { position: relative; display: block; }
 /* ---------- 9. Home: experience, about, education, skills, languages, contact ---------- */
 .prose > * { max-width: var(--measure); }
 .prose > .section-title { max-width: none; }
-.prose p { text-wrap: pretty; }
 .prose p + p { margin-top: 1.1em; }
 
 .entries { list-style: none; }
@@ -659,6 +676,7 @@ main { position: relative; display: block; }
 .entry:hover::before { background: var(--acc); border-color: var(--acc); box-shadow: 0 0 0 5px var(--acc-soft); transition: background-color var(--d-base), border-color var(--d-base), box-shadow var(--d-slow) var(--ease-out); }
 .entry:hover::after { transform: scaleX(1); background: var(--acc); transition: transform var(--d-slow) var(--ease-out), background-color var(--d-base); }
 .entry-date { padding-top: 5px; font-size: 0.9375rem; color: var(--mut); font-variant-numeric: tabular-nums; }
+.entry-date time { white-space: nowrap; }
 .entry h3 { font-size: clamp(1.1875rem, 0.5vw + 1rem, 1.3125rem); line-height: 1.3; font-weight: 720; }
 .entry-org { margin: 3px 0 10px; color: var(--mut); }
 .entry-intro { max-width: 44rem; }
@@ -672,7 +690,7 @@ main { position: relative; display: block; }
 .about-lead { font-size: clamp(1.25rem, 0.9vw + 0.95rem, 1.4375rem); line-height: 1.5; }
 .how { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); gap: 1rem; margin: 2.25rem 0 2rem; max-width: 60rem; }
 .how li { position: relative; padding: 1rem 1.1rem 1.1rem; border-radius: var(--r-box); border: 1px solid var(--edge); background: var(--panel); box-shadow: var(--rest); }
-.how b { display: block; font-size: 1rem; line-height: 1.35; font-weight: 720; }
+.how b { display: block; font-size: 1rem; line-height: 1.35; font-weight: 720; text-wrap: balance; }
 .how p { margin-top: 0.4rem; font-size: 0.9375rem; color: var(--mut); }
 .how a { font-weight: 620; }
 
@@ -690,8 +708,8 @@ main { position: relative; display: block; }
 
 /* ---------- 10. Case-study pages: hero, summary strip, prose, the four formats ---------- */
 .case-hero { position: relative; padding: 3.5rem 0 1rem; }
-.case-hero h1 { margin: 1.25rem 0 1rem; max-width: 22ch; font-size: clamp(2.125rem, 3.4vw + 1rem, 3.5rem); line-height: 1.05; letter-spacing: -0.03em; font-weight: 800; text-wrap: balance; }
-.case-hero .hero-blurb { max-width: var(--measure); text-wrap: pretty; font-size: clamp(1.0625rem, 0.3vw + 1rem, 1.1875rem); color: var(--mut); }
+.case-hero h1 { margin: 2rem 0 1rem; max-width: 22ch; font-size: clamp(2.125rem, 3.4vw + 1rem, 3.5rem); line-height: 1.05; letter-spacing: -0.03em; font-weight: 800; text-wrap: balance; }
+.case-hero .hero-blurb { max-width: var(--measure); font-size: clamp(1.0625rem, 0.3vw + 1rem, 1.1875rem); color: var(--mut); }
 .case-hero .hero-blurb + .hero-blurb { margin-top: 1rem; }
 .role-line { color: var(--ink); }
 .case-hero .role-line { color: var(--ink); }
@@ -701,14 +719,14 @@ main { position: relative; display: block; }
    reader always knows where to look. A definition list rather than a line of
    separators, because each value has a name. */
 .summary {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(10.5rem, 100%), 1fr)); gap: 0.6rem 1.5rem;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(min(7rem, 100%), 1fr)); gap: 0.6rem 1.5rem;
   max-width: 60rem; padding: 0.9rem 1.1rem; border-radius: var(--r-box);
   border: 1px solid var(--edge); background: var(--panel); box-shadow: var(--rest);
 }
 .summary div { min-width: 0; }
 .summary dt { font-size: 0.8125rem; color: var(--faint); }
-.summary dd { font-size: 0.9375rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
-.summary .format { display: inline-flex; align-items: center; gap: 8px; color: var(--acc); }
+.summary dd { font-size: 0.9375rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; text-wrap: balance; }
+.summary .format { display: flex; align-items: center; gap: 8px; color: var(--acc); }
 .summary .format::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--acc); box-shadow: 0 0 0 4px var(--acc-soft); }
 
 .nda-note,
@@ -726,7 +744,7 @@ main { position: relative; display: block; }
 .facts strong { color: var(--ink); font-variant-numeric: tabular-nums; }
 .facts a strong { color: inherit; }
 
-.prose h3 { margin: 2.25rem 0 0.6rem; font-size: 1.1875rem; line-height: 1.3; font-weight: 720; }
+.prose h3 { margin: 2.25rem 0 0.6rem; font-size: 1.1875rem; line-height: 1.3; font-weight: 720; text-wrap: balance; }
 .prose h3:first-child { margin-top: 0; }
 .prose ul:not([class]), .prose ol:not([class]) { margin: 0.75rem 0 0.75rem 1.25rem; }
 .prose ul:not([class]) li, .prose ol:not([class]) li { margin-bottom: 0.35rem; }
@@ -775,21 +793,6 @@ main { position: relative; display: block; }
 .decision caption, .findings caption { caption-side: top; padding: 0 0 0.7rem; text-align: left; font-size: 0.9375rem; font-weight: 680; color: var(--ink); }
 .findings code { font-size: 0.9em; padding: 0.06em 0.35em; border-radius: 5px; background: var(--acc-soft); }
 
-/* On a phone both tables become one card per row, each value under its
-   column's name, instead of a table scrolling sideways inside its box. */
-@media (max-width: 600px) {
-  .table-scroll:has(> .decision, > .findings) { overflow: visible; }
-  .decision, .findings { min-width: 0; }
-  :is(.decision, .findings) thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  :is(.decision, .findings) caption { display: block; }
-  :is(.decision, .findings) tr { display: block; margin-bottom: 0.75rem; padding: 0.8rem 0.95rem; border: 1px solid var(--edge); border-radius: 12px; background: var(--panel); }
-  :is(.decision, .findings) :is(th, td) { display: block; padding: 0.2rem 0; border: 0; }
-  :is(.decision, .findings) td::before { content: attr(data-label); display: block; font-size: 0.8125rem; color: var(--faint); }
-  :is(.decision, .findings) td + td { margin-top: 0.35rem; }
-  .decision .is-chosen { border-color: var(--acc); background: var(--acc-soft); }
-  .decision .is-chosen :is(th, td) { background: none; box-shadow: none; }
-}
-
 /* Lab notebook: one entry per lab, on a line of its own. */
 .timeline { list-style: none; position: relative; max-width: var(--measure); margin: 1.5rem 0 0.5rem; padding-left: 1.6rem; }
 .timeline::before { content: ""; position: absolute; left: 5px; top: 0.5rem; bottom: 0.5rem; width: 2px; background: var(--line); }
@@ -825,8 +828,10 @@ main { position: relative; display: block; }
 .chart { box-shadow: none; }
 .figure > .figure-doc, .figure > .figure-shot { margin: 0; }
 
-.snippet { margin: 1.5rem 0 0.6rem; max-width: var(--measure); overflow-x: auto; padding: 1rem 1.1rem; }
-.snippet code { display: block; font-size: 0.84rem; line-height: 1.7; background: none; padding: 0; border-radius: 0; }
+/* Wider than the measure, so most code keeps its lines. What still does not fit
+   wraps rather than scrolling sideways inside the box. */
+.snippet { margin: 1.5rem 0 0.6rem; max-width: 50rem; overflow-x: auto; padding: 1rem 1.1rem; }
+.snippet code { display: block; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.84rem; line-height: 1.7; background: none; padding: 0; border-radius: 0; }
 .snippet .cm { color: var(--mut); }
 
 .layer-stack, .gate-flow, .levels { list-style: none; display: grid; gap: 0.5rem; margin: 1.5rem 0 2rem; max-width: var(--measure); }
@@ -844,9 +849,7 @@ main { position: relative; display: block; }
 .figure { margin: 1.75rem 0 0.6rem; max-width: var(--measure); }
 .figure.is-loose { margin-bottom: 2rem; }
 .figure.is-tight { margin-top: 1.5rem; }
-.figure.is-scroll, .figure-scroll { overflow-x: auto; }
-.figure.is-scroll > svg, .fig-svg, .chart svg { display: block; width: 100%; min-width: 30rem; height: auto; }
-.figure.is-scroll > svg { min-width: 32rem; }
+.fig-svg { display: block; width: 100%; height: auto; }
 .figcaption, .clip figcaption {
   margin: 0.6rem 0 1.5rem; padding-left: 0.9rem; border-left: 2px solid var(--edge);
   font-size: 0.875rem; color: var(--mut);
@@ -872,18 +875,19 @@ main { position: relative; display: block; }
 /* A figure drawn twice, because no single drawing reads at every width: across the
    page where it can hold its columns, wider than the reading measure, and down
    the page where it cannot. Only one is ever displayed, so assistive tech
-   announces one. .is-column stays inside the measure and only narrows on a phone. */
+   announces one. .is-column stays inside the measure and only changes below 720px,
+   where a wide viewBox would shrink its labels under 11px. */
 .figure.is-twin { position: relative; max-width: none; }
-.figure.is-twin.is-column { max-width: var(--measure); }
-.fig-svg.is-across, .fig-svg.is-down { min-width: 0; margin-bottom: 0.9rem; }
+.is-twin.is-column { max-width: var(--measure); }
+.fig-svg.is-across, .fig-svg.is-down { margin-bottom: 0.9rem; }
 .fig-svg.is-down { display: none; max-width: 22rem; }
 @media screen and (max-width: 1079px) {
   .figure.is-twin:not(.is-column) .fig-svg.is-across { display: none; }
   .figure.is-twin:not(.is-column) .fig-svg.is-down { display: block; }
 }
-@media screen and (max-width: 639px) {
-  .figure.is-twin.is-column .fig-svg.is-across { display: none; }
-  .figure.is-twin.is-column .fig-svg.is-down { display: block; }
+@media screen and (max-width: 719px) {
+  .is-twin.is-column .fig-svg.is-across { display: none; }
+  .is-twin.is-column .fig-svg.is-down { display: block; }
 }
 .fig-flow-meta { font-size: 13.5px; fill: var(--mut); }
 .fig-flow-title { font-size: 16px; font-weight: 700; fill: var(--ink); }
@@ -912,6 +916,14 @@ main { position: relative; display: block; }
 .fig-flow-end { fill: none; stroke: var(--ink); stroke-width: 1.5; }
 .fig-flow-chip { fill: var(--acc-soft); stroke: var(--acc); stroke-width: 1; }
 .fig-flow-chip-text { font-size: 13px; font-weight: 650; fill: var(--ink); }
+.fig-flow-code { font-size: 13px; fill: var(--ink); }
+.fig-flow-code.is-strong { font-weight: 650; }
+.fig-flow-code.is-small { font-size: 12px; }
+.fig-flow-on-accent { font-size: 13px; font-weight: 620; fill: var(--paper); }
+.fig-flow-label.is-ink { fill: var(--ink); }
+.fig-flow-label.is-strong { font-weight: 700; }
+:is(.fig-flow-label, .fig-flow-meta, .fig-flow-sub, .fig-flow-step).is-hot { fill: var(--acc); }
+.fig-svg.is-down :is(.chart-label, .chart-value) { font-size: 14px; }
 /* A node with a note. The cue and the pointer only appear when the script that opens
    the note has run; without it the diagram is a plain picture. */
 .js .fig-flow-noted { cursor: help; outline: none; }
@@ -972,10 +984,11 @@ main { position: relative; display: block; }
 .figure-doc a { display: block; }
 .figure-doc img, .figure-shot img, .clip video { display: block; width: 100%; height: auto; }
 :root[data-theme="dark"] .figure-doc img { filter: saturate(0.9) brightness(0.97); }
-:root[data-theme="dark"] .figure-doc:focus-visible,
 :root[data-theme="dark"] .figure-doc a:focus-visible { outline-color: #B84A0B; }
-.figure-doc.is-wide { max-width: var(--measure); overflow-x: auto; }
-.figure-doc.is-wide img { min-width: 50rem; }
+.figure:has(> .figure-doc.is-wide) { max-width: 52rem; }
+.figure-doc.is-wide { max-width: 100%; }
+/* A screenshot this wide is small on a phone, so its full size is one visible tap away. */
+.figure-doc-open { display: block; margin-top: 0.6rem; font-size: 0.875rem; color: #555D57; text-decoration: underline; text-underline-offset: 3px; }
 .figure-shot { overflow: hidden; line-height: 0; }
 
 .clips { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr)); gap: 1.5rem; margin: 1rem 0 0.6rem; }
@@ -999,7 +1012,7 @@ main { position: relative; display: block; }
 .figure-caption, .blocks-caption, .snippet-caption { margin-bottom: 1rem; max-width: var(--measure); font-size: 0.875rem; color: var(--mut); }
 
 /* Capstone: the one chart on the site. */
-.chart { max-width: var(--measure); margin: 1.5rem 0; padding: 1rem; overflow-x: auto; }
+.chart { max-width: var(--measure); margin: 1.5rem 0; padding: 1rem; }
 .chart-grid { stroke: var(--line); stroke-width: 1; }
 .chart-bar { fill: var(--acc); }
 .chart-line { fill: none; stroke: var(--wire); stroke-width: 2; stroke-dasharray: 5 3; }
@@ -1021,7 +1034,7 @@ main { position: relative; display: block; }
 /* Tables: the thesis results and the mobile-testing partitions. */
 .table-scroll, .blocks { overflow-x: auto; max-width: var(--measure); margin: 1.5rem 0 0.6rem; }
 .table-scroll.is-wide { max-width: 60rem; }
-.result-table { width: 100%; min-width: 26rem; border-collapse: collapse; font-size: 0.9375rem; }
+.result-table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
 .result-table th, .result-table td { padding: 0.55rem 0.8rem; text-align: right; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
 .result-table th:first-child, .result-table td:first-child { text-align: left; }
 .result-table thead th { font-size: 0.8125rem; font-weight: 600; color: var(--faint); border-bottom: 1.5px solid var(--edge); }
@@ -1029,6 +1042,10 @@ main { position: relative; display: block; }
 .result-table tbody th { font-weight: 400; }
 .result-table .row-hero th, .result-table .row-hero td { background: var(--acc-soft); font-weight: 720; color: var(--ink); }
 .result-table .row-hero th { color: var(--acc); }
+@media (max-width: 479px) {
+  .result-table { font-size: 0.8125rem; }
+  .result-table th, .result-table td { padding: 0.5rem 0.25rem; }
+}
 .blocks table { width: 100%; min-width: 36rem; border-collapse: collapse; }
 .blocks th, .blocks td { padding: 0.6rem 0.85rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); font-size: 0.875rem; font-weight: 400; }
 .blocks thead th { font-size: 0.8125rem; font-weight: 600; color: var(--faint); }
@@ -1037,9 +1054,21 @@ main { position: relative; display: block; }
 .blocks tbody tr:last-child th, .blocks tbody tr:last-child td { border-bottom: 0; }
 .blocks .v { display: block; margin-top: 0.2rem; font-size: 0.8125rem; color: var(--acc); font-variation-settings: "MONO" 1; }
 
-/* Focusable scroll containers take a visible ring. */
-.figure-scroll:focus-visible, .table-scroll:focus-visible, .blocks:focus-visible,
-.snippet:focus-visible, .figure-doc:focus-visible, .figure.is-scroll:focus-visible { outline-offset: -2px; }
+/* On a small screen these tables become one card per row, each value under its
+   column's name, instead of a table scrolling sideways inside its box. */
+@media (max-width: 719px) {
+  .table-scroll:has(> .decision, > .findings) { overflow: visible; }
+  .blocks { overflow: visible; border: 0; background: none; box-shadow: none; }
+  .decision, .findings, .blocks table { min-width: 0; }
+  :is(.decision, .findings, .blocks table) thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  :is(.decision, .findings) caption { display: block; }
+  :is(.decision, .findings, .blocks table) tr { display: block; margin-bottom: 0.75rem; padding: 0.8rem 0.95rem; border: 1px solid var(--edge); border-radius: 12px; background: var(--panel); }
+  :is(.decision, .findings, .blocks table) :is(th, td) { display: block; padding: 0.2rem 0; border: 0; }
+  :is(.decision, .findings, .blocks table) td::before { content: attr(data-label); display: block; font-size: 0.8125rem; color: var(--faint); }
+  :is(.decision, .findings, .blocks table) td + td { margin-top: 0.35rem; }
+  .decision .is-chosen { border-color: var(--acc); background: var(--acc-soft); }
+  .decision .is-chosen :is(th, td) { background: none; box-shadow: none; }
+}
 
 /* ---------- 12. Footer, back to top ---------- */
 .site-footer { border-top: 1px solid var(--line); }
@@ -1095,7 +1124,6 @@ main { position: relative; display: block; }
 @media (max-width: 760px) {
   .section { padding-top: 4rem; }
   .case-hero { padding-top: 2.5rem; }
-  .snippet code { white-space: pre-wrap; overflow-wrap: anywhere; }
   .clip-frame { max-width: calc(75vh * 566 / 1244); max-width: calc(75svh * 566 / 1244); }
   .to-top { right: 1rem; bottom: 1rem; }
 }
@@ -1142,7 +1170,6 @@ img::after {
 .figure-doc img::after { background: var(--paper-exhibit); color: #555D57; }
 /* A wide one scrolls inside its box, so the note has to fit the part of the box
    that can be seen. */
-.figure-doc.is-wide img::after { padding-right: max(1.25rem, calc(100% - min(100vw - 6rem, 36rem))); }
 
 /* A clip that did not load keeps its still frame, loses its dead controls (main.js)
    and says so. */
@@ -1202,8 +1229,6 @@ body:has(.error-code) main { flex: 1; }
   .container { padding: 0; max-width: none; }
   a { color: inherit; }
   .figure, .snippet, .figure-doc, .clip, .chart, .blocks, .table-scroll, .summary, .pipe, .entry { break-inside: avoid; }
-  .figure.is-scroll > svg, .fig-svg, .chart svg, .figure-doc.is-wide img { min-width: 0; }
-  .figure-scroll, .table-scroll, .blocks, .snippet { overflow: visible; }
-  .snippet code { white-space: pre-wrap; }
+  .table-scroll, .blocks, .snippet { overflow: visible; }
   .step-more { display: none; }
 }

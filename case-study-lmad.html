@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-lmad" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -343,9 +343,8 @@
           exceeds the threshold is dropped <em>on its own</em>, and the client's remaining layers
           are aggregated normally.
         </p>
-        <figure class="figure is-loose">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="fig2title fig2desc">
+        <figure class="figure is-loose is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 300" role="img" aria-labelledby="fig2title fig2desc">
 <title id="fig2title">Whole-client rejection compared with per-layer rejection</title>
 <desc id="fig2desc">Two grids of six clients by four layers. Under whole-client rejection both poisoned clients are discarded entirely, eight cells. Under L-MAD only the two poisoned decision layers of each are discarded, so four benign layers survive.</desc>
 <text x="190" y="46" text-anchor="middle" class="fig-panel-title">Whole-client rejection</text>
@@ -423,7 +422,91 @@
 <rect x="70" y="274" width="18" height="14" rx="3" fill="var(--acc)" fill-opacity="0.18" stroke="var(--acc)" stroke-width="1.5"/>
 <text x="95" y="285" class="fig-tick">benign layers a whole-client rule would have discarded</text>
 </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 460" role="img" aria-labelledby="fig2-down-title fig2-down-desc">
+              <title id="fig2-down-title">Whole-client rejection compared with per-layer rejection</title>
+              <desc id="fig2-down-desc">Two grids of six clients by four layers. Under whole-client rejection both poisoned clients are discarded entirely, eight cells. Under L-MAD only the two poisoned decision layers of each are discarded, so four benign layers survive.</desc>
+              <defs>
+              </defs>
+              <text class="fig-flow-step" x="0" y="14">Whole-client rejection</text>
+              <text class="fig-flow-label" x="0" y="47">L1</text>
+              <text class="fig-flow-label" x="0" y="79">L2</text>
+              <text class="fig-flow-label" x="0" y="111">L3</text>
+              <text class="fig-flow-label" x="0" y="143">L4</text>
+              <text class="fig-flow-label" x="30" y="170">clients 1 – 6 (2 and 5 poisoned)</text>
+              <text class="fig-flow-step" x="0" y="206">L-MAD: per-layer rejection</text>
+              <text class="fig-flow-label" x="0" y="239">L1</text>
+              <text class="fig-flow-label" x="0" y="271">L2</text>
+              <text class="fig-flow-label" x="0" y="303">L3</text>
+              <text class="fig-flow-label" x="0" y="335">L4</text>
+              <text class="fig-flow-label" x="30" y="362">clients 1 – 6 (2 and 5 poisoned)</text>
+              <rect class="fig-box" x="0" y="379" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="390">aggregated</text>
+              <rect class="fig-box-muted" x="0" y="401" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="412">rejected</text>
+              <rect class="fig-box-accent" x="0" y="423" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="434">benign layers a whole-client rule</text>
+              <text class="fig-flow-label" x="28" y="452">would have discarded</text>
+              <rect class="fig-box" x="30" y="28" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="28" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 37 L102 47 M102 37 L92 47" />
+              <rect class="fig-box" x="122" y="28" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="28" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="28" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 37 L240 47 M240 37 L230 47" />
+              <rect class="fig-box" x="260" y="28" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="60" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="60" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 69 L102 79 M102 69 L92 79" />
+              <rect class="fig-box" x="122" y="60" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="60" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="60" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 69 L240 79 M240 69 L230 79" />
+              <rect class="fig-box" x="260" y="60" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="92" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="92" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 101 L102 111 M102 101 L92 111" />
+              <rect class="fig-box" x="122" y="92" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="92" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="92" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 101 L240 111 M240 101 L230 111" />
+              <rect class="fig-box" x="260" y="92" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="124" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="124" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 133 L102 143 M102 133 L92 143" />
+              <rect class="fig-box" x="122" y="124" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="124" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="124" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 133 L240 143 M240 133 L230 143" />
+              <rect class="fig-box" x="260" y="124" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box-accent" x="76" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="122" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box-accent" x="214" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="260" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box-accent" x="76" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="122" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box-accent" x="214" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="260" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="284" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="284" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 293 L102 303 M102 293 L92 303" />
+              <rect class="fig-box" x="122" y="284" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="284" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="284" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 293 L240 303 M240 293 L230 303" />
+              <rect class="fig-box" x="260" y="284" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="316" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="316" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 325 L102 335 M102 325 L92 335" />
+              <rect class="fig-box" x="122" y="316" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="316" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="316" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 325 L240 335 M240 325 L230 335" />
+              <rect class="fig-box" x="260" y="316" width="42" height="28" rx="5" />
+            </svg>
           <figcaption class="figcaption">
             The unit of rejection. A whole-client rule discards eight cells to remove two
             attackers; the per-layer gate discards four and keeps the rest. The highlighted cells
@@ -654,7 +737,7 @@
           accuracy. Attack success rate is the fraction of normal traffic the poisoned model
           misclassifies, so lower is better.
         </p>
-        <div class="table-scroll" tabindex="0" role="group" aria-label="Table, scrollable">
+        <div class="table-scroll">
           <table class="result-table">
             <caption class="sr-only">Resilience under the reference 30% label-flipping attack</caption>
             <thead>
@@ -671,9 +754,8 @@
             </tbody>
           </table>
         </div>
-        <figure class="figure is-loose">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 700 320" role="img" aria-labelledby="f1title f1desc">
+        <figure class="figure is-loose is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 320" role="img" aria-labelledby="f1title f1desc">
               <title id="f1title">DDoS-class F1 under the reference 30% label-flipping attack</title>
               <desc id="f1desc">Horizontal bars for seven aggregation strategies. L-MAD reaches 97.5 percent, level with its own clean-data score of 97.1. The best baseline, Krum, reaches 71.9 percent, and undefended FedAvg reaches 48.4 percent.</desc>
 
@@ -722,7 +804,46 @@
               <text x="640" y="294" text-anchor="middle" class="fig-tick">100</text>
               <text x="395" y="314" text-anchor="middle" class="fig-axis">DDoS-class F&#8321; (%) under a 30% label-flipping attack</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 316" role="img" aria-labelledby="f1-down-title f1-down-desc">
+              <title id="f1-down-title">DDoS-class F1 under the reference 30% label-flipping attack</title>
+              <desc id="f1-down-desc">Horizontal bars for seven aggregation strategies. L-MAD reaches 97.5 percent, level with its own clean-data score of 97.1. The best baseline, Krum, reaches 71.9 percent, and undefended FedAvg reaches 48.4 percent.</desc>
+              <defs>
+              </defs>
+              <line class="fig-grid" x1="106" y1="24" x2="106" y2="248" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="148.5" y1="24" x2="148.5" y2="248" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="191" y1="24" x2="191" y2="248" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="233.5" y1="24" x2="233.5" y2="248" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="276" y1="24" x2="276" y2="248" stroke-dasharray="2 4" />
+              <path class="fig-line-accent" d="M271.07 22 L271.07 248" stroke-dasharray="4 3" />
+              <text class="fig-flow-label is-hot" x="320" y="14" text-anchor="end">L-MAD on clean data, 97.1</text>
+              <text class="fig-flow-label" x="106" y="266" text-anchor="middle">0</text>
+              <text class="fig-flow-label" x="148.5" y="266" text-anchor="middle">25</text>
+              <text class="fig-flow-label" x="191" y="266" text-anchor="middle">50</text>
+              <text class="fig-flow-label" x="233.5" y="266" text-anchor="middle">75</text>
+              <text class="fig-flow-label" x="276" y="266" text-anchor="middle">100</text>
+              <text class="fig-flow-label is-hot is-strong" x="99" y="45" text-anchor="end">L-MAD</text>
+              <text class="fig-flow-label is-hot is-strong" x="276.75" y="45">97.5</text>
+              <text class="fig-flow-label is-ink" x="99" y="77" text-anchor="end">Krum</text>
+              <text class="fig-flow-label" x="233.23" y="77">71.9</text>
+              <text class="fig-flow-label is-ink" x="99" y="109" text-anchor="end">ATTA-FL-Lite</text>
+              <text class="fig-flow-label" x="223.2" y="109">66.0</text>
+              <text class="fig-flow-label is-ink" x="99" y="141" text-anchor="end">LGP</text>
+              <text class="fig-flow-label" x="221.16" y="141">64.8</text>
+              <text class="fig-flow-label is-ink" x="99" y="173" text-anchor="end">BRAFL</text>
+              <text class="fig-flow-label" x="212.15" y="173">59.5</text>
+              <text class="fig-flow-label is-ink" x="99" y="205" text-anchor="end">Trimmed Mean</text>
+              <text class="fig-flow-label" x="198.38" y="205">51.4</text>
+              <text class="fig-flow-label is-ink" x="99" y="237" text-anchor="end">FedAvg</text>
+              <text class="fig-flow-label" x="193.28" y="237">48.4</text>
+              <text class="fig-flow-label" x="161" y="290" text-anchor="middle"><tspan x="161" dy="0">DDoS-class F₁ (%) under a 30%</tspan><tspan x="161" dy="18">label-flipping attack</tspan></text>
+              <rect class="fig-bar-accent" x="106" y="29" width="165.8" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="61" width="122.2" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="93" width="112.2" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="125" width="110.2" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="157" width="101.1" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="189" width="87.4" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="221" width="82.3" height="22" rx="3" />
+            </svg>
           <figcaption class="figcaption">
             The dashed line is the number that matters most: L-MAD's score on clean data. The
             attack moves it by less than half a point, so the bar is not "the best of a damaged
@@ -751,9 +872,8 @@
           <em>and</em> far more robust. Against the cheap traditional rules the trade-off is real
           but small, roughly 18 ms per round over Krum in exchange for 25.7 points of F&#8321;.
         </p>
-        <figure class="figure is-loose">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 640 400" role="img" aria-labelledby="fig1title fig1desc">
+        <figure class="figure is-loose is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 640 400" role="img" aria-labelledby="fig1title fig1desc">
 <title id="fig1title">Aggregation cost versus robustness for seven strategies</title>
 <desc id="fig1desc">A scatter plot of mean server aggregation time in milliseconds per round against DDoS-class F1 score. L-MAD sits at 21 milliseconds and 97.5 percent, the highest F1 of any strategy, on the Pareto frontier together with FedAvg and Krum.</desc>
 <line x1="78" y1="330.0" x2="604" y2="330.0" stroke="var(--edge)" stroke-width="1"/>
@@ -802,7 +922,55 @@
 <text x="20" y="182" text-anchor="middle" class="fig-axis" transform="rotate(-90 20 182)">DDoS-class F&#8321; (%)</text>
 <text x="312" y="136" class="fig-note">Pareto frontier</text>
 </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 332" role="img" aria-labelledby="fig1-down-title fig1-down-desc">
+              <title id="fig1-down-title">Aggregation cost versus robustness for seven strategies</title>
+              <desc id="fig1-down-desc">A scatter plot of mean server aggregation time in milliseconds per round against DDoS-class F1 score. L-MAD sits at 21 milliseconds and 97.5 percent, the highest F1 of any strategy, on the Pareto frontier together with FedAvg and Krum.</desc>
+              <defs>
+              </defs>
+              <line class="fig-grid" x1="38" y1="264" x2="318" y2="264" />
+              <line class="fig-grid" x1="38" y1="225.4" x2="318" y2="225.4" />
+              <line class="fig-grid" x1="38" y1="186.6" x2="318" y2="186.6" />
+              <line class="fig-grid" x1="38" y1="148" x2="318" y2="148" />
+              <line class="fig-grid" x1="38" y1="109.4" x2="318" y2="109.4" />
+              <line class="fig-grid" x1="38" y1="70.6" x2="318" y2="70.6" />
+              <line class="fig-grid" x1="38" y1="32" x2="318" y2="32" />
+              <line class="fig-grid" x1="58.6" y1="32" x2="58.6" y2="264" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="124.2" y1="32" x2="124.2" y2="264" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="173.8" y1="32" x2="173.8" y2="264" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="223.4" y1="32" x2="223.4" y2="264" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="289" y1="32" x2="289" y2="264" stroke-dasharray="2 4" />
+              <path class="fig-line" d="M38 32 L38 264 L318 264" />
+              <polyline points="58.6,231.5 87.6,140.8 226.9,41.6" fill="none" stroke="var(--acc)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.55" />
+              <text class="fig-flow-label" x="0" y="14">DDoS-class F₁ (%)</text>
+              <text class="fig-flow-label" x="31" y="269" text-anchor="end">40</text>
+              <text class="fig-flow-label" x="31" y="230.359" text-anchor="end">50</text>
+              <text class="fig-flow-label" x="31" y="191.641" text-anchor="end">60</text>
+              <text class="fig-flow-label" x="31" y="153" text-anchor="end">70</text>
+              <text class="fig-flow-label" x="31" y="114.359" text-anchor="end">80</text>
+              <text class="fig-flow-label" x="31" y="75.6405" text-anchor="end">90</text>
+              <text class="fig-flow-label" x="31" y="37" text-anchor="end">100</text>
+              <text class="fig-flow-label" x="58.6008" y="282" text-anchor="middle">2</text>
+              <text class="fig-flow-label" x="124.183" y="282" text-anchor="middle">5</text>
+              <text class="fig-flow-label" x="173.795" y="282" text-anchor="middle">10</text>
+              <text class="fig-flow-label" x="223.407" y="282" text-anchor="middle">20</text>
+              <text class="fig-flow-label" x="288.989" y="282" text-anchor="middle">50</text>
+              <text class="fig-flow-label is-ink" x="50.6" y="251.5">FedAvg</text>
+              <text class="fig-flow-label is-ink" x="77.6" y="145.8" text-anchor="end">Krum</text>
+              <text class="fig-flow-label is-ink" x="106.6" y="224.9">Trimmed Mean</text>
+              <text class="fig-flow-label is-ink" x="134.2" y="193.5">BRAFL</text>
+              <text class="fig-flow-label is-hot is-strong" x="240.9" y="46.6">L-MAD</text>
+              <text class="fig-flow-label is-ink" x="295" y="150.4" text-anchor="end">ATTA-FL-Lite</text>
+              <text class="fig-flow-label is-ink" x="293.8" y="190.1" text-anchor="middle">LGP</text>
+              <text class="fig-flow-label is-hot" x="172" y="104">Pareto frontier</text>
+              <text class="fig-flow-label" x="178" y="306" text-anchor="middle"><tspan x="178" dy="0">Mean server aggregation time</tspan><tspan x="178" dy="18">(ms / round, log scale)</tspan></text>
+              <circle cx="58.6" cy="231.5" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="87.6" cy="140.8" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="96.6" cy="219.9" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="124.2" cy="188.5" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="283" cy="163.4" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="295.8" cy="168.1" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="226.9" cy="41.6" r="11" fill="var(--acc)" opacity="0.18" /><circle cx="226.9" cy="41.6" r="6" fill="var(--acc)" />
+            </svg>
           <figcaption class="figcaption">
             A strategy sits on the Pareto frontier when nothing else is both cheaper and more
             robust. Only FedAvg, Krum, and L-MAD qualify. Trimmed Mean, BRAFL, ATTA-FL-Lite, and
@@ -1512,6 +1680,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

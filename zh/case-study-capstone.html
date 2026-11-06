@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-capstone" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -77,7 +77,7 @@
           <div><dt>形式</dt><dd class="format">案例研究</dd></div>
           <div><dt>專案</dt><dd>畢業專題，三人團隊</dd></div>
           <div><dt>工具</dt><dd>Robot Framework、Scrum</dd></div>
-          <div><dt>時間</dt><dd>2023–2024 年</dd></div>
+          <div><dt>時間</dt><dd>2023–2024&nbsp;年</dd></div>
           <div><dt>原始碼</dt><dd><a href="https://github.com/Zocke07/Automation-Demonstration" target="_blank" rel="noopener">GitHub 上的公開展示</a></dd></div>
         </dl>
         <h1>流程沒有問題，產出還是掉了</h1>
@@ -88,12 +88,12 @@
           <strong>我的角色：</strong>畢業專題三位學生之一，並且在專題涵蓋的這一年半裡，以產學合作的身分實際待在團隊內部。這份報告是三個人的共同成果，指導教授為陳香君博士；報告中所記錄的實務作法，屬於公司的工程師，不屬於我們。
         </p>
         <ul class="facts" role="list">
-          <li>分析 <strong>4 年</strong>的測試案例產出</li>
-          <li>在團隊內部 <strong>18 個月</strong></li>
-          <li>每週投入 <strong>10–20 小時</strong>開發</li>
+          <li>分析 <strong>4&nbsp;年</strong>的測試案例產出</li>
+          <li>在團隊內部 <strong>18&nbsp;個月</strong></li>
+          <li>每週投入 <strong>10–20&nbsp;小時</strong>開發</li>
           <li><strong>每兩週</strong>向公司報告一次成果</li>
-          <li>從 ticket 到合併共 <strong>7 道關卡</strong></li>
-          <li><strong>3 位學生</strong>，一位指導教授</li>
+          <li>從 ticket 到合併共 <strong>7&nbsp;道關卡</strong></li>
+          <li><strong>3&nbsp;位學生</strong>，一位指導教授</li>
         </ul>
         <aside class="nda-note">
           <strong>關於保密：</strong>本文遵守我簽署的保密協議。產品名稱、內部 ticket 編號與商業邏輯均已省略或一般化，內容也未重製專題報告本身。留下來的是工程流程與數據的形狀，兩者都屬於業界通行的一般實務。
@@ -120,7 +120,7 @@
     <!-- ===================== The pipeline ===================== -->
     <section id="pipeline" class="section">
       <div class="container prose">
-        <h2 class="section-title">這條流程實際要求什麼</h2>
+        <h2 class="section-title">這條流程<wbr>實際要求什麼</h2>
         <p>
           從接下一張需求 ticket，到一個測試案例被算作完成，中間隔著七道關卡。每一道單獨看都不稀奇，真正需要紀律的是：沒有任何一道可以跳過，包括那兩道在第一次救到你之前，感覺都只是額外成本的關卡。
         </p>
@@ -349,13 +349,13 @@
     <!-- ===================== Findings ===================== -->
     <section id="findings" class="section section-alt">
       <div class="container prose">
-        <h2 class="section-title">四年的數據說了什麼</h2>
+        <h2 class="section-title">四年的數據<wbr>說了什麼</h2>
         <p>
           我們調出團隊連續四個年度（每年九月到隔年九月）的測試案例紀錄，統計兩個數字：建立的案例數，以及被合併的案例數。上面那條流程在這四年之間，沒有改變過。
         </p>
 
-        <div class="chart">
-          <svg viewBox="0 0 640 250" role="img" aria-labelledby="chart-title chart-desc">
+        <div class="chart is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 640 250" role="img" aria-labelledby="chart-title chart-desc">
             <title id="chart-title">2020 至 2024 年每年建立與合併的測試案例數</title>
             <desc id="chart-desc">建立的案例數從 2020 至 2021 年的約 25 個，在 2021 至 2022 年攀升到接近 80 個的高峰，2022 至 2023 年降到約 55 個，2023 至 2024 年再降到不到 30 個。合併的案例數曲線較為平緩，並在最後兩個年度高於建立數。</desc>
 
@@ -406,6 +406,39 @@
               <text x="550" y="232">2023–24</text>
             </g>
           </svg>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 222" role="img" aria-labelledby="chart-down-title chart-down-desc">
+              <title id="chart-down-title">2020 至 2024 年每年建立與合併的測試案例數</title>
+              <desc id="chart-down-desc">建立的案例數從 2020 至 2021 年的約 25 個，在 2021 至 2022 年攀升到接近 80 個的高峰，2022 至 2023 年降到約 55 個，2023 至 2024 年再降到不到 30 個。合併的案例數曲線較為平緩，並在最後兩個年度高於建立數。</desc>
+              <defs>
+              </defs>
+              <line class="chart-grid" x1="38" y1="12" x2="320" y2="12" />
+              <line class="chart-grid" x1="38" y1="57" x2="320" y2="57" />
+              <line class="chart-grid" x1="38" y1="102" x2="320" y2="102" />
+              <line class="chart-grid" x1="38" y1="147" x2="320" y2="147" />
+              <line class="chart-grid" x1="38" y1="192" x2="320" y2="192" />
+              <text class="chart-label" x="31" y="17" text-anchor="end">100</text>
+              <text class="chart-label" x="31" y="62" text-anchor="end">75</text>
+              <text class="chart-label" x="31" y="107" text-anchor="end">50</text>
+              <text class="chart-label" x="31" y="152" text-anchor="end">25</text>
+              <text class="chart-label" x="31" y="197" text-anchor="end">0</text>
+              <text class="chart-label" x="73.25" y="214" text-anchor="middle">2020–21</text>
+              <text class="chart-label" x="143.75" y="214" text-anchor="middle">2021–22</text>
+              <text class="chart-label" x="214.25" y="214" text-anchor="middle">2022–23</text>
+              <text class="chart-label" x="284.75" y="214" text-anchor="middle">2023–24</text>
+              <rect class="chart-bar" x="51.25" y="147" width="44" height="45" rx="3" />
+              <text class="chart-value" x="73.25" y="165" text-anchor="middle">25</text>
+              <rect class="chart-bar" x="121.75" y="48" width="44" height="144" rx="3" />
+              <text class="chart-value" x="143.75" y="66" text-anchor="middle">80</text>
+              <rect class="chart-bar" x="192.25" y="93" width="44" height="99" rx="3" />
+              <text class="chart-value" x="214.25" y="111" text-anchor="middle">55</text>
+              <rect class="chart-bar" x="262.75" y="142" width="44" height="50" rx="3" />
+              <text class="chart-value" x="284.75" y="160" text-anchor="middle">28</text>
+              <polyline class="chart-line" points="73.25,152 143.75,80 214.25,84 284.75,133" />
+              <circle class="chart-dot" cx="73.25" cy="152" r="4" />
+              <circle class="chart-dot" cx="143.75" cy="80" r="4" />
+              <circle class="chart-dot" cx="214.25" cy="84" r="4" />
+              <circle class="chart-dot" cx="284.75" cy="133" r="4" />
+            </svg>
           <p class="chart-key">
             <span><i></i> 建立的測試案例</span>
             <span><i class="dashed"></i> 合併的測試案例</span>
@@ -430,7 +463,7 @@
     <!-- ===================== Limits ===================== -->
     <section id="limits" class="section">
       <div class="container prose">
-        <h2 class="section-title">這些數字無法斷定的事</h2>
+        <h2 class="section-title">這些數字<wbr>無法斷定的事</h2>
         <p>
           這個發現值得說清楚，它的弱點也一樣。測試案例的數量是產出的替代指標，不是價值的指標。一個涵蓋跨子系統複雜互動的案例，和一個只涵蓋單一下拉選單的案例，同樣都算一個。如果後期的案例個別來說更難，而第一個原因正暗示如此，那麼數量的下滑就誇大了實際工作量的下滑，而我們手上沒有任何能把兩者分開的量測方式。
         </p>
@@ -446,7 +479,7 @@
     <!-- ===================== Exhibit ===================== -->
     <section id="exhibit" class="section section-alt">
       <div class="container prose">
-        <h2 class="section-title">必須重做一次的展示品</h2>
+        <h2 class="section-title">必須重做一次的<wbr>展示品</h2>
         <p>
           畢業專題理應要能展示，而我們記錄的卻是不能離開公司的工作。我們寫過的每一個測試套件、每一個關鍵字、以及它們對應的每一張 ticket，全都在保密協議之後。把真正的成果拿出來展示，從一開始就不是選項。
         </p>
@@ -488,6 +521,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

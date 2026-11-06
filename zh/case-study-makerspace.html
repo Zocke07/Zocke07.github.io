@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-makerspace" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -77,9 +77,9 @@
           <div><dt>形式</dt><dd class="format">設計筆記</dd></div>
           <div><dt>專案</dt><dd>個人專案</dd></div>
           <div><dt>工具</dt><dd>PostgreSQL、Node.js、React</dd></div>
-          <div><dt>時間</dt><dd>2026 年 9 月</dd></div>
+          <div><dt>時間</dt><dd>2026&nbsp;年 9&nbsp;月</dd></div>
         </dl>
-        <h1>資料庫可以說不的地方</h1>
+        <h1>資料庫<wbr>可以說不的地方</h1>
         <p class="hero-blurb">
           校園創客空間把 3D 印表機、雷射切割機和 CNC 銑床借出去，靠的是牆上一張紙本登記表。那張表擋不住兩個人搶同一個時段，看不出來他們有沒有受過那台機器的訓練，東西晚還或壞了也留不下任何紀錄。我用一套三層式網頁應用程式和一個 PostgreSQL schema 取代了它，而整個專案最後收斂成一個問題：真正重要的那些規則裡，哪些資料庫可以自己擋下來，碰不到的那些又該怎麼辦？
         </p>
@@ -87,12 +87,12 @@
           <strong>我的角色：</strong>一個沒有團隊、也沒有人出題的個人專案，而這件事是雙面的：沒有東西是別人交到我手上的，也沒有東西經過別人審查。方法本身都是教科書上的。真正值得讀的是我原本沒有規劃的那部分：三個缺陷之所以浮出來，只因為分析跑的是真實的資料，而不是 schema。
         </p>
         <ul class="facts" role="list">
-          <li><strong>14 個關聯</strong>、5 個 view、21 個外鍵</li>
-          <li>schema 中宣告 <strong>28 條約束</strong></li>
-          <li><strong>4 份 migration</strong>，從空資料庫依序套用</li>
-          <li>對 <strong>13 個關聯</strong>做函數相依分析</li>
-          <li><strong>19 個畫面</strong>，涵蓋 19 個使用者故事</li>
-          <li>種入 <strong>687 筆預約</strong>，分布在 85 位成員</li>
+          <li><strong>14&nbsp;個關聯</strong>、5&nbsp;個 view、21&nbsp;個外鍵</li>
+          <li>schema 中宣告 <strong>28&nbsp;條約束</strong></li>
+          <li><strong>4&nbsp;份 migration</strong>，從空資料庫依序套用</li>
+          <li>對&nbsp;<strong>13&nbsp;個關聯</strong>做函數相依分析</li>
+          <li><strong>19&nbsp;個畫面</strong>，涵蓋 19&nbsp;個使用者故事</li>
+          <li>種入 <strong>687&nbsp;筆預約</strong>，分布在 85&nbsp;位成員</li>
         </ul>
         <aside class="source-note">
           <strong>範圍與說明：</strong>這個創客空間是虛構的，裡面每一個人也是。三個房間借用了北科大一棟真實建築的名字，只是為了讓場景有個可辨識的落點；除此之外，那棟建築、它的設備，以及任何真實的校園運作，都沒有被寫進這裡。種入的成員、罰款與證照資料都是為了打到特定的查詢分支而編出來的，這正是它們存在的目的。
@@ -103,7 +103,7 @@
     <!-- ===================== The three rules ===================== -->
     <section id="rules" class="section section-alt">
       <div class="container prose">
-        <h2 class="section-title">紙本登記表守不住的三條規則</h2>
+        <h2 class="section-title">紙本登記表<wbr>守不住的三條規則</h2>
         <p>
           那張紙有三種失效方式，而每一種都是一條等著被寫下來的規則。兩位成員在同一個時段填上自己的名字，然後兩個人都出現了。沒有人記錄登記的人有沒有受過那台機器的訓練，所以工作人員只能憑印象確認，或者根本不確認。機器晚了兩天才還回來，然後什麼事都沒發生，因為沒有留下任何可以據以收費的紀錄。
         </p>
@@ -113,9 +113,8 @@
         <p>
           有意思的地方在於，這三條規則的性質並不一樣。第一條是資料庫可以自己守住的區間排除約束。第二條橫跨五張表、而且取決於預約的時間區間，這是 <code>CHECK</code> 看不到的範圍。第三條是一段算術，但要有人點頭它才會變成一筆欠款。一條 schema 直接拒絕、一條它碰不到、一條它不應該替人決定。
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="示意圖，可捲動">
-            <svg class="fig-svg" viewBox="0 0 700 700" role="img" aria-labelledby="ms-er-title ms-er-desc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 700" role="img" aria-labelledby="ms-er-title ms-er-desc">
               <title id="ms-er-title">實體關聯模型：十四個關聯，以及畫出來的十一組關係</title>
               <desc id="ms-er-desc">十四個實體分成三欄。左欄由 certification 往下經過 certification_grant 到 member。中欄的 category_authorization 位於 certification 與 equipment_category 之間，下方依序是 location、booking、checkout 與 penalty。右欄由 equipment_category 往下經過 equipment_model 到 equipment，接著是 maintenance_log，下方是 penalty_type 與獨立的 system_setting。每組關係的一端以短線標示「一」，另一端以鳥足標示「多」。從 member 拉出的一條虛線指向一段說明，列出另外七個沒有畫出來、指向 member 的外鍵。</desc>
               <defs>
@@ -177,7 +176,58 @@
               <text x="76" y="650" class="fig-tick">豁免者、通報者、指派對象。真的畫出來，它們會橫跨這張圖的大半。</text>
               <text x="76" y="672" class="fig-tick"></text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 520" role="img" aria-labelledby="ms-er-down-title ms-er-down-desc">
+              <title id="ms-er-down-title">實體關聯模型：十四個關聯，以及畫出來的十一組關係</title>
+              <desc id="ms-er-down-desc">十四個實體分成三欄。左欄由 certification 往下經過 certification_grant 到 member。中欄的 category_authorization 位於 certification 與 equipment_category 之間，下方依序是 location、booking、checkout 與 penalty。右欄由 equipment_category 往下經過 equipment_model 到 equipment，接著是 maintenance_log，下方是 penalty_type 與獨立的 system_setting。每組關係的一端以短線標示「一」，另一端以鳥足標示「多」。從 member 拉出的一條虛線指向一段說明，列出另外七個沒有畫出來、指向 member 的外鍵。</desc>
+              <defs>
+              <marker id="ms-er-down-one" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M6 1.5 L6 8.5" stroke="var(--mut)" stroke-width="1.6" fill="none" /></marker>
+              <marker id="ms-er-down-many" viewBox="0 0 10 10" refX="1" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M1 5 L9 1.5 M1 5 L9 5 M1 5 L9 8.5" stroke="var(--mut)" stroke-width="1.4" fill="none" /></marker>
+              </defs>
+              <path class="fig-line-accent" d="M14 246 L14 404" stroke-dasharray="5 4" />
+              <text class="fig-flow-label" x="0" y="422"><tspan x="0" dy="0">member 還是另外七個外鍵指向的對象，</tspan><tspan x="0" dy="18">而這七個記錄的都是「誰做的」，</tspan><tspan x="0" dy="18">而不是「這筆資料是關於誰的」：</tspan><tspan x="0" dy="18">發照者、交機者、收機者、開單者、</tspan><tspan x="0" dy="18">豁免者、通報者、指派對象。</tspan><tspan x="0" dy="18">真的畫出來，它們會橫跨這張圖的大半。</tspan></text>
+              <rect class="fig-box" x="0" y="0" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="48" y="24.8" text-anchor="middle">certification</text>
+              <rect class="fig-box" x="112" y="0" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="160" y="16.8" text-anchor="middle"><tspan x="160" dy="0">category</tspan><tspan x="160" dy="16">_authorization</tspan></text>
+              <rect class="fig-box" x="224" y="0" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="272" y="16.8" text-anchor="middle"><tspan x="272" dy="0">equipment</tspan><tspan x="272" dy="16">_category</tspan></text>
+              <rect class="fig-box" x="0" y="68" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="48" y="84.8" text-anchor="middle"><tspan x="48" dy="0">certification</tspan><tspan x="48" dy="16">_grant</tspan></text>
+              <rect class="fig-box" x="224" y="68" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="272" y="84.8" text-anchor="middle"><tspan x="272" dy="0">equipment</tspan><tspan x="272" dy="16">_model</tspan></text>
+              <rect class="fig-box" x="112" y="136" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="160" y="160.8" text-anchor="middle">location</text>
+              <rect class="fig-box" x="224" y="136" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="272" y="160.8" text-anchor="middle">equipment</text>
+              <rect class="fig-box-accent" x="0" y="204" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="48" y="228.8" text-anchor="middle">member</text>
+              <rect class="fig-box" x="112" y="204" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="160" y="228.8" text-anchor="middle">booking</text>
+              <rect class="fig-box" x="224" y="204" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="272" y="220.8" text-anchor="middle"><tspan x="272" dy="0">maintenance</tspan><tspan x="272" dy="16">_log</tspan></text>
+              <rect class="fig-box" x="112" y="272" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="160" y="296.8" text-anchor="middle">checkout</text>
+              <rect class="fig-box" x="224" y="272" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="272" y="288.8" text-anchor="middle"><tspan x="272" dy="0">penalty</tspan><tspan x="272" dy="16">_type</tspan></text>
+              <rect class="fig-box" x="112" y="340" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="160" y="364.8" text-anchor="middle">penalty</text>
+              <rect class="fig-box-muted" x="224" y="340" width="96" height="42" rx="6" />
+              <text class="fig-flow-code is-small" x="272" y="356.8" text-anchor="middle"><tspan x="272" dy="0">system</tspan><tspan x="272" dy="16">_setting</tspan></text>
+              <line class="fig-line" x1="100" y1="21" x2="103.5" y2="21" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="220" y1="21" x2="216.5" y2="21" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="48" y1="46" x2="48" y2="59.5" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="48" y1="200" x2="48" y2="118.5" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="272" y1="46" x2="272" y2="59.5" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="272" y1="114" x2="272" y2="127.5" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="212" y1="157" x2="215.5" y2="157" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="100" y1="225" x2="103.5" y2="225" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="246.3" y1="179.6" x2="199.8" y2="200.5" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="272" y1="182" x2="272" y2="195.5" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="246.4" y1="315.7" x2="201.7" y2="336.4" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <line class="fig-line" x1="160" y1="250" x2="160" y2="268" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-one)" />
+              <path class="fig-line" d="M198 250 C 232 270, 232 310, 176 331" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+              <path class="fig-line" d="M68 250 C 68 332, 86 361, 103 361" marker-start="url(#ms-er-down-one)" marker-end="url(#ms-er-down-many)" />
+            </svg>
           <figcaption class="figure-caption">十四個關聯，以及它們之間十八組關係裡的十一組。短線是「一」的一端，鳥足是「多」的一端，而 <code>booking</code> 到 <code>checkout</code> 是這裡唯一的一對一，所以兩端都是短線。有三件事是外鍵清單看不出來、這張圖看得出來的：<code>category_authorization</code> 存在的唯一理由，是把證照與類別之間的多對多解開；<code>system_setting</code> 獨立懸在一旁，因為一張鍵值表沒有東西可以指；而 <code>member</code> 是整張圖最擁擠的地方，那也正是角落那段說明的內容。參與限制留給模型本身，這裡沒有畫。</figcaption>
         </figure>
       </div>
@@ -186,11 +236,11 @@
     <!-- ===================== The one constraint ===================== -->
     <section id="constraint" class="section">
       <div class="container prose">
-        <h2 class="section-title">為了一條約束而選這個資料庫</h2>
+        <h2 class="section-title">為了一條約束<wbr>而選這個資料庫</h2>
         <p>
           「同一台機器的兩筆預約不能重疊」這條規則，多數系統都寫在應用層：先讀出既有預約、判斷、再寫入。這中間讀和寫之間有一段競爭窗口，而當兩個人同時按下確認，你就是在那段窗口裡把機器弄丟的。PostgreSQL 可以把這條規則寫成資料表層級的約束，這也是它被選上的原因。
         </p>
-        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="決策表，可捲動">
+        <div class="table-scroll is-wide">
           <table class="decision">
             <caption>「同一台機器的預約不可重疊」可以怎麼執行</caption>
             <thead><tr><th scope="col">選項</th><th scope="col">換來什麼</th><th scope="col">付出什麼</th></tr></thead>
@@ -200,7 +250,7 @@
             </tbody>
           </table>
         </div>
-        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼範例，可捲動"><code><span class="cm">-- 001_create_schema.sql: 唯一一條資料庫自己守住的關鍵規則</span>
+        <pre class="snippet"><code><span class="cm">-- 001_create_schema.sql: 唯一一條資料庫自己守住的關鍵規則</span>
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 
 ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
@@ -218,11 +268,11 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
           這條約束還一次付出、兩次回收。為了執行它，資料庫會在 <code>(equipment_id, tstzrange(starts_at, ends_at))</code> 上建一個 GiST 索引，而那正好就是可用時段查詢想要的索引。完整性的保證和查詢計畫是同一個東西。這不是憑空假設，而是拿一份重新種入的資料庫實際量出來的：這個查詢穩定落在大約 2 毫秒，比規格書的 500 毫秒預算寬鬆了大約 250 倍，<code>EXPLAIN</code> 也證實了每台機器的衝突檢查，走的正是這條約束建出來的 Index Scan。
         </p>
         <figure class="figure">
-          <div class="figure-doc is-wide" tabindex="0" role="group" aria-label="螢幕截圖，可捲動">
+          <div class="figure-doc is-wide">
             <a href="/assets/img/makerspace/equipment-detail.webp" target="_blank" rel="noopener">
               <img src="/assets/img/makerspace/equipment-detail.webp" width="1440" height="730" loading="lazy" decoding="async"
                    alt="雷射切割機的設備詳細頁。上方十四天的時間軸分成兩條獨立的軌道，一條是預約、一條是維修停機；下方是設備資訊面板，列出類別、製造商、位置、單次預約上限、是否需要證照與目前狀態，右側則是可用時段列表，顯示一筆已確認的預約。" />
-              <span class="sr-only">在新分頁開啟原尺寸</span>
+              <span class="figure-doc-open">在新分頁開啟原尺寸</span>
             </a>
           </div>
           <figcaption class="figure-caption">
@@ -235,13 +285,12 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
     <!-- ===================== BR-1 ===================== -->
     <section id="certification" class="section section-alt">
       <div class="container prose">
-        <h2 class="section-title">那條沒有地方可以宣告的規則</h2>
+        <h2 class="section-title">那條沒有地方<wbr>可以宣告的規則</h2>
         <p>
           整個專案真正吃重的是第二條規則：成員必須持有涵蓋該機器類別的有效證照，才能預約它。這條規則橫跨五張表、而且取決於預約的時間區間，所以在 <code>CHECK</code> 裡沒有容身之處；它又太重要，不能散落在剛好會執行到的那幾條程式路徑上。
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="示意圖，可捲動">
-            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="ms-path-title ms-path-desc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 300" role="img" aria-labelledby="ms-path-title ms-path-desc">
               <title id="ms-path-title">一筆預約要證明成員持有證照，必須走過的關聯鏈</title>
               <desc id="ms-path-desc">八個關聯分成兩列。上排從 booking 走到 equipment、equipment_model 與 equipment_category，接著往下接到下排；下排從 category_authorization 經過 certification 與 certification_grant 回到 member。一條虛線弧把 certification_grant 直接連到 category_authorization，跳過中間的 certification，那正是攤平用的 view 所做的連接。</desc>
               <defs>
@@ -280,7 +329,38 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
               <path class="fig-line-accent" d="M262 232 C 262 272, 616 272, 616 232" stroke-dasharray="5 4" fill="none" />
               <text x="439" y="292" text-anchor="middle" class="fig-note">v_member_category_authorization</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 356" role="img" aria-labelledby="ms-path-down-title ms-path-down-desc">
+              <title id="ms-path-down-title">一筆預約要證明成員持有證照，必須走過的關聯鏈</title>
+              <desc id="ms-path-down-desc">八個關聯分成兩列。上排從 booking 走到 equipment、equipment_model 與 equipment_category，接著往下接到下排；下排從 category_authorization 經過 certification 與 certification_grant 回到 member。一條虛線弧把 certification_grant 直接連到 category_authorization，跳過中間的 certification，那正是攤平用的 view 所做的連接。</desc>
+              <defs>
+                <marker id="ms-path-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line-accent" d="M98 32 L98 46" marker-end="url(#ms-path-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M98 78 L98 92" marker-end="url(#ms-path-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M98 124 L98 138" marker-end="url(#ms-path-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M98 170 L98 184" marker-end="url(#ms-path-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M98 216 L98 230" marker-end="url(#ms-path-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M98 262 L98 276" marker-end="url(#ms-path-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M98 308 L98 322" marker-end="url(#ms-path-down-arrow-hot)" />
+              <path class="fig-line-accent fig-flow-dashed" d="M196 200 L206 200 Q214 200 214 208 L214 284 Q214 292 206 292 L196 292" />
+              <text class="fig-flow-label is-hot" x="224" y="233"><tspan x="224" dy="0">v_member_</tspan><tspan x="224" dy="18">category_</tspan><tspan x="224" dy="18">authorization</tspan></text>
+              <rect class="fig-box" x="0" y="0" width="196" height="32" rx="8" />
+              <text class="fig-flow-code" x="98" y="20.1" text-anchor="middle">booking</text>
+              <rect class="fig-box" x="0" y="46" width="196" height="32" rx="8" />
+              <text class="fig-flow-code" x="98" y="66.1" text-anchor="middle">equipment</text>
+              <rect class="fig-box" x="0" y="92" width="196" height="32" rx="8" />
+              <text class="fig-flow-code" x="98" y="112.1" text-anchor="middle">equipment_model</text>
+              <rect class="fig-box" x="0" y="138" width="196" height="32" rx="8" />
+              <text class="fig-flow-code" x="98" y="158.1" text-anchor="middle">equipment_category</text>
+              <rect class="fig-box-accent" x="0" y="184" width="196" height="32" rx="8" />
+              <text class="fig-flow-code" x="98" y="204.1" text-anchor="middle">category_authorization</text>
+              <rect class="fig-box" x="0" y="230" width="196" height="32" rx="8" />
+              <text class="fig-flow-code" x="98" y="250.1" text-anchor="middle">certification</text>
+              <rect class="fig-box-accent" x="0" y="276" width="196" height="32" rx="8" />
+              <text class="fig-flow-code" x="98" y="296.1" text-anchor="middle">certification_grant</text>
+              <rect class="fig-box" x="0" y="322" width="196" height="32" rx="8" />
+              <text class="fig-flow-code" x="98" y="342.1" text-anchor="middle">member</text>
+            </svg>
           <figcaption class="figure-caption">七個跳躍，每一個都是宣告出來的外鍵，而且沒有一個是 <code>CHECK</code> 約束搆得到的，因為它不能去查另一張表。虛線弧就是那個 view：它用 <code>certification_id</code> 把兩個標示出來的關聯直接接起來，於是預約交易只要問一個問題，不必自己走完整條鏈。</figcaption>
         </figure>
         <p>
@@ -289,7 +369,7 @@ ALTER TABLE booking ADD CONSTRAINT booking_no_overlap
         <p>
           資料庫這邊的貢獻是一個 view，而不是 trigger。它把那串走訪攤平成一個「成員、類別、有效區間」的關聯：
         </p>
-        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼範例，可捲動"><code><span class="cm">-- 把整串走訪攤平成 (成員, 類別, 有效區間)</span>
+        <pre class="snippet"><code><span class="cm">-- 把整串走訪攤平成 (成員, 類別, 有效區間)</span>
 CREATE VIEW v_member_category_authorization AS
 SELECT g.member_id, ca.category_id, g.certification_id,
        g.granted_at AS valid_from, g.expires_at AS valid_to
@@ -305,11 +385,11 @@ JOIN category_authorization AS ca ON ca.certification_id = g.certification_id;</
           同樣的讀法還帶出兩個結果。證照會在領取設備時重新檢查一次，因為三月合法成立的預約，主人的訓練可能四月就過期了：櫃檯會拒絕交機，但預約本身不會被刪掉。而過期永遠不追溯，所以已完成的預約在其背後的證照到期之後，仍然是有效的歷史紀錄。歷史不會因為時間流逝而被改寫。
         </p>
         <figure class="figure">
-          <div class="figure-doc is-wide" tabindex="0" role="group" aria-label="螢幕截圖，可捲動">
+          <div class="figure-doc is-wide">
             <a href="/assets/img/makerspace/booking-refused.webp" target="_blank" rel="noopener">
               <img src="/assets/img/makerspace/booking-refused.webp" width="1440" height="580" loading="lazy" decoding="async"
                    alt="CNC 雕刻機的新增預約畫面，預約遭到拒絕。表單下方的紅色訊息說明該成員的 CNC 雕刻機操作或機械工廠通用安全證照無法涵蓋整段區間，因為證照將於 2026-07-22 到期，並建議在該時段之前先預約換證，訊息後面接著錯誤代碼 CERTIFICATION_EXPIRED。" />
-              <span class="sr-only">在新分頁開啟原尺寸</span>
+              <span class="figure-doc-open">在新分頁開啟原尺寸</span>
             </a>
           </div>
           <figcaption class="figure-caption">
@@ -326,7 +406,7 @@ JOIN category_authorization AS ca ON ca.certification_id = g.certification_id;</
         <p>
           schema 裡宣告了 28 條 <code>CHECK</code> 與 <code>EXCLUDE</code> 約束，以及 21 個外鍵，每個外鍵都寫明了 <code>ON DELETE</code> 行為。我給自己定的規矩是：只要能用宣告式表達的，就一定宣告出來，因為忘了檢查的那條程式路徑繞不過資料庫的約束。以下是這個分工，以及每條規則為什麼住在那裡。
         </p>
-        <div class="blocks" tabindex="0" role="group" aria-label="表格，可捲動">
+        <div class="blocks">
           <table>
             <caption class="sr-only">商業規則、各自的內容，以及執行的位置</caption>
             <thead>
@@ -339,43 +419,43 @@ JOIN category_authorization AS ca ON ca.certification_id = g.certification_id;</
             <tbody>
               <tr>
                 <th scope="row">不得重疊</th>
-                <td>同一台機器的兩筆未取消預約，時間不得重疊</td>
-                <td>資料庫 <span class="v">EXCLUDE USING gist</span></td>
+                <td data-label="內容">同一台機器的兩筆未取消預約，時間不得重疊</td>
+                <td data-label="由誰執行">資料庫 <span class="v">EXCLUDE USING gist</span></td>
               </tr>
               <tr>
                 <th scope="row">只交機一次</th>
-                <td>一筆預約最多一次領取，一次領取最多一次歸還</td>
-                <td>資料庫 <span class="v">UNIQUE (booking_id)</span></td>
+                <td data-label="內容">一筆預約最多一次領取，一次領取最多一次歸還</td>
+                <td data-label="由誰執行">資料庫 <span class="v">UNIQUE (booking_id)</span></td>
               </tr>
               <tr>
                 <th scope="row">不得自己發照</th>
-                <td>沒有人可以把證照發給自己</td>
-                <td>資料庫 <span class="v">CHECK granted_by &lt;&gt; member</span></td>
+                <td data-label="內容">沒有人可以把證照發給自己</td>
+                <td data-label="由誰執行">資料庫 <span class="v">CHECK granted_by &lt;&gt; member</span></td>
               </tr>
               <tr>
                 <th scope="row">除役而非刪除</th>
-                <td>有預約或維修紀錄的機器，只能改狀態除役</td>
-                <td>資料庫 <span class="v">ON DELETE RESTRICT</span></td>
+                <td data-label="內容">有預約或維修紀錄的機器，只能改狀態除役</td>
+                <td data-label="由誰執行">資料庫 <span class="v">ON DELETE RESTRICT</span></td>
               </tr>
               <tr>
                 <th scope="row">豁免要有理由</th>
-                <td>被豁免的罰款必須記下理由和經手的工作人員</td>
-                <td>資料庫 <span class="v">CHECK penalty_waiver</span></td>
+                <td data-label="內容">被豁免的罰款必須記下理由和經手的工作人員</td>
+                <td data-label="由誰執行">資料庫 <span class="v">CHECK penalty_waiver</span></td>
               </tr>
               <tr>
                 <th scope="row">證照</th>
-                <td>沒有涵蓋整段區間的有效證照就不能預約</td>
-                <td>應用層 <span class="v">橫跨五張表</span></td>
+                <td data-label="內容">沒有涵蓋整段區間的有效證照就不能預約</td>
+                <td data-label="由誰執行">應用層 <span class="v">橫跨五張表</span></td>
               </tr>
               <tr>
                 <th scope="row">停機</th>
-                <td>不能預約與排定維修時間重疊的區間</td>
-                <td>應用層 <span class="v">跨表的區間比較</span></td>
+                <td data-label="內容">不能預約與排定維修時間重疊的區間</td>
+                <td data-label="由誰執行">應用層 <span class="v">跨表的區間比較</span></td>
               </tr>
               <tr>
                 <th scope="row">未繳罰款</th>
-                <td>未繳金額達到門檻就不能建立新預約</td>
-                <td>應用層 <span class="v">對 penalty 做彙總</span></td>
+                <td data-label="內容">未繳金額達到門檻就不能建立新預約</td>
+                <td data-label="由誰執行">應用層 <span class="v">對 penalty 做彙總</span></td>
               </tr>
             </tbody>
           </table>
@@ -402,9 +482,8 @@ JOIN category_authorization AS ca ON ca.certification_id = g.certification_id;</
         <p>
           需要處理的那兩個，需要的處理方式並不一樣。在 <code>equipment</code> 裡，一台機器的產品型號決定了它屬於哪一類機器，所以 <code>(manufacturer, model)</code> 決定 <code>category_id</code>，但它完全不是鍵：二十台機器只帶了十五種不同的型號與類別組合，而四台 Prusa MK4S 印表機各自存了一份「MK4S 是 FDM 印表機」這個事實。這允許的異常是一次單列更新，把其中一台印表機改歸到「雷射切割機」類別而沒有任何東西會反對；在那之後，證照規則會要求這台機器需要雷射證照，而旁邊那三台一模一樣的機器需要的卻是 FDM 證照。這一段被分解成一個 <code>equipment_model</code> 關聯，而 migration 會在自己的交易裡重新驗證無損失連接，失敗就整個回滾。
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="示意圖，可捲動">
-            <svg class="fig-svg" viewBox="0 0 700 310" role="img" aria-labelledby="ms-norm-title ms-norm-desc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 310" role="img" aria-labelledby="ms-norm-title ms-norm-desc">
               <title id="ms-norm-title">以四台 Prusa MK4S 為例的 equipment 分解</title>
               <desc id="ms-norm-desc">左側是四列 equipment，每一列都存了相同的型號與類別。中間一個標示 004 的箭頭指向右方。右側同樣的四列現在只帶一個 model_id，四列都指向同一列 equipment_model，型號與類別只存了一次。</desc>
               <defs>
@@ -447,14 +526,53 @@ JOIN category_authorization AS ca ON ca.certification_id = g.certification_id;</
               <text x="551" y="284" text-anchor="middle" class="fig-label">10 · MK4S · FDM 3D Printer</text>
               <text x="10" y="268" class="fig-tick">存了 4 次，然後只存 1 次</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 480" role="img" aria-labelledby="ms-norm-down-title ms-norm-down-desc">
+              <title id="ms-norm-down-title">以四台 Prusa MK4S 為例的 equipment 分解</title>
+              <desc id="ms-norm-down-desc">左側是四列 equipment，每一列都存了相同的型號與類別。中間一個標示 004 的箭頭指向右方。右側同樣的四列現在只帶一個 model_id，四列都指向同一列 equipment_model，型號與類別只存了一次。</desc>
+              <defs>
+                <marker id="ms-norm-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line-accent" d="M160 172 L160 204" marker-end="url(#ms-norm-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M160 370 L160 392" marker-end="url(#ms-norm-down-arrow-hot)" />
+              <text class="fig-flow-step" x="0" y="14">equipment，分解前</text>
+              <text class="fig-flow-label is-hot" x="170" y="193">004</text>
+              <text class="fig-flow-step" x="0" y="218">equipment，分解後</text>
+              <text class="fig-flow-label" x="0" y="472">存了 4 次，然後只存 1 次</text>
+              <rect class="fig-box" x="0" y="26" width="320" height="30" rx="7" />
+              <text class="fig-flow-code" x="12" y="46">MK-3DP-001</text>
+              <text class="fig-flow-sub" x="308" y="46" text-anchor="end">MK4S · FDM 3D Printer</text>
+              <rect class="fig-box" x="0" y="62" width="320" height="30" rx="7" />
+              <text class="fig-flow-code" x="12" y="82">MK-3DP-002</text>
+              <text class="fig-flow-sub" x="308" y="82" text-anchor="end">MK4S · FDM 3D Printer</text>
+              <rect class="fig-box" x="0" y="98" width="320" height="30" rx="7" />
+              <text class="fig-flow-code" x="12" y="118">MK-3DP-101</text>
+              <text class="fig-flow-sub" x="308" y="118" text-anchor="end">MK4S · FDM 3D Printer</text>
+              <rect class="fig-box" x="0" y="134" width="320" height="30" rx="7" />
+              <text class="fig-flow-code" x="12" y="154">MK-3DP-102</text>
+              <text class="fig-flow-sub" x="308" y="154" text-anchor="end">MK4S · FDM 3D Printer</text>
+              <rect class="fig-box" x="0" y="230" width="320" height="30" rx="7" />
+              <text class="fig-flow-code" x="12" y="250">MK-3DP-001</text>
+              <text class="fig-flow-sub" x="308" y="250" text-anchor="end">model_id 10</text>
+              <rect class="fig-box" x="0" y="266" width="320" height="30" rx="7" />
+              <text class="fig-flow-code" x="12" y="286">MK-3DP-002</text>
+              <text class="fig-flow-sub" x="308" y="286" text-anchor="end">model_id 10</text>
+              <rect class="fig-box" x="0" y="302" width="320" height="30" rx="7" />
+              <text class="fig-flow-code" x="12" y="322">MK-3DP-101</text>
+              <text class="fig-flow-sub" x="308" y="322" text-anchor="end">model_id 10</text>
+              <rect class="fig-box" x="0" y="338" width="320" height="30" rx="7" />
+              <text class="fig-flow-code" x="12" y="358">MK-3DP-102</text>
+              <text class="fig-flow-sub" x="308" y="358" text-anchor="end">model_id 10</text>
+              <rect class="fig-box-accent" x="0" y="392" width="320" height="56" rx="10" />
+              <text class="fig-flow-sub" x="160" y="414.3" text-anchor="middle">equipment_model</text>
+              <text class="fig-flow-step" x="160" y="434.3" text-anchor="middle">10 · MK4S · FDM 3D Printer</text>
+            </svg>
           <figcaption class="figure-caption">這個創客空間有四台 Prusa MK4S，而在 migration 之前，每一列都自己存了一份「MK4S 是 FDM 印表機」這個事實。把其中一台改歸到別的類別，只是一次沒有任何東西會拒絕的單列更新。分解之後，這個事實只有一個落點，四台機器都指向它。</figcaption>
         </figure>
         <h3>另一個分解出來的表，本來就已經存在</h3>
         <p>
           第二個有意思得多。由預約衍生的罰款，一定是開給做那筆預約的人，所以在 <code>penalty</code> 裡 <code>booking_id</code> 決定 <code>member_id</code>。教科書上的 3NF 說：把這個相依抽成獨立的關聯。真的照做，你會得到 <code>(booking_id, member_id)</code>，而那是 <code>booking</code> 的一個投影：決定端和被決定端本來就住在同一張表裡，而且決定端就是那張表的主鍵。把它實體化出來，只是替 schema 已經握有的東西再複製一份。
         </p>
-        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼範例，可捲動"><code><span class="cm">-- 004_normalize.sql: 把相依交給本來就握有它的那張表來執行</span>
+        <pre class="snippet"><code><span class="cm">-- 004_normalize.sql: 把相依交給本來就握有它的那張表來執行</span>
 ALTER TABLE booking ADD CONSTRAINT booking_id_member_unique UNIQUE (id, member_id);
 
 ALTER TABLE penalty DROP CONSTRAINT penalty_booking_id_fkey;
@@ -476,7 +594,7 @@ ALTER TABLE penalty ADD CONSTRAINT penalty_booking_member_fk
     <!-- ===================== What the data caught ===================== -->
     <section id="degeneracy" class="section">
       <div class="container prose">
-        <h2 class="section-title">三個只有資料看得出來的缺陷</h2>
+        <h2 class="section-title">三個只有資料<wbr>看得出來的缺陷</h2>
         <p>
           寫函數相依分析最直覺的做法，是讀 schema。我改成從種入的資料反推，而且每一條都用查詢驗過一次；這樣比較慢，但抓到了三個 schema 不可能顯示出來的缺陷。三個都屬於同一類：資料看起來是滿的，實際上卻是退化的，於是獨立的欄位和相依的欄位長得一模一樣。
         </p>
@@ -497,7 +615,7 @@ ALTER TABLE penalty ADD CONSTRAINT penalty_booking_member_fk
     <!-- ===================== What was kept ===================== -->
     <section id="kept" class="section section-alt">
       <div class="container prose">
-        <h2 class="section-title">我留下的冗餘，以及我沒有加的那條約束</h2>
+        <h2 class="section-title">我留下的冗餘，以及我沒有加的<wbr>那條約束</h2>
         <p>
           schema 裡有四個冗餘活了下來，而把它講成毫無冗餘會是假的。其中三個是跨資料表的，這是 3NF 說不上話的範圍，因為 3NF 是定義在單一關聯的屬性之上。
         </p>
@@ -552,6 +670,6 @@ ALTER TABLE penalty ADD CONSTRAINT penalty_booking_member_fk
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

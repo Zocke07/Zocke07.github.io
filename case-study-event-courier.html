@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-event-courier" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -147,7 +147,7 @@
     <section id="review" class="section">
       <div class="container prose">
         <h2 class="section-title">Four Problems, Found After the Event</h2>
-        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="Table, scrollable">
+        <div class="table-scroll is-wide">
           <table class="findings">
             <caption>The four findings, their fixes and their tests</caption>
             <thead><tr><th scope="col">Finding</th><th scope="col">What it exposed</th><th scope="col">Fix</th><th scope="col">Test</th></tr></thead>
@@ -221,7 +221,7 @@
           instance issued, and changing one character of the claims breaks the
           signature.
         </p>
-        <pre class="snippet" tabindex="0" role="group" aria-label="Code, scrollable"><code><span class="cm">// Checking a token: recompute the signature, compare in constant time.</span>
+        <pre class="snippet"><code><span class="cm">// Checking a token: recompute the signature, compare in constant time.</span>
 const expected = Buffer.from(this.#sign(payload));
 const given = Buffer.from(signature);
 if (given.length !== expected.length || !crypto.timingSafeEqual(given, expected)) {
@@ -325,6 +325,6 @@ if (given.length !== expected.length || !crypto.timingSafeEqual(given, expected)
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

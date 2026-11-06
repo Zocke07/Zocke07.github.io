@@ -110,6 +110,15 @@ home page read "NVIDI A Jetson TX2". `tools/cjk.py` finds and joins these, and
 `tools/check.py` fails if one comes back. Breaking between a Chinese character
 and a Latin one is fine: that space is wanted, and the pages already write it.
 
+**Chinese headings break between phrases.** They use `word-break: keep-all`, so a
+line can only end at punctuation, a space or a `<wbr>`. A long heading needs a
+`<wbr>` between its phrases; without one the browser breaks wherever it runs out of
+room, which can be inside a word. Body text breaks anywhere, as Chinese normally
+does, and `main.js` keeps the last four characters of a paragraph together so that
+none ends on a lone character. The key facts and summary strips are phrases too, so
+they break the same way, and a number is joined to its unit with `&nbsp;` because a
+space is a place to break.
+
 ## Editing content
 
 All landing-page content lives in `index.html`, in commented sections: Intro,
@@ -145,7 +154,8 @@ first lines (the summary strip, the lead or the role line), so a click lands
 where it said it would.
 
 A skill tag in the Skills section is a link when a case study demonstrates it
-and plain text when none does, and only the linked ones lift on hover. A link
+and plain text when none does. Only the linked ones carry the orange underline
+and lift on hover. A link
 needs a page showing code he wrote, which is why the Hardware and embedded tags
 (VHDL, FPGA, embedded Linux, kernel modules) are plain: the only page about
 them, the microprocessors lab notebook, credits its labs to the team, so it
@@ -188,12 +198,19 @@ wire and box edge 3:1; `prefers-contrast: more` and `forced-colors` are
 handled. Diagrams inside pages draw from the same tokens (`var(--acc)`,
 `var(--edge)`, `var(--mut)`), so they follow the theme.
 
+Nothing scrolls sideways inside its box, at any width from 320px up. Code wraps,
+tables under 720px become one card per row (each `td` carries its column name in
+`data-label`), and a wide screenshot shrinks to fit with a visible link to its full
+size. So none of these boxes takes focus or says it is scrollable.
+
 The diagrams are inline SVG, not images, so they follow the theme and carry
 Chinese labels on the Chinese pages. A figure too wide for the reading column is
 a `.figure.is-twin` holding two SVGs of the same chart: `.fig-svg.is-across`,
 wider than the measure, and `.fig-svg.is-down`, for screens under 1080px. Add
-`.is-column` when the wide drawing fits the measure and only a phone needs the
-other one. CSS displays one, so a screen reader hears one. Each SVG needs its own
+`.is-column` when the wide drawing fits the measure and only a screen under 720px
+needs the other one, which is true of most of them: a diagram scales to fit its
+box, so without a second drawing its labels would fall below 11px. Draw the
+narrow one 320 units wide. CSS displays one, so a screen reader hears one. Each SVG needs its own
 ids and arrow markers, because a marker inside a hidden SVG does not draw. Text
 sits in one `<text>` per role, with the line breaks as plain `<tspan>`s, so the
 two languages keep the same class sequence. Boxes hold their text at every

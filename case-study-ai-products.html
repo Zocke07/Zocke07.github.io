@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-ai-products" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -196,9 +196,8 @@
           <li><b>End-to-end verification, by hand</b><span>The step I owned. A real browser against a real running instance, naming the exact target, the expected signal, and the pass criterion.</span></li>
           <li><b>Explicit sign-off, or a recorded decision not to</b><span>When we accepted a gap or skipped a pass, that call was written down with its reason rather than left implied.</span></li>
         </ol>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 720 215" role="img" aria-labelledby="aigatetitle aigatedesc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 720 215" role="img" aria-labelledby="aigatetitle aigatedesc">
               <title id="aigatetitle">Where a cleanly compiling defect is actually stopped</title>
               <desc id="aigatedesc">A change moves left to right through five gate steps: proposal and design, acceptance criteria, implementation checklist, hands-on verification, and sign-off. A defect that compiles cleanly and reads correctly passes the first three steps unchallenged and is stopped at hands-on verification.</desc>
 
@@ -246,7 +245,41 @@
               <text x="499" y="180" text-anchor="middle" class="fig-label fig-label-hero">stopped here</text>
               <text x="499" y="197" text-anchor="middle" class="fig-tick">dropped formatting, truncated model output</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 373" role="img" aria-labelledby="aigate-down-title aigate-down-desc">
+              <title id="aigate-down-title">Where a cleanly compiling defect is actually stopped</title>
+              <desc id="aigate-down-desc">A change moves left to right through five gate steps: proposal and design, acceptance criteria, implementation checklist, hands-on verification, and sign-off. A defect that compiles cleanly and reads correctly passes the first three steps unchallenged and is stopped at hands-on verification.</desc>
+              <defs>
+                <marker id="aigate-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="aigate-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line" d="M71 56 L71 74" marker-end="url(#aigate-down-arrow)" />
+              <path class="fig-line" d="M71 130 L71 148" marker-end="url(#aigate-down-arrow)" />
+              <path class="fig-line" d="M71 204 L71 222" marker-end="url(#aigate-down-arrow)" />
+              <path class="fig-line" d="M71 297 L71 315" marker-end="url(#aigate-down-arrow)" />
+              <path class="fig-line fig-flow-dashed" d="M158 28 L158 250.5" />
+              <path class="fig-line-accent" d="M142 259.5 L149 259.5" marker-end="url(#aigate-down-arrow-hot)" />
+              <text class="fig-flow-label" x="170" y="24"><tspan x="170" dy="0">a defect that</tspan><tspan x="170" dy="18">compiles cleanly</tspan><tspan x="170" dy="18">and reads correctly</tspan></text>
+              <text class="fig-flow-label is-hot is-strong" x="174" y="255.5">stopped here</text>
+              <text class="fig-flow-label" x="174" y="273.5"><tspan x="174" dy="0">dropped formatting,</tspan><tspan x="174" dy="18">truncated model</tspan><tspan x="174" dy="18">output</tspan></text>
+              <rect class="fig-box" x="0" y="0" width="142" height="56" rx="10" />
+              <text class="fig-flow-step" x="71" y="22.3" text-anchor="middle">Proposal</text>
+              <text class="fig-flow-sub" x="71" y="42.3" text-anchor="middle">&amp; design</text>
+              <rect class="fig-box" x="0" y="74" width="142" height="56" rx="10" />
+              <text class="fig-flow-step" x="71" y="96.3" text-anchor="middle">Acceptance</text>
+              <text class="fig-flow-sub" x="71" y="116.3" text-anchor="middle">criteria</text>
+              <rect class="fig-box" x="0" y="148" width="142" height="56" rx="10" />
+              <text class="fig-flow-step" x="71" y="170.3" text-anchor="middle">Implement</text>
+              <text class="fig-flow-sub" x="71" y="190.3" text-anchor="middle">to checklist</text>
+              <rect class="fig-box-accent" x="0" y="222" width="142" height="75" rx="10" />
+              <text class="fig-flow-meta is-hot" x="71" y="243.6" text-anchor="middle">the step I owned</text>
+              <text class="fig-flow-step is-hot" x="71" y="263.3" text-anchor="middle">Hands-on</text>
+              <text class="fig-flow-sub" x="71" y="283.3" text-anchor="middle">verification</text>
+              <rect class="fig-box" x="0" y="315" width="142" height="56" rx="10" />
+              <text class="fig-flow-step" x="71" y="337.3" text-anchor="middle">Sign-off</text>
+              <text class="fig-flow-sub" x="71" y="357.3" text-anchor="middle">or logged gap</text>
+              <circle class="fig-flow-port is-hot" cx="158" cy="259.5" r="9" />
+              <path class="fig-line-accent" d="M154 255.5 L162 263.5 M162 255.5 L154 263.5" />
+            </svg>
           <figcaption class="figcaption">
             The first three steps read the change; only the fourth runs it. That is the whole
             reason the gate was worth its cost, because the defects that mattered were invisible
@@ -270,9 +303,8 @@
           nothing to run. Reviewing that suite is where I learned most of what I now know
           about testing the untestable.
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 700 240" role="img" aria-labelledby="aitesttitle aitestdesc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 240" role="img" aria-labelledby="aitesttitle aitestdesc">
               <title id="aitesttitle">Three awkward dependencies and the substitution used for each</title>
               <desc id="aitestdesc">Three rows. A live editor API is handled by running the tests inside a real editor instance. A real version control system is handled by building throwaway repositories on disk. A non-deterministic model is handled by stubbing it, so results are deterministic and cost nothing.</desc>
 
@@ -310,7 +342,38 @@
               <text x="530" y="215" text-anchor="middle" class="fig-tick">deterministic results, no cost per run</text>
               <line class="fig-line-accent" x1="318" y1="200" x2="358" y2="200" marker-end="url(#ai-sub-arrow)" />
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 534" role="img" aria-labelledby="aitest-down-title aitest-down-desc">
+              <title id="aitest-down-title">Three awkward dependencies and the substitution used for each</title>
+              <desc id="aitest-down-desc">Three rows. A live editor API is handled by running the tests inside a real editor instance. A real version control system is handled by building throwaway repositories on disk. A non-deterministic model is handled by stubbing it, so results are deterministic and cost nothing.</desc>
+              <defs>
+                <marker id="aitest-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line-accent" d="M160 108 L160 126" marker-end="url(#aitest-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M160 274 L160 292" marker-end="url(#aitest-down-arrow-hot)" />
+              <path class="fig-line-accent" d="M160 440 L160 458" marker-end="url(#aitest-down-arrow-hot)" />
+              <rect class="fig-box-muted" x="0" y="3" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="14">What made it hard to test</text>
+              <rect class="fig-box-accent" x="0" y="25" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="36">What the suite did instead</text>
+              <rect class="fig-box-muted" x="0" y="52" width="320" height="56" rx="10" />
+              <text class="fig-flow-step" x="160" y="74.3" text-anchor="middle">A live editor API</text>
+              <text class="fig-flow-sub" x="160" y="94.3" text-anchor="middle">cannot be imported and called</text>
+              <rect class="fig-box-accent" x="0" y="126" width="320" height="74" rx="10" />
+              <text class="fig-flow-step" x="160" y="148.3" text-anchor="middle">Run inside a real editor instance</text>
+              <text class="fig-flow-sub" x="160" y="168.3" text-anchor="middle"><tspan x="160" dy="0">the dependency itself,</tspan><tspan x="160" dy="18">launched per run</tspan></text>
+              <rect class="fig-box-muted" x="0" y="218" width="320" height="56" rx="10" />
+              <text class="fig-flow-step" x="160" y="240.3" text-anchor="middle">A real version control system</text>
+              <text class="fig-flow-sub" x="160" y="260.3" text-anchor="middle">state lives on disk, not in memory</text>
+              <rect class="fig-box-accent" x="0" y="292" width="320" height="56" rx="10" />
+              <text class="fig-flow-step" x="160" y="314.3" text-anchor="middle">Build throwaway repositories</text>
+              <text class="fig-flow-sub" x="160" y="334.3" text-anchor="middle">real commands, discarded afterwards</text>
+              <rect class="fig-box-muted" x="0" y="366" width="320" height="74" rx="10" />
+              <text class="fig-flow-step" x="160" y="388.3" text-anchor="middle">A non-deterministic model</text>
+              <text class="fig-flow-sub" x="160" y="408.3" text-anchor="middle"><tspan x="160" dy="0">different answer every call,</tspan><tspan x="160" dy="18">and billed</tspan></text>
+              <rect class="fig-box-accent" x="0" y="458" width="320" height="74" rx="10" />
+              <text class="fig-flow-step" x="160" y="480.3" text-anchor="middle">Stub it</text>
+              <text class="fig-flow-sub" x="160" y="500.3" text-anchor="middle"><tspan x="160" dy="0">deterministic results,</tspan><tspan x="160" dy="18">no cost per run</tspan></text>
+            </svg>
           <figcaption class="figcaption">
             Two stay real and one is replaced, and the split follows where the bugs were.
             The editor and the repository are where they actually lived, so faking those
@@ -356,7 +419,7 @@
           from scratch with PyTest against the critical endpoints of an internal service, from
           the API documentation alone: the endpoints, what each one takes and returns, the
           error codes, and a handful of example calls. That document was the entire
-          specification, so every assertion in the suite is a promise it made — when a test
+          specification, so every assertion in the suite is a promise it made: when a test
           goes red, either the service is wrong or the documentation is, and only a person can
           say which.
         </p>
@@ -412,6 +475,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

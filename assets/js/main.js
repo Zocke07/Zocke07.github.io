@@ -92,6 +92,59 @@ if (themeToggle) {
 const year = document.getElementById("year");
 if (year) year.textContent = new Date().getFullYear();
 
+// --- Keeping short runs of text together ---
+// What a stylesheet cannot reach: text-wrap: pretty does not see a Chinese character
+// alone on a last line, and nothing stops a line breaking after the hyphen in L-MAD.
+// Each run goes in a plain span, so the words stay as written and nothing is lost if
+// this never runs.
+const keepTogether = (text, start, end) => {
+  const run = text.splitText(start);
+  run.splitText(end - start);
+  const span = document.createElement("span");
+  span.style.whiteSpace = "nowrap";
+  run.replaceWith(span);
+  span.append(run);
+};
+
+const pageMain = $("main");
+if (pageMain) {
+  const walker = document.createTreeWalker(pageMain, NodeFilter.SHOW_TEXT);
+  const naming = [];
+  while (walker.nextNode()) {
+    const text = walker.currentNode;
+    if (text.textContent.includes("L-MAD") && !text.parentElement.closest("svg, code, pre")) naming.push(text);
+  }
+  naming.forEach((text) => {
+    // Last first, so the earlier offsets still hold as the node is split.
+    [...text.textContent.matchAll(/L-MAD/g)].reverse().forEach((m) => keepTogether(text, m.index, m.index + 5));
+  });
+}
+
+// A paragraph should not end on a word or two alone. `text-wrap: pretty` does this
+// where it is supported and only for some line counts, so the ending is held
+// together here: in Chinese the last four characters, or short Latin words, and the
+// punctuation after them; in English the last words, from a word start, adding up to
+// 12 to 17 characters, which fits even the columns of a project chain.
+const inChinese = root.lang.startsWith("zh");
+const ending = inChinese
+  ? /((?:[\u3400-\u9fff]|[0-9A-Za-z.%+-]{1,8} ?){1,4}[，。、；：？！）」』]*)\s*$/
+  : /(?:^|\s)(\S[\s\S]{10,16}?)\s*$/;
+const blank = (node) => node.nodeType === Node.TEXT_NODE && !node.textContent.trim();
+const closers = inChinese
+  ? "main :is(p, li, dd, td, figcaption, .chain-step, .step-more, .layer > span, .gate-flow span, .levels span)"
+  : "main :is(p, li, figcaption, .chain-step, .step-more, .layer > span, .gate-flow span, .levels span)";
+$$(closers).forEach((el) => {
+  if ($("p, li, ul, ol", el)) return;
+  let last = el.lastChild;
+  // The link in a diagram panel sits on its own line, after the sentence.
+  while (last && (blank(last) || (el.matches(".step-more") && last.nodeName === "A"))) last = last.previousSibling;
+  if (last?.nodeType !== Node.TEXT_NODE) return;
+  const found = last.textContent.match(ending);
+  if (!found) return;
+  const start = found.index + found[0].lastIndexOf(found[1]);
+  keepTogether(last, start, start + found[1].length);
+});
+
 // --- Menu (narrow screens) ---
 // The button sits before the menu in the DOM so Tab reaches the menu next.
 const navToggle = $(".nav-toggle");
@@ -359,6 +412,8 @@ if (notedNodes.length) {
     noteWidth = innerWidth;
   });
 }
+
+// --- Exhibits wider than their box ---
 
 // --- Clip players ---
 // The clips are ambient: each starts when it scrolls into view and stops when

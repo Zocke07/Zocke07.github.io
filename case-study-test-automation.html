@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-test-automation" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -178,9 +178,8 @@
           understanding this contract and declaring the right resources, so my suites were
           parallel-safe by construction.
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="lockstitle lockdesc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 300" role="img" aria-labelledby="lockstitle lockdesc">
               <title id="lockstitle">Six suites on one shared timeline under the resource lock manager</title>
               <desc id="lockdesc">Six test suites plotted as bars against time. Four start together and overlap freely. Suites four and five declare the same shared subsystem, so suite five does not start until suite four releases its lock.</desc>
 
@@ -223,7 +222,35 @@
               <rect class="fig-bar-accent" x="83" y="282" width="16" height="11" rx="2" />
               <text x="107" y="292" class="fig-tick">both declare the same shared subsystem; everything else overlaps freely</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 304" role="img" aria-labelledby="locks-down-title locks-down-desc">
+              <title id="locks-down-title">Six suites on one shared timeline under the resource lock manager</title>
+              <desc id="locks-down-desc">Six test suites plotted as bars against time. Four start together and overlap freely. Suites four and five declare the same shared subsystem, so suite five does not start until suite four releases its lock.</desc>
+              <defs>
+                <marker id="locks-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <rect class="fig-bar" x="60" y="8" width="134" height="22" rx="4" />
+              <rect class="fig-bar" x="60" y="42" width="94" height="22" rx="4" />
+              <rect class="fig-bar" x="60" y="76" width="161" height="22" rx="4" />
+              <rect class="fig-bar-accent" x="60" y="110" width="106" height="22" rx="4" />
+              <rect class="fig-bar-accent" x="190" y="150" width="124" height="22" rx="4" />
+              <rect class="fig-bar" x="60" y="204" width="124" height="22" rx="4" />
+              <line class="fig-grid" x1="60" y1="2" x2="60" y2="236" stroke-dasharray="3 3" />
+              <path class="fig-line" d="M60 236 L320 236" />
+              <path class="fig-line-accent" d="M166 121 L172 121 Q178 121 178 127 L178 155 Q178 161 184 161 L190 161" marker-end="url(#locks-down-arrow-hot)" />
+              <text class="fig-flow-label is-ink" x="52" y="24" text-anchor="end">Suite 1</text>
+              <text class="fig-flow-label is-ink" x="52" y="58" text-anchor="end">Suite 2</text>
+              <text class="fig-flow-label is-ink" x="52" y="92" text-anchor="end">Suite 3</text>
+              <text class="fig-flow-label is-ink" x="52" y="126" text-anchor="end">Suite 4</text>
+              <text class="fig-flow-on-accent" x="66" y="125.5">holds the lock</text>
+              <text class="fig-flow-label is-ink" x="52" y="166" text-anchor="end">Suite 5</text>
+              <text class="fig-flow-label is-hot" x="192" y="126">waits for the lock</text>
+              <text class="fig-flow-label is-hot" x="314" y="190" text-anchor="end">runs once it is free</text>
+              <text class="fig-flow-label is-ink" x="52" y="220" text-anchor="end">Suite 6</text>
+              <text class="fig-flow-label" x="60" y="254">start</text>
+              <text class="fig-flow-label" x="320" y="254" text-anchor="end">time</text>
+              <text class="fig-flow-label" x="24" y="278"><tspan x="24" dy="0">both declare the same shared subsystem;</tspan><tspan x="24" dy="18">everything else overlaps freely</tspan></text>
+              <rect class="fig-bar-accent" x="0" y="268" width="16" height="11" rx="2" />
+            </svg>
           <figcaption class="figcaption">
             Serialization is the exception, not the rule. Only the two suites that contend for the
             same subsystem are forced apart; the other four overlap freely, which is what keeps a
@@ -252,9 +279,8 @@
           the build. The gate is what makes a suite this size trustworthy: nobody debates
           whether a red build is "probably just flaky."
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="Diagram, scrollable">
-            <svg class="fig-svg" viewBox="0 0 700 210" role="img" aria-labelledby="gatetitle gatedesc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 210" role="img" aria-labelledby="gatetitle gatedesc">
               <title id="gatetitle">The merge gate a new suite has to clear</title>
               <desc id="gatedesc">A new suite passes through static analysis with zero warnings, then ten consecutive green runs, then five runs under network throttling, before it may be merged. A red result at any stage returns the suite to the start and the run count begins again.</desc>
 
@@ -301,7 +327,38 @@
               <path class="fig-line-accent" d="M512 152 L74 152 L74 105" marker-end="url(#ta-back-arrow)" />
               <text x="290" y="172" text-anchor="middle" class="fig-note">one red result and the count starts over at zero</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 370" role="img" aria-labelledby="gate-down-title gate-down-desc">
+              <title id="gate-down-title">The merge gate a new suite has to clear</title>
+              <desc id="gate-down-desc">A new suite passes through static analysis with zero warnings, then ten consecutive green runs, then five runs under network throttling, before it may be merged. A red result at any stage returns the suite to the start and the run count begins again.</desc>
+              <defs>
+                <marker id="gate-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+                <marker id="gate-down-arrow-hot" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--acc)" /></marker>
+              </defs>
+              <path class="fig-line" d="M88 84 L88 102" marker-end="url(#gate-down-arrow)" />
+              <path class="fig-line" d="M88 158 L88 176" marker-end="url(#gate-down-arrow)" />
+              <path class="fig-line" d="M88 232 L88 250" marker-end="url(#gate-down-arrow)" />
+              <path class="fig-line" d="M88 306 L88 324" marker-end="url(#gate-down-arrow)" />
+              <path class="fig-line-accent fig-flow-dashed" d="M176 130 L196 130" />
+              <path class="fig-line-accent fig-flow-dashed" d="M176 204 L196 204" />
+              <path class="fig-line-accent fig-flow-dashed" d="M176 278 L196 278" />
+              <path class="fig-line-accent" d="M196 278 L196 64 Q196 56 188 56 L176 56" marker-end="url(#gate-down-arrow-hot)" />
+              <text class="fig-flow-label" x="0" y="14">every new suite, no exceptions</text>
+              <text class="fig-flow-label is-hot" x="206" y="136"><tspan x="206" dy="0">one red result</tspan><tspan x="206" dy="18">and the count</tspan><tspan x="206" dy="18">starts over</tspan><tspan x="206" dy="18">at zero</tspan></text>
+              <rect class="fig-box" x="0" y="28" width="176" height="56" rx="10" />
+              <text class="fig-flow-step" x="88" y="50.3" text-anchor="middle">New suite</text>
+              <text class="fig-flow-sub" x="88" y="70.3" text-anchor="middle">for review</text>
+              <rect class="fig-box" x="0" y="102" width="176" height="56" rx="10" />
+              <text class="fig-flow-step" x="88" y="124.3" text-anchor="middle">Static analysis</text>
+              <text class="fig-flow-sub" x="88" y="144.3" text-anchor="middle">zero warnings</text>
+              <rect class="fig-box" x="0" y="176" width="176" height="56" rx="10" />
+              <text class="fig-flow-step" x="88" y="198.3" text-anchor="middle">10 runs green</text>
+              <text class="fig-flow-sub" x="88" y="218.3" text-anchor="middle">consecutively</text>
+              <rect class="fig-box" x="0" y="250" width="176" height="56" rx="10" />
+              <text class="fig-flow-step" x="88" y="272.3" text-anchor="middle">5 runs more</text>
+              <text class="fig-flow-sub" x="88" y="292.3" text-anchor="middle">slow network</text>
+              <rect class="fig-box-accent" x="0" y="324" width="176" height="44" rx="10" />
+              <text class="fig-flow-step is-hot" x="88" y="350.3" text-anchor="middle">Merge</text>
+            </svg>
           <figcaption class="figcaption">
             The word doing the work is <em>consecutively</em>. Ten green runs out of twelve would
             be a flaky suite with a good average; ten in a row is a suite that has not failed. A
@@ -351,6 +408,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

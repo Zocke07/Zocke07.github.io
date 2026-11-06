@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-capstone" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
@@ -384,8 +384,8 @@
           across any of them.
         </p>
 
-        <div class="chart">
-          <svg viewBox="0 0 640 250" role="img" aria-labelledby="chart-title chart-desc">
+        <div class="chart is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 640 250" role="img" aria-labelledby="chart-title chart-desc">
             <title id="chart-title">Test cases created and merged per year, 2020 to 2024</title>
             <desc id="chart-desc">Cases created rose from about 25 in 2020 to 2021, peaked near 80 in 2021 to 2022, fell to about 55 in 2022 to 2023, and fell again to under 30 in 2023 to 2024. Cases merged followed a flatter curve and exceeded cases created in the final two years.</desc>
 
@@ -436,6 +436,39 @@
               <text x="550" y="232">2023–24</text>
             </g>
           </svg>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 222" role="img" aria-labelledby="chart-down-title chart-down-desc">
+              <title id="chart-down-title">Test cases created and merged per year, 2020 to 2024</title>
+              <desc id="chart-down-desc">Cases created rose from about 25 in 2020 to 2021, peaked near 80 in 2021 to 2022, fell to about 55 in 2022 to 2023, and fell again to under 30 in 2023 to 2024. Cases merged followed a flatter curve and exceeded cases created in the final two years.</desc>
+              <defs>
+              </defs>
+              <line class="chart-grid" x1="38" y1="12" x2="320" y2="12" />
+              <line class="chart-grid" x1="38" y1="57" x2="320" y2="57" />
+              <line class="chart-grid" x1="38" y1="102" x2="320" y2="102" />
+              <line class="chart-grid" x1="38" y1="147" x2="320" y2="147" />
+              <line class="chart-grid" x1="38" y1="192" x2="320" y2="192" />
+              <text class="chart-label" x="31" y="17" text-anchor="end">100</text>
+              <text class="chart-label" x="31" y="62" text-anchor="end">75</text>
+              <text class="chart-label" x="31" y="107" text-anchor="end">50</text>
+              <text class="chart-label" x="31" y="152" text-anchor="end">25</text>
+              <text class="chart-label" x="31" y="197" text-anchor="end">0</text>
+              <text class="chart-label" x="73.25" y="214" text-anchor="middle">2020–21</text>
+              <text class="chart-label" x="143.75" y="214" text-anchor="middle">2021–22</text>
+              <text class="chart-label" x="214.25" y="214" text-anchor="middle">2022–23</text>
+              <text class="chart-label" x="284.75" y="214" text-anchor="middle">2023–24</text>
+              <rect class="chart-bar" x="51.25" y="147" width="44" height="45" rx="3" />
+              <text class="chart-value" x="73.25" y="165" text-anchor="middle">25</text>
+              <rect class="chart-bar" x="121.75" y="48" width="44" height="144" rx="3" />
+              <text class="chart-value" x="143.75" y="66" text-anchor="middle">80</text>
+              <rect class="chart-bar" x="192.25" y="93" width="44" height="99" rx="3" />
+              <text class="chart-value" x="214.25" y="111" text-anchor="middle">55</text>
+              <rect class="chart-bar" x="262.75" y="142" width="44" height="50" rx="3" />
+              <text class="chart-value" x="284.75" y="160" text-anchor="middle">28</text>
+              <polyline class="chart-line" points="73.25,152 143.75,80 214.25,84 284.75,133" />
+              <circle class="chart-dot" cx="73.25" cy="152" r="4" />
+              <circle class="chart-dot" cx="143.75" cy="80" r="4" />
+              <circle class="chart-dot" cx="214.25" cy="84" r="4" />
+              <circle class="chart-dot" cx="284.75" cy="133" r="4" />
+            </svg>
           <p class="chart-key">
             <span><i></i> Test cases created</span>
             <span><i class="dashed"></i> Test cases merged</span>
@@ -546,6 +579,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

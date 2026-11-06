@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-sky-scraper-escape" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -77,10 +77,10 @@
           <div><dt>形式</dt><dd class="format">設計筆記</dd></div>
           <div><dt>專案</dt><dd>課程專題，兩人團隊</dd></div>
           <div><dt>工具</dt><dd>C++、MFC</dd></div>
-          <div><dt>時間</dt><dd>2024 年 3 月至 6 月</dd></div>
+          <div><dt>時間</dt><dd>2024&nbsp;年 3&nbsp;月至 6&nbsp;月</dd></div>
           <div><dt>原始碼</dt><dd><a href="https://github.com/Zocke07/Sky-Scraper-Escape" target="_blank" rel="noopener">公開的程式碼庫</a></dd></div>
         </dl>
-        <h1>選單也只是另一個關卡</h1>
+        <h1>選單也只是<wbr>另一個關卡</h1>
         <p class="hero-blurb">
           作業要求做一款有七個關卡的遊戲，而且每一關都要不一樣；我們做的是 Sky Scraper Escape，駕駛飛機穿越城市天際線。底下那套教學用的遊戲框架在設計上只允許三種狀態，而且永遠只有三種。要把這兩個數字兜起來，其實就是整個專題的重點；我們最後的答案是一個基底類別，讓每個關卡與各個選單畫面全都變成同一種物件。
         </p>
@@ -88,12 +88,12 @@
           <strong>我的角色：</strong>團隊自行撰寫的遊戲程式碼大部分由我完成，包括關卡基底類別、玩家物件、整套選單系統，以及第一、五、六關。我的隊友負責第二、三、四、七關以及障礙物間距的演算法。這是大學專題，所以不同於我其他的案例研究，這篇可以直接把程式碼攤開來看。
         </p>
         <ul class="facts" role="list">
-          <li><strong>7</strong> 個關卡共用同一組介面</li>
-          <li><strong>2,237</strong> 行我們自己寫的 C++</li>
-          <li>其中 <strong>76%</strong> 由我完成</li>
-          <li><strong>17</strong> 個已合併的 pull request</li>
-          <li><strong>3</strong> 個月，2024 年 3 月到 6 月</li>
-          <li>主迴圈裡只有 <strong>1</strong> 個指標</li>
+          <li><strong>7</strong>&nbsp;個關卡共用同一組介面</li>
+          <li><strong>2,237</strong>&nbsp;行我們自己寫的 C++</li>
+          <li>其中 <strong>76%</strong>&nbsp;由我完成</li>
+          <li><strong>17</strong>&nbsp;個已合併的 pull request</li>
+          <li><strong>3</strong>&nbsp;個月，2024&nbsp;年 3&nbsp;月到 6&nbsp;月</li>
+          <li>主迴圈裡只有 <strong>1</strong>&nbsp;個指標</li>
         </ul>
         <aside class="source-note">
           <strong>這些數字怎麼來的：</strong>這是兩個人的專題，所以我沒有靠印象，而是用
@@ -130,7 +130,7 @@
           其實框架本身早就在做我們需要的事，只是高了一層。它握著一個指向當下狀態的指標，把事件轉發過去，而且從來不問那是哪一種狀態。所以我們把同一個想法往下複製一層：寫一個基底類別 <code>levelInit</code>，宣告和框架的 <code>CGameState</code>
           一模一樣的那組函式。我當初留在那些宣告上方的註解到現在還在，而那三個英文字就是整個設計：<em>imitates mygame_run functions</em>（模仿 mygame_run 的函式）。
         </p>
-        <div class="table-scroll is-wide" tabindex="0" role="group" aria-label="決策表，可捲動">
+        <div class="table-scroll is-wide">
           <table class="decision">
             <caption>八個畫面如何共用一個執行狀態</caption>
             <thead><tr><th scope="col">選項</th><th scope="col">換來什麼</th><th scope="col">付出什麼</th></tr></thead>
@@ -143,7 +143,7 @@
         <p>
           等到每個關卡都實作了那組介面，遊玩狀態就不再是一個分派器，而只是一個容器。它持有一個裝著基底類別指標的向量，以及一個指向當下元素的指標。
         </p>
-        <pre class="snippet" tabindex="0" role="group" aria-label="程式碼片段，可捲動"><code><span class="cm">// mygame.h：遊戲裡的每一個畫面，全部用同一種型別持有</span>
+        <pre class="snippet"><code><span class="cm">// mygame.h：遊戲裡的每一個畫面，全部用同一種型別持有</span>
 std::vector&lt;levels::levelInit*&gt; allLevels = {
     &amp;theMainMenu, &amp;theLevel1, &amp;theLevel2, &amp;theLevel3,
     &amp;theLevel4,   &amp;theLevel5, &amp;theLevel6, &amp;theLevel7
@@ -157,9 +157,8 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
         <p class="snippet-caption">
           遊玩狀態的十一個函式裡，有七個就長這樣：一行、轉發、沒有任何分支。
         </p>
-        <figure class="figure">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 700 330" role="img" aria-labelledby="skyarchtitle skyarchdesc">
+        <figure class="figure is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 330" role="img" aria-labelledby="skyarchtitle skyarchdesc">
               <title id="skyarchtitle">同一種間接層做了兩次，下面那層是照著上面那層抄的</title>
               <desc id="skyarchdesc">框架持有一張固定的三個遊戲狀態表格，並把事件轉發給當前的那一個。遊玩狀態在下一層重複了同樣的模式：它持有一個指標，指向一個含八個關卡物件的向量，也就是關卡選擇選單加上七個關卡，並把同樣的十一個事件函式轉發給當前的那一個。</desc>
 
@@ -179,7 +178,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
               <rect class="fig-box" x="435" y="32" width="130" height="46" rx="6" />
               <text x="500" y="60" text-anchor="middle" class="fig-label">over</text>
 
-              <text x="350" y="95" text-anchor="middle" class="fig-tick">CGameState *gameStateTable[3]　—　你加不了第四個</text>
+              <text x="350" y="95" text-anchor="middle" class="fig-tick">CGameState *gameStateTable[3]：你加不了第四個</text>
 
               <line class="fig-line" x1="350" y1="100" x2="350" y2="124" marker-end="url(#sky-arrow)" />
 
@@ -213,7 +212,45 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
 
               <text x="41" y="312" class="fig-tick">關卡選擇畫面不是關卡，但它是同一種型別，所以不需要任何特例</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 426" role="img" aria-labelledby="skyarch-down-title skyarch-down-desc">
+              <title id="skyarch-down-title">同一種間接層做了兩次，下面那層是照著上面那層抄的</title>
+              <desc id="skyarch-down-desc">框架持有一張固定的三個遊戲狀態表格，並把事件轉發給當前的那一個。遊玩狀態在下一層重複了同樣的模式：它持有一個指標，指向一個含八個關卡物件的向量，也就是關卡選擇選單加上七個關卡，並把同樣的十一個事件函式轉發給當前的那一個。</desc>
+              <defs>
+                <marker id="skyarch-down-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="8.5" markerHeight="8.5" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="var(--wire)" /></marker>
+              </defs>
+              <path class="fig-line" d="M160 112 L160 134" marker-end="url(#skyarch-down-arrow)" />
+              <path class="fig-line" d="M60 208 L60 252" marker-end="url(#skyarch-down-arrow)" />
+              <text class="fig-flow-step" x="160" y="14" text-anchor="middle">框架，固定就是三個狀態</text>
+              <text class="fig-flow-label" x="160" y="86" text-anchor="middle"><tspan x="160" dy="0">CGameState *gameStateTable[3]：</tspan><tspan x="160" dy="18">你加不了第四個</tspan></text>
+              <text class="fig-flow-label is-hot" x="72" y="227"><tspan x="72" dy="0">同樣那十一個函式，</tspan><tspan x="72" dy="18">原封不動地轉發</tspan></text>
+              <text class="fig-flow-code" x="160" y="270" text-anchor="middle">std::vector&lt;levels::levelInit*&gt; allLevels</text>
+              <text class="fig-flow-label" x="0" y="400"><tspan x="0" dy="0">關卡選擇畫面不是關卡，但它是同一種型別，</tspan><tspan x="0" dy="18">所以不需要任何特例</tspan></text>
+              <rect class="fig-box" x="0" y="26" width="96" height="40" rx="10" />
+              <text class="fig-flow-step" x="48" y="50.3" text-anchor="middle">init</text>
+              <rect class="fig-box-accent" x="112" y="26" width="96" height="40" rx="10" />
+              <text class="fig-flow-step is-hot" x="160" y="50.3" text-anchor="middle">run</text>
+              <rect class="fig-box" x="224" y="26" width="96" height="40" rx="10" />
+              <text class="fig-flow-step" x="272" y="50.3" text-anchor="middle">over</text>
+              <rect class="fig-box-accent" x="0" y="134" width="320" height="74" rx="10" />
+              <text class="fig-flow-step" x="160" y="156.3" text-anchor="middle">CGameStateRun</text>
+              <text class="fig-flow-sub" x="160" y="176.3" text-anchor="middle"><tspan x="160" dy="0">持有 levelInit* current，</tspan><tspan x="160" dy="18">而且不對任何東西做分支</tspan></text>
+              <rect class="fig-box-muted" x="0" y="282" width="76" height="44" rx="8" />
+              <text class="fig-flow-code" x="38" y="299.6" text-anchor="middle"><tspan x="38" dy="0">選單</tspan><tspan x="38" dy="17">[0]</tspan></text>
+              <rect class="fig-box" x="81.33" y="282" width="76" height="44" rx="8" />
+              <text class="fig-flow-code" x="119.33" y="308.1" text-anchor="middle">關卡 1</text>
+              <rect class="fig-box" x="162.66" y="282" width="76" height="44" rx="8" />
+              <text class="fig-flow-code" x="200.66" y="308.1" text-anchor="middle">關卡 2</text>
+              <rect class="fig-box" x="243.99" y="282" width="76" height="44" rx="8" />
+              <text class="fig-flow-code" x="281.99" y="308.1" text-anchor="middle">關卡 3</text>
+              <rect class="fig-box" x="0" y="334" width="76" height="44" rx="8" />
+              <text class="fig-flow-code" x="38" y="360.1" text-anchor="middle">關卡 4</text>
+              <rect class="fig-box" x="81.33" y="334" width="76" height="44" rx="8" />
+              <text class="fig-flow-code" x="119.33" y="360.1" text-anchor="middle">關卡 5</text>
+              <rect class="fig-box" x="162.66" y="334" width="76" height="44" rx="8" />
+              <text class="fig-flow-code" x="200.66" y="360.1" text-anchor="middle">關卡 6</text>
+              <rect class="fig-box" x="243.99" y="334" width="76" height="44" rx="8" />
+              <text class="fig-flow-code" x="281.99" y="360.1" text-anchor="middle">關卡 7</text>
+            </svg>
           <figcaption class="figcaption">
             最下面那一排，正是框架原本永遠不會允許的東西。八個畫面躲在同一個型別的同一個指標背後，所以要加第八個關卡，是多加一個元素，而不是去改一個分派器。選單擺在索引零的位置，是這個抽象到底成不成立的檢驗：只要它需要自己的分支，這個形狀就漏了。
           </figcaption>
@@ -232,7 +269,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
           光有介面還不足以回本。基底類別同時把七個關卡真正共用的東西全部吸收進來，新的關卡檔案才寫得短。
         </p>
 
-        <h3>每個關卡本來都得重寫一次的部分</h3>
+        <h3>每個關卡<wbr>本來都得重寫一次的部分</h3>
         <p>
           它持有飛機、背景、爆炸圖，以及遊戲中的各種選單，也實作了與之對應的行為：每一影格套用飛機的移動、繪製背景與飛機與殘骸，以及組出畫面上的即時資訊（HUD）文字。想要多顯示一些數值的關卡，只要覆寫 <code>getText</code>，把自己的內容接在基底類別回傳的結果後面就好；第五關的倒數計時、第七關顯示目前重力朝哪個方向，都是這樣做的。
         </p>
@@ -295,7 +332,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
           每個關卡的 <code>OnShow</code> 裡面都重複著同樣的那四十行：跑過所有障礙物、判斷碰撞、加分、檢查是否通關，再決定要畫哪一個彈出視窗。一行一行比對下來，七份複製品之間彼此的差異都不超過幾行。每個關卡甚至還各自重新宣告自己的 <code>building</code> 與 <code>cloud</code> 向量，而不是從基底類別繼承，於是七個關卡唯一確定共有的東西，剛好就是基底類別沒有持有的東西。這個迴圈本來就該由它持有，各個關卡只要把自己的障礙物交出來就好。我沒有動手重構，是因為「往外加」很容易，「重新整理」很麻煩，而這正是重複的程式碼能安然通過審查的原因。
         </p>
 
-        <h3>這個抽象被用我做出它的那個下午命名</h3>
+        <h3>這個抽象被用<wbr>我做出它的那個下午<wbr>命名</h3>
         <p>
           基底類別叫做 <code>levelInit</code>。它並沒有特別初始化什麼東西，它就是關卡的介面，名字也應該這樣取。等到這件事變得明顯時，這個名稱已經散在每一個關卡檔案裡，改名感覺比實際上更大工程。專案的最後一個提交標題就是「Rename class to avoid confusion」（改掉類別名稱以免混淆），而它改的是另一個名字，不是這一個。
         </p>
@@ -310,7 +347,7 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
           飛機每一影格就是往它當下的方向固定移動四個像素，而跳躍則是一個目標高度，用同樣的速率一格一格走過去。整個過程沒有速度也沒有加速度，所以飛行軌跡是好幾段直線接起來的，而不是一條曲線。玩起來還過得去，所以它就這樣留下來了，但要說那是重力，實在有點客氣。
         </p>
 
-        <h3>分派器其實還是知道自己在第幾關</h3>
+        <h3>分派器其實還是<wbr>知道自己在第幾關</h3>
         <p>
           遊玩狀態在轉發每一個輸入與每一次更新時，都不會過問現在面對的是哪一關。繪製才是破口。它總共讀了三次關卡編號：一次決定要不要開始播放背景音樂，一次決定要不要整個略過 HUD，還有一次是把第三關的 HUD 印成白色，因為那一關把畫面壓暗了，黑色文字會整個看不見。前兩次其實問的是「這是不是選單」，而型別本來就知道答案，也本來就可以回答。第三次才是真正的單關特例，而且剛好就落在我宣稱不會有分支的那個地方。
         </p>
@@ -346,6 +383,6 @@ void CGameStateRun::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>

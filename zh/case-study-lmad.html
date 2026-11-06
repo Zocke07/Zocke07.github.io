@@ -38,7 +38,7 @@
   <link rel="alternate" hreflang="x-default" href="https://zocke07.github.io/case-study-lmad" />
   <link rel="preload" href="/assets/fonts/recursive.woff2" as="font" type="font/woff2" crossorigin />
   <!-- ?v= is a hash of the file, stamped by tools/bump.py; do not edit by hand. -->
-  <link rel="stylesheet" href="/assets/css/style.css?v=9d62b680" />
+  <link rel="stylesheet" href="/assets/css/style.css?v=b30a21e6" />
 </head>
 <body>
   <a class="skip-link" href="#main">跳至主要內容</a>
@@ -77,10 +77,10 @@
           <div><dt>形式</dt><dd class="format">案例研究</dd></div>
           <div><dt>專案</dt><dd>碩士論文，軟體安全實驗室</dd></div>
           <div><dt>工具</dt><dd>PyTorch、Flower、Python</dd></div>
-          <div><dt>時間</dt><dd>2025–2026 年</dd></div>
+          <div><dt>時間</dt><dd>2025–2026&nbsp;年</dd></div>
           <div><dt>原始碼</dt><dd><a href="https://github.com/Zocke07/L-MAD" target="_blank" rel="noopener">GitHub 上的實驗程式碼</a></dd></div>
         </dl>
-        <h1>說得出自己何時失效的防禦</h1>
+        <h1>說得出自己<wbr>何時失效的防禦</h1>
         <p class="hero-blurb">
           聯邦式學習讓一群從不交出原始資料的裝置共同訓練同一個模型。但這項隱私保證本身就是攻擊面：伺服器看得到的是模型更新，而不是背後的資料，所以只要有用戶端刻意毒化自己的更新，就能把全域模型帶往它想要的方向，而伺服器手上沒有任何可供比對的真實答案。我的論文提出
           <strong>L-MAD</strong>，一套照著邊緣裝置資源預算設計的防禦機制，並用最後一整章交代它究竟在什麼條件下會失效。
@@ -89,12 +89,12 @@
           <strong>我的角色：</strong>獨立作者，論文題目為<em>基於信任感知之逐層中位數絕對偏差 (L-MAD) 之聯邦邊緣學習拜占庭強健聚合機制</em>，指導教授為陳香君博士，於國立臺北科技大學軟體安全實驗室完成。方法設計、實作、六個重新實作的比較基準、整套實驗，以及這份 100 頁的論文本身。已於 2026 年 7 月通過口試。
         </p>
         <ul class="facts" role="list">
-          <li>30% 毒化攻擊下 DDoS 類別 F&#8321; 達 <strong>97.5%</strong></li>
-          <li>領先最強基準 <strong>25.7</strong> 個百分點</li>
-          <li>速度為最接近的逐層防禦的 <strong>2.6&#215;</strong></li>
-          <li>重新實作 <strong>6</strong> 套競爭防禦方法</li>
-          <li><strong>21</strong> 組實驗、20 組隨機種子</li>
-          <li>伺服器端輔助資料 <strong>0</strong> 筆</li>
+          <li>30%&nbsp;毒化攻擊下 DDoS 類別 F&#8321; 達&nbsp;<strong>97.5%</strong></li>
+          <li>領先最強基準 <strong>25.7</strong>&nbsp;個百分點</li>
+          <li>速度為最接近的<wbr>逐層防禦的&nbsp;<strong>2.6&#215;</strong></li>
+          <li>重新實作 <strong>6</strong>&nbsp;套競爭防禦方法</li>
+          <li><strong>21</strong>&nbsp;組實驗、20&nbsp;組隨機種子</li>
+          <li>伺服器端輔助資料 <strong>0</strong>&nbsp;筆</li>
         </ul>
         <aside class="nda-note">
           <strong>關於本文範圍：</strong>這頁是寫給一般軟體讀者的摘要，不能取代論文本身。圖表與流程圖都是依論文的原始結果與原始檔重繪，目的是讓它們跟著本站的淺色與深色主題走。數值沒有經過任何重新縮放或改寫，全部就是論文定稿的數字。
@@ -310,9 +310,8 @@
         <p>
           通過第一階段的用戶端，接著逐層與該層的母體中位數比對，容許範圍由中位數絕對偏差（MAD）決定。MAD 的崩潰點是 50%，這是任何位置估計量所能達到的上限，而平均數是 0%。超過門檻的那一層會被<em>單獨</em>丟棄，該用戶端其餘的層照常參與聚合。
         </p>
-        <figure class="figure is-loose">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 700 300" role="img" aria-labelledby="fig2title fig2desc">
+        <figure class="figure is-loose is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 300" role="img" aria-labelledby="fig2title fig2desc">
 <title id="fig2title">整體用戶端拒斥與逐層拒斥的比較</title>
 <desc id="fig2desc">兩個由六個用戶端乘以四層構成的網格。在整體用戶端拒斥下，兩個遭毒化的用戶端被完全丟棄，共八格。在 L-MAD 下只有各自的兩個遭毒化決策層被丟棄，因此有四個良性的層得以保留。</desc>
 <text x="190" y="46" text-anchor="middle" class="fig-panel-title">整體用戶端拒斥</text>
@@ -390,7 +389,91 @@
 <rect x="300" y="250" width="18" height="14" rx="3" fill="var(--acc)" fill-opacity="0.18" stroke="var(--acc)" stroke-width="1.5"/>
 <text x="325" y="261" class="fig-tick">整體拒斥規則會一併丟掉的良性層</text>
 </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 460" role="img" aria-labelledby="fig2-down-title fig2-down-desc">
+              <title id="fig2-down-title">整體用戶端拒斥與逐層拒斥的比較</title>
+              <desc id="fig2-down-desc">兩個由六個用戶端乘以四層構成的網格。在整體用戶端拒斥下，兩個遭毒化的用戶端被完全丟棄，共八格。在 L-MAD 下只有各自的兩個遭毒化決策層被丟棄，因此有四個良性的層得以保留。</desc>
+              <defs>
+              </defs>
+              <text class="fig-flow-step" x="0" y="14">整體用戶端拒斥</text>
+              <text class="fig-flow-label" x="0" y="47">L1</text>
+              <text class="fig-flow-label" x="0" y="79">L2</text>
+              <text class="fig-flow-label" x="0" y="111">L3</text>
+              <text class="fig-flow-label" x="0" y="143">L4</text>
+              <text class="fig-flow-label" x="30" y="170">用戶端 1 – 6（2 與 5 遭毒化）</text>
+              <text class="fig-flow-step" x="0" y="206">L-MAD：逐層拒斥</text>
+              <text class="fig-flow-label" x="0" y="239">L1</text>
+              <text class="fig-flow-label" x="0" y="271">L2</text>
+              <text class="fig-flow-label" x="0" y="303">L3</text>
+              <text class="fig-flow-label" x="0" y="335">L4</text>
+              <text class="fig-flow-label" x="30" y="362">用戶端 1 – 6（2 與 5 遭毒化）</text>
+              <rect class="fig-box" x="0" y="379" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="390">納入聚合</text>
+              <rect class="fig-box-muted" x="0" y="401" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="412">遭到拒斥</text>
+              <rect class="fig-box-accent" x="0" y="423" width="20" height="14" rx="4" />
+              <text class="fig-flow-label" x="28" y="434">整體拒斥規則</text>
+              <text class="fig-flow-label" x="28" y="452">會一併丟掉的良性層</text>
+              <rect class="fig-box" x="30" y="28" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="28" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 37 L102 47 M102 37 L92 47" />
+              <rect class="fig-box" x="122" y="28" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="28" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="28" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 37 L240 47 M240 37 L230 47" />
+              <rect class="fig-box" x="260" y="28" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="60" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="60" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 69 L102 79 M102 69 L92 79" />
+              <rect class="fig-box" x="122" y="60" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="60" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="60" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 69 L240 79 M240 69 L230 79" />
+              <rect class="fig-box" x="260" y="60" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="92" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="92" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 101 L102 111 M102 101 L92 111" />
+              <rect class="fig-box" x="122" y="92" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="92" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="92" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 101 L240 111 M240 101 L230 111" />
+              <rect class="fig-box" x="260" y="92" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="124" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="124" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 133 L102 143 M102 133 L92 143" />
+              <rect class="fig-box" x="122" y="124" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="124" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="124" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 133 L240 143 M240 133 L230 143" />
+              <rect class="fig-box" x="260" y="124" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box-accent" x="76" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="122" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box-accent" x="214" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="260" y="220" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box-accent" x="76" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="122" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box-accent" x="214" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="260" y="252" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="284" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="284" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 293 L102 303 M102 293 L92 303" />
+              <rect class="fig-box" x="122" y="284" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="284" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="284" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 293 L240 303 M240 293 L230 303" />
+              <rect class="fig-box" x="260" y="284" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="30" y="316" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="76" y="316" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M92 325 L102 335 M102 325 L92 335" />
+              <rect class="fig-box" x="122" y="316" width="42" height="28" rx="5" />
+              <rect class="fig-box" x="168" y="316" width="42" height="28" rx="5" />
+              <rect class="fig-box-muted" x="214" y="316" width="42" height="28" rx="5" />
+              <path class="fig-line" d="M230 325 L240 335 M240 325 L230 335" />
+              <rect class="fig-box" x="260" y="316" width="42" height="28" rx="5" />
+            </svg>
           <figcaption class="figcaption">
             拒斥的單位。整體用戶端規則為了移除兩個攻擊者丟掉八格，逐層閘門只丟掉四格，其餘保留。標示出來的那幾格就是兩者的差別。
           </figcaption>
@@ -606,7 +689,7 @@
         <p>
           基準威脅模型是 30% 的目標式標籤翻轉攻擊，也就是十個用戶端中有三個把正常流量標記成攻擊流量，資料集為 DNN-EdgeIIoT。由於類別比例約為 4.8 比 1，主要指標採用 DDoS 類別的 F&#8321; 而非準確率。攻擊成功率則是遭毒化模型把正常流量誤判為攻擊的比例，因此越低越好。
         </p>
-        <div class="table-scroll" tabindex="0" role="group" aria-label="表格，可捲動">
+        <div class="table-scroll">
           <table class="result-table">
             <caption class="sr-only">30% 標籤翻轉基準攻擊下的防禦能力</caption>
             <thead>
@@ -623,9 +706,8 @@
             </tbody>
           </table>
         </div>
-        <figure class="figure is-loose">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 700 320" role="img" aria-labelledby="f1title f1desc">
+        <figure class="figure is-loose is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 700 320" role="img" aria-labelledby="f1title f1desc">
               <title id="f1title">在 30% 標籤翻轉攻擊的參考情境下，DDoS 類別的 F1</title>
               <desc id="f1desc">七種聚合策略的橫向長條圖。L-MAD 達到 97.5%，與它自己在乾淨資料上的 97.1% 幾乎齊平。最強的基線 Krum 為 71.9%，未設防的 FedAvg 則為 48.4%。</desc>
 
@@ -655,7 +737,7 @@
               <rect class="fig-bar" x="150" y="174" width="291.6" height="22" rx="3" />
               <text x="447" y="190" class="fig-tick">59.5</text>
 
-              <text x="140" y="225" text-anchor="end" class="fig-label">Trimmed Mean</text>
+              <text x="140" y="225" text-anchor="end" class="fig-label">截尾平均數</text>
               <rect class="fig-bar" x="150" y="210" width="251.9" height="22" rx="3" />
               <text x="408" y="226" class="fig-tick">51.4</text>
 
@@ -674,7 +756,46 @@
               <text x="640" y="294" text-anchor="middle" class="fig-tick">100</text>
               <text x="395" y="314" text-anchor="middle" class="fig-axis">30% 標籤翻轉攻擊下的 DDoS 類別 F&#8321;（%）</text>
             </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 316" role="img" aria-labelledby="f1-down-title f1-down-desc">
+              <title id="f1-down-title">在 30% 標籤翻轉攻擊的參考情境下，DDoS 類別的 F1</title>
+              <desc id="f1-down-desc">七種聚合策略的橫向長條圖。L-MAD 達到 97.5%，與它自己在乾淨資料上的 97.1% 幾乎齊平。最強的基線 Krum 為 71.9%，未設防的 FedAvg 則為 48.4%。</desc>
+              <defs>
+              </defs>
+              <line class="fig-grid" x1="106" y1="24" x2="106" y2="248" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="148.5" y1="24" x2="148.5" y2="248" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="191" y1="24" x2="191" y2="248" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="233.5" y1="24" x2="233.5" y2="248" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="276" y1="24" x2="276" y2="248" stroke-dasharray="2 4" />
+              <path class="fig-line-accent" d="M271.07 22 L271.07 248" stroke-dasharray="4 3" />
+              <text class="fig-flow-label is-hot" x="320" y="14" text-anchor="end">L-MAD 在乾淨資料上的表現，97.1</text>
+              <text class="fig-flow-label" x="106" y="266" text-anchor="middle">0</text>
+              <text class="fig-flow-label" x="148.5" y="266" text-anchor="middle">25</text>
+              <text class="fig-flow-label" x="191" y="266" text-anchor="middle">50</text>
+              <text class="fig-flow-label" x="233.5" y="266" text-anchor="middle">75</text>
+              <text class="fig-flow-label" x="276" y="266" text-anchor="middle">100</text>
+              <text class="fig-flow-label is-hot is-strong" x="99" y="45" text-anchor="end">L-MAD</text>
+              <text class="fig-flow-label is-hot is-strong" x="276.75" y="45">97.5</text>
+              <text class="fig-flow-label is-ink" x="99" y="77" text-anchor="end">Krum</text>
+              <text class="fig-flow-label" x="233.23" y="77">71.9</text>
+              <text class="fig-flow-label is-ink" x="99" y="109" text-anchor="end">ATTA-FL-Lite</text>
+              <text class="fig-flow-label" x="223.2" y="109">66.0</text>
+              <text class="fig-flow-label is-ink" x="99" y="141" text-anchor="end">LGP</text>
+              <text class="fig-flow-label" x="221.16" y="141">64.8</text>
+              <text class="fig-flow-label is-ink" x="99" y="173" text-anchor="end">BRAFL</text>
+              <text class="fig-flow-label" x="212.15" y="173">59.5</text>
+              <text class="fig-flow-label is-ink" x="99" y="205" text-anchor="end">截尾平均數</text>
+              <text class="fig-flow-label" x="198.38" y="205">51.4</text>
+              <text class="fig-flow-label is-ink" x="99" y="237" text-anchor="end">FedAvg</text>
+              <text class="fig-flow-label" x="193.28" y="237">48.4</text>
+              <text class="fig-flow-label" x="161" y="290" text-anchor="middle"><tspan x="161" dy="0">30% 標籤翻轉攻擊下的</tspan><tspan x="161" dy="18">DDoS 類別 F₁（%）</tspan></text>
+              <rect class="fig-bar-accent" x="106" y="29" width="165.8" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="61" width="122.2" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="93" width="112.2" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="125" width="110.2" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="157" width="101.1" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="189" width="87.4" height="22" rx="3" />
+              <rect class="fig-bar" x="106" y="221" width="82.3" height="22" rx="3" />
+            </svg>
           <figcaption class="figcaption">
             那條虛線才是最要緊的數字：L-MAD 在乾淨資料上的分數。攻擊只讓它移動不到半個百分點，所以這根長條並不是「一片重傷的戰場裡最好看的那一個」，而是一套攻擊幾乎沒能撼動的防禦。它與最強基線 Krum 之間的差距，比 Krum 與完全不設防之間的差距還要大。
           </figcaption>
@@ -690,9 +811,8 @@
         <p>
           守得住卻塞不進資源預算，就不算是邊緣防禦。對上它唯一的逐層同類 LGP，這裡沒有取捨可談：L-MAD 同時快上約 2.6&#215;<em>並且</em>強健得多。對上便宜的傳統規則，取捨確實存在但幅度不大，大約是每輪比 Krum 多 18 毫秒，換來 25.7 個百分點的 F&#8321;。
         </p>
-        <figure class="figure is-loose">
-          <div class="figure-scroll" tabindex="0" role="group" aria-label="圖表，可捲動">
-            <svg class="fig-svg" viewBox="0 0 640 400" role="img" aria-labelledby="fig1title fig1desc">
+        <figure class="figure is-loose is-twin is-column">
+            <svg class="fig-svg is-across" viewBox="0 0 640 400" role="img" aria-labelledby="fig1title fig1desc">
 <title id="fig1title">七種方法的聚合成本與強健性對照</title>
 <desc id="fig1desc">以每輪伺服器平均聚合時間（毫秒）對 DDoS 類別 F1 分數繪製的散布圖。L-MAD 位於 21 毫秒、97.5% 的位置，是所有方法中 F1 最高者，與 FedAvg 及 Krum 同處柏拉圖前緣。</desc>
 <line x1="78" y1="330.0" x2="604" y2="330.0" stroke="var(--edge)" stroke-width="1"/>
@@ -741,7 +861,55 @@
 <text x="20" y="182" text-anchor="middle" class="fig-axis" transform="rotate(-90 20 182)">DDoS 類別 F&#8321;（%）</text>
 <text x="312" y="136" class="fig-note">柏拉圖前緣</text>
 </svg>
-          </div>
+            <svg class="fig-svg is-down" viewBox="-1 -1 322 332" role="img" aria-labelledby="fig1-down-title fig1-down-desc">
+              <title id="fig1-down-title">七種方法的聚合成本與強健性對照</title>
+              <desc id="fig1-down-desc">以每輪伺服器平均聚合時間（毫秒）對 DDoS 類別 F1 分數繪製的散布圖。L-MAD 位於 21 毫秒、97.5% 的位置，是所有方法中 F1 最高者，與 FedAvg 及 Krum 同處柏拉圖前緣。</desc>
+              <defs>
+              </defs>
+              <line class="fig-grid" x1="38" y1="264" x2="318" y2="264" />
+              <line class="fig-grid" x1="38" y1="225.4" x2="318" y2="225.4" />
+              <line class="fig-grid" x1="38" y1="186.6" x2="318" y2="186.6" />
+              <line class="fig-grid" x1="38" y1="148" x2="318" y2="148" />
+              <line class="fig-grid" x1="38" y1="109.4" x2="318" y2="109.4" />
+              <line class="fig-grid" x1="38" y1="70.6" x2="318" y2="70.6" />
+              <line class="fig-grid" x1="38" y1="32" x2="318" y2="32" />
+              <line class="fig-grid" x1="58.6" y1="32" x2="58.6" y2="264" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="124.2" y1="32" x2="124.2" y2="264" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="173.8" y1="32" x2="173.8" y2="264" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="223.4" y1="32" x2="223.4" y2="264" stroke-dasharray="2 4" />
+              <line class="fig-grid" x1="289" y1="32" x2="289" y2="264" stroke-dasharray="2 4" />
+              <path class="fig-line" d="M38 32 L38 264 L318 264" />
+              <polyline points="58.6,231.5 87.6,140.8 226.9,41.6" fill="none" stroke="var(--acc)" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.55" />
+              <text class="fig-flow-label" x="0" y="14">DDoS 類別 F₁（%）</text>
+              <text class="fig-flow-label" x="31" y="269" text-anchor="end">40</text>
+              <text class="fig-flow-label" x="31" y="230.359" text-anchor="end">50</text>
+              <text class="fig-flow-label" x="31" y="191.641" text-anchor="end">60</text>
+              <text class="fig-flow-label" x="31" y="153" text-anchor="end">70</text>
+              <text class="fig-flow-label" x="31" y="114.359" text-anchor="end">80</text>
+              <text class="fig-flow-label" x="31" y="75.6405" text-anchor="end">90</text>
+              <text class="fig-flow-label" x="31" y="37" text-anchor="end">100</text>
+              <text class="fig-flow-label" x="58.6008" y="282" text-anchor="middle">2</text>
+              <text class="fig-flow-label" x="124.183" y="282" text-anchor="middle">5</text>
+              <text class="fig-flow-label" x="173.795" y="282" text-anchor="middle">10</text>
+              <text class="fig-flow-label" x="223.407" y="282" text-anchor="middle">20</text>
+              <text class="fig-flow-label" x="288.989" y="282" text-anchor="middle">50</text>
+              <text class="fig-flow-label is-ink" x="50.6" y="251.5">FedAvg</text>
+              <text class="fig-flow-label is-ink" x="77.6" y="145.8" text-anchor="end">Krum</text>
+              <text class="fig-flow-label is-ink" x="106.6" y="224.9">截尾平均數</text>
+              <text class="fig-flow-label is-ink" x="134.2" y="193.5">BRAFL</text>
+              <text class="fig-flow-label is-hot is-strong" x="240.9" y="46.6">L-MAD</text>
+              <text class="fig-flow-label is-ink" x="295" y="150.4" text-anchor="end">ATTA-FL-Lite</text>
+              <text class="fig-flow-label is-ink" x="293.8" y="190.1" text-anchor="middle">LGP</text>
+              <text class="fig-flow-label is-hot" x="172" y="104">柏拉圖前緣</text>
+              <text class="fig-flow-label" x="178" y="306" text-anchor="middle"><tspan x="178" dy="0">每輪伺服器平均聚合時間</tspan><tspan x="178" dy="18">（毫秒，對數尺度）</tspan></text>
+              <circle cx="58.6" cy="231.5" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="87.6" cy="140.8" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="96.6" cy="219.9" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="124.2" cy="188.5" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="283" cy="163.4" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="295.8" cy="168.1" r="4.5" fill="var(--paper)" stroke="var(--mut)" stroke-width="2" />
+              <circle cx="226.9" cy="41.6" r="11" fill="var(--acc)" opacity="0.18" /><circle cx="226.9" cy="41.6" r="6" fill="var(--acc)" />
+            </svg>
           <figcaption class="figcaption">
             當沒有任何其他方法同時比它更便宜又更強健時，該方法就位於柏拉圖前緣上。符合條件的只有 FedAvg、Krum 與 L-MAD。截尾平均數、BRAFL、ATTA-FL-Lite 與 LGP 都被 Krum 全面壓過。時間為固定核心上的實際時鐘量測，順序可重現，絕對數值會隨機器負載浮動。
           </figcaption>
@@ -762,7 +930,7 @@
           引用論文上的數字，等於是拿自己調校過的方法去比對方在他們資料集上的預設設定。所以六個基準方法全部在同一套框架裡重建，而且最接近的競爭方法還另外跑了自己的參數掃描，讓比較對上的是它的最佳設定而不是第一個設定。其中兩個基準實作附有自己的 pytest 測試，另外資料載入器、標籤翻轉轉換與模型也各自有測試，因為競爭方法裡一個沒被發現的錯誤，等於是替我自己憑空製造出結果。
         </p>
 
-        <h3>這些數字是從哪條資料管線跑出來的</h3>
+        <h3>這些數字是從<wbr>哪條資料管線<wbr>跑出來的</h3>
         <p>
           強健性的結論，好不過它底下那條資料路徑，所以在任何策略開跑之前，這條路徑的兩半都已經固定下來。前處理是決定性的，而且只在訓練切分上擬合。異質性則住在切分這一步：由 Dirichlet 分配決定各標籤在用戶端之間分布得多不平均，而這正是下面那組掃描要移動的軸。
         </p>
@@ -1115,7 +1283,7 @@
         <figure class="figure is-twin">
             <svg class="fig-svg is-across" viewBox="-1 -1 1102 232" role="img" aria-labelledby="asr-across-title asr-across-desc">
               <title id="asr-across-title">各訓練回合的攻擊成功率，每個策略一張小圖</title>
-              <desc id="asr-across-desc">七張攻擊成功率對訓練回合（第 0 到 20 回合）的小型折線圖，分別對應 FedAvg、Krum、Trimmed Mean、LGP、BRAFL、ATTA-FL-Lite 與 L-MAD。每條線是三個種子的平均，帶狀範圍為一個標準差。所有策略都從 0.31 左右開始。FedAvg 最後約 0.52、Krum 0.26、Trimmed Mean 0.44、LGP 0.33、BRAFL 0.39、ATTA-FL-Lite 0.29，帶狀範圍大多很寬。L-MAD 在第 3 回合就降到接近零，並維持在那裡。</desc>
+              <desc id="asr-across-desc">七張攻擊成功率對訓練回合（第 0 到 20 回合）的小型折線圖，分別對應 FedAvg、Krum、截尾平均數、LGP、BRAFL、ATTA-FL-Lite 與 L-MAD。每條線是三個種子的平均，帶狀範圍為一個標準差。所有策略都從 0.31 左右開始。FedAvg 最後約 0.52、Krum 0.26、截尾平均數 0.44、LGP 0.33、BRAFL 0.39、ATTA-FL-Lite 0.29，帶狀範圍大多很寬。L-MAD 在第 3 回合就降到接近零，並維持在那裡。</desc>
               <line class="fig-grid" x1="56.0" y1="180" x2="191.4" y2="180" />
               <line class="fig-grid" x1="56.0" y1="105.0" x2="191.4" y2="105.0" />
               <line class="fig-grid" x1="56.0" y1="30" x2="191.4" y2="30" />
@@ -1151,7 +1319,7 @@
               <line class="fig-grid" x1="494.2" y1="30" x2="494.2" y2="180" />
               <polygon class="fig-band" points="358.8,99.4 365.6,86.0 372.3,83.8 379.1,85.9 385.9,85.5 392.7,86.5 399.4,86.9 406.2,86.4 413.0,90.9 419.7,91.9 426.5,89.9 433.3,93.0 440.0,91.0 446.8,93.1 453.6,87.7 460.4,88.6 467.1,88.8 473.9,88.6 480.7,86.5 487.4,87.0 494.2,86.8 494.2,142.6 487.4,142.7 480.7,143.5 473.9,142.9 467.1,147.4 460.4,148.0 453.6,155.0 446.8,168.5 440.0,166.8 433.3,176.5 426.5,180 419.7,178.6 413.0,177.1 406.2,176.2 399.4,176.6 392.7,175.2 385.9,175.8 379.1,175.5 372.3,174.7 365.6,180 358.8,166.5" />
               <polyline class="fig-trace" points="358.8,132.9 365.6,135.6 372.3,129.3 379.1,130.7 385.9,130.7 392.7,130.9 399.4,131.7 406.2,131.3 413.0,134.0 419.7,135.2 426.5,135.5 433.3,134.8 440.0,128.9 446.8,130.8 453.6,121.3 460.4,118.3 467.1,118.1 473.9,115.7 480.7,115.0 487.4,114.9 494.2,114.7" />
-              <text class="fig-panel-title" x="426.5" y="20" text-anchor="middle">Trimmed Mean</text>
+              <text class="fig-panel-title" x="426.5" y="20" text-anchor="middle">截尾平均數</text>
               <text class="fig-tick" x="358.8" y="199" text-anchor="start">0</text>
               <text class="fig-tick" x="426.5" y="199" text-anchor="middle">10</text>
               <text class="fig-tick" x="494.2" y="199" text-anchor="end">20</text>
@@ -1208,7 +1376,7 @@
             </svg>
             <svg class="fig-svg is-down" viewBox="-1 -1 323 638" role="img" aria-labelledby="asr-down-title asr-down-desc">
               <title id="asr-down-title">各訓練回合的攻擊成功率，每個策略一張小圖</title>
-              <desc id="asr-down-desc">七張攻擊成功率對訓練回合（第 0 到 20 回合）的小型折線圖，分別對應 FedAvg、Krum、Trimmed Mean、LGP、BRAFL、ATTA-FL-Lite 與 L-MAD。每條線是三個種子的平均，帶狀範圍為一個標準差。所有策略都從 0.31 左右開始。FedAvg 最後約 0.52、Krum 0.26、Trimmed Mean 0.44、LGP 0.33、BRAFL 0.39、ATTA-FL-Lite 0.29，帶狀範圍大多很寬。L-MAD 在第 3 回合就降到接近零，並維持在那裡。</desc>
+              <desc id="asr-down-desc">七張攻擊成功率對訓練回合（第 0 到 20 回合）的小型折線圖，分別對應 FedAvg、Krum、截尾平均數、LGP、BRAFL、ATTA-FL-Lite 與 L-MAD。每條線是三個種子的平均，帶狀範圍為一個標準差。所有策略都從 0.31 左右開始。FedAvg 最後約 0.52、Krum 0.26、截尾平均數 0.44、LGP 0.33、BRAFL 0.39、ATTA-FL-Lite 0.29，帶狀範圍大多很寬。L-MAD 在第 3 回合就降到接近零，並維持在那裡。</desc>
               <line class="fig-grid" x1="38.0" y1="126" x2="173.5" y2="126" />
               <line class="fig-grid" x1="38.0" y1="76.0" x2="173.5" y2="76.0" />
               <line class="fig-grid" x1="38.0" y1="26" x2="173.5" y2="26" />
@@ -1244,7 +1412,7 @@
               <line class="fig-grid" x1="173.5" y1="186" x2="173.5" y2="286" />
               <polygon class="fig-band" points="38.0,232.2 44.8,223.3 51.5,221.9 58.3,223.3 65.1,223.0 71.9,223.7 78.7,223.9 85.4,223.6 92.2,226.6 99.0,227.3 105.8,225.9 112.5,228.0 119.3,226.7 126.1,228.0 132.8,224.5 139.6,225.1 146.4,225.2 153.2,225.1 159.9,223.7 166.7,224.0 173.5,223.9 173.5,261.0 166.7,261.2 159.9,261.7 153.2,261.2 146.4,264.2 139.6,264.7 132.8,269.3 126.1,278.4 119.3,277.2 112.5,283.7 105.8,286 99.0,285.1 92.2,284.0 85.4,283.5 78.7,283.7 71.9,282.8 65.1,283.2 58.3,283.0 51.5,282.5 44.8,286 38.0,277.0" />
               <polyline class="fig-trace" points="38.0,254.6 44.8,256.4 51.5,252.2 58.3,253.1 65.1,253.1 71.9,253.3 78.7,253.8 85.4,253.5 92.2,255.3 99.0,256.2 105.8,256.4 112.5,255.8 119.3,252.0 126.1,253.2 132.8,246.9 139.6,244.9 146.4,244.7 153.2,243.1 159.9,242.7 166.7,242.6 173.5,242.5" />
-              <text class="fig-panel-title" x="105.75" y="176" text-anchor="middle">Trimmed Mean</text>
+              <text class="fig-panel-title" x="105.75" y="176" text-anchor="middle">截尾平均數</text>
               <text class="fig-tick" x="30.0" y="291" text-anchor="end">0</text>
               <text class="fig-tick" x="30.0" y="241.0" text-anchor="end">0.5</text>
               <text class="fig-tick" x="30.0" y="191" text-anchor="end">1</text>
@@ -1394,6 +1562,6 @@
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 15l-6-6-6 6"/></svg>
   </button>
 
-  <script src="/assets/js/main.js?v=a239559f" onerror="document.documentElement.classList.remove('js')"></script>
+  <script src="/assets/js/main.js?v=db9e8484" onerror="document.documentElement.classList.remove('js')"></script>
 </body>
 </html>
